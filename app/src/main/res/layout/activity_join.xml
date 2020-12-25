@@ -88,6 +88,7 @@
                     android:id="@+id/join_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLength="15"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="110dp"
                     android:hint="8자리 이상 영문자 (특수문자 X)"
@@ -109,6 +110,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="170dp"
+                    android:maxLength="15"
+                    android:maxLines="1"
                     android:hint="비밀번호 확인"
                     android:textSize="13dp"/>
 

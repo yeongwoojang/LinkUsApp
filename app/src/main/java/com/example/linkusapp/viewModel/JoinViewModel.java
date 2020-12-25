@@ -18,6 +18,7 @@ public class JoinViewModel extends ViewModel {
             RetrofitClient.getClient().create(ServiceApi.class);
 
     public MutableLiveData<String> joinRsLD = new MutableLiveData<String>();
+    public MutableLiveData<String> idChkResLD = new MutableLiveData<String>();
 
     public void join(String userName,String userId,String password, String email, String birth,String gender){
         service.join(userName,userId,password,email,birth,gender)
@@ -25,13 +26,28 @@ public class JoinViewModel extends ViewModel {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         String result = response.body();
-                        Log.d(result, "onResponse: ");
                         joinRsLD.postValue(result);
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
                         //통신오류
+                    }
+                });
+    }
+
+    public void idChk(String userId){
+        service.chkId(userId)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String result = response.body();
+                        idChkResLD.postValue(result);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
                     }
                 });
     }
