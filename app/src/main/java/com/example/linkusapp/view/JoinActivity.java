@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +14,8 @@ import android.widget.RadioGroup;
 import com.example.linkusapp.R;
 import com.example.linkusapp.viewModel.JoinViewModel;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.regex.Pattern;
 
 public class JoinActivity extends AppCompatActivity {
 
@@ -31,6 +35,18 @@ public class JoinActivity extends AppCompatActivity {
     private String gender = "M";
 
     private JoinViewModel viewModel;
+
+    protected InputFilter filterAlphaNum = new InputFilter() {
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            Pattern ps = Pattern.compile("^[a-zA-Z0-9]+$");
+
+            if (!ps.matcher(source).matches()) {
+                return "";
+            }
+            return null;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +68,8 @@ public class JoinActivity extends AppCompatActivity {
         certificationCheckBtn = (Button)findViewById(R.id.join_certification_check_btn);
         joinBtn = (Button)findViewById(R.id.join_btn);
 
+        idEdt.setFilters(new InputFilter[]{filterAlphaNum});
+
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +82,7 @@ public class JoinActivity extends AppCompatActivity {
                 String userBirth = birthEdt.getText().toString().trim();
 
                 if(!userId.equals("")
+                        && userId.length()>=6
                         && !userPw.equals("")
                         && !userPw2.equals("")
                         && !userName.equals("")
@@ -71,9 +90,11 @@ public class JoinActivity extends AppCompatActivity {
                         && !certification.equals("")
                         && !userBirth.equals("")){
                     if(userPw.equals(userPw2)){
-                        Log.d("REUSLT", "onClick: "+gender);
+
                         viewModel.join(userName,userId,userPw,userEmail,userBirth,gender);
                     }
+                }else{
+                    Snackbar.make(findViewById(R.id.join_layout),"정보를 정확히 입력하세요.",Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
