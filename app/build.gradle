@@ -39,8 +39,14 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.google.code.gson:gson:2.8.6'
 
+    /*facebook*/
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+
     /*kakao*/
     implementation 'com.kakao.sdk:usermgmt:1.16.0'
+
+    /*google*/
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
     implementation 'com.google.android.material:material:1.0.0'
 }
