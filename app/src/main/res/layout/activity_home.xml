@@ -63,7 +63,9 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/form_button_round"
         android:fontFamily="@font/nanum_square_ac_b"
         android:text="Sign In"
@@ -71,7 +73,6 @@
         android:textSize="15dp" />
 
     <TextView
-        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign in with"
@@ -124,14 +125,15 @@
             android:fontFamily="@font/nanum_square_ac_b"
             android:textColor="@color/black"
             />
-        <EditText
+        <TextView
+            android:id="@+id/go_to_join_bt"
             android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign up"
             android:fontFamily="@font/nanum_square_ac_b"
             android:textSize="15dp"
-            android:textColor="@color/black"
+            android:textColor="@color/red500"
             />
     </LinearLayout>
 
