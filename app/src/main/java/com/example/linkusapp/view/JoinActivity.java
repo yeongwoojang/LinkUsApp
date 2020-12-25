@@ -47,6 +47,18 @@ public class JoinActivity extends AppCompatActivity {
         }
     };
 
+    // 한글만 허용
+    public InputFilter filterKor = new InputFilter() {
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            Pattern ps = Pattern.compile("^[ㄱ-ㅎ가-힣]+$");
+
+            if (!ps.matcher(source).matches()) {
+                return "";
+            }
+            return null;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +80,6 @@ public class JoinActivity extends AppCompatActivity {
         certificationCheckBtn = (Button)findViewById(R.id.join_certification_check_btn);
         joinBtn = (Button)findViewById(R.id.join_btn);
 
-        idEdt.setFilters(new InputFilter[]{filterAlphaNum});
 
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,8 +100,9 @@ public class JoinActivity extends AppCompatActivity {
                         && !userEmail.equals("")
                         && !certification.equals("")
                         && !userBirth.equals("")){
-                    if(userPw.equals(userPw2)){
-
+                    if(userId.matches("^[a-zA-Z0-9]+$")
+                    && userName.matches("^[ㄱ-ㅎ가-힣]+$")
+                    && userPw.equals(userPw2)){
                         viewModel.join(userName,userId,userPw,userEmail,userBirth,gender);
                     }
                 }else{
@@ -98,9 +110,8 @@ public class JoinActivity extends AppCompatActivity {
                 }
             }
         });
+
         viewModel.joinRsLD.observe(this,code ->{
-
-
             if(code.equals("200")){
                 Log.d("RESULT", "onCreate: 성공");
                 Snackbar.make(findViewById(R.id.join_layout),"회원가입 성공",Snackbar.LENGTH_SHORT).show();
