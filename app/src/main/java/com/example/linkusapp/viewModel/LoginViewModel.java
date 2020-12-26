@@ -1,4 +1,4 @@
-package com.example.linkusapp.viewmodel;
+package com.example.linkusapp.viewModel;
 
 import androidx.lifecycle.ViewModel;
 
