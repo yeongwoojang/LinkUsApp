@@ -145,7 +145,7 @@
             android:textColor="@color/black"
             />
         <TextView
-            android:id="@+id/goToJoinBt"
+            android:id="@+id/go_to_join_bt"
             android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

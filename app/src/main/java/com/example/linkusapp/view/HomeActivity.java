@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
         Session.getCurrentSession().checkAndImplicitOpen();
 
         kakaoLoginBt = (ImageButton)findViewById(R.id.kakaoLoginBt);
-        goToJoinBt = (TextView) findViewById(R.id.goToJoinBt);
+        goToJoinBt = (TextView) findViewById(R.id.go_to_join_bt);
         signinbtn = (Button) findViewById(R.id.signinbtn);
 
         kakaoLoginBt.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +127,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-  /*  private void getAppKeyHash() {
+/*   private void getAppKeyHash() {
         try {
             PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
