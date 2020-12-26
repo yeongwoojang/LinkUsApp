@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import com.example.linkusapp.R;
-import com.example.linkusapp.viewModel.JoinViewModel2;
+import com.example.linkusapp.viewModel.JoinViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 public class JoinActivity extends AppCompatActivity {
@@ -31,14 +31,14 @@ public class JoinActivity extends AppCompatActivity {
     private Button joinIdCheckBtn;
     private String gender = "M";
 
-    private JoinViewModel2 viewModel;
+    private JoinViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
 
-        viewModel =  new ViewModelProvider(this).get(JoinViewModel2.class);
+        viewModel =  new ViewModelProvider(this).get(JoinViewModel.class);
 
         idEdt = (EditText)findViewById(R.id.join_id);
         pwEdt = (EditText)findViewById(R.id.join_password);
