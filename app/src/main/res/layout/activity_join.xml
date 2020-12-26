@@ -31,13 +31,13 @@
             </androidx.appcompat.widget.Toolbar>
             <View
                 android:layout_below="@+id/toolbar"
+                android:id="@+id/toolbar_div"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_centerInParent="true"
                 android:background="@color/black"/>
 
             <RelativeLayout
-                android:layout_below="@+id/toolbar"
+                android:layout_below="@+id/toolbar_div"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -71,7 +71,7 @@
                         android:layout_marginTop="50dp"
                         android:text="중복확인"
                         android:textColor="@color/red500"
-                        android:background="@drawable/bttuon_background2"
+                        android:background="@drawable/button_background2"
                         android:fontFamily="@font/nanum_square_ac_b" />
                 </LinearLayout>
                 <TextView
@@ -163,7 +163,7 @@
                         android:layout_marginTop="290dp"
                         android:text="인증번호 전송"
                         android:textColor="@color/red500"
-                        android:background="@drawable/bttuon_background2"
+                        android:background="@drawable/button_background2"
                         android:fontFamily="@font/nanum_square_ac_b" />
                 </LinearLayout>
 
@@ -196,7 +196,7 @@
                         android:layout_marginTop="350dp"
                         android:text="확인"
                         android:textColor="@color/red500"
-                        android:background="@drawable/bttuon_background2"
+                        android:background="@drawable/button_background2"
                         android:fontFamily="@font/nanum_square_ac_b"/>
                 </LinearLayout>
                 <TextView
@@ -211,7 +211,7 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
                     <EditText
                         android:id="@+id/join_birth"
                         android:layout_width="200dp"
@@ -223,8 +223,8 @@
                     <RadioGroup
                         android:id="@+id/join_radio_group"
                         android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
                         <RadioButton
                             android:id="@+id/join_gender_man"
                             android:layout_width="wrap_content"

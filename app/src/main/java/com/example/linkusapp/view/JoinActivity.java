@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,8 +12,6 @@ import android.widget.RadioGroup;
 import com.example.linkusapp.R;
 import com.example.linkusapp.viewModel.JoinViewModel;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.regex.Pattern;
 
 public class JoinActivity extends AppCompatActivity {
 
