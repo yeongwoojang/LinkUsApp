@@ -3,6 +3,7 @@ package com.example.linkusapp.view;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -18,6 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.facebook.LoginCallBack;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.Login;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.google.android.material.snackbar.Snackbar;
 import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
@@ -29,14 +39,17 @@ import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
 
 import java.security.MessageDigest;
+import java.util.Arrays;
 
 public class HomeActivity extends AppCompatActivity {
 
     private SessionCallback sessionCallback;
+    private CallbackManager mcallbackManager;
 
-    private TextView goToJoinBt;
+    private TextView goToJoinBtn;
     private Button signinbtn;
-    private ImageButton kakaoLoginBt;
+    private ImageButton kakaoLoginBtn;
+    private ImageButton facebookLoginBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,24 +59,36 @@ public class HomeActivity extends AppCompatActivity {
         Session.getCurrentSession().addCallback(sessionCallback);
         Session.getCurrentSession().checkAndImplicitOpen();
 
-        kakaoLoginBt = (ImageButton)findViewById(R.id.kakaoLoginBt);
-        goToJoinBt = (TextView) findViewById(R.id.go_to_join_bt);
-        signinbtn = (Button) findViewById(R.id.signinbtn);
+        goToJoinBtn = (TextView) findViewById(R.id.go_to_join_btn);
+        signinbtn = (Button) findViewById(R.id.sign_in_btn);
+        facebookLoginBtn = (ImageButton)findViewById(R.id.facebook_login_btn);
+        kakaoLoginBtn = (ImageButton)findViewById(R.id.kakao_login_btn);
 
-        kakaoLoginBt.setOnClickListener(new View.OnClickListener() {
+        /*facebook 로그인*/
+        mcallbackManager = CallbackManager.Factory.create();
+
+        facebookLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                facebookLogin();
+            }
+        });
+        /*카카오톡 로그인*/
+        kakaoLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 com.kakao.auth.Session.getCurrentSession().open(AuthType.KAKAO_TALK, HomeActivity.this);
             }
         });
-
-        goToJoinBt.setPaintFlags(goToJoinBt.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        goToJoinBt.setOnClickListener(new View.OnClickListener() {
+        /*회원가입*/
+        goToJoinBtn.setPaintFlags(goToJoinBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        goToJoinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), JoinActivity.class));
             }
         });
+        /*로그인 버튼*/
         signinbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,10 +96,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode,data)){
+            mcallbackManager.onActivityResult(requestCode,resultCode,data);
             super.onActivityResult(requestCode, resultCode, data);
             return;
         }
@@ -126,8 +154,27 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: "+e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
+    private void facebookLogin(){
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile","email"));
+        LoginManager.getInstance().registerCallback(mcallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d("Success","페북 Login 성공");
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
 
-/*   private void getAppKeyHash() {
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+   /*private void getAppKeyHash() {
         try {
             PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
