@@ -44,7 +44,8 @@ import java.util.Arrays;
 public class HomeActivity extends AppCompatActivity {
 
     private SessionCallback sessionCallback;
-    private CallbackManager mcallbackManager;
+    private CallbackManager mCallbackManager;
+    private LoginCallBack mLoginCallback;
 
     private TextView goToJoinBtn;
     private Button signinbtn;
@@ -65,8 +66,8 @@ public class HomeActivity extends AppCompatActivity {
         kakaoLoginBtn = (ImageButton)findViewById(R.id.kakao_login_btn);
 
         /*facebook 로그인*/
-        mcallbackManager = CallbackManager.Factory.create();
-
+        mCallbackManager = CallbackManager.Factory.create();
+        mLoginCallback = new LoginCallBack();
         facebookLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,11 +102,8 @@ public class HomeActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode,data)){
-            mcallbackManager.onActivityResult(requestCode,resultCode,data);
+            mCallbackManager.onActivityResult(requestCode,resultCode,data);
             super.onActivityResult(requestCode, resultCode, data);
-            return;
-        }
     }
 
     @Override
@@ -155,22 +153,23 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
     private void facebookLogin(){
+        Log.d("execute","facebookLogin");
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile","email"));
-        LoginManager.getInstance().registerCallback(mcallbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("Success","페북 Login 성공");
+                Toast.makeText(getApplicationContext(),"페북 로그인 성공",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
 
             @Override
             public void onCancel() {
-
+                Log.e("Cancel","페북 Login 취소");
             }
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("Error", "페북 Login 에러");
             }
         });
     }

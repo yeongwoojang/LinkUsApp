@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                 LoginManager.getInstance().logOut();
+                finish();
             }
         });
 

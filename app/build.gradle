@@ -51,7 +51,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
 
     /*facebook*/
-    implementation 'com.facebook.android:facebook-login:[5,6)'
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
 
     /*kakao*/
     implementation 'com.kakao.sdk:usermgmt:1.16.0'
