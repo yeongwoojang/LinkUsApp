@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/home_layout"
     tools:context=".view.HomeActivity"
     android:background="@color/white"
     android:orientation="vertical">
@@ -40,6 +41,7 @@
         android:orientation="vertical"
         android:layout_margin="30dp">
         <EditText
+            android:id="@+id/login_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="ID"
@@ -48,6 +50,7 @@
             android:maxLength="12"
             />
         <EditText
+            android:id="@+id/login_password"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

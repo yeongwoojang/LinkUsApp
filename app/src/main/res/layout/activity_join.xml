@@ -106,7 +106,8 @@
                     android:layout_marginBottom="10dp"
                     android:hint="8자리 이상 영문자 (특수문자 X)"
                     android:maxLength="15"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:inputType="textPassword"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -127,7 +128,8 @@
                     android:hint="비밀번호 확인"
                     android:maxLength="15"
                     android:maxLines="1"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:inputType="textPassword"/>
 
                 <TextView
                     android:layout_width="wrap_content"
