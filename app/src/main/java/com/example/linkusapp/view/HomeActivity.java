@@ -2,6 +2,7 @@ package com.example.linkusapp.view;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,12 +15,14 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.facebook.LoginCallBack;
+import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -51,10 +54,16 @@ public class HomeActivity extends AppCompatActivity {
     private Button signinbtn;
     private ImageButton kakaoLoginBtn;
     private ImageButton facebookLoginBtn;
+    private EditText idEditText,pwEditText;
+    private TextView findPassword;
+
+    private LoginViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         sessionCallback = new SessionCallback();
         Session.getCurrentSession().addCallback(sessionCallback);
@@ -64,6 +73,9 @@ public class HomeActivity extends AppCompatActivity {
         signinbtn = (Button) findViewById(R.id.sign_in_btn);
         facebookLoginBtn = (ImageButton)findViewById(R.id.facebook_login_btn);
         kakaoLoginBtn = (ImageButton)findViewById(R.id.kakao_login_btn);
+        idEditText = (EditText)findViewById(R.id.id_et);
+        pwEditText = (EditText)findViewById(R.id.pw_et);
+
 
         /*facebook 로그인*/
         mCallbackManager = CallbackManager.Factory.create();
@@ -93,7 +105,26 @@ public class HomeActivity extends AppCompatActivity {
         signinbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String userId = idEditText.getText().toString().trim();
+                String userPw = pwEditText.getText().toString().trim();
+                viewModel.login(userId,userPw);
+            }
+        });
+        viewModel.loginRsLD.observe(this,code -> {
+            if(code.equals("200")){
+                Log.d("RESULT", "onCreate: 성공");
+                Snackbar.make(findViewById(R.id.home_layout), "로그인 성공", Snackbar.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }else if(code.equals("204")){
+                Log.d("RESULT", "onCreate: 204 에러");
+                Snackbar.make(findViewById(R.id.home_layout), "존재하지 않는 계정입니다.", Snackbar.LENGTH_SHORT).show();
+            }else if(code.equals("205")){
+                Log.d("RESULT", "onCreate: 205 에러");
+                Snackbar.make(findViewById(R.id.home_layout), "비밀번호가 틀립니다.", Snackbar.LENGTH_SHORT).show();
+            }
+            else {
+                Log.d("RESULT", "onCreate: 실패");
+                Snackbar.make(findViewById(R.id.home_layout), "로그인 실패", Snackbar.LENGTH_SHORT).show();
             }
         });
 

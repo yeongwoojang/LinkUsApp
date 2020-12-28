@@ -44,6 +44,7 @@
         android:layout_marginRight="30dp"
         android:layout_marginTop="30dp">
         <EditText
+            android:id="@+id/id_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="ID"
@@ -52,6 +53,7 @@
             android:maxLength="12"
             />
         <EditText
+            android:id="@+id/pw_et"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,6 +62,7 @@
             android:inputType="textPassword"
             />
         <TextView
+            android:id="@+id/find_password"
             android:layout_marginTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
