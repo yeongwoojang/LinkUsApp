@@ -31,10 +31,10 @@
             </androidx.appcompat.widget.Toolbar>
             <View
                 android:layout_below="@+id/toolbar"
-                android:id="@+id/toolbar_div"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black"/>
+            android:id="@+id/toolbar_div"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"/>
 
             <RelativeLayout
                 android:layout_below="@+id/toolbar_div"
@@ -165,6 +165,48 @@
                         android:textColor="@color/red500"
                         android:background="@drawable/button_background2"
                         android:fontFamily="@font/nanum_square_ac_b" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/join_birth"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="410dp"
+                            android:hint="생년월일 입력(8자리)"
+                            android:textSize="13dp" />
+
+                        <RadioGroup
+                            android:id="@+id/join_radio_group"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/join_gender_man"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="410dp"
+                                android:buttonTint="@color/red500"
+                                android:checked="true"
+                                android:fontFamily="@font/nanum_square_ac_b"
+                                android:text="남자" />
+
+                            <RadioButton
+                                android:id="@+id/join_gender_woman"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="410dp"
+                                android:buttonTint="@color/red500"
+                                android:checked="false"
+                                android:fontFamily="@font/nanum_square_ac_b"
+                                android:text="여자" />
+                        </RadioGroup>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <TextView
@@ -208,45 +250,6 @@
                     android:textColor="@color/black"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="400dp"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <EditText
-                        android:id="@+id/join_birth"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="410dp"
-                        android:hint="생년월일 입력(8자리)"
-                        android:textSize="13dp"/>
-                    <RadioGroup
-                        android:id="@+id/join_radio_group"
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <RadioButton
-                            android:id="@+id/join_gender_man"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_square_ac_b"
-                            android:checked="true"
-                            android:buttonTint="@color/red500"
-                            android:layout_marginTop="410dp"
-                            android:text="남자"/>
-
-                        <RadioButton
-                            android:id="@+id/join_gender_woman"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_square_ac_b"
-                            android:checked="false"
-                            android:buttonTint="@color/red500"
-                            android:layout_marginTop="410dp"
-                            android:layout_marginLeft="20dp"
-                            android:text="여자"/>
-                    </RadioGroup>
-                </LinearLayout>
 
                 <Button
                     android:id="@+id/join_btn"

@@ -4,14 +4,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,8 +21,6 @@ import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.Login;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.material.snackbar.Snackbar;
@@ -41,7 +34,6 @@ import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
 
-import java.security.MessageDigest;
 import java.util.Arrays;
 
 public class HomeActivity extends AppCompatActivity {
@@ -75,6 +67,7 @@ public class HomeActivity extends AppCompatActivity {
         kakaoLoginBtn = (ImageButton)findViewById(R.id.kakao_login_btn);
         idEditText = (EditText)findViewById(R.id.id_et);
         pwEditText = (EditText)findViewById(R.id.pw_et);
+        findPassword = (TextView)findViewById(R.id.find_password);
 
 
         /*facebook 로그인*/
@@ -125,6 +118,13 @@ public class HomeActivity extends AppCompatActivity {
             else {
                 Log.d("RESULT", "onCreate: 실패");
                 Snackbar.make(findViewById(R.id.home_layout), "로그인 실패", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+        findPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),ForgotPasswordActivity.class));
             }
         });
 
