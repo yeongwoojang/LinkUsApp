@@ -21,4 +21,12 @@ public interface ServiceApi {
 
     @GET("/android/idChk")
     Call<String> chkId(@Query("userId") String userId);
+
+    @FormUrlEncoded
+    @POST("/android/login")
+    Call<String> login(@Field("userId") String userId,@Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("/android/findPw")
+    Call<FindPassword> findPw(@Field("userId") String userId,@Field("email") String email);
 }
