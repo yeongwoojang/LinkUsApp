@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">LinkUsApp</string>
     <string name="kakao_app_key">59946e5a631d4d639ac76aa1c03c6e7a</string>
+    <string name="server_client_id">30285820762-be0nlpeakjref4vuuthqukeosdedvl89.apps.googleusercontent.com</string>
     <string name="facebook_app_id">757268228212324</string>
     <string name="fb_login_protocol_scheme">fb757268228212324</string>
     <!-- TODO: Remove or change this placeholder text -->

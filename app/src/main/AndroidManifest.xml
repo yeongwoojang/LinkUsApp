@@ -3,7 +3,6 @@
     package="com.example.linkusapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name=".kakao.App"
         android:allowBackup="true"
@@ -14,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.ForgotPasswordActivity"></activity>
-        <!-- 카카오톡 -->
+        <activity android:name=".view.AddUserInfoActivity"></activity>
+
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" /> <!-- 페이스북 -->
@@ -47,7 +46,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity"></activity>
+        <activity android:name=".view.MainActivity">
+
+        </activity>
     </application>
 
 </manifest>
