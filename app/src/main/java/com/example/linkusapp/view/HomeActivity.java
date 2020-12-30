@@ -92,6 +92,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), JoinActivity.class));
+                overridePendingTransition(R.anim.right_in,R.anim.left_out);
+                finish();
             }
         });
         /*로그인 버튼*/

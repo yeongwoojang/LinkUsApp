@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#B39DDB</color>
-    <color name="colorPrimaryDark">#B39DDB</color>
-    <color name="colorAccent">#B39DDB</color>
+    <color name="colorPrimary">#E57373</color>
+    <color name="colorPrimaryDark">#EF5350</color>
+    <color name="colorAccent">#F44336</color>
 
     <color name="transparent">#00000000</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
 
-    <color name="appMainColor">#D1C4E9</color>
-    <color name="appSubColor">#B39DDB</color>
-    <color name="appThirdColor">#9575CD</color>
+    <color name="appMainColor">#E57373</color>
+    <color name="appSubColor">#EF5350</color>
+    <color name="appThirdColor">#F44336</color>
 
     <!--red-->
     <color name="red50">#FFEBEE</color>

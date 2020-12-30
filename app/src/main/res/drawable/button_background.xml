@@ -8,10 +8,9 @@
 
     <stroke
         android:width="30dp"
-        android:color="@color/red500"
+        android:color="@color/red300"
         />
     <solid
-        android:color="@color/red500"
+        android:color="@color/red300"
         />
-
 </shape>
