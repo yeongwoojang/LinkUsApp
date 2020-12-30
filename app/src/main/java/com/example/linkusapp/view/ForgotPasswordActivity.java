@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.repository.FindPassword;
+import com.example.linkusapp.util.GMailSender;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -21,6 +23,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private Button findBtn;
 
     private LoginViewModel viewModel;
+    private GMailSender gMailSender = new GMailSender("sbtmxhs@gmail.com", "jang7856");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,21 +43,23 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 viewModel.findPw(id,email);
             }
         });
+
         viewModel.findPwRsLD.observe(this, code -> {
-            if(code.equals("200")){
-                Log.d("RESULT", "onCreate: 성공");
-                /*Snackbar.make(findViewById(R.id.find_layout), "비밀번호 찾기 성공", Snackbar.LENGTH_SHORT).show();*/
-                Toast.makeText(getApplicationContext(), "비밀번호 찾기 성공", Toast.LENGTH_SHORT).show();
+            if(code.equals("404")){
+                Log.d("RESULT", "onCreate: 실패");
+                Snackbar.make(findViewById(R.id.find_layout), "비밀번호 찾기 실패", Snackbar.LENGTH_SHORT).show();
+               /* Toast.makeText(getApplicationContext(), "비밀번호 찾기 실패", Toast.LENGTH_SHORT).show();*/
             }
             else if(code.equals("204")){
                 Log.d("RESULT", "onCreate: 204 에러");
-                /*Snackbar.make(findViewById(R.id.find_layout), "존재하지 않는 계정입니다.", Snackbar.LENGTH_SHORT).show();*/
-                Toast.makeText(getApplicationContext(), "존재하지 않는 계정", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.find_layout), "존재하지 않는 계정입니다.", Snackbar.LENGTH_SHORT).show();
             }
             else{
-                Log.d("RESULT", "onCreate: 실패");
-//                Snackbar.make(findViewById(R.id.find_layout), "비밀번호 찾기 실패", Snackbar.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(), "비밀번호 찾기 실패", Toast.LENGTH_SHORT).show();
+                Log.d("RESULT", "onCreate: 성공");
+                Snackbar.make(findViewById(R.id.find_layout), "비밀번호 찾기 성공 비밀번호를 이메일로 전송합니다.", Snackbar.LENGTH_SHORT).show();
+                /*Toast.makeText(getApplicationContext(), "비밀번호 찾기 성공"+code, Toast.LENGTH_SHORT).show();*/
+                viewModel.sendMail(gMailSender,emailEt.getText().toString().trim(),code);
+
             }
         });
     }
