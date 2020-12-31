@@ -55,6 +55,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         sessionCallback = new SessionCallback();
@@ -79,6 +80,7 @@ public class HomeActivity extends AppCompatActivity {
                 facebookLogin();
             }
         });
+
         /*카카오톡 로그인*/
         kakaoLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
