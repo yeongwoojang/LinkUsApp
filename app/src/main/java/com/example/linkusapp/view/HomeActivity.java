@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.linkusapp.R;
 import com.example.linkusapp.facebook.LoginCallBack;
 import com.example.linkusapp.viewModel.LoginViewModel;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -57,7 +58,7 @@ public class HomeActivity extends AppCompatActivity {
     //----------------페이스북 로그인용----------------------------
     private LoginCallBack mLoginCallback;
     //----------------페이스북 로그인용---------------------------
-
+    private String fbToken;
     //----------------구글로그인용---------------------------------
     private GoogleSignInClient mSignInClient;
     private static final int RC_SIGN_IN = 9001;
@@ -115,7 +116,6 @@ public class HomeActivity extends AppCompatActivity {
         idEditText = (EditText) findViewById(R.id.id_et);
         pwEditText = (EditText) findViewById(R.id.pw_et);
         findPassword = (TextView) findViewById(R.id.find_password);
-
 
         validateServerClientID();
         //구글 로그인
@@ -255,12 +255,12 @@ public class HomeActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
             return;
         }
-
-        if (requestCode == RC_GET_TOKEN) {
+        mCallbackManager.onActivityResult(requestCode,resultCode,data);
+        /*if (requestCode == RC_GET_TOKEN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
-
+*/
 //        if (requestCode == RC_SIGN_IN) {
 //            Log.d(TAG, "onActivityResult: resultOk");
 //
@@ -332,6 +332,9 @@ public class HomeActivity extends AppCompatActivity {
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                 fbToken = accessToken.getToken();
+                 Log.d("facebook Token",fbToken);
                 Toast.makeText(getApplicationContext(), "페북 로그인 성공", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
