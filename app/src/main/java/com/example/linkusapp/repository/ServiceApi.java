@@ -29,4 +29,8 @@ public interface ServiceApi {
     @FormUrlEncoded
     @POST("/android/findPw")
     Call<FindPassword> findPw(@Field("userId") String userId,@Field("email") String email);
+
+    @FormUrlEncoded
+    @POST("/android/googleIdToken")
+    Call<String> sendGoogleIdToken(@Field("idToken") String idToken);
 }

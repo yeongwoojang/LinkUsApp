@@ -242,7 +242,9 @@ public class HomeActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             String idToken = account.getIdToken();
             Log.d(TAG, "handleSignInResult: "+idToken);
+
             // TODO(developer): send ID Token to server and validate
+            viewModel.sendGoogleIdToken(idToken);
             updateUI(account);
         } catch (ApiException e) {
             Log.w(TAG, "handleSignInResult:error", e);

@@ -76,4 +76,19 @@ public class LoginViewModel extends ViewModel {
         }).start();
     }
 
+    public void sendGoogleIdToken(String idToken){
+        serviceApi.sendGoogleIdToken(idToken).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body();
+                Log.d("OAuth2", "onResponse: "+result);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+
 }
