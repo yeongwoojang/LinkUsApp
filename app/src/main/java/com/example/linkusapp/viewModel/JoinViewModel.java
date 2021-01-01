@@ -30,8 +30,8 @@ public class JoinViewModel extends ViewModel {
     public CountDownTimer countDownTimer;
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();
 
-    public void join(String userName, String userId, String password, String email, String birth, String gender) {
-        service.join(userName, userId, password, email, birth, gender)
+    public void join(String userName, String userId, String password, String userEmail) {
+        service.join(userName, userId, password,userEmail)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
@@ -68,8 +68,7 @@ public class JoinViewModel extends ViewModel {
             String userPw2,
             String userName,
             String userEmail,
-            String certification,
-            String userBirth
+            String certification
     ) {
          boolean value = false;
         if (userId.equals("")
@@ -78,7 +77,7 @@ public class JoinViewModel extends ViewModel {
                 && userName.equals("")
                 && userEmail.equals("")
                 && certification.equals("")
-                && userBirth.equals("")){
+               ){
                 value = true;
         }
         return value;

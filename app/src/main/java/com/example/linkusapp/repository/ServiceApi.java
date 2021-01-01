@@ -15,9 +15,8 @@ public interface ServiceApi {
             @Field("userName") String userName,
             @Field("userId") String userId,
             @Field("password") String password,
-            @Field("email") String email,
-            @Field("birth") String birth,
-            @Field("gender") String gender);
+            @Field("userEmail") String userEmail
+         );
 
     @GET("/android/idChk")
     Call<String> chkId(@Query("userId") String userId);
@@ -26,9 +25,8 @@ public interface ServiceApi {
     @POST("/android/login")
     Call<String> login(@Field("userId") String userId,@Field("password") String password);
 
-    @FormUrlEncoded
-    @POST("/android/findPw")
-    Call<FindPassword> findPw(@Field("userId") String userId,@Field("email") String email);
+    @GET("/android/findPw")
+    Call<FindPassword> findPw(@Query("userId") String userId,@Query("email") String email);
 
     @FormUrlEncoded
     @POST("/android/googleIdToken")

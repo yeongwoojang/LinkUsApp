@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -78,6 +79,7 @@ public class HomeActivity extends AppCompatActivity {
     private LoginViewModel viewModel;
     //----------------viewModel------------------------------------
 
+    private InputMethodManager imm;
 
     @Override
     protected void onStart() {
@@ -102,7 +104,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         sessionCallback = new SessionCallback();
         Session.getCurrentSession().addCallback(sessionCallback);
         Session.getCurrentSession().checkAndImplicitOpen();
@@ -168,6 +170,7 @@ public class HomeActivity extends AppCompatActivity {
         signinbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                imm.hideSoftInputFromWindow(pwEditText.getWindowToken(),0);
                 String userId = idEditText.getText().toString().trim();
                 String userPw = pwEditText.getText().toString().trim();
                 viewModel.login(userId, userPw);

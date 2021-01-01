@@ -23,7 +23,7 @@ public class LoginViewModel extends ViewModel {
 
 
     public MutableLiveData<String> loginRsLD = new MutableLiveData<String>();
-    public MutableLiveData<String> findPwRsLD = new MutableLiveData<String>();
+    public MutableLiveData<FindPassword> findPwRsLD = new MutableLiveData<FindPassword>();
 
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();
 
@@ -45,8 +45,7 @@ public class LoginViewModel extends ViewModel {
             @Override
             public void onResponse(Call<FindPassword> call, Response<FindPassword> response) {
                 FindPassword result =response.body();
-                findPwRsLD.postValue(result.getPassword());
-                Log.d("Result",result.getPassword());
+                findPwRsLD.postValue(result);
             }
 
             @Override
