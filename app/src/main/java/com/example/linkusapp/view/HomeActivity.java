@@ -308,7 +308,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 @Override
                 public void onSuccess(MeV2Response result) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), AddUserInfoActivity.class);
                     Log.d("asdasd", "onSuccess: " + result.getNickname());
                     Log.d("asdasd", "onSuccess: " + result.getId());
 
@@ -336,7 +336,7 @@ public class HomeActivity extends AppCompatActivity {
                  fbToken = accessToken.getToken();
                  Log.d("facebook Token",fbToken);
                 Toast.makeText(getApplicationContext(), "페북 로그인 성공", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
             }
 
             @Override
@@ -377,7 +377,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if (account != null) {
             Toast.makeText(this, "U Signed In successfully", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
             finish();
         } else {
