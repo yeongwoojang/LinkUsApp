@@ -1,5 +1,7 @@
 package com.example.linkusapp.repository;
 
+import com.example.linkusapp.model.vo.FindPassword;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -15,9 +17,8 @@ public interface ServiceApi {
             @Field("userName") String userName,
             @Field("userId") String userId,
             @Field("password") String password,
-            @Field("email") String email,
-            @Field("birth") String birth,
-            @Field("gender") String gender);
+            @Field("userEmail") String userEmail
+    );
 
     @GET("/android/idChk")
     Call<String> chkId(@Query("userId") String userId);
@@ -26,10 +27,23 @@ public interface ServiceApi {
     @POST("/android/login")
     Call<String> login(@Field("userId") String userId,@Field("password") String password);
 
-    @FormUrlEncoded
-    @POST("/android/findPw")
-    Call<FindPassword> findPw(@Field("userId") String userId,@Field("email") String email);
+    @GET("/android/findPw")
+    Call<FindPassword> findPw(@Query("userId") String userId, @Query("email") String email);
 
     @GET("/android/nickNameChk")
     Call<String> nickNameChk(@Query("userNickname") String userNickname);
+
+    @FormUrlEncoded
+    @POST("/android/googleIdToken")
+    Call<String> sendGoogleIdToken(@Field("idToken") String idToken);
+
+    @FormUrlEncoded
+    @POST("/android/address")
+    Call<String> saveInfo(
+            @Field("userId") String userId,
+            @Field("nickname") String nickname,
+            @Field("age") String age,
+            @Field("gender") String gender,
+            @Field("address") String address
+    );
 }

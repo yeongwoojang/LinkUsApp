@@ -1,4 +1,4 @@
-package com.example.linkusapp.repository;
+package com.example.linkusapp.model.vo;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -11,11 +11,6 @@ public class FindPassword {
 
     @SerializedName("password")
     private String password;
-
-    @SerializedName("email")
-    private String email;
-
-    public String getEmail() {return email;}
 
     public String getCode() {return code;}
 

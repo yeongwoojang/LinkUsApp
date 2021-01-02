@@ -2,8 +2,6 @@ package com.example.linkusapp.view;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
@@ -11,14 +9,16 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
-import com.example.linkusapp.SearchAddress;
 import com.example.linkusapp.viewModel.JoinViewModel;
+import com.example.linkusapp.viewModel.UserInfoViewModel;
 import com.facebook.login.LoginManager;
 import com.google.android.material.snackbar.Snackbar;
 import com.kakao.usermgmt.UserManagement;
@@ -26,44 +26,74 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 public class AddUserInfoActivity extends AppCompatActivity {
 
-    private Button nextBtn,preBtn;
-    private EditText nickname,searchAddressEt;
+    private Button saveBtn,preBtn;
+    private EditText nicknameEt,searchAddressEt;
     private Button checkNicknameBtn,searchAddressBtn;
+    private Spinner setAge;
+    private String age;
+    private RadioGroup genderRadio;
+    private String gender = "M";
+    private String userNickname;
+
     private long backKeyPressed = 0;
     private Toast backBtClickToast;
     private JoinViewModel viewModel;
-    private RadioGroup genderRadio;
-    private String gender = "M";
+    private UserInfoViewModel userInfoViewModel;
     private static final  int SEARCH_ADDRESS_ACTIVITY = 10000;
+
+    /*닉네임중복확인 유무*/
+    boolean isCertify = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user_info);
 
-        nextBtn = (Button)findViewById(R.id.save_btn);
+        saveBtn = (Button)findViewById(R.id.save_btn);
         preBtn = (Button)findViewById(R.id.previous_btn);
-        nickname = (EditText)findViewById(R.id.set_nickname);
+        nicknameEt = (EditText)findViewById(R.id.set_nickname);
         checkNicknameBtn = (Button)findViewById(R.id.nickname_check_btn);
         genderRadio = (RadioGroup)findViewById(R.id.join_radio_group);
         searchAddressEt = (EditText)findViewById(R.id.search_address_et);
         searchAddressBtn =(Button) findViewById(R.id.search_address_btn);
+        setAge= (Spinner) findViewById(R.id.spinner_age);
 
-        nextBtn.setPaintFlags(nextBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        saveBtn.setPaintFlags(saveBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         preBtn.setPaintFlags(preBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         viewModel = new ViewModelProvider(this).get(JoinViewModel.class);
+        userInfoViewModel = new ViewModelProvider(this).get(UserInfoViewModel.class);
 
+        Intent intent = getIntent();
+        String currentId = intent.getExtras().getString("userId");
+        Log.d("intent",currentId);
+
+
+        /*나이*/
+        setAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+                if(position != 0){
+                    age = parent.getItemAtPosition(position).toString();
+                    Snackbar.make(findViewById(R.id.add_user_info), age, Snackbar.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Snackbar.make(findViewById(R.id.add_user_info), "나이를 선택해주세요.", Snackbar.LENGTH_SHORT).show();
+            }
+        });
         /*닉네임 체크*/
         checkNicknameBtn.setOnClickListener(new View.OnClickListener() {
-            String userNickname;
             @Override
             public void onClick(View view) {
-                userNickname = nickname.getText().toString().trim();
+                userNickname = nicknameEt.getText().toString().trim();
                 if (!userNickname.equals("") && userNickname.length() <= 10) {
                     viewModel.nickNameChk(userNickname);
+                    isCertify = true;
                 } else {
-                    nickname.setText(" ");
+                    nicknameEt.setText(" ");
                     Snackbar.make(findViewById(R.id.add_user_info), "조건에 맞는 닉네임을 입력해주세요", Snackbar.LENGTH_SHORT).show();
+                    isCertify = false;
                 }
             }
         });
@@ -78,7 +108,8 @@ public class AddUserInfoActivity extends AppCompatActivity {
         searchAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(getApplicationContext(), SearchAddress.class);
+                startActivityForResult(intent,SEARCH_ADDRESS_ACTIVITY);
             }
         });
         searchAddressEt.setOnClickListener(new View.OnClickListener() {
@@ -89,10 +120,45 @@ public class AddUserInfoActivity extends AppCompatActivity {
             }
         });
         /*2차 회원 정보 저장버튼*/
-        nextBtn.setOnClickListener(new View.OnClickListener() {
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String address = searchAddressEt.getText().toString();
+                if(!isCertify){
+                    Snackbar.make(findViewById(R.id.add_user_info), "닉네임 중복검사 실시해주세요.", Snackbar.LENGTH_SHORT).show();
+                }
+                else if (searchAddressEt.getText().toString().trim().equals("")){
+                    Snackbar.make(findViewById(R.id.add_user_info), "주소 검색 실시해주세요.", Snackbar.LENGTH_SHORT).show();
+                }
+                else{
+                    userInfoViewModel.saveInfo(currentId,userNickname,age,gender,address);
+                    Snackbar.make(findViewById(R.id.add_user_info), "회원님의 정보가 저장되었습니다.", Snackbar.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+                }
+            }
+        });
+        userInfoViewModel.addUserInfoResLD.observe(this, code -> {
+            if(code.equals("200")){
+                Log.d("RESULT", "onCreate: 성공");
+                Snackbar.make(findViewById(R.id.add_user_info), "정보 저장 성공", Snackbar.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                finish();
+            }
+            else{
+                Log.d("RESULT", "onCreate: 실패");
+                Snackbar.make(findViewById(R.id.add_user_info), "정보저장 실패", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+        genderRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.gender_man) {
+                    gender = "M";
+                } else {
+                    gender = "W";
+                }
             }
         });
         /*이전 버튼*/

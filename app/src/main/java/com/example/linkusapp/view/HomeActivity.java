@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -78,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
     //----------------viewModel------------------------------------
     private LoginViewModel viewModel;
     //----------------viewModel------------------------------------
-
+    private InputMethodManager imm;
 
     @Override
     protected void onStart() {
@@ -103,7 +104,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         sessionCallback = new SessionCallback();
         Session.getCurrentSession().addCallback(sessionCallback);
         Session.getCurrentSession().checkAndImplicitOpen();
@@ -168,6 +169,7 @@ public class HomeActivity extends AppCompatActivity {
         signinbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                imm.hideSoftInputFromWindow(pwEditText.getWindowToken(),0);
                 String userId = idEditText.getText().toString().trim();
                 String userPw = pwEditText.getText().toString().trim();
                 viewModel.login(userId, userPw);
@@ -178,7 +180,9 @@ public class HomeActivity extends AppCompatActivity {
             if (code.equals("200")) {
                 Log.d("RESULT", "onCreate: 성공");
                 Snackbar.make(findViewById(R.id.home_layout), "로그인 성공", Snackbar.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                Intent intent = new Intent(getApplicationContext(), AddUserInfoActivity.class);
+                intent.putExtra("userId",idEditText.getText().toString());
+                startActivity(intent);
             } else if (code.equals("204")) {
                 Log.d("RESULT", "onCreate: 204 에러");
                 Snackbar.make(findViewById(R.id.home_layout), "존재하지 않는 계정입니다.", Snackbar.LENGTH_SHORT).show();
@@ -243,6 +247,7 @@ public class HomeActivity extends AppCompatActivity {
             String idToken = account.getIdToken();
             Log.d(TAG, "handleSignInResult: "+idToken);
             // TODO(developer): send ID Token to server and validate
+            viewModel.sendGoogleIdToken(idToken);
             updateUI(account);
         } catch (ApiException e) {
             Log.w(TAG, "handleSignInResult:error", e);
@@ -256,11 +261,10 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
         mCallbackManager.onActivityResult(requestCode,resultCode,data);
-        /*if (requestCode == RC_GET_TOKEN) {
+        if (requestCode == RC_GET_TOKEN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
-*/
 //        if (requestCode == RC_SIGN_IN) {
 //            Log.d(TAG, "onActivityResult: resultOk");
 //

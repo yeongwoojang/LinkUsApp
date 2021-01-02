@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchAddress">
+    android:orientation="vertical"
+    tools:context=".view.SearchAddress">
 
     <WebView
         android:id="@+id/address_webView"

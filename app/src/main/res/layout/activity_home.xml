@@ -60,7 +60,9 @@
             android:hint="ID"
             android:fontFamily="@font/nanum_square_ac_b"
             android:textSize="20dp"
+            android:inputType="text"
             android:maxLength="12"
+            android:maxLines="1"
             />
         <EditText
             android:id="@+id/pw_et"
@@ -70,6 +72,8 @@
             android:hint="Password"
             android:textSize="20dp"
             android:inputType="textPassword"
+            android:maxLength="12"
+            android:maxLines="1"
             />
         <TextView
             android:id="@+id/find_password"

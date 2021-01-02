@@ -75,6 +75,40 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="40dp"
             android:fontFamily="@font/nanum_square_ac_b"
+            android:text="나이"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <LinearLayout
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinner_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:fontFamily="@font/bm_dohyeon_ttf"
+                android:entries="@array/age"
+                />
+        </LinearLayout>
+        <View
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_below="@+id/spinner_age"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/gray400"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/nanum_square_ac_b"
             android:text="성별 설정"
             android:textColor="@color/black"
             android:textSize="15dp" />
@@ -127,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:hint="우측 주소 검색 버튼 이용하세요."
-                android:inputType="none"
+                android:focusableInTouchMode="false"
                 android:textSize="13dp" />
             <Button
                 android:id="@+id/search_address_btn"

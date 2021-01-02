@@ -1,4 +1,4 @@
-package com.example.linkusapp;
+package com.example.linkusapp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.example.linkusapp.R;
 
 public class SearchAddress extends AppCompatActivity {
 
