@@ -1,4 +1,4 @@
-package com.example.linkusapp.repository;
+package com.example.linkusapp.model.vo;
 
 import com.google.gson.annotations.SerializedName;
 

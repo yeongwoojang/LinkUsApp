@@ -1,5 +1,7 @@
 package com.example.linkusapp.repository;
 
+import com.example.linkusapp.model.vo.FindPassword;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -26,9 +28,12 @@ public interface ServiceApi {
     Call<String> login(@Field("userId") String userId,@Field("password") String password);
 
     @GET("/android/findPw")
-    Call<FindPassword> findPw(@Query("userId") String userId,@Query("email") String email);
+    Call<FindPassword> findPw(@Query("userId") String userId, @Query("email") String email);
 
     @FormUrlEncoded
     @POST("/android/googleIdToken")
     Call<String> sendGoogleIdToken(@Field("idToken") String idToken);
+
+    @GET("/android/userInfoChk")
+    Call<String> chkUserInfo(@Query("userId") String userId);
 }
