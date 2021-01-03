@@ -18,7 +18,7 @@ public interface ServiceApi {
             @Field("userId") String userId,
             @Field("password") String password,
             @Field("userEmail") String userEmail
-    );
+         );
 
     @GET("/android/idChk")
     Call<String> chkId(@Query("userId") String userId);
@@ -37,7 +37,8 @@ public interface ServiceApi {
     @POST("/android/googleIdToken")
     Call<String> sendGoogleIdToken(@Field("idToken") String idToken);
 
-    @FormUrlEncoded
+    @GET("/android/userInfoChk")
+    Call<String> chkUserInfo(@Query("userId") String userId);
     @POST("/android/address")
     Call<String> saveInfo(
             @Field("userId") String userId,

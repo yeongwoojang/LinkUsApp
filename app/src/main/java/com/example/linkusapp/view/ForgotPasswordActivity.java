@@ -47,18 +47,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
 
         viewModel.findPwRsLD.observe(this, findData -> {
-            if(findData.equals("404")){
+            if(findData.getCode().equals("404")){
                 Log.d("RESULT", "onCreate: 실패");
-                Snackbar.make(findViewById(R.id.find_layout), "비밀번호 찾기 실패", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.find_layout), "에러가 발생했습니다.", Snackbar.LENGTH_SHORT).show();
             }
-            else if(findData.equals("204")){
+            else if(findData.getCode().equals("204")){
                 Log.d("RESULT", "onCreate: 204 에러");
                 Snackbar.make(findViewById(R.id.find_layout), "계정의 이메일과 일치하지 않습니다.", Snackbar.LENGTH_SHORT).show();
             }
             else{
                 Log.d("RESULT", "onCreate: 성공");
                 Snackbar.make(findViewById(R.id.find_layout), "이메일주소로 비밀번호를 전송했습니다.", Snackbar.LENGTH_SHORT).show();
-                viewModel.sendMail(gMailSender,emailEt.getText().toString().trim(), findData.getPassword());
+                viewModel.sendMail(gMailSender,emailEt.getText().toString().trim(),findData.getPassword());
+
             }
         });
     }

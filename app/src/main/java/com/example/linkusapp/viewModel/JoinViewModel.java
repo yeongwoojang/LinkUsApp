@@ -1,15 +1,19 @@
 package com.example.linkusapp.viewModel;
 
+import android.app.Application;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.util.GMailSender;
+
 
 import javax.mail.MessagingException;
 import javax.mail.SendFailedException;
@@ -18,10 +22,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class JoinViewModel extends ViewModel {
+public class JoinViewModel extends AndroidViewModel {
 
-    private ServiceApi service =
-            RetrofitClient.getClient().create(ServiceApi.class);
+    private ServiceApi service;
 
     public MutableLiveData<String> joinRsLD = new MutableLiveData<String>();
     public MutableLiveData<String> idChkResLD = new MutableLiveData<String>();
@@ -35,6 +38,15 @@ public class JoinViewModel extends ViewModel {
 
     public void join(String userName, String userId, String password, String email) {
         service.join(userName, userId, password, email)
+
+    public JoinViewModel(@NonNull Application application){
+        super(application);
+        service = RetrofitClient.getClient(application.getApplicationContext()).create(ServiceApi.class);
+
+    }
+
+    public void join(String userName, String userId, String password, String userEmail) {
+        service.join(userName, userId, password,userEmail)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {

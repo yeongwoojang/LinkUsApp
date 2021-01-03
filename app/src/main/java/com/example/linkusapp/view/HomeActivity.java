@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -72,13 +73,15 @@ public class HomeActivity extends AppCompatActivity {
     private ImageButton googleSignBtn;
     private EditText idEditText, pwEditText;
     private TextView findPassword;
+    private CheckedTextView autoLoginBox;
     //----------------View-----------------------------------------
 
     //----------------viewModel------------------------------------
     private LoginViewModel viewModel;
     //----------------viewModel------------------------------------
-    private InputMethodManager imm;
 
+    private InputMethodManager imm;
+    private boolean isAutoLogin = false;
     @Override
     protected void onStart() {
         super.onStart();
@@ -115,7 +118,22 @@ public class HomeActivity extends AppCompatActivity {
         idEditText = (EditText) findViewById(R.id.id_et);
         pwEditText = (EditText) findViewById(R.id.pw_et);
         findPassword = (TextView) findViewById(R.id.find_password);
+        autoLoginBox = (CheckedTextView)findViewById(R.id.chk_auto_login);
 
+        //이전 로그인에서 자동로그인을 체크하지 않았다면
+        if(!viewModel.isAutoLogin()){
+            //공유프리퍼런스에 있는 유저 아이디를 삭제하여 자동로그인을 해제한다.
+            viewModel.removeUserIdPref();
+        }else{ //이전 로그인에서 자동로그인을 체크했다면
+            //공유프리퍼런스에 있는 유저아이디가 유효한지 확인하여
+            //자동로그인을 실행한다.
+            String userId =viewModel.getLoginSession();
+            if(!userId.equals(" ")){
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
+            }
+        }
         validateServerClientID();
         //구글 로그인
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -169,10 +187,27 @@ public class HomeActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(pwEditText.getWindowToken(),0);
                 String userId = idEditText.getText().toString().trim();
                 String userPw = pwEditText.getText().toString().trim();
+                //자동로그인 체크했을 시 공유프리퍼런스에 자동로그인 여부 저장
+                viewModel.autoLogin(isAutoLogin);
                 viewModel.login(userId, userPw);
             }
         });
 
+        //자동로그인 체크박스 클릭이벤트
+        autoLoginBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(((CheckedTextView) v).isChecked()){
+                    ((CheckedTextView) v).setChecked(false);
+                    isAutoLogin = false;
+
+                }else{
+                    ((CheckedTextView) v).setChecked(true);
+                    isAutoLogin = true;
+                }
+
+            }
+        });
         viewModel.loginRsLD.observe(this, code -> {
             if (code.equals("200")) {
                 Log.d("RESULT", "onCreate: 성공");
@@ -243,6 +278,7 @@ public class HomeActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             String idToken = account.getIdToken();
             Log.d(TAG, "handleSignInResult: "+idToken);
+
             // TODO(developer): send ID Token to server and validate
             viewModel.sendGoogleIdToken(idToken);
             updateUI(account);
@@ -341,7 +377,7 @@ public class HomeActivity extends AppCompatActivity {
                  fbToken = accessToken.getToken();
                  Log.d("facebook Token",fbToken);
                 Toast.makeText(getApplicationContext(), "페북 로그인 성공", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
 
             @Override
