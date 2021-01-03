@@ -28,7 +28,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
-                    android:src="@drawable/icon_left_arrow"></ImageButton>
+                    android:src="@drawable/icon_left_arrow">
+                </ImageButton>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -51,7 +52,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/toolbar_div"
-                android:layout_marginTop="0dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -67,7 +67,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
                     android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
 
@@ -82,7 +81,7 @@
 
                     <Button
                         android:id="@+id/join_id_check_btn"
-                        android:layout_width="match_parent"
+                        android:layout_width="110dp"
                         android:layout_height="30dp"
                         android:background="@drawable/button_background2"
                         android:fontFamily="@font/nanum_square_ac_b"
@@ -106,9 +105,10 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="10dp"
-                    android:hint="8~15자리 영문/숫자/특수문자 조합"
+                    android:hint="8자리 이상 영문자 (*특수문자 포함)"
+                    android:maxLength="12"
+                    android:maxLines="1"
                     android:inputType="textPassword"
-                    android:maxLength="15"
                     android:textSize="13dp" />
 
                 <TextView
@@ -128,9 +128,9 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="10dp"
                     android:hint="비밀번호 확인"
-                    android:inputType="textPassword"
                     android:maxLength="15"
                     android:maxLines="1"
+                    android:inputType="textPassword"
                     android:textSize="13dp" />
 
                 <TextView
@@ -151,6 +151,8 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="10dp"
                     android:hint="실명을 입력하세요"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:textSize="13dp" />
 
                 <TextView
@@ -163,10 +165,9 @@
                     android:textSize="15dp" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginRight="20dp"
                     android:orientation="horizontal">
 
                     <EditText
@@ -176,11 +177,12 @@
                         android:layout_marginLeft="16dp"
                         android:hint="이메일 주소를 입력하세요"
                         android:inputType="textEmailAddress"
+                        android:maxLines="1"
                         android:textSize="13dp" />
 
                     <Button
                         android:id="@+id/join_certification_btn"
-                        android:layout_width="match_parent"
+                        android:layout_width="110dp"
                         android:layout_height="30dp"
                         android:background="@drawable/button_background2"
                         android:fontFamily="@font/nanum_square_ac_b"
@@ -198,93 +200,43 @@
                     android:textSize="15dp" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="20dp">
+                    android:layout_marginBottom="30dp"
+                    >
 
                     <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-
                         <EditText
                             android:id="@+id/join_certification"
                             android:layout_width="270dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:hint="인증번호 입력"
+                            android:inputType="text"
+                            android:maxLines="1"
                             android:textSize="13dp" />
 
                         <TextView
                             android:id="@+id/time_text"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
+                            android:gravity="bottom"
                             android:layout_gravity="right"
                             android:layout_marginRight="10dp"
-                            android:gravity="bottom"
                             android:textSize="13dp" />
                     </FrameLayout>
 
                     <Button
                         android:id="@+id/join_certification_check_btn"
-                        android:layout_width="match_parent"
+                        android:layout_width="110dp"
                         android:layout_height="30dp"
                         android:background="@drawable/button_background2"
                         android:fontFamily="@font/nanum_square_ac_b"
                         android:text="확인"
                         android:textColor="@color/red500" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:fontFamily="@font/nanum_square_ac_b"
-                    android:text="생년월일"
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="65dp"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/join_birth"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:hint="생년월일 입력(6자리)"
-                        android:textSize="13dp" />
-
-                    <RadioGroup
-                        android:id="@+id/join_radio_group"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginLeft="10dp">
-
-                        <RadioButton
-                            android:id="@+id/join_gender_man"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:buttonTint="@color/red500"
-                            android:checked="true"
-                            android:fontFamily="@font/nanum_square_ac_b"
-                            android:text="남자" />
-
-                        <RadioButton
-                            android:id="@+id/join_gender_woman"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="20dp"
-                            android:buttonTint="@color/red500"
-                            android:checked="false"
-                            android:fontFamily="@font/nanum_square_ac_b"
-                            android:text="여자" />
-                    </RadioGroup>
                 </LinearLayout>
 
                 <Button

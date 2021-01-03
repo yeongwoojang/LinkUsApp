@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -30,17 +33,14 @@ public class JoinActivity extends AppCompatActivity {
     private EditText nameEdt;
     private EditText emailEdt;
     private EditText certificationEdt;
-    private EditText birthEdt;
-    private RadioGroup genderRadio;
     private TextView timeText;
 
-    private Button idCheckBtn;
     private Button certificationBtn;
     private Button certificationCheckBtn;
     private Button joinBtn;
     private Button joinIdCheckBtn;
-    private String gender = "M";
 
+    private InputMethodManager imm;
     private JoinViewModel viewModel;
     //이메일 인증번호
     String emailCode = "";
@@ -59,7 +59,7 @@ public class JoinActivity extends AppCompatActivity {
                 .build()
         );
         viewModel = new ViewModelProvider(this).get(JoinViewModel.class);
-
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
 
 
@@ -69,15 +69,15 @@ public class JoinActivity extends AppCompatActivity {
         nameEdt = (EditText) findViewById(R.id.join_name);
         emailEdt = (EditText) findViewById(R.id.join_email);
         certificationEdt = (EditText) findViewById(R.id.join_certification);
-        birthEdt = (EditText) findViewById(R.id.join_birth);
-        genderRadio = (RadioGroup) findViewById(R.id.join_radio_group);
 
-        idCheckBtn = (Button) findViewById(R.id.join_id_check_btn);
         certificationBtn = (Button) findViewById(R.id.join_certification_btn);
         certificationCheckBtn = (Button) findViewById(R.id.join_certification_check_btn);
         joinIdCheckBtn = (Button) findViewById(R.id.join_id_check_btn);
         joinBtn = (Button) findViewById(R.id.join_btn);
         timeText = (TextView)findViewById(R.id.time_text);
+
+
+
 
         joinIdCheckBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +95,7 @@ public class JoinActivity extends AppCompatActivity {
         certificationCheckBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                imm.hideSoftInputFromWindow(certificationEdt.getWindowToken(),0);
                 String code = certificationEdt.getText().toString();
                 if (code.equals(emailCode) && !code.equals("")&&!isCertify){
                     isCertify = true;
@@ -107,6 +108,7 @@ public class JoinActivity extends AppCompatActivity {
                     Snackbar.make(findViewById(R.id.join_layout), "인증번호가 틀렸습니다.", Snackbar.LENGTH_SHORT).show();
                     certificationEdt.setText("");
                 }
+
             }
         });
 
@@ -165,15 +167,14 @@ public class JoinActivity extends AppCompatActivity {
                 String userName = nameEdt.getText().toString().trim();
                 String userEmail = emailEdt.getText().toString().trim();
                 String certification = certificationEdt.getText().toString().trim();
-                String userBirth = birthEdt.getText().toString().trim();
 
-                if (viewModel.isInputAll(userId,userPw,userPw2,userName,userEmail,certification,userBirth)) {
+                if (viewModel.isInputAll(userId,userPw,userPw2,userName,userEmail,certification)) {
                     Snackbar.make(findViewById(R.id.join_layout), "정보를 정확히 입력하세요.", Snackbar.LENGTH_SHORT).show();
                 } else if (userId.length() < 6) {
                     Snackbar.make(findViewById(R.id.join_layout), "아이디는 6자리 이상입니다.", Snackbar.LENGTH_SHORT).show();
                 } else if (!userId.matches("^[a-zA-Z0-9]+$")) {
                     Snackbar.make(findViewById(R.id.join_layout), "아이디는 영문과 숫자만 가능합니다.", Snackbar.LENGTH_SHORT).show();
-                } else if (userPw.length() < 8) {
+                } else if (userPw.length() <8) {
                     Snackbar.make(findViewById(R.id.join_layout), "비밀번호는 8자리 이상입니다.", Snackbar.LENGTH_SHORT).show();
                 } else if (!userPw.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{8,15}.$")) {
                     Snackbar.make(findViewById(R.id.join_layout), "비밀번호는 영문,특수문자,숫자 조합입니다.", Snackbar.LENGTH_SHORT).show();
@@ -183,10 +184,8 @@ public class JoinActivity extends AppCompatActivity {
                     Snackbar.make(findViewById(R.id.join_layout), "부정확한 이름입니다.", Snackbar.LENGTH_SHORT).show();
                 }else if(!isCertify){
                     Snackbar.make(findViewById(R.id.join_layout), "이메일 인증을 해주세요.", Snackbar.LENGTH_SHORT).show();
-                }else if(!userBirth.matches("^[0-9]*$")){
-                    Snackbar.make(findViewById(R.id.join_layout), "부정확한 생년월일입니다.", Snackbar.LENGTH_SHORT).show();
                 }else {
-                    viewModel.join(userName, userId, userPw, userEmail, userBirth, gender);
+                    viewModel.join(userName, userId, userPw,userEmail);
                 }
             }
         });
@@ -212,17 +211,6 @@ public class JoinActivity extends AppCompatActivity {
                 Log.d("RESULT", "onCreate: 실패");
                 Snackbar.make(findViewById(R.id.join_layout), "회원가입 실패", Snackbar.LENGTH_SHORT).show();
 
-            }
-        });
-
-        genderRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.join_gender_man) {
-                    gender = "M";
-                } else {
-                    gender = "W";
-                }
             }
         });
 

@@ -4,18 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity">
+    tools:context=".view.MainActivity"
+    android:orientation="vertical">
 
     <Button
-        android:id="@+id/logout_btn"
+        android:id="@+id/logout_social"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="로그아웃"/>
+        android:text="Logout"/>
 
     <Button
         android:id="@+id/go_to_board"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="글목록"/>
+
 
 </LinearLayout>

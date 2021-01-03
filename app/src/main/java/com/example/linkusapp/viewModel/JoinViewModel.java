@@ -30,8 +30,11 @@ public class JoinViewModel extends ViewModel {
     public CountDownTimer countDownTimer;
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();
 
-    public void join(String userName, String userId, String password, String email, String birth, String gender) {
-        service.join(userName, userId, password, email, birth, gender)
+    public MutableLiveData<String> nickChkResLD = new MutableLiveData<String>();
+
+
+    public void join(String userName, String userId, String password, String email) {
+        service.join(userName, userId, password, email)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
@@ -61,6 +64,21 @@ public class JoinViewModel extends ViewModel {
                     }
                 });
     }
+    public void nickNameChk(String userNickname) {
+        service.nickNameChk(userNickname)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String result = response.body();
+                        nickChkResLD.postValue(result);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
+    }
 
     public Boolean isInputAll(
             String userId,
@@ -68,8 +86,7 @@ public class JoinViewModel extends ViewModel {
             String userPw2,
             String userName,
             String userEmail,
-            String certification,
-            String userBirth
+            String certification
     ) {
          boolean value = false;
         if (userId.equals("")
@@ -78,7 +95,7 @@ public class JoinViewModel extends ViewModel {
                 && userName.equals("")
                 && userEmail.equals("")
                 && certification.equals("")
-                && userBirth.equals("")){
+                ){
                 value = true;
         }
         return value;

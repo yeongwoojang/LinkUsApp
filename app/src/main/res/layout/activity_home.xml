@@ -2,12 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/home_layout"
     tools:context=".view.HomeActivity"
     android:background="@color/white"
     android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,18 +25,19 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:background="@drawable/saving_book"
             android:layout_gravity="center"
             />
         <TextView
-            android:layout_margin="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="Link US"
-            android:textSize="50dp"
+            android:textSize="40dp"
             android:gravity="center"
             android:textStyle="bold"
             android:fontFamily="@font/nanum_square_ac_eb"
@@ -39,27 +50,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="30dp">
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="30dp">
         <EditText
-            android:id="@+id/login_id"
+            android:id="@+id/id_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="ID"
             android:fontFamily="@font/nanum_square_ac_b"
             android:textSize="20dp"
+            android:inputType="text"
             android:maxLength="12"
+            android:maxLines="1"
             />
         <EditText
-            android:id="@+id/login_password"
+            android:id="@+id/pw_et"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
             android:textSize="20dp"
             android:inputType="textPassword"
+            android:maxLength="12"
+            android:maxLines="1"
             />
         <TextView
-            android:layout_marginTop="5dp"
+            android:id="@+id/find_password"
+            android:layout_marginTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Forgot password?"
@@ -68,9 +86,10 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/signinbtn"
+        android:id="@+id/sign_in_btn"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:background="@drawable/form_button_round"
@@ -81,7 +100,7 @@
         android:textSize="15dp" />
 
     <TextView
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -99,8 +118,7 @@
         android:layout_marginRight="15dp"
         >
         <ImageButton
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
+            android:id="@+id/google_login_btn"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/googlered3"
@@ -108,10 +126,10 @@
             android:scaleType="fitXY"
             android:padding="20dp"
             android:elevation="8dp"
+            android:layout_marginLeft="20dp"
             />
         <ImageButton
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
+            android:id="@+id/facebook_login_btn"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/facebook2"
@@ -124,23 +142,28 @@
             android:id="@+id/kakaoLoginBt"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
+            />
+
+        <ImageButton
+            android:id="@+id/kakao_login_btn"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/kakaoblack2"
             android:background="@drawable/button_background3"
             android:scaleType="fitXY"
+            android:layout_gravity="right"
             android:padding="8dp"
             android:elevation="10dp"/>
 
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center"
         >
         <TextView
-            android:layout_marginLeft="95dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Don't have an account?"
@@ -148,7 +171,7 @@
             android:textColor="@color/black"
             />
         <TextView
-            android:id="@+id/go_to_join_bt"
+            android:id="@+id/go_to_join_btn"
             android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
