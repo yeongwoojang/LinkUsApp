@@ -53,12 +53,10 @@ public class HomeActivity extends AppCompatActivity {
 
     //------------------카카오 로그인용----------------------------
     private SessionCallback sessionCallback;
-    private CallbackManager mCallbackManager;
     //------------------카카오 로그인용----------------------------
 
-    //----------------페이스북 로그인용----------------------------
-    private LoginCallBack mLoginCallback;
     //----------------페이스북 로그인용---------------------------
+    private CallbackManager mCallbackManager;
     private String fbToken;
     //----------------구글로그인용---------------------------------
     private GoogleSignInClient mSignInClient;
@@ -140,7 +138,6 @@ public class HomeActivity extends AppCompatActivity {
 
         /*facebook 로그인*/
         mCallbackManager = CallbackManager.Factory.create();
-        mLoginCallback = new LoginCallBack();
         facebookLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -256,15 +253,19 @@ public class HomeActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        /*카톡*/
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
             return;
         }
-        mCallbackManager.onActivityResult(requestCode,resultCode,data);
+        /*구글*/
         if (requestCode == RC_GET_TOKEN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
+        /*페북*/
+        mCallbackManager.onActivityResult(requestCode,resultCode,data);
+
 //        if (requestCode == RC_SIGN_IN) {
 //            Log.d(TAG, "onActivityResult: resultOk");
 //
