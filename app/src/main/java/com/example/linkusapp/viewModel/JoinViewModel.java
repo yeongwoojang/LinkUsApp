@@ -35,11 +35,7 @@ public class JoinViewModel extends AndroidViewModel {
 
     public MutableLiveData<String> nickChkResLD = new MutableLiveData<String>();
 
-
-    public void join(String userName, String userId, String password, String email) {
-        service.join(userName, userId, password, email)
-
-    public JoinViewModel(@NonNull Application application){
+    public JoinViewModel(@NonNull Application application) {
         super(application);
         service = RetrofitClient.getClient(application.getApplicationContext()).create(ServiceApi.class);
 
