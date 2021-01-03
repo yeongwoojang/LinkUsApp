@@ -32,7 +32,7 @@ public class JoinViewModel extends AndroidViewModel {
     public MutableLiveData<String> count = new MutableLiveData<String>();
     public CountDownTimer countDownTimer;
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();
-
+    public MutableLiveData<String> nickChkResLD = new MutableLiveData<String>();
 
     public JoinViewModel(@NonNull Application application){
         super(application);
@@ -63,6 +63,21 @@ public class JoinViewModel extends AndroidViewModel {
                     public void onResponse(Call<String> call, Response<String> response) {
                         String result = response.body();
                         idChkResLD.postValue(result);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
+    }
+    public void nickNameChk(String userNickname) {
+        service.nickNameChk(userNickname)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String result = response.body();
+                        nickChkResLD.postValue(result);
                     }
 
                     @Override

@@ -30,10 +30,21 @@ public interface ServiceApi {
     @GET("/android/findPw")
     Call<FindPassword> findPw(@Query("userId") String userId, @Query("email") String email);
 
-    @FormUrlEncoded
+    @GET("/android/nickNameChk")
+    Call<String> nickNameChk(@Query("userNickname") String userNickname);
+
     @POST("/android/googleIdToken")
     Call<String> sendGoogleIdToken(@Field("idToken") String idToken);
 
     @GET("/android/userInfoChk")
     Call<String> chkUserInfo(@Query("userId") String userId);
+
+    @POST("/android/address")
+    Call<String> saveInfo(
+            @Field("userId") String userId,
+            @Field("nickname") String nickname,
+            @Field("age") String age,
+            @Field("gender") String gender,
+            @Field("address") String address
+    );
 }

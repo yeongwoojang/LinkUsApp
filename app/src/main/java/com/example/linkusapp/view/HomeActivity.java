@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.linkusapp.R;
 import com.example.linkusapp.facebook.LoginCallBack;
 import com.example.linkusapp.viewModel.LoginViewModel;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -31,6 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -58,7 +60,7 @@ public class HomeActivity extends AppCompatActivity {
     //----------------페이스북 로그인용----------------------------
     private LoginCallBack mLoginCallback;
     //----------------페이스북 로그인용---------------------------
-
+    private String fbToken;
     //----------------구글로그인용---------------------------------
     private GoogleSignInClient mSignInClient;
     private static final int RC_SIGN_IN = 9001;
@@ -213,7 +215,9 @@ public class HomeActivity extends AppCompatActivity {
             if (code.equals("200")) {
                 Log.d("RESULT", "onCreate: 성공");
                 Snackbar.make(findViewById(R.id.home_layout), "로그인 성공", Snackbar.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                Intent intent = new Intent(getApplicationContext(), AddUserInfoActivity.class);
+                intent.putExtra("userId",idEditText.getText().toString());
+                startActivity(intent);
             } else if (code.equals("204")) {
                 Log.d("RESULT", "onCreate: 204 에러");
                 Snackbar.make(findViewById(R.id.home_layout), "존재하지 않는 계정입니다.", Snackbar.LENGTH_SHORT).show();
@@ -292,7 +296,7 @@ public class HomeActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
             return;
         }
-
+        mCallbackManager.onActivityResult(requestCode,resultCode,data);
         if (requestCode == RC_GET_TOKEN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
@@ -345,7 +349,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 @Override
                 public void onSuccess(MeV2Response result) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), AddUserInfoActivity.class);
                     Log.d("asdasd", "onSuccess: " + result.getNickname());
                     Log.d("asdasd", "onSuccess: " + result.getId());
 
@@ -369,8 +373,11 @@ public class HomeActivity extends AppCompatActivity {
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                 fbToken = accessToken.getToken();
+                 Log.d("facebook Token",fbToken);
                 Toast.makeText(getApplicationContext(), "페북 로그인 성공", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
             }
 
             @Override
@@ -411,7 +418,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if (account != null) {
             Toast.makeText(this, "U Signed In successfully", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
             finish();
         } else {

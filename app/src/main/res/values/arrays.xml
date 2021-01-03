@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="age">
+        <item>11세</item>
+        <item>12세</item>
+        <item>13세</item>
+        <item>14세</item>
+        <item>15세</item>
+        <item>16세</item>
+        <item>17세</item>
+        <item>18세</item>
+        <item>19세</item>
+        <item>20세</item>
+        <item>21세</item>
+        <item>22세</item>
+        <item>23세</item>
+        <item>24세</item>
+        <item>25세</item>
+        <item>26세</item>
+        <item>27세</item>
+        <item>28세</item>
+        <item>29세</item>
+        <item>30세</item>
+        <item>31세</item>
+        <item>32세</item>
+        <item>33세</item>
+        <item>34세</item>
+        <item>35세</item>
+        <item>36세</item>
+        <item>37세</item>
+        <item>38세</item>
+        <item>39세</item>
+        <item>40세</item>
+        <item>41세</item>
+        <item>42세</item>
+        <item>43세</item>
+        <item>44세</item>
+        <item>45세</item>
+        <item>46세</item>
+        <item>47세</item>
+        <item>48세</item>
+        <item>49세</item>
+        <item>50세</item>
+        <item>51세</item>
+        <item>52세</item>
+        <item>53세</item>
+        <item>54세</item>
+        <item>55세</item>
+        <item>56세</item>
+        <item>57세</item>
+        <item>58세</item>
+        <item>59세</item>
+        <item>60세</item>
+    </string-array>
+</resources>
