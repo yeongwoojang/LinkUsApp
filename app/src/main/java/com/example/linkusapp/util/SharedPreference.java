@@ -50,7 +50,7 @@ public class SharedPreference {
     }
 
     public String getLoginMethod() {
-        return prefs.getString("loginMethod", null);
+        return prefs.getString("loginMethod", "");
     }
 
     public void removeLoginMethod() {

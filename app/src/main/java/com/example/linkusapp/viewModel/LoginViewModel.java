@@ -94,6 +94,7 @@ public class LoginViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = response.body();
+                Log.d("a", "onResponse: "+result);
             }
 
             @Override
@@ -103,11 +104,13 @@ public class LoginViewModel extends AndroidViewModel {
         });
     }
 
-    public void putKakaoUser(String userName, String userId){
-        serviceApi.putKakaoUser(userName,userId).enqueue(new Callback<String>() {
+    public void putSocialLogin(String userName, String userId, String loginMethod){
+        serviceApi.putSocialLogin(userName,userId,loginMethod).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = response.body();
+                Log.d("a", "onResponse: "+result);
+
             }
 
             @Override
@@ -132,7 +135,7 @@ public class LoginViewModel extends AndroidViewModel {
             while (iterator.hasNext()) {
                 userSession = iterator.next();
                 userSession = userSession.split(";")[0].split("=")[1];
-                Log.d("SESSION", "getLoginSession: $userSession");
+                Log.d("SESSION", "getLoginSession: " +userSession);
             }
         }
         return userSession;

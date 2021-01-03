@@ -24,6 +24,7 @@ public class ReceivedCookiesInterceptor implements Interceptor {
 
             for(String header : originalResponse.headers("Set-Cookie")){
                 cookies.add(header);
+                Log.d("COOKIE", "intercept: "+cookies.toString());
             }
             prefs.putCookies(cookies);
         }

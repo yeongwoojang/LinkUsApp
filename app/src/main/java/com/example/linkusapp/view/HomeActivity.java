@@ -25,6 +25,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -35,20 +37,10 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.kakao.auth.ApiErrorCode;
-import com.kakao.auth.AuthType;
-import com.kakao.auth.ISessionCallback;
-import com.kakao.auth.Session;
-import com.kakao.network.ErrorResult;
 import com.kakao.sdk.auth.LoginClient;
-import com.kakao.sdk.common.KakaoSdk;
 import com.kakao.sdk.user.UserApiClient;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.api.UserApi;
-import com.kakao.usermgmt.callback.MeResponseCallback;
-import com.kakao.usermgmt.callback.MeV2ResponseCallback;
-import com.kakao.usermgmt.response.MeV2Response;
-import com.kakao.util.exception.KakaoException;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,6 +59,7 @@ public class HomeActivity extends AppCompatActivity {
     private CallbackManager mCallbackManager;
     //----------------페이스북 로그인용---------------------------
     private String fbToken;
+    boolean isFacebookLogged;
     //----------------구글로그인용---------------------------------
     private GoogleSignInClient mSignInClient;
     private static final int RC_SIGN_IN = 9001;
@@ -96,6 +89,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart: ");
+
         refreshIdToken();
     }
 
@@ -104,14 +98,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-//        KakaoSdk.init(getApplicationContext(), this.getResources().getString(R.string.kakao_app_key));
+
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         mContext = this;
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-//        sessionCallback = new SessionCallback();
-//        Session.getCurrentSession().addCallback(sessionCallback);
-//        Session.getCurrentSession().checkAndImplicitOpen();
 
         goToJoinBtn = (TextView) findViewById(R.id.go_to_join_btn);
         signinbtn = (Button) findViewById(R.id.sign_in_btn);
@@ -123,22 +114,34 @@ public class HomeActivity extends AppCompatActivity {
         findPassword = (TextView) findViewById(R.id.find_password);
         autoLoginBox = (CheckedTextView) findViewById(R.id.chk_auto_login);
 
-        //이전 로그인에서 자동로그인을 체크하지 않았다면
-        if (!viewModel.isAutoLogin()) {
-            //공유프리퍼런스에 있는 유저 아이디를 삭제하여 자동로그인을 해제한다.
-            viewModel.removeUserIdPref();
-        } else {
-            //이전 로그인에서 자동로그인을 체크했다면
-            //공유프리퍼런스에 있는 유저아이디가 유효한지 확인하여
-            //자동로그인을 실행한다.
-            String userId = viewModel.getLoginSession();
-            if (!userId.equals(" ")) {
-                viewModel.putLoginMethod("general");
-                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                finish();
-            }
+        //일반 자동로그인 코드
+        generalAutoLogin();
+
+        //페이스북 자동로그인 코드
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        isFacebookLogged = accessToken != null && !accessToken.isExpired();
+        if (isFacebookLogged) {
+            viewModel.putLoginMethod("facebook");
+            startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            finish();
         }
+
+        //카카오톡 자동로그인 코드
+        UserApiClient.getInstance().me((user, meError) -> {
+            if (meError != null) {
+                Log.e(TAG, "사용자 정보 요청 실패", meError);
+            } else if (user != null) {
+                if (user.getKakaoAccount().getEmail() != null) {
+                    startActivity(new Intent(HomeActivity.this, AddUserInfoActivity.class));
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    finish();
+                }
+            }
+            return null;
+        });
+
+
         validateServerClientID();
         //구글 로그인
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -157,6 +160,49 @@ public class HomeActivity extends AppCompatActivity {
 
         /*facebook 로그인*/
         mCallbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                fbToken = accessToken.getToken();
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                try {
+                                    if(object.has("email")){
+                                        Log.d("facebook email", object.toString());
+                                        viewModel.putSocialLogin(object.getString("last_name")+object.getString("first_name")
+                                                ,object.getString("email"),"Facebook");
+                                        viewModel.putLoginMethod("facebook");
+                                        startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+                                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                                        finish();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                //파라매터 번들을 추가해서 필요한 요소들 받아오기
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,first_name,last_name,email");
+                request.setParameters(parameters);
+                request.executeAsync();
+                Log.d("facebook Token", fbToken);
+
+            }
+
+            @Override
+            public void onCancel() {
+                Log.e("Cancel", "페북 Login 취소");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.e("Error", "페북 Login 에러");
+            }
+        });
         facebookLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,10 +226,10 @@ public class HomeActivity extends AppCompatActivity {
                                 Log.e(TAG, "사용자 정보 요청 실패", meError);
                             } else if (user != null) {
                                 if (user.getKakaoAccount().getEmail() != null) {
-                                    viewModel.putKakaoUser(user.getKakaoAccount().getProfile().getNickname(),  user.getKakaoAccount().getEmail());
-                                    Log.i(TAG, "이메일 : " + user.getKakaoAccount().getEmail() +" , "+ user.getKakaoAccount().getProfile().getNickname());
+                                    viewModel.putSocialLogin(user.getKakaoAccount().getProfile().getNickname(), user.getKakaoAccount().getEmail(),"Kakao");
+                                    Log.i(TAG, "이메일 : " + user.getKakaoAccount().getEmail() + " , " + user.getKakaoAccount().getProfile().getNickname());
                                     viewModel.putLoginMethod("kakao");
-                                    startActivity(new Intent(HomeActivity.this,AddUserInfoActivity.class));
+                                    startActivity(new Intent(HomeActivity.this, AddUserInfoActivity.class));
                                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
                                     finish();
                                 } else if (!user.getKakaoAccount().getEmailNeedsAgreement()) {
@@ -284,13 +330,17 @@ public class HomeActivity extends AppCompatActivity {
         로그인 새로고침, 이미 토큰을 가지고 있을경우 이 메서드는 즉시 완료되며
         이전에 로그인하지 않았거나 로그인이 만료되었을 경우 다시 로그인하고 유효한 토큰을 가져온다.
         */
-        mSignInClient.silentSignIn()
-                .addOnCompleteListener(this, new OnCompleteListener<GoogleSignInAccount>() {
-                    @Override
-                    public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                        handleSignInResult(task);
-                    }
-                });
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if(acct!=null){
+            mSignInClient.silentSignIn()
+                    .addOnCompleteListener(this, new OnCompleteListener<GoogleSignInAccount>() {
+                        @Override
+                        public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
+                            handleSignInResult(task);
+                        }
+                    });
+        }
+
     }
 
     //적절한 serverClientID인지 확인하는 메소드(구글)
@@ -318,13 +368,13 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-        } else if (requestCode == RC_GET_TOKEN) {
+        Log.d(TAG, "onActivityResult: Kakao?");
+        if (requestCode == RC_GET_TOKEN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         } else {
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
+            super.onActivityResult(requestCode, resultCode, data);
         }
 
 
@@ -339,29 +389,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private void facebookLogin() {
         Log.d("execute", "facebookLogin");
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
-        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                AccessToken accessToken = AccessToken.getCurrentAccessToken();
-                fbToken = accessToken.getToken();
-                Log.d("facebook Token", fbToken);
-                viewModel.putLoginMethod("facebook");
-                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                finish();
-            }
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile","email"));
 
-            @Override
-            public void onCancel() {
-                Log.e("Cancel", "페북 Login 취소");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.e("Error", "페북 Login 에러");
-            }
-        });
     }
 
 
@@ -388,5 +417,23 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "U Didnt signed in", Toast.LENGTH_LONG).show();
         }
 
+    }
+    public void generalAutoLogin(){
+        //이전 로그인에서 자동로그인을 체크하지 않았다면
+        if (!viewModel.isAutoLogin() && viewModel.getLoginMethod().equals("general")) {
+            //공유프리퍼런스에 있는 유저 아이디를 삭제하여 자동로그인을 해제한다.
+            viewModel.removeUserIdPref();
+        } else if(viewModel.isAutoLogin() && viewModel.getLoginMethod().equals("general")){
+            //이전 로그인에서 자동로그인을 체크했다면
+            //공유프리퍼런스에 있는 유저아이디가 유효한지 확인하여
+            //자동로그인을 실행한다.
+            String userId = viewModel.getLoginSession();
+            if (!userId.equals(" ")) {
+                viewModel.putLoginMethod("general");
+                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
+            }
+        }
     }
 }

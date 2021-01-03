@@ -79,7 +79,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
         preBtn.setPaintFlags(preBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
-
+        Log.d("loginSession", "onCreate: "+viewModel.getLoginSession());
         //어떤 방시으로 로그인 된 계정인지 체크
         String loginMethod = viewModel.getLoginMethod();
         Log.d("asdasda", "onCreate: "+loginMethod);
@@ -217,7 +217,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     }
                 }
                 viewModel.removeUserIdPref();
-                viewModel.removeLoginMethod();
+//                viewModel.removeLoginMethod();
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 finish();
@@ -248,20 +248,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
             backBtClickToast.show();
             return;
         }
-        if (System.currentTimeMillis() <= backKeyPressed + 2000) {
-            UserManagement.getInstance()
-                    .requestLogout(new LogoutResponseCallback() {
-                        @Override
-                        public void onCompleteLogout() {
-                            Toast.makeText(AddUserInfoActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-            LoginManager.getInstance().logOut();
-            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-            overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            finish();
-            backBtClickToast.cancel();
-        } else {
+        else {
             super.onBackPressed();
         }
     }
