@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.BoardActivity"
-    android:orientation="vertical">
+    tools:context=".view.WriteActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,31 +31,31 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/nanum_square_ac_b"
-                    android:text="스터디 목록"
+                    android:text="스터디 글쓰기"
                     android:textColor="@color/black"
                     android:textSize="23dp"/>
-                <ImageButton
-                    android:id="@+id/write_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/ic_baseline_create_24"
-                    android:background="@color/transparent" />
             </FrameLayout>
         </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:scrollbars="none">
-            </androidx.recyclerview.widget.RecyclerView>
-        </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="분야"
+                android:layout_marginLeft="15dp"
+                android:fontFamily="@font/nanum_square_ac_b"/>
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:entries="@array/part_array">
+                </Spinner>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>
