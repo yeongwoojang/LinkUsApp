@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -19,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
-import com.example.linkusapp.facebook.LoginCallBack;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -32,7 +32,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -41,24 +40,31 @@ import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
+import com.kakao.sdk.auth.LoginClient;
+import com.kakao.sdk.common.KakaoSdk;
+import com.kakao.sdk.user.UserApiClient;
 import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.api.UserApi;
+import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
 
     //------------------카카오 로그인용----------------------------
-    private SessionCallback sessionCallback;
-    private CallbackManager mCallbackManager;
+//    private SessionCallback sessionCallback;
+
     //------------------카카오 로그인용----------------------------
 
     //----------------페이스북 로그인용----------------------------
-    private LoginCallBack mLoginCallback;
+    private CallbackManager mCallbackManager;
     //----------------페이스북 로그인용---------------------------
     private String fbToken;
     //----------------구글로그인용---------------------------------
@@ -84,33 +90,28 @@ public class HomeActivity extends AppCompatActivity {
 
     private InputMethodManager imm;
     private boolean isAutoLogin = false;
+    private Context mContext;
+
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart: ");
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        updateUI(account);
         refreshIdToken();
-
-
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        refreshIdToken();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+//        KakaoSdk.init(getApplicationContext(), this.getResources().getString(R.string.kakao_app_key));
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        mContext = this;
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        sessionCallback = new SessionCallback();
-        Session.getCurrentSession().addCallback(sessionCallback);
-        Session.getCurrentSession().checkAndImplicitOpen();
+
+//        sessionCallback = new SessionCallback();
+//        Session.getCurrentSession().addCallback(sessionCallback);
+//        Session.getCurrentSession().checkAndImplicitOpen();
 
         goToJoinBtn = (TextView) findViewById(R.id.go_to_join_btn);
         signinbtn = (Button) findViewById(R.id.sign_in_btn);
@@ -120,18 +121,20 @@ public class HomeActivity extends AppCompatActivity {
         idEditText = (EditText) findViewById(R.id.id_et);
         pwEditText = (EditText) findViewById(R.id.pw_et);
         findPassword = (TextView) findViewById(R.id.find_password);
-        autoLoginBox = (CheckedTextView)findViewById(R.id.chk_auto_login);
+        autoLoginBox = (CheckedTextView) findViewById(R.id.chk_auto_login);
 
         //이전 로그인에서 자동로그인을 체크하지 않았다면
-        if(!viewModel.isAutoLogin()){
+        if (!viewModel.isAutoLogin()) {
             //공유프리퍼런스에 있는 유저 아이디를 삭제하여 자동로그인을 해제한다.
             viewModel.removeUserIdPref();
-        }else{ //이전 로그인에서 자동로그인을 체크했다면
+        } else {
+            //이전 로그인에서 자동로그인을 체크했다면
             //공유프리퍼런스에 있는 유저아이디가 유효한지 확인하여
             //자동로그인을 실행한다.
-            String userId =viewModel.getLoginSession();
-            if(!userId.equals(" ")){
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            String userId = viewModel.getLoginSession();
+            if (!userId.equals(" ")) {
+                viewModel.putLoginMethod("general");
+                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
             }
@@ -143,22 +146,17 @@ public class HomeActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mSignInClient = GoogleSignIn.getClient(this, gso);
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestEmail()
-//                .build();
-//        mSignInClient = GoogleSignIn.getClient(this, gso);
 
         /*google 로그인*/
         googleSignBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               getIdToken();
+                signInByGoogle();
             }
         });
 
         /*facebook 로그인*/
         mCallbackManager = CallbackManager.Factory.create();
-        mLoginCallback = new LoginCallBack();
         facebookLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,9 +168,49 @@ public class HomeActivity extends AppCompatActivity {
         kakaoLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                com.kakao.auth.Session.getCurrentSession().open(AuthType.KAKAO_TALK, HomeActivity.this);
+                // 카카오톡으로 로그인
+                LoginClient.getInstance().loginWithKakaoAccount(mContext, (oAuthToken, throwable) -> {
+                    if (throwable != null) {
+                        Log.e(TAG, "로그인 실패", throwable);
+                    } else {
+                        Log.d(TAG, "로그인 성공");
+                        // 사용자 정보 요청
+                        UserApiClient.getInstance().me((user, meError) -> {
+                            if (meError != null) {
+                                Log.e(TAG, "사용자 정보 요청 실패", meError);
+                            } else if (user != null) {
+                                if (user.getKakaoAccount().getEmail() != null) {
+                                    viewModel.putKakaoUser(user.getKakaoAccount().getProfile().getNickname(),  user.getKakaoAccount().getEmail());
+                                    Log.i(TAG, "이메일 : " + user.getKakaoAccount().getEmail() +" , "+ user.getKakaoAccount().getProfile().getNickname());
+                                    viewModel.putLoginMethod("kakao");
+                                    startActivity(new Intent(HomeActivity.this,AddUserInfoActivity.class));
+                                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                                    finish();
+                                } else if (!user.getKakaoAccount().getEmailNeedsAgreement()) {
+                                    Log.e(TAG, "사용자 계정에 이메일 없음. 꼭 필요하다면 동의항목 설정에서 수집 기능을 활성화 해보세요.");
+                                } else if (user.getKakaoAccount().getEmailNeedsAgreement()) {
+                                    Log.d(TAG, "사용자에게 이메일 제공 동의를 받아야 합니다.");
+                                    List<String> scopes = new ArrayList<String>();
+                                    scopes.add("account_email");
+                                    Log.d("test", "사용자 정보 받아옴 ");
+                                    LoginClient.getInstance().loginWithNewScopes(mContext, scopes, (oAuthToken1, throwable1) -> {
+                                        if (throwable1 != null) {
+                                            Log.e(TAG, "이메일 제공 동의 실패", throwable1);
+                                        } else {
+                                            Log.d("test", "요청 ");
+                                        }
+                                        return null;
+                                    });
+                                }
+                            }
+                            return null;
+                        });
+                    }
+                    return null;
+                });
             }
         });
+
         /*회원가입*/
         goToJoinBtn.setPaintFlags(goToJoinBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         goToJoinBtn.setOnClickListener(new View.OnClickListener() {
@@ -183,11 +221,12 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         /*일반로그인 버튼*/
         signinbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imm.hideSoftInputFromWindow(pwEditText.getWindowToken(),0);
+                imm.hideSoftInputFromWindow(pwEditText.getWindowToken(), 0);
                 String userId = idEditText.getText().toString().trim();
                 String userPw = pwEditText.getText().toString().trim();
                 //자동로그인 체크했을 시 공유프리퍼런스에 자동로그인 여부 저장
@@ -200,54 +239,43 @@ public class HomeActivity extends AppCompatActivity {
         autoLoginBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(((CheckedTextView) v).isChecked()){
+                if (((CheckedTextView) v).isChecked()) {
                     ((CheckedTextView) v).setChecked(false);
                     isAutoLogin = false;
 
-                }else{
+                } else {
                     ((CheckedTextView) v).setChecked(true);
                     isAutoLogin = true;
                 }
 
             }
         });
+
+        //일반 로그인 요청시 응답이 오면 실행될 코드
         viewModel.loginRsLD.observe(this, code -> {
             if (code.equals("200")) {
-                Log.d("RESULT", "onCreate: 성공");
                 Snackbar.make(findViewById(R.id.home_layout), "로그인 성공", Snackbar.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), AddUserInfoActivity.class);
-                intent.putExtra("userId",idEditText.getText().toString());
-                startActivity(intent);
+                viewModel.putLoginMethod("general");
+                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
             } else if (code.equals("204")) {
-                Log.d("RESULT", "onCreate: 204 에러");
                 Snackbar.make(findViewById(R.id.home_layout), "존재하지 않는 계정입니다.", Snackbar.LENGTH_SHORT).show();
             } else if (code.equals("205")) {
-                Log.d("RESULT", "onCreate: 205 에러");
                 Snackbar.make(findViewById(R.id.home_layout), "비밀번호가 틀립니다.", Snackbar.LENGTH_SHORT).show();
             } else {
-                Log.d("RESULT", "onCreate: 실패");
                 Snackbar.make(findViewById(R.id.home_layout), "로그인 실패", Snackbar.LENGTH_SHORT).show();
             }
         });
 
+        //비밀번호 찾기 텍스트 클릭 시 화면 이동
         findPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class));
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
-
-
-    }
-
-    //구글 로그인 화면을 띄우는 메소드
-    private void getIdToken() {
-        /*
-        사용자가 장치에서 Google 계정을 선택할 수 있도록 계정 선택기를 표시.
-        ID 토큰 또는 프로필 또는 이메일만 요청하는 경우 여기에 동의 화면이 표시되지 않는다.
-         */
-        Intent signInIntent = mSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_GET_TOKEN);
     }
 
     //구글로그인용 ID토큰 리프레쉬하는 메소드
@@ -276,96 +304,38 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
     }
+
     private void handleSignInResult(@NonNull Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             String idToken = account.getIdToken();
-            Log.d(TAG, "handleSignInResult: "+idToken);
-
-            // TODO(developer): send ID Token to server and validate
             viewModel.sendGoogleIdToken(idToken);
             updateUI(account);
         } catch (ApiException e) {
-            Log.w(TAG, "handleSignInResult:error", e);
             updateUI(null);
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
-            return;
-        }
-        mCallbackManager.onActivityResult(requestCode,resultCode,data);
-        if (requestCode == RC_GET_TOKEN) {
+        } else if (requestCode == RC_GET_TOKEN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+        } else {
+            mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
 
-//        if (requestCode == RC_SIGN_IN) {
-//            Log.d(TAG, "onActivityResult: resultOk");
-//
-//            Task<GoogleSignInAccount> task =
-//                    GoogleSignIn.getSignedInAccountFromIntent(data);
-//            handleSignInResult(task);
-//            if (task.isSuccessful()) {
-//                Log.d(TAG, "onActivityResult: googleSignIn Success");
-//
-//                // Sign in succeeded, proceed with account
-//                GoogleSignInAccount acct = task.getResult();
-//            } else {
-//                // Sign in failed, handle failure and update UI
-//                // ...
-//            }
-//        }
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Session.getCurrentSession().removeCallback(sessionCallback);
+//        Session.getCurrentSession().removeCallback(sessionCallback);
     }
 
-    private class SessionCallback implements ISessionCallback {
-        @Override
-        public void onSessionOpened() {
-            UserManagement.getInstance().me(new MeV2ResponseCallback() {
-                @Override
-                public void onFailure(ErrorResult errorResult) {
-                    int result = errorResult.getErrorCode();
-
-                    if (result == ApiErrorCode.CLIENT_ERROR_CODE) {
-                        Toast.makeText(getApplicationContext(), "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다: " + errorResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onSessionClosed(ErrorResult errorResult) {
-                    Toast.makeText(getApplicationContext(), "세션이 닫혔습니다. 다시 시도해 주세요: " + errorResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onSuccess(MeV2Response result) {
-                    Intent intent = new Intent(getApplicationContext(), AddUserInfoActivity.class);
-                    Log.d("asdasd", "onSuccess: " + result.getNickname());
-                    Log.d("asdasd", "onSuccess: " + result.getId());
-
-                    intent.putExtra("name", result.getNickname());
-                    intent.putExtra("profile", result.getProfileImagePath());
-                    startActivity(intent);
-                    finish();
-                }
-            });
-        }
-
-        @Override
-        public void onSessionOpenFailed(KakaoException e) {
-            Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: " + e.toString(), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void facebookLogin() {
         Log.d("execute", "facebookLogin");
@@ -374,10 +344,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 AccessToken accessToken = AccessToken.getCurrentAccessToken();
-                 fbToken = accessToken.getToken();
-                 Log.d("facebook Token",fbToken);
-                Toast.makeText(getApplicationContext(), "페북 로그인 성공", Toast.LENGTH_SHORT).show();
+                fbToken = accessToken.getToken();
+                Log.d("facebook Token", fbToken);
+                viewModel.putLoginMethod("facebook");
                 startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
             }
 
             @Override
@@ -395,29 +367,20 @@ public class HomeActivity extends AppCompatActivity {
 
     private void signInByGoogle() {
         // Launches the sign in flow, the result is returned in onActivityResult
-        Intent intent = mSignInClient.getSignInIntent();
-        startActivityForResult(intent, RC_SIGN_IN);
+           /*
+        사용자가 장치에서 Google 계정을 선택할 수 있도록 계정 선택기를 표시.
+        ID 토큰 또는 프로필 또는 이메일만 요청하는 경우 여기에 동의 화면이 표시되지 않는다.
+         */
+        Intent signInIntent = mSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_GET_TOKEN);
     }
-
-//    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-//        try {
-//            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-//
-//            // Signed in successfully, show authenticated UI.
-//            updateUI(account);
-//        } catch (ApiException e) {
-//            // The ApiException status code indicates the detailed failure reason.
-//            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-//            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-//            updateUI(null);
-//        }
-//    }
 
     //Change UI according to user data.
     public void updateUI(GoogleSignInAccount account) {
 
         if (account != null) {
             Toast.makeText(this, "U Signed In successfully", Toast.LENGTH_LONG).show();
+            viewModel.putLoginMethod("google");
             startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
             finish();

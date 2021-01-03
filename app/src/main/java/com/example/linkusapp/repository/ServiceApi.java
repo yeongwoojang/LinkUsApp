@@ -33,8 +33,13 @@ public interface ServiceApi {
     @GET("/android/nickNameChk")
     Call<String> nickNameChk(@Query("userNickname") String userNickname);
 
+    @FormUrlEncoded
     @POST("/android/googleIdToken")
     Call<String> sendGoogleIdToken(@Field("idToken") String idToken);
+
+    @FormUrlEncoded
+    @POST("/android/putKakaoUser")
+    Call<String> putKakaoUser(@Field("userName") String userName,@Field("userId") String userId);
 
     @GET("/android/userInfoChk")
     Call<String> chkUserInfo(@Query("userId") String userId);

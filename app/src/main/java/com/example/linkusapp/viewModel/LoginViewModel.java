@@ -31,6 +31,9 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<String> loginRsLD = new MutableLiveData<String>();
     public MutableLiveData<FindPassword> findPwRsLD = new MutableLiveData<FindPassword>();
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();
+    public MutableLiveData<String> nickChkResLD = new MutableLiveData<String>();
+    public MutableLiveData<String> addUserInfoResLD = new MutableLiveData<String>();
+
 
     public LoginViewModel(@NonNull Application application){
         super(application);
@@ -91,7 +94,20 @@ public class LoginViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = response.body();
-                Log.d("OAuth2", "onResponse: "+result);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void putKakaoUser(String userName, String userId){
+        serviceApi.putKakaoUser(userName,userId).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body();
             }
 
             @Override
@@ -127,6 +143,50 @@ public class LoginViewModel extends AndroidViewModel {
     }
     public void cancelAutoLogin(){
         prefs.cancelAutoLogin();
+    }
+
+    public String getLoginMethod(){
+        return prefs.getLoginMethod();
+    }
+
+    public void putLoginMethod(String value){
+        prefs.putLoginMethod(value);
+    }
+
+    public void removeLoginMethod(){
+        prefs.removeLoginMethod();
+    }
+
+    public void nickNameChk(String userNickname) {
+        serviceApi.nickNameChk(userNickname)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String result = response.body();
+                        nickChkResLD.postValue(result);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    public void saveInfo(String userId,String nickname,String age,String gender,String address){
+        serviceApi.saveInfo(userId,nickname,age,gender,address)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String result = response.body();
+                        addUserInfoResLD.postValue(result);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
     }
 
 }
