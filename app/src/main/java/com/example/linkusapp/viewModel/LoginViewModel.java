@@ -92,7 +92,6 @@ public class LoginViewModel extends AndroidViewModel {
     }
 
     public void sendGoogleIdToken(String idToken){
-        Log.d("fsafd", "sendGoogleIdToken: "+idToken);
         serviceApi.sendGoogleIdToken(idToken).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -179,8 +178,8 @@ public class LoginViewModel extends AndroidViewModel {
                 });
     }
 
-    public void saveInfo(String userId,String nickname,String age,String gender,String address){
-        serviceApi.saveInfo(userId,nickname,age,gender,address)
+    public void saveInfo(String userId,String nickname,String age,String gender,String address,String loginMethod){
+        serviceApi.saveInfo(userId,nickname,age,gender,address,loginMethod)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {

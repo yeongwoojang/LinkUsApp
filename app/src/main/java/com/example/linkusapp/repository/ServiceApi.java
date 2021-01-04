@@ -47,12 +47,13 @@ public interface ServiceApi {
     Call<String> chkUserInfo(@Query("userId") String userId);
 
     @FormUrlEncoded
-    @POST("/android/address")
+    @POST("/android/userInfo")
     Call<String> saveInfo(
             @Field("userId") String userId,
             @Field("nickname") String nickname,
             @Field("age") String age,
             @Field("gender") String gender,
-            @Field("address") String address
+            @Field("address") String address,
+            @Field("loginMethod") String loginMethod
     );
 }

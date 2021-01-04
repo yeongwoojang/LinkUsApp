@@ -12,6 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/transparent">
+        <ImageButton
+            android:layout_marginLeft="16dp"
+            android:id="@+id/previous_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:src="@drawable/icon_left_arrow">
+        </ImageButton>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -172,37 +180,17 @@
                 android:text="주소 검색"
                 android:textColor="@color/red500" />
         </LinearLayout>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        >
         <Button
-            android:layout_marginLeft="16dp"
-            android:id="@+id/previous_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="이전"
-            android:textColor="@color/red500"
-            android:background="@color/transparent"
-            android:fontFamily="@font/nanum_square_ac_eb"
-            android:textSize="16dp"
-            />
-        <Button
-            android:layout_marginRight="16dp"
             android:id="@+id/save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:fontFamily="@font/nanum_square_ac_eb"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/button_background"
+            android:elevation="8dp"
+            android:fontFamily="@font/nanum_square_ac_b"
             android:text="저장"
-            android:textColor="@color/red500"
-            android:textSize="16dp"
-            android:layout_marginLeft="200dp"
-            />
+            android:textColor="@color/white"
+            android:textSize="30dp" />
     </LinearLayout>
 
 

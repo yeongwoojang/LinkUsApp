@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/setting"
+            android:icon="@drawable/baseline_settings_24"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:title="설정"
+            />
+        <item
+            android:id="@+id/request_list"
+            android:icon="@drawable/baseline_mail_24"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:title="스터디 요청목록"
+            />
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/baseline_exit_to_app_24"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:title="로그아웃"
+            />
+
+    </group>
+</menu>

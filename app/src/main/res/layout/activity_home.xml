@@ -8,184 +8,193 @@
     tools:context=".view.HomeActivity"
     android:background="@color/white"
     android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-    </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_marginTop="15dp"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:background="@drawable/saving_book"
-            android:layout_gravity="center"
-            />
-        <TextView
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Link US"
-            android:textSize="40dp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:fontFamily="@font/nanum_square_ac_eb"
-            android:textColor="@color/black"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="30dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/saving_book" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="@font/nanum_square_ac_eb"
+            android:gravity="center"
+            android:text="Link US"
+            android:textColor="@color/black"
+            android:textSize="40dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
         <EditText
             android:id="@+id/id_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="ID"
             android:fontFamily="@font/nanum_square_ac_b"
-            android:textSize="20dp"
+            android:hint="ID"
             android:inputType="text"
             android:maxLength="12"
             android:maxLines="1"
-            />
+            android:textSize="20dp" />
+
         <EditText
             android:id="@+id/pw_et"
-            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:hint="Password"
-            android:textSize="20dp"
             android:inputType="textPassword"
             android:maxLength="12"
             android:maxLines="1"
-            />
+            android:textSize="20dp" />
+
         <TextView
             android:id="@+id/find_password"
-            android:layout_marginTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Forgot password?"
+            android:layout_marginTop="2dp"
             android:gravity="right"
-            android:textColor="@color/red500"/>
+            android:text="Forgot password?"
+            android:textColor="@color/red500" />
+
         <CheckedTextView
             android:id="@+id/chk_auto_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="자동로그인"
-            android:gravity="center"
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            />
+            android:gravity="center"
+            android:text="자동로그인" />
     </LinearLayout>
 
     <Button
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:id="@+id/sign_in_btn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/form_button_round"
+        android:elevation="8dp"
         android:fontFamily="@font/nanum_square_ac_b"
         android:text="Login"
         android:textColor="@color/white"
-        android:elevation="8dp"
-        android:textSize="15dp" />
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
     <TextView
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="10dp"
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign in with"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/nanum_square_ac_b"
-        android:textSize="20dp"
         android:gravity="center"
+        android:text="Sign in with"
         android:textColor="@color/black"
-        />
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:orientation="horizontal"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:gravity="center"
-        >
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
         <ImageButton
             android:id="@+id/google_login_btn"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/googlered3"
-            android:background="@drawable/button_background3"
-            android:scaleType="fitXY"
-            android:padding="20dp"
-            android:elevation="8dp"
             android:layout_marginLeft="20dp"
-            />
+            android:background="@drawable/button_background3"
+            android:elevation="8dp"
+            android:padding="20dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/googlered3" />
+
         <ImageButton
             android:id="@+id/facebook_login_btn"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/facebook2"
-            android:background="@drawable/button_background3"
-            android:scaleType="fitXY"
-            android:elevation="8dp"
-            android:padding="10dp"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            />
+            android:background="@drawable/button_background3"
+            android:elevation="8dp"
+            android:padding="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/facebook2" />
 
         <ImageButton
             android:id="@+id/kakao_login_btn"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/kakaoblack2"
-            android:background="@drawable/button_background3"
-            android:scaleType="fitXY"
             android:layout_gravity="right|center"
+            android:background="@drawable/button_background3"
+            android:elevation="10dp"
             android:padding="10dp"
-            android:elevation="10dp"/>
+            android:scaleType="fitXY"
+            android:src="@drawable/kakaoblack2" />
 
     </LinearLayout>
+
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
         android:gravity="center"
-        >
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        tools:layout_editor_absoluteX="-16dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Don't have an account?"
             android:fontFamily="@font/nanum_square_ac_b"
-            android:textColor="@color/black"
-            />
+            android:text="Don't have an account?"
+            android:textColor="@color/black" />
         <TextView
             android:id="@+id/go_to_join_btn"
-            android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign up"
+            android:layout_marginLeft="5dp"
             android:fontFamily="@font/nanum_square_ac_b"
-            android:textSize="15dp"
+            android:text="Sign up"
             android:textColor="@color/black"
-            />
+            android:textSize="15dp" />
     </LinearLayout>
 
 </LinearLayout>

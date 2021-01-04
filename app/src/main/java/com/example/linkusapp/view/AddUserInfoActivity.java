@@ -13,38 +13,29 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
-import com.example.linkusapp.viewModel.JoinViewModel;
 import com.example.linkusapp.viewModel.LoginViewModel;
-import com.example.linkusapp.viewModel.UserInfoViewModel;
 import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.kakao.network.ErrorResult;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.auth.ISessionCallback;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.api.UserApi;
-import com.kakao.usermgmt.callback.LogoutResponseCallback;
-import com.kakao.usermgmt.callback.MeV2ResponseCallback;
-import com.kakao.usermgmt.response.MeV2Response;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddUserInfoActivity extends AppCompatActivity {
 
-    private Button saveBtn,preBtn;
+    private ImageButton preBtn;
+    private Button saveBtn;
     private EditText nicknameEt,searchAddressEt;
     private Button checkNicknameBtn,searchAddressBtn;
     private Spinner setAge;
@@ -74,7 +65,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_user_info);
 
         saveBtn = (Button)findViewById(R.id.save_btn);
-        preBtn = (Button)findViewById(R.id.previous_btn);
+        preBtn = (ImageButton)findViewById(R.id.previous_btn);
         nicknameEt = (EditText)findViewById(R.id.set_nickname);
         checkNicknameBtn = (Button)findViewById(R.id.nickname_check_btn);
         genderRadio = (RadioGroup)findViewById(R.id.join_radio_group);
@@ -83,9 +74,9 @@ public class AddUserInfoActivity extends AppCompatActivity {
         setAge= (Spinner) findViewById(R.id.spinner_age);
 
         saveBtn.setPaintFlags(saveBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        preBtn.setPaintFlags(preBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         currentId = viewModel.getLoginSession();
+
 
         Log.d("loginSession", "onCreate: "+viewModel.getLoginSession());
         //어떤 방시으로 로그인 된 계정인지 체크
@@ -124,7 +115,6 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     nicknameEt.setText(" ");
                     Snackbar.make(findViewById(R.id.add_user_info), "조건에 맞는 닉네임을 입력해주세요", Snackbar.LENGTH_SHORT).show();
                     isCertify = false;
-
                 }
             }
         });
@@ -162,7 +152,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     Snackbar.make(findViewById(R.id.add_user_info), "주소 검색 실시해주세요.", Snackbar.LENGTH_SHORT).show();
                 }
                 else{
-                    viewModel.saveInfo(currentId,userNickname,age,gender,address);
+                    viewModel.saveInfo(currentId,userNickname,age,gender,address,loginMethod);
                     Snackbar.make(findViewById(R.id.add_user_info), "회원님의 정보가 저장되었습니다.", Snackbar.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }
@@ -245,18 +235,6 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     }
                 }
                 break;
-        }
-    }
-    /*로그아웃,이전버튼*/
-    public void onBackPressed() {
-        if (System.currentTimeMillis() > backKeyPressed + 2000) {
-            backKeyPressed = System.currentTimeMillis();
-            backBtClickToast = Toast.makeText(this, "\'뒤로가기\' 버튼을 한번 더 누르시면 로그아웃 됩니다.", Toast.LENGTH_SHORT);
-            backBtClickToast.show();
-            return;
-        }
-        else {
-            super.onBackPressed();
         }
     }
 

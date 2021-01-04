@@ -121,7 +121,7 @@ public class HomeActivity extends AppCompatActivity {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         isFacebookLogged = accessToken != null && !accessToken.isExpired();
         if (isFacebookLogged) {
-            viewModel.putLoginMethod("facebook");
+            viewModel.putLoginMethod("Facebook");
             startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
             finish();
@@ -174,7 +174,7 @@ public class HomeActivity extends AppCompatActivity {
                                         Log.d("facebook email", object.toString());
                                         viewModel.putSocialLogin(object.getString("last_name")+object.getString("first_name")
                                                 ,object.getString("email"),"Facebook");
-                                        viewModel.putLoginMethod("facebook");
+                                        viewModel.putLoginMethod("Facebook");
                                         startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
                                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
                                         finish();
