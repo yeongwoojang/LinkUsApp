@@ -243,6 +243,7 @@ public class HomeActivity extends AppCompatActivity {
         사용자가 장치에서 Google 계정을 선택할 수 있도록 계정 선택기를 표시.
         ID 토큰 또는 프로필 또는 이메일만 요청하는 경우 여기에 동의 화면이 표시되지 않는다.
          */
+        Log.e("error","getIdToken");
         Intent signInIntent = mSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_GET_TOKEN);
     }
@@ -253,6 +254,7 @@ public class HomeActivity extends AppCompatActivity {
         로그인 새로고침, 이미 토큰을 가지고 있을경우 이 메서드는 즉시 완료되며
         이전에 로그인하지 않았거나 로그인이 만료되었을 경우 다시 로그인하고 유효한 토큰을 가져온다.
         */
+        Log.e("error","refreshIdToken");
         mSignInClient.silentSignIn()
                 .addOnCompleteListener(this, new OnCompleteListener<GoogleSignInAccount>() {
                     @Override
@@ -275,14 +277,17 @@ public class HomeActivity extends AppCompatActivity {
     }
     private void handleSignInResult(@NonNull Task<GoogleSignInAccount> completedTask) {
         try {
+            Log.e("error","handle");
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            String idToken = account.getIdToken();
+            /*String idToken = account.getIdToken();
             Log.d(TAG, "handleSignInResult: "+idToken);
 
             // TODO(developer): send ID Token to server and validate
-            viewModel.sendGoogleIdToken(idToken);
+            viewModel.sendGoogleIdToken(idToken);*/
             updateUI(account);
         } catch (ApiException e) {
+            Log.e("error","handle catch");
+
             Log.w(TAG, "handleSignInResult:error", e);
             updateUI(null);
         }
@@ -295,12 +300,15 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
         /*구글*/
-        if (requestCode == RC_GET_TOKEN) {
+        else if (requestCode == RC_GET_TOKEN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
-        /*페북*/
-        mCallbackManager.onActivityResult(requestCode,resultCode,data);
+        else{
+            /*페북*/
+            mCallbackManager.onActivityResult(requestCode,resultCode,data);
+        }
+
 
 //        if (requestCode == RC_SIGN_IN) {
 //            Log.d(TAG, "onActivityResult: resultOk");
@@ -377,7 +385,7 @@ public class HomeActivity extends AppCompatActivity {
                  fbToken = accessToken.getToken();
                  Log.d("facebook Token",fbToken);
                 Toast.makeText(getApplicationContext(), "페북 로그인 성공", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
             }
 
             @Override
@@ -417,6 +425,7 @@ public class HomeActivity extends AppCompatActivity {
     public void updateUI(GoogleSignInAccount account) {
 
         if (account != null) {
+            Log.e("error","updateUi");
             Toast.makeText(this, "U Signed In successfully", Toast.LENGTH_LONG).show();
             startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
