@@ -46,13 +46,19 @@
         </activity>
         <activity android:name=".view.JoinActivity"></activity>
         <activity android:name=".view.HomeActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity"/>
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
         <intent-filter>
             <action android:name="android.intent.action.VIEW" />
@@ -67,5 +73,4 @@
         <activity android:name=".view.BoardActivity"/>
         <activity android:name=".view.WriteActivity"/>
     </application>
-
 </manifest>

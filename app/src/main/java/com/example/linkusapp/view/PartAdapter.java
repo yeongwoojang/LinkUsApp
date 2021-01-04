@@ -1,4 +1,4 @@
-package com.example.linkusapp.viewModel;
+package com.example.linkusapp.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -37,7 +37,6 @@ public class PartAdapter extends RecyclerView.Adapter<PartAdapter.ViewHolder> {
                 }
             });
         }
-
     }
 
     public interface OnItemClickListener{
@@ -45,7 +44,6 @@ public class PartAdapter extends RecyclerView.Adapter<PartAdapter.ViewHolder> {
     }
 
     private OnItemClickListener mListener = null ;
-
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mListener = listener ;
     }
@@ -72,8 +70,6 @@ public class PartAdapter extends RecyclerView.Adapter<PartAdapter.ViewHolder> {
     public void onBindViewHolder(PartAdapter.ViewHolder holder, int position) {
         String text = mData.get(position) ;
         holder.textView1.setText(text) ;
-
-
     }
 
     // getItemCount() - 전체 데이터 갯수 리턴.

@@ -2,6 +2,7 @@ package com.example.linkusapp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -24,15 +25,14 @@ import com.example.linkusapp.R;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class SearchAddress extends AppCompatActivity {
+public class SearchAddress extends Activity {
 
 
     private WebView webView;
     //    private TextView addressText;
     private Handler handler;
 
-    class MyJavaScriptInterface
-    {
+    class MyJavaScriptInterface {
         @JavascriptInterface
         @SuppressWarnings("unused")
         public void processDATA(String data) {
@@ -44,6 +44,7 @@ public class SearchAddress extends AppCompatActivity {
             finish();
         }
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,6 @@ public class SearchAddress extends AppCompatActivity {
                 webView.loadUrl("javascript:sample2_execDaumPostcode();");
             }
         });
-
         webView.loadUrl("http://ec2-15-164-129-208.ap-northeast-2.compute.amazonaws.com:3000/");
 
     }

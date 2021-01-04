@@ -10,11 +10,15 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
-import com.example.linkusapp.viewModel.PartAdapter;
+import com.example.linkusapp.model.vo.Board;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BoardActivity extends AppCompatActivity {
+
+    private RecyclerView partRecyclerView;
+    private RecyclerView boardRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +50,12 @@ public class BoardActivity extends AppCompatActivity {
         }
 
         // 리사이클러뷰에 LinearLayoutManager 객체 지정.
-        RecyclerView recyclerView = findViewById(R.id.part_recyclerview) ;
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)) ;
+        partRecyclerView = findViewById(R.id.part_recyclerview) ;
+        partRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)) ;
 
         // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
         PartAdapter adapter = new PartAdapter(list) ;
-        recyclerView.setAdapter(adapter);
+        partRecyclerView.setAdapter(adapter);
 
 
         // 분야 아이템 클릭시 event
@@ -78,6 +82,26 @@ public class BoardActivity extends AppCompatActivity {
             }
         });
 
+        List<Board> items = new ArrayList<>();
 
+        Board board = new Board();
+        board.setPart("어학");
+        board.setArea("서울");
+        board.setUserNickname("박민균");
+        board.setTitle("제목");
+        board.setWriteTime("2021-01-04");
+
+        items.add(board);
+        items.add(board);
+        items.add(board);
+        items.add(board);
+        items.add(board);
+        items.add(board);
+
+        boardRecyclerView = findViewById(R.id.board_recyclerview);
+        boardRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL,false));
+
+        BoardAdapter boardAdapter = new BoardAdapter(items);
+        boardRecyclerView.setAdapter(boardAdapter);
     }
 }
