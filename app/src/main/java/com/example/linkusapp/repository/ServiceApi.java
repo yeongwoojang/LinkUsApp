@@ -44,6 +44,7 @@ public interface ServiceApi {
     @GET("/android/chkScdUserInfo")
     Call<String> chkScdUserInfo(@Query("userId") String userId, @Query("loginMethod") String loginMethod);
 
+
     @FormUrlEncoded
     @POST("/android/userInfo")
     Call<String> saveInfo(
@@ -54,6 +55,4 @@ public interface ServiceApi {
             @Field("address") String address,
             @Field("loginMethod") String loginMethod
     );
-
-
 }

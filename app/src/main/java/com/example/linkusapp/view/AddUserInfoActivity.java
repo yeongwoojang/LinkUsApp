@@ -23,13 +23,11 @@ import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.kakao.network.ErrorResult;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.auth.ISessionCallback;
 
@@ -237,18 +235,6 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     }
                 }
                 break;
-        }
-    }
-    /*로그아웃,이전버튼*/
-    public void onBackPressed() {
-        if (System.currentTimeMillis() > backKeyPressed + 2000) {
-            backKeyPressed = System.currentTimeMillis();
-            backBtClickToast = Toast.makeText(this, "\'뒤로가기\' 버튼을 한번 더 누르시면 로그아웃 됩니다.", Toast.LENGTH_SHORT);
-            backBtClickToast.show();
-            return;
-        }
-        else {
-            super.onBackPressed();
         }
     }
 

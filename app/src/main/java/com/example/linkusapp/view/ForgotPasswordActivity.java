@@ -36,10 +36,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         emailEt = (EditText) findViewById(R.id.email_et);
         findBtn = (Button) findViewById(R.id.find_btn);
 
-
-
-
-
         findBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
