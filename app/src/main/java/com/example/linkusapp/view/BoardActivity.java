@@ -77,7 +77,5 @@ public class BoardActivity extends AppCompatActivity {
                     }
             }
         });
-
-
     }
 }
