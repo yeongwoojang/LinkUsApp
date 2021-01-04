@@ -37,10 +37,15 @@ public interface ServiceApi {
     @POST("/android/googleIdToken")
     Call<String> sendGoogleIdToken(@Field("idToken") String idToken);
 
+    @FormUrlEncoded
+    @POST("/android/socialLogin")
+    Call<String> putSocialLogin(@Field("userName") String userName, @Field("userId") String userId, @Field("loginMethod") String loginMethod);
+
+
+
     @GET("/android/userInfoChk")
     Call<String> chkUserInfo(@Query("userId") String userId);
 
-    @FormUrlEncoded
     @POST("/android/address")
     Call<String> saveInfo(
             @Field("userId") String userId,

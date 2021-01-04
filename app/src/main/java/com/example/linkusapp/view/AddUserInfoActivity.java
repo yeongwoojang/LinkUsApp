@@ -1,5 +1,6 @@
 package com.example.linkusapp.view;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,15 +20,28 @@ import android.widget.Toast;
 import com.example.linkusapp.R;
 import com.example.linkusapp.facebook.LoginCallBack;
 import com.example.linkusapp.viewModel.JoinViewModel;
+import com.example.linkusapp.viewModel.LoginViewModel;
 import com.example.linkusapp.viewModel.UserInfoViewModel;
 import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.kakao.network.ErrorResult;
+import com.kakao.sdk.user.UserApiClient;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.api.UserApi;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
+import com.kakao.usermgmt.callback.MeV2ResponseCallback;
+import com.kakao.usermgmt.response.MeV2Response;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddUserInfoActivity extends AppCompatActivity {
 
@@ -42,8 +56,8 @@ public class AddUserInfoActivity extends AppCompatActivity {
 
     private long backKeyPressed = 0;
     private Toast backBtClickToast;
-    private JoinViewModel viewModel;
-    private UserInfoViewModel userInfoViewModel;
+    private GoogleSignInClient mSignInClient;
+    private LoginViewModel viewModel;
     private static final  int SEARCH_ADDRESS_ACTIVITY = 10000;
 
     private GoogleSignInClient googleSignInClient;
@@ -52,6 +66,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
 
     /*닉네임중복확인 유무*/
     boolean isCertify = false;
+    private static final String TAG = AddUserInfoActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +84,18 @@ public class AddUserInfoActivity extends AppCompatActivity {
 
         saveBtn.setPaintFlags(saveBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         preBtn.setPaintFlags(preBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        viewModel = new ViewModelProvider(this).get(JoinViewModel.class);
-        userInfoViewModel = new ViewModelProvider(this).get(UserInfoViewModel.class);
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
-        /*Intent intent = getIntent();
-        String currentId = intent.getExtras().getString("userId");
-        Log.d("intent",currentId);*/
+        Log.d("loginSession", "onCreate: "+viewModel.getLoginSession());
+        //어떤 방시으로 로그인 된 계정인지 체크
+        String loginMethod = viewModel.getLoginMethod();
+        Log.d("asdasda", "onCreate: "+loginMethod);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
+                .requestEmail()
+                .build();
+        mSignInClient =  GoogleSignIn.getClient(this, gso);
 
         /*나이*/
         setAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -139,14 +160,14 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     Snackbar.make(findViewById(R.id.add_user_info), "주소 검색 실시해주세요.", Snackbar.LENGTH_SHORT).show();
                 }
                 else{
-//                    userInfoViewModel.saveInfo(currentId,userNickname,age,gender,address);
+//                    viewModel.saveInfo(currentId,userNickname,age,gender,address);
                     Snackbar.make(findViewById(R.id.add_user_info), "회원님의 정보가 저장되었습니다.", Snackbar.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
                 }
             }
         });
-        userInfoViewModel.addUserInfoResLD.observe(this, code -> {
+        viewModel.addUserInfoResLD.observe(this, code -> {
             if(code.equals("200")){
                 Log.d("RESULT", "onCreate: 성공");
                 Snackbar.make(findViewById(R.id.add_user_info), "정보 저장 성공", Snackbar.LENGTH_SHORT).show();
@@ -173,7 +194,39 @@ public class AddUserInfoActivity extends AppCompatActivity {
         preBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                switch (loginMethod){
+                    case  "general" :{
+                        //일반 로그아웃
+                        viewModel.cancelAutoLogin();
+                        break;
+                    }
+                    case "google" :{
+                        //구글 로그아웃
+                        googleSignOut();
+                        break;
+                    }
+                    case "facebook" :{
+                        //facebook 로그아웃
+                        LoginManager.getInstance().logOut();
+                        break;
+                    }
+                    case "kakao" :{
+                        UserApiClient.getInstance().logout(error ->{
+                            if(error !=null){
+                                Log.e(TAG, "로그아웃 실패. SDK에서 토큰 삭제됨", error);
+                            }else{
+                                Log.i(TAG, "로그아웃 성공. SDK에서 토큰 삭제됨");
+                            }
+                            return null;
+                        });
+                        break;
+                    }
+                }
+                viewModel.removeUserIdPref();
+//                viewModel.removeLoginMethod();
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                finish();
             }
         });
     }
@@ -193,7 +246,6 @@ public class AddUserInfoActivity extends AppCompatActivity {
                 break;
         }
     }
-
     /*로그아웃,이전버튼*/
     public void onBackPressed() {
         if (System.currentTimeMillis() > backKeyPressed + 2000) {
@@ -202,21 +254,18 @@ public class AddUserInfoActivity extends AppCompatActivity {
             backBtClickToast.show();
             return;
         }
-        if (System.currentTimeMillis() <= backKeyPressed + 2000) {
-            UserManagement.getInstance()
-                    .requestLogout(new LogoutResponseCallback() {
-                        @Override
-                        public void onCompleteLogout() {
-                            Toast.makeText(AddUserInfoActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-            LoginManager.getInstance().logOut();
-            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-            overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            finish();
-            backBtClickToast.cancel();
-        } else {
+        else {
             super.onBackPressed();
         }
+    }
+
+    //로그아웃하기
+    private void googleSignOut() {
+        mSignInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+//                updateUI(null);
+            }
+        });
     }
 }

@@ -17,29 +17,28 @@ import retrofit2.Response;
 public class UserInfoViewModel extends AndroidViewModel {
 
     private ServiceApi service;
-
-    public MutableLiveData<String> addUserInfoResLD = new MutableLiveData<String>();
-
-    public UserInfoViewModel(@NonNull Application application) {
+    public UserInfoViewModel(@NonNull Application application){
         super(application);
         service = RetrofitClient.getClient(application.getApplicationContext()).create(ServiceApi.class);
 
     }
 
-    public void saveInfo(String userId,String nickname,String age,String gender,String address){
-        service.saveInfo(userId,nickname,age,gender,address)
-                .enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        String result = response.body();
-                        addUserInfoResLD.postValue(result);
-                    }
+//    public MutableLiveData<String> addUserInfoResLD = new MutableLiveData<String>();
 
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-
-                    }
-                });
-    }
+//    public void saveInfo(String userId,String nickname,String age,String gender,String address){
+//        service.saveInfo(userId,nickname,age,gender,address)
+//                .enqueue(new Callback<String>() {
+//                    @Override
+//                    public void onResponse(Call<String> call, Response<String> response) {
+//                        String result = response.body();
+//                        addUserInfoResLD.postValue(result);
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<String> call, Throwable t) {
+//
+//                    }
+//                });
+//    }
 
 }

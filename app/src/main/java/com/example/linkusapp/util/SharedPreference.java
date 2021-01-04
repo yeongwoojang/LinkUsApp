@@ -9,11 +9,13 @@ import java.util.Set;
 public class SharedPreference {
 
     SharedPreferences prefs;
+
     public SharedPreference(Context context) {
         prefs = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
     }
 
-
+    //일반 로그인 현재 유저계정 관련 메소드
+    //-----------------------------------------------------------
     public void putCookies(HashSet<String> cookies) {
         prefs.edit().putStringSet("cookies", cookies).apply();
     }
@@ -22,19 +24,37 @@ public class SharedPreference {
         return prefs.getStringSet("cookies", new HashSet<String>());
     }
 
-    public void removeCookies(){
+    public void removeCookies() {
         prefs.edit().remove("cookies").apply();
     }
 
-    public void putInfoAutoLogin(boolean value){
-        prefs.edit().putBoolean("isAutoLogin",value).apply();
+
+    //자동로그인 관련 메소드
+    //-----------------------------------------------------------
+    public void putInfoAutoLogin(boolean value) {
+        prefs.edit().putBoolean("isAutoLogin", value).apply();
     }
 
-    public boolean getInfoAutoLogin(){
-       return prefs.getBoolean("isAutoLogin",false);
+    public boolean getInfoAutoLogin() {
+        return prefs.getBoolean("isAutoLogin", false);
     }
-    public void cancelAutoLogin(){
+
+    public void cancelAutoLogin() {
         prefs.edit().remove("isAutoLogin").apply();
+    }
+
+    //로그인 방식 관련 메소드
+    //-----------------------------------------------------------
+    public void putLoginMethod(String value) {
+        prefs.edit().putString("loginMethod", value).apply();
+    }
+
+    public String getLoginMethod() {
+        return prefs.getString("loginMethod", "");
+    }
+
+    public void removeLoginMethod() {
+        prefs.edit().remove("loginMethod").apply();
     }
 
 }

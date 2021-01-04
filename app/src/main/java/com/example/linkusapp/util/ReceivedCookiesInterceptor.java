@@ -1,6 +1,7 @@
 package com.example.linkusapp.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ public class ReceivedCookiesInterceptor implements Interceptor {
 
             for(String header : originalResponse.headers("Set-Cookie")){
                 cookies.add(header);
+                Log.d("COOKIE", "intercept: "+cookies.toString());
             }
             prefs.putCookies(cookies);
         }

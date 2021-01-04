@@ -32,10 +32,9 @@ public class JoinViewModel extends AndroidViewModel {
     public MutableLiveData<String> count = new MutableLiveData<String>();
     public CountDownTimer countDownTimer;
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();
+//    public MutableLiveData<String> nickChkResLD = new MutableLiveData<String>();
 
-    public MutableLiveData<String> nickChkResLD = new MutableLiveData<String>();
-
-    public JoinViewModel(@NonNull Application application) {
+    public JoinViewModel(@NonNull Application application){
         super(application);
         service = RetrofitClient.getClient(application.getApplicationContext()).create(ServiceApi.class);
 
@@ -72,21 +71,21 @@ public class JoinViewModel extends AndroidViewModel {
                     }
                 });
     }
-    public void nickNameChk(String userNickname) {
-        service.nickNameChk(userNickname)
-                .enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        String result = response.body();
-                        nickChkResLD.postValue(result);
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-
-                    }
-                });
-    }
+//    public void nickNameChk(String userNickname) {
+//        service.nickNameChk(userNickname)
+//                .enqueue(new Callback<String>() {
+//                    @Override
+//                    public void onResponse(Call<String> call, Response<String> response) {
+//                        String result = response.body();
+//                        nickChkResLD.postValue(result);
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<String> call, Throwable t) {
+//
+//                    }
+//                });
+//    }
 
     public Boolean isInputAll(
             String userId,
@@ -103,7 +102,7 @@ public class JoinViewModel extends AndroidViewModel {
                 && userName.equals("")
                 && userEmail.equals("")
                 && certification.equals("")
-                ){
+               ){
                 value = true;
         }
         return value;
