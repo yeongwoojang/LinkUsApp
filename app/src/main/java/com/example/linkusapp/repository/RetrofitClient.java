@@ -18,17 +18,18 @@ public class RetrofitClient {
     private static Retrofit retrofit = null;
 
 
-    public static Retrofit getClient(Context context) {
+
+    public static Retrofit getClient(Context context){
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 //쿠키를 sharedPreferences에 저장하고 가져온다.
                 .addNetworkInterceptor(new AddCookiesInterceptor(context))
                 .addNetworkInterceptor(new ReceivedCookiesInterceptor(context))
-                .connectTimeout(1, TimeUnit.MINUTES)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(1,TimeUnit.MINUTES)
+                .readTimeout(30,TimeUnit.SECONDS)
+                .writeTimeout(15,TimeUnit.SECONDS)
                 .build();
 
-        if (retrofit == null) {
+        if(retrofit == null){
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(okHttpClient)
@@ -37,6 +38,7 @@ public class RetrofitClient {
         }
         return retrofit;
     }
+
+
+
 }
-
-

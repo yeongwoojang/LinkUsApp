@@ -55,14 +55,16 @@ dependencies {
 
     /*facebook*/
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation 'com.facebook.android:facebook-login:[8.1)'
 
     /*kakao*/
-    implementation 'com.kakao.sdk:usermgmt:1.16.0'
+    implementation 'com.kakao.sdk:usermgmt:1.29.0'
+    implementation "com.kakao.sdk:v2-user:2.2.0" // 카카오 로그인
+    implementation "com.kakao.sdk:v2-talk:2.2.0" // 친구, 메시지(카카오톡)
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.20'
 
     /*google*/
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
-
-    implementation 'com.google.android.material:material:1.0.0'
 
     //RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
