@@ -430,7 +430,7 @@ public class HomeActivity extends AppCompatActivity {
             //자동로그인을 실행한다.
             String userId = viewModel.getLoginSession();
             if (!userId.equals(" ")) {
-                viewModel.putLoginMethod("general");
+                viewModel.putLoginMethod("일반");
                 startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
