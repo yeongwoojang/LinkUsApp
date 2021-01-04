@@ -14,6 +14,7 @@ import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.util.GMailSender;
 import com.example.linkusapp.util.SharedPreference;
+import com.kakao.util.helper.log.Tag;
 
 import java.util.Iterator;
 
@@ -91,6 +92,7 @@ public class LoginViewModel extends AndroidViewModel {
     }
 
     public void sendGoogleIdToken(String idToken){
+        Log.d("fsafd", "sendGoogleIdToken: "+idToken);
         serviceApi.sendGoogleIdToken(idToken).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {

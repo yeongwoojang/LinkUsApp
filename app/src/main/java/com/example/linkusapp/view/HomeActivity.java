@@ -357,6 +357,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void handleSignInResult(@NonNull Task<GoogleSignInAccount> completedTask) {
         try {
+            Log.d(TAG, "handleSignInResult: "+"ASdasdsad");
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             String idToken = account.getIdToken();
             viewModel.sendGoogleIdToken(idToken);

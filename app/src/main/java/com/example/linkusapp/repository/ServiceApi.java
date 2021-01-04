@@ -46,6 +46,7 @@ public interface ServiceApi {
     @GET("/android/userInfoChk")
     Call<String> chkUserInfo(@Query("userId") String userId);
 
+    @FormUrlEncoded
     @POST("/android/address")
     Call<String> saveInfo(
             @Field("userId") String userId,

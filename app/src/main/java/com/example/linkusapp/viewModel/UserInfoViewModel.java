@@ -23,22 +23,22 @@ public class UserInfoViewModel extends AndroidViewModel {
 
     }
 
-//    public MutableLiveData<String> addUserInfoResLD = new MutableLiveData<String>();
+    public MutableLiveData<String> addUserInfoResLD = new MutableLiveData<String>();
 
-//    public void saveInfo(String userId,String nickname,String age,String gender,String address){
-//        service.saveInfo(userId,nickname,age,gender,address)
-//                .enqueue(new Callback<String>() {
-//                    @Override
-//                    public void onResponse(Call<String> call, Response<String> response) {
-//                        String result = response.body();
-//                        addUserInfoResLD.postValue(result);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<String> call, Throwable t) {
-//
-//                    }
-//                });
-//    }
+    public void saveInfo(String userId,String nickname,String age,String gender,String address){
+        service.saveInfo(userId,nickname,age,gender,address)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String result = response.body();
+                        addUserInfoResLD.postValue(result);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
+    }
 
 }

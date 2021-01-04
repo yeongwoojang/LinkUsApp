@@ -18,7 +18,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
-import com.example.linkusapp.facebook.LoginCallBack;
 import com.example.linkusapp.viewModel.JoinViewModel;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.example.linkusapp.viewModel.UserInfoViewModel;
@@ -53,6 +52,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
     private RadioGroup genderRadio;
     private String gender = "M";
     private String userNickname;
+    private String currentId;
 
     private long backKeyPressed = 0;
     private Toast backBtClickToast;
@@ -85,6 +85,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
         saveBtn.setPaintFlags(saveBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         preBtn.setPaintFlags(preBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        currentId = viewModel.getLoginSession();
 
         Log.d("loginSession", "onCreate: "+viewModel.getLoginSession());
         //어떤 방시으로 로그인 된 계정인지 체크
@@ -160,10 +161,9 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     Snackbar.make(findViewById(R.id.add_user_info), "주소 검색 실시해주세요.", Snackbar.LENGTH_SHORT).show();
                 }
                 else{
-//                    viewModel.saveInfo(currentId,userNickname,age,gender,address);
+                    viewModel.saveInfo(currentId,userNickname,age,gender,address);
                     Snackbar.make(findViewById(R.id.add_user_info), "회원님의 정보가 저장되었습니다.", Snackbar.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
                 }
             }
         });
