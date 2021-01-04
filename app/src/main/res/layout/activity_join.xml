@@ -77,6 +77,8 @@
                         android:layout_marginLeft="16dp"
                         android:hint="6~12자리 영문자 (특수문자, 한글 X)"
                         android:maxLength="12"
+                        android:maxLines="1"
+                        android:inputType="text"
                         android:textSize="13dp" />
 
                     <Button

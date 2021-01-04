@@ -83,6 +83,14 @@
             android:text="Forgot password?"
             android:gravity="right"
             android:textColor="@color/red500"/>
+        <CheckedTextView
+            android:id="@+id/chk_auto_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="자동로그인"
+            android:gravity="center"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            />
     </LinearLayout>
 
     <Button
@@ -116,6 +124,7 @@
         android:orientation="horizontal"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
+        android:gravity="center"
         >
         <ImageButton
             android:id="@+id/google_login_btn"
@@ -137,9 +146,6 @@
             android:scaleType="fitXY"
             android:elevation="8dp"
             android:padding="10dp"
-            />
-        <ImageButton
-            android:id="@+id/kakaoLoginBt"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             />
@@ -151,8 +157,8 @@
             android:src="@drawable/kakaoblack2"
             android:background="@drawable/button_background3"
             android:scaleType="fitXY"
-            android:layout_gravity="right"
-            android:padding="8dp"
+            android:layout_gravity="right|center"
+            android:padding="10dp"
             android:elevation="10dp"/>
 
     </LinearLayout>

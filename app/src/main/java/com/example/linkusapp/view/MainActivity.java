@@ -2,20 +2,18 @@ package com.example.linkusapp.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -23,7 +21,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.kakao.auth.Session;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
@@ -31,19 +28,24 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    //viewModel
+    private LoginViewModel viewModel;
     private GoogleSignInClient mSignInClient;
 
     private Button logOut;
-    private Button goBoard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
-        mSignInClient =  GoogleSignIn.getClient(this, gso);
+        mSignInClient = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null) {
             String personName = acct.getDisplayName();
@@ -52,12 +54,14 @@ public class MainActivity extends AppCompatActivity {
             String personEmail = acct.getEmail();
             String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
-            Log.d(TAG, "onCreate: "+personName+", "+ personEmail);
+            Log.d(TAG, "onCreate: " + personName + ", " + personEmail);
         }
-        logOut = (Button)findViewById(R.id.logout_social);
+        logOut = (Button) findViewById(R.id.logout_social);
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                viewModel.cancelAutoLogin();
+                viewModel.removeUserIdPref();
                 UserManagement.getInstance()
                         .requestLogout(new LogoutResponseCallback() {
                             @Override
@@ -91,16 +95,5 @@ public class MainActivity extends AppCompatActivity {
 //                        updateUI(null);
                     }
                 });
-
-        goBoard = (Button)findViewById(R.id.go_to_board);
-
-        goBoard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), BoardActivity.class));
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                finish();
-            }
-        });
     }
 }

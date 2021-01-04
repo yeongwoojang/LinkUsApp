@@ -6,16 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -24,7 +21,6 @@ import android.widget.Toast;
 import com.example.linkusapp.R;
 import com.example.linkusapp.facebook.LoginCallBack;
 import com.example.linkusapp.viewModel.LoginViewModel;
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -35,7 +31,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -63,7 +58,7 @@ public class HomeActivity extends AppCompatActivity {
     //----------------페이스북 로그인용----------------------------
     private LoginCallBack mLoginCallback;
     //----------------페이스북 로그인용---------------------------
-    private String fbToken;
+
     //----------------구글로그인용---------------------------------
     private GoogleSignInClient mSignInClient;
     private static final int RC_SIGN_IN = 9001;
@@ -78,13 +73,15 @@ public class HomeActivity extends AppCompatActivity {
     private ImageButton googleSignBtn;
     private EditText idEditText, pwEditText;
     private TextView findPassword;
+    private CheckedTextView autoLoginBox;
     //----------------View-----------------------------------------
 
     //----------------viewModel------------------------------------
     private LoginViewModel viewModel;
     //----------------viewModel------------------------------------
-    private InputMethodManager imm;
 
+    private InputMethodManager imm;
+    private boolean isAutoLogin = false;
     @Override
     protected void onStart() {
         super.onStart();
@@ -107,6 +104,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         sessionCallback = new SessionCallback();
         Session.getCurrentSession().addCallback(sessionCallback);
         Session.getCurrentSession().checkAndImplicitOpen();
@@ -119,7 +118,22 @@ public class HomeActivity extends AppCompatActivity {
         idEditText = (EditText) findViewById(R.id.id_et);
         pwEditText = (EditText) findViewById(R.id.pw_et);
         findPassword = (TextView) findViewById(R.id.find_password);
+        autoLoginBox = (CheckedTextView)findViewById(R.id.chk_auto_login);
 
+        //이전 로그인에서 자동로그인을 체크하지 않았다면
+        if(!viewModel.isAutoLogin()){
+            //공유프리퍼런스에 있는 유저 아이디를 삭제하여 자동로그인을 해제한다.
+            viewModel.removeUserIdPref();
+        }else{ //이전 로그인에서 자동로그인을 체크했다면
+            //공유프리퍼런스에 있는 유저아이디가 유효한지 확인하여
+            //자동로그인을 실행한다.
+            String userId =viewModel.getLoginSession();
+            if(!userId.equals(" ")){
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
+            }
+        }
         validateServerClientID();
         //구글 로그인
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -136,7 +150,7 @@ public class HomeActivity extends AppCompatActivity {
         googleSignBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               getIdToken();
+                getIdToken();
             }
         });
 
@@ -174,17 +188,32 @@ public class HomeActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(pwEditText.getWindowToken(),0);
                 String userId = idEditText.getText().toString().trim();
                 String userPw = pwEditText.getText().toString().trim();
+                //자동로그인 체크했을 시 공유프리퍼런스에 자동로그인 여부 저장
+                viewModel.autoLogin(isAutoLogin);
                 viewModel.login(userId, userPw);
             }
         });
 
+        //자동로그인 체크박스 클릭이벤트
+        autoLoginBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(((CheckedTextView) v).isChecked()){
+                    ((CheckedTextView) v).setChecked(false);
+                    isAutoLogin = false;
+
+                }else{
+                    ((CheckedTextView) v).setChecked(true);
+                    isAutoLogin = true;
+                }
+
+            }
+        });
         viewModel.loginRsLD.observe(this, code -> {
             if (code.equals("200")) {
                 Log.d("RESULT", "onCreate: 성공");
                 Snackbar.make(findViewById(R.id.home_layout), "로그인 성공", Snackbar.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), AddUserInfoActivity.class);
-                intent.putExtra("userId",idEditText.getText().toString());
-                startActivity(intent);
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             } else if (code.equals("204")) {
                 Log.d("RESULT", "onCreate: 204 에러");
                 Snackbar.make(findViewById(R.id.home_layout), "존재하지 않는 계정입니다.", Snackbar.LENGTH_SHORT).show();
@@ -248,6 +277,7 @@ public class HomeActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             String idToken = account.getIdToken();
             Log.d(TAG, "handleSignInResult: "+idToken);
+
             // TODO(developer): send ID Token to server and validate
             viewModel.sendGoogleIdToken(idToken);
             updateUI(account);
@@ -262,11 +292,12 @@ public class HomeActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
             return;
         }
-        mCallbackManager.onActivityResult(requestCode,resultCode,data);
+
         if (requestCode == RC_GET_TOKEN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
+
 //        if (requestCode == RC_SIGN_IN) {
 //            Log.d(TAG, "onActivityResult: resultOk");
 //
@@ -314,7 +345,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 @Override
                 public void onSuccess(MeV2Response result) {
-                    Intent intent = new Intent(getApplicationContext(), AddUserInfoActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     Log.d("asdasd", "onSuccess: " + result.getNickname());
                     Log.d("asdasd", "onSuccess: " + result.getId());
 
@@ -338,11 +369,8 @@ public class HomeActivity extends AppCompatActivity {
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                AccessToken accessToken = AccessToken.getCurrentAccessToken();
-                 fbToken = accessToken.getToken();
-                 Log.d("facebook Token",fbToken);
                 Toast.makeText(getApplicationContext(), "페북 로그인 성공", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
 
             @Override
@@ -383,7 +411,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if (account != null) {
             Toast.makeText(this, "U Signed In successfully", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
             finish();
         } else {

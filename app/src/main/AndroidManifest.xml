@@ -15,9 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.SearchAddress"></activity>
+        <activity android:name=".view.LoadingActivity"></activity>
         <activity android:name=".view.AddUserInfoActivity" />
         <activity android:name=".view.ForgotPasswordActivity" />
+        <activity android:name=".view.LoadingActivity" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
