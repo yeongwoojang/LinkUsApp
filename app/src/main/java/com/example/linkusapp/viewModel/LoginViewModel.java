@@ -176,8 +176,8 @@ public class LoginViewModel extends AndroidViewModel {
                 });
     }
 
-    public void saveInfo(String userId,String nickname,String age,String gender,String address){
-        serviceApi.saveInfo(userId,nickname,age,gender,address)
+    public void saveInfo(String userId,String nickname,String age,String gender,String address, String loginMethod){
+        serviceApi.saveInfo(userId,nickname,age,gender,address,loginMethod)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {

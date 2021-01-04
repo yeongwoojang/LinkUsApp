@@ -41,17 +41,19 @@ public interface ServiceApi {
     @POST("/android/socialLogin")
     Call<String> putSocialLogin(@Field("userName") String userName, @Field("userId") String userId, @Field("loginMethod") String loginMethod);
 
+    @GET("/android/chkScdUserInfo")
+    Call<String> chkScdUserInfo(@Query("userId") String userId, @Query("loginMethod") String loginMethod);
 
-
-    @GET("/android/userInfoChk")
-    Call<String> chkUserInfo(@Query("userId") String userId);
-
-    @POST("/android/address")
+    @FormUrlEncoded
+    @POST("/android/userInfo")
     Call<String> saveInfo(
             @Field("userId") String userId,
             @Field("nickname") String nickname,
             @Field("age") String age,
             @Field("gender") String gender,
-            @Field("address") String address
+            @Field("address") String address,
+            @Field("loginMethod") String loginMethod
     );
+
+
 }

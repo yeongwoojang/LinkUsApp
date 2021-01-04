@@ -21,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.kakao.sdk.user.UserApiClient;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+
+        String loginMethod = viewModel.getLoginMethod();
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -60,17 +63,28 @@ public class MainActivity extends AppCompatActivity {
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModel.cancelAutoLogin();
-                viewModel.removeUserIdPref();
-                UserManagement.getInstance()
-                        .requestLogout(new LogoutResponseCallback() {
-                            @Override
-                            public void onCompleteLogout() {
-                                Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                LoginManager.getInstance().logOut();
-                googleSignOut();
+                if(loginMethod.equals("일반")){
+                    viewModel.cancelAutoLogin();
+                }else if(loginMethod.equals("Google")){
+                    googleSignOut();
+                }else if(loginMethod.equals("Facebook")){
+                    viewModel.removeUserIdPref();
+                    LoginManager.getInstance().logOut();
+
+                }else{
+                    UserApiClient.getInstance().logout(error -> {
+                        if (error != null) {
+                            Log.e(TAG, "로그아웃 실패. SDK에서 토큰 삭제됨", error);
+
+                        } else {
+                            viewModel.removeUserIdPref();
+                            Log.i(TAG, "로그아웃 성공. SDK에서 토큰 삭제됨");
+                        }
+                        return null;
+                    });
+                }
+
+//                viewModel.removeLoginMethod();
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 finish();
@@ -92,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 //                updateUI(null);
+                viewModel.removeUserIdPref();
             }
         });
     }
