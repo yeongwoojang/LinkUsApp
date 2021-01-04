@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
-        mSignInClient =  GoogleSignIn.getClient(this, gso);
+        mSignInClient = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null) {
             String personName = acct.getDisplayName();
@@ -54,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
             String personEmail = acct.getEmail();
             String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
-            Log.d(TAG, "onCreate: "+personName+", "+ personEmail);
+            Log.d(TAG, "onCreate: " + personName + ", " + personEmail);
         }
-        logOut = (Button)findViewById(R.id.logout_social);
+        logOut = (Button) findViewById(R.id.logout_social);
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,6 +72,15 @@ public class MainActivity extends AppCompatActivity {
                 LoginManager.getInstance().logOut();
                 googleSignOut();
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                finish();
+            }
+        });
+
+        findViewById(R.id.go_to_board).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), BoardActivity.class));
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 finish();
             }
