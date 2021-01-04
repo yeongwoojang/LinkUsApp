@@ -76,6 +76,15 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        findViewById(R.id.go_to_board).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), BoardActivity.class));
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                finish();
+            }
+        });
     }
     //로그아웃하기
     private void googleSignOut() {

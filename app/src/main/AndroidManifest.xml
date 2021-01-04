@@ -17,7 +17,6 @@
         <activity android:name=".view.SearchAddress"></activity>
         <activity android:name=".view.AddUserInfoActivity" />
         <activity android:name=".view.ForgotPasswordActivity" />
-
         <activity android:name=".view.LoadingActivity"></activity>
 
         <!--        <meta-data-->
@@ -51,7 +50,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity"/>
+        <activity android:name=".view.MainActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -63,6 +68,7 @@
                     android:scheme="@string/kakao_native_app_key" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.BoardActivity"/>
+        <activity android:name=".view.WriteActivity"/>
     </application>
-
 </manifest>

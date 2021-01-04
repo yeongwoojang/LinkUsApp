@@ -46,17 +46,43 @@
             </FrameLayout>
         </androidx.appcompat.widget.Toolbar>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview"
+                android:id="@+id/part_recyclerview"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:scrollbars="none">
             </androidx.recyclerview.widget.RecyclerView>
-        </LinearLayout>
 
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <EditText
+                android:id="@+id/search_bar"
+                android:layout_width="250dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:hint="검색할 내용을 입력하세요."
+                android:paddingLeft="12dp"
+                android:textSize="15dp" />
+
+            <ImageButton
+                android:id="@+id/search_bt"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="21dp"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_baseline_search_24"/>
+        </FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/board_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ></androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 </LinearLayout>

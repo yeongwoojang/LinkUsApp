@@ -46,13 +46,15 @@ public class BoardActivity extends AppCompatActivity {
         }
 
         // 리사이클러뷰에 LinearLayoutManager 객체 지정.
-        RecyclerView recyclerView = findViewById(R.id.recyclerview) ;
+        RecyclerView recyclerView = findViewById(R.id.part_recyclerview) ;
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)) ;
 
         // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
         PartAdapter adapter = new PartAdapter(list) ;
         recyclerView.setAdapter(adapter);
 
+
+        // 분야 아이템 클릭시 event
         adapter.setOnItemClickListener(new PartAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -75,5 +77,7 @@ public class BoardActivity extends AppCompatActivity {
                     }
             }
         });
+
+
     }
 }
