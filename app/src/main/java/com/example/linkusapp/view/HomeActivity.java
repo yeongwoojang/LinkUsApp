@@ -357,6 +357,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void handleSignInResult(@NonNull Task<GoogleSignInAccount> completedTask) {
         try {
+            Log.d(TAG, "handleSignInResult: "+"ASdasdsad");
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             String idToken = account.getIdToken();
             viewModel.sendGoogleIdToken(idToken);
@@ -376,6 +377,8 @@ public class HomeActivity extends AppCompatActivity {
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
             super.onActivityResult(requestCode, resultCode, data);
         }
+
+
     }
 
     @Override
@@ -404,6 +407,7 @@ public class HomeActivity extends AppCompatActivity {
 
     //Change UI according to user data.
     public void updateUI(GoogleSignInAccount account) {
+
         if (account != null) {
             Toast.makeText(this, "U Signed In successfully", Toast.LENGTH_LONG).show();
             viewModel.putLoginMethod("google");

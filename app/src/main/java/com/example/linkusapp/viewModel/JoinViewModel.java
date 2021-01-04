@@ -95,15 +95,15 @@ public class JoinViewModel extends AndroidViewModel {
             String userEmail,
             String certification
     ) {
-        boolean value = false;
+         boolean value = false;
         if (userId.equals("")
                 && userPw.equals("")
                 && userPw2.equals("")
                 && userName.equals("")
                 && userEmail.equals("")
                 && certification.equals("")
-        ){
-            value = true;
+               ){
+                value = true;
         }
         return value;
     }

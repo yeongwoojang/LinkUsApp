@@ -116,6 +116,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     nicknameEt.setText(" ");
                     Snackbar.make(findViewById(R.id.add_user_info), "조건에 맞는 닉네임을 입력해주세요", Snackbar.LENGTH_SHORT).show();
                     isCertify = false;
+
                 }
             }
         });

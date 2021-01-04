@@ -24,6 +24,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
@@ -40,9 +41,9 @@ dependencies {
 
     def lifecycle_version = "2.2.0"
     // ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     // LiveData
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
     //Snackbar
@@ -56,13 +57,11 @@ dependencies {
     /*facebook*/
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     implementation 'com.facebook.android:facebook-login:[8.1)'
-
     /*kakao*/
     implementation 'com.kakao.sdk:usermgmt:1.29.0'
     implementation "com.kakao.sdk:v2-user:2.2.0" // 카카오 로그인
     implementation "com.kakao.sdk:v2-talk:2.2.0" // 친구, 메시지(카카오톡)
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.20'
-
     /*google*/
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
