@@ -15,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity"></activity>
         <activity android:name=".view.SearchAddress" />
         <activity android:name=".view.AddUserInfoActivity" />
         <activity android:name=".view.ForgotPasswordActivity" />
