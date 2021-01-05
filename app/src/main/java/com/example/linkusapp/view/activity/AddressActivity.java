@@ -1,4 +1,4 @@
-package com.example.linkusapp.view;
+package com.example.linkusapp.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;

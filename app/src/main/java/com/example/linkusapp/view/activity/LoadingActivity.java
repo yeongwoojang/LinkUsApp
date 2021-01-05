@@ -1,4 +1,4 @@
-package com.example.linkusapp.view;
+package com.example.linkusapp.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
