@@ -191,7 +191,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
                         viewModel.cancelAutoLogin();
                         break;
                     }
-                    case "google" :{
+                    case "Google" :{
                         //구글 로그아웃
                         googleSignOut();
                         break;

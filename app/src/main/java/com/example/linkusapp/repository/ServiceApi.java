@@ -41,10 +41,9 @@ public interface ServiceApi {
     @POST("/android/socialLogin")
     Call<String> putSocialLogin(@Field("userName") String userName, @Field("userId") String userId, @Field("loginMethod") String loginMethod);
 
+    @GET("/android/chkScdUserInfo")
+    Call<String> chkScdUserInfo(@Query("userId") String userId, @Query("loginMethod") String loginMethod);
 
-
-    @GET("/android/userInfoChk")
-    Call<String> chkUserInfo(@Query("userId") String userId);
 
     @FormUrlEncoded
     @POST("/android/userInfo")

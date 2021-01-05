@@ -122,7 +122,7 @@ public class HomeActivity extends AppCompatActivity {
         isFacebookLogged = accessToken != null && !accessToken.isExpired();
         if (isFacebookLogged) {
             viewModel.putLoginMethod("Facebook");
-            startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+            startActivity(new Intent(getApplicationContext(), LoadingActivity.class));
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
             finish();
         }
@@ -133,7 +133,7 @@ public class HomeActivity extends AppCompatActivity {
                 Log.e(TAG, "사용자 정보 요청 실패", meError);
             } else if (user != null) {
                 if (user.getKakaoAccount().getEmail() != null) {
-                    startActivity(new Intent(HomeActivity.this, AddUserInfoActivity.class));
+                    startActivity(new Intent(HomeActivity.this, LoadingActivity.class));
                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     finish();
                 }
@@ -175,7 +175,7 @@ public class HomeActivity extends AppCompatActivity {
                                         viewModel.putSocialLogin(object.getString("last_name")+object.getString("first_name")
                                                 ,object.getString("email"),"Facebook");
                                         viewModel.putLoginMethod("Facebook");
-                                        startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+                                        startActivity(new Intent(getApplicationContext(), LoadingActivity.class));
                                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
                                         finish();
                                     }
@@ -228,8 +228,8 @@ public class HomeActivity extends AppCompatActivity {
                                 if (user.getKakaoAccount().getEmail() != null) {
                                     viewModel.putSocialLogin(user.getKakaoAccount().getProfile().getNickname(), user.getKakaoAccount().getEmail(),"Kakao");
                                     Log.i(TAG, "이메일 : " + user.getKakaoAccount().getEmail() + " , " + user.getKakaoAccount().getProfile().getNickname());
-                                    viewModel.putLoginMethod("kakao");
-                                    startActivity(new Intent(HomeActivity.this, AddUserInfoActivity.class));
+                                    viewModel.putLoginMethod("Kakao");
+                                    startActivity(new Intent(HomeActivity.this, LoadingActivity.class));
                                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
                                     finish();
                                 } else if (!user.getKakaoAccount().getEmailNeedsAgreement()) {
@@ -301,8 +301,8 @@ public class HomeActivity extends AppCompatActivity {
         viewModel.loginRsLD.observe(this, code -> {
             if (code.equals("200")) {
                 Snackbar.make(findViewById(R.id.home_layout), "로그인 성공", Snackbar.LENGTH_SHORT).show();
-                viewModel.putLoginMethod("general");
-                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+                viewModel.putLoginMethod("일반");
+                startActivity(new Intent(getApplicationContext(), LoadingActivity.class));
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
             } else if (code.equals("204")) {
@@ -410,8 +410,8 @@ public class HomeActivity extends AppCompatActivity {
 
         if (account != null) {
             Toast.makeText(this, "U Signed In successfully", Toast.LENGTH_LONG).show();
-            viewModel.putLoginMethod("google");
-            startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+            viewModel.putLoginMethod("Google");
+            startActivity(new Intent(getApplicationContext(), LoadingActivity.class));
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
             finish();
         } else {
@@ -421,17 +421,17 @@ public class HomeActivity extends AppCompatActivity {
     }
     public void generalAutoLogin(){
         //이전 로그인에서 자동로그인을 체크하지 않았다면
-        if (!viewModel.isAutoLogin() && viewModel.getLoginMethod().equals("general")) {
+        if (!viewModel.isAutoLogin() && viewModel.getLoginMethod().equals("일반")) {
             //공유프리퍼런스에 있는 유저 아이디를 삭제하여 자동로그인을 해제한다.
             viewModel.removeUserIdPref();
-        } else if(viewModel.isAutoLogin() && viewModel.getLoginMethod().equals("general")){
+        } else if(viewModel.isAutoLogin() && viewModel.getLoginMethod().equals("일반")){
             //이전 로그인에서 자동로그인을 체크했다면
             //공유프리퍼런스에 있는 유저아이디가 유효한지 확인하여
             //자동로그인을 실행한다.
             String userId = viewModel.getLoginSession();
             if (!userId.equals(" ")) {
-                viewModel.putLoginMethod("general");
-                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+                viewModel.putLoginMethod("일반");
+                startActivity(new Intent(getApplicationContext(), LoadingActivity.class));
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
             }
