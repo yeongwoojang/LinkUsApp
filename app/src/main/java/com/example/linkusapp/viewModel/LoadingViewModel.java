@@ -42,7 +42,6 @@ public class LoadingViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
             }
         });
     }

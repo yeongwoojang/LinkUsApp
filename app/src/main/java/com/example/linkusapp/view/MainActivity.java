@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
     /*fragment*/
     private FragmentManager fragmentManager = getSupportFragmentManager();
+    private MainFragment mainFragment = new MainFragment();
+    private BoardFragment boardFragment = new BoardFragment();
     private WriteFragment writeFragment = new WriteFragment();
 
     @Override

@@ -8,6 +8,7 @@
     tools:context=".view.MainActivity"
     android:id="@+id/slidingView"
     app:umanoPanelHeight="0dp"
+    android:gravity="bottom"
     app:umanoDragView="@id/dragView"
     app:umanoShadowHeight="0dp"
     app:umanoOverlay="true"
@@ -20,7 +21,7 @@
             android:id="@+id/main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/tabs"/>
+            android:layout_above="@+id/bottom_navigation_view"/>
         <View
             android:id="@+id/toolbar_div"
             android:layout_width="match_parent"
@@ -28,15 +29,16 @@
             android:layout_below="@+id/main_container"
             android:background="@color/black"
             />
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation_view"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:elevation="1dp"
-            app:tabGravity="fill"
-            app:tabMode="fixed"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:itemBackground="@color/transparent"
+            app:itemIconTint="@drawable/menu_selector_color"
+            app:itemTextColor="@drawable/menu_selector_color"
             android:layout_alignParentBottom="true"
-        />
+            app:menu="@menu/tab_menu" />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/dragView"
