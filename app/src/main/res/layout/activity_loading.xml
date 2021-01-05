@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".view.LoadingActivity">
+    tools:context=".view.activity.LoadingActivity">
 
 <!--    <ImageView-->
 <!--        android:layout_width="wrap_content"-->

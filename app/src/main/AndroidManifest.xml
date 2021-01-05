@@ -15,11 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.MainActivity"/>
-        <activity android:name=".view.SearchAddress" />
-        <activity android:name=".view.AddUserInfoActivity" />
-        <activity android:name=".view.ForgotPasswordActivity" />
-        <activity android:name=".view.LoadingActivity" /> <!-- <meta-data -->
+        <activity android:name=".view.activity.CreateGroupActivity"></activity>
+        <activity android:name=".view.activity.MainActivity" />
+        <activity android:name=".view.activity.AddressActivity" />
+        <activity android:name=".view.activity.AddUserInfoActivity" />
+        <activity android:name=".view.activity.FindPwActivity" />
+        <activity android:name=".view.activity.LoadingActivity" /> <!-- <meta-data -->
         <!-- android:name="com.kakao.sdk.AppKey" -->
         <!-- android:value="@string/kakao_app_key" /> -->
         <meta-data
@@ -42,8 +43,8 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.JoinActivity" />
-        <activity android:name=".view.HomeActivity">
+        <activity android:name=".view.activity.JoinActivity" />
+        <activity android:name=".view.activity.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -63,8 +64,6 @@
                     android:scheme="@string/kakao_native_app_key" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.BoardActivity" />
-        <activity android:name=".view.WriteActivity" />
     </application>
 
 </manifest>

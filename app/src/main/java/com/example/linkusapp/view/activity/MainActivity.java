@@ -1,4 +1,4 @@
-package com.example.linkusapp.view;
+package com.example.linkusapp.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.view.fragment.BoardFragment;
+import com.example.linkusapp.view.fragment.MainFragment;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -37,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private MainFragment mainFragment = new MainFragment();
     private BoardFragment boardFragment = new BoardFragment();
-    private WriteFragment writeFragment = new WriteFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +62,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.board:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_container,boardFragment).commitAllowingStateLoss();
-                        break;
-                    case R.id.write:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container,writeFragment).commitAllowingStateLoss();
                         break;
                 }
                 return true;

@@ -1,4 +1,4 @@
-package com.example.linkusapp.view;
+package com.example.linkusapp.view.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
