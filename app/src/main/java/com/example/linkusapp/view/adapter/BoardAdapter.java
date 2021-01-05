@@ -33,8 +33,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
             nicknameTextView = itemView.findViewById(R.id.nickname);
             titleTextView = itemView.findViewById(R.id.title);
             dateTextView = itemView.findViewById(R.id.writing_day);
-
-
         }
     }
 

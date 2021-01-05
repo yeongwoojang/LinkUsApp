@@ -49,14 +49,21 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="제목"
+            android:text="그룹명"
             android:fontFamily="@font/nanum_square_ac_b" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="그룹 목표"
+            android:fontFamily="@font/nanum_square_ac_b" />
+
         <TextView
             android:id="@+id/writing_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2021-01-04"
             android:fontFamily="@font/nanum_square_ac_b"/>
-    </LinearLayout>
 
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
