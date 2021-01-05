@@ -1,4 +1,4 @@
-package com.example.linkusapp.view.activity;
+package com.example.linkusapp.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

@@ -22,19 +22,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/bottom_navigation_view"/>
-        <View
+        <!--<View
             android:id="@+id/toolbar_div"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/main_container"
             android:background="@color/black"
-            />
+            />-->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:itemBackground="@color/transparent"
+            app:itemBackground="@color/red500"
             app:itemIconTint="@drawable/menu_selector_color"
             app:itemTextColor="@drawable/menu_selector_color"
             android:layout_alignParentBottom="true"
