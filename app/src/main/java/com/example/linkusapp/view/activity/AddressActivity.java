@@ -1,4 +1,4 @@
-package com.example.linkusapp.view;
+package com.example.linkusapp.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,7 +10,7 @@ import android.webkit.WebViewClient;
 
 import com.example.linkusapp.R;
 
-public class SearchAddress extends Activity {
+public class AddressActivity extends Activity {
     private WebView webView;
     //    private TextView addressText;
     private Handler handler;

@@ -1,4 +1,4 @@
-package com.example.linkusapp.view;
+package com.example.linkusapp.view.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +33,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
             nicknameTextView = itemView.findViewById(R.id.nickname);
             titleTextView = itemView.findViewById(R.id.title);
             dateTextView = itemView.findViewById(R.id.writing_day);
-
-
         }
     }
 

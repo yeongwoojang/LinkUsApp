@@ -1,4 +1,4 @@
-package com.example.linkusapp.view;
+package com.example.linkusapp.view.fragment;
 
 import android.os.Bundle;
 

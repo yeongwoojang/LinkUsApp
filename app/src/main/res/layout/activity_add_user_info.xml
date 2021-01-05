@@ -5,7 +5,7 @@
     android:id="@+id/add_user_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.AddUserInfoActivity">
+    tools:context=".view.activity.AddUserInfoActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
