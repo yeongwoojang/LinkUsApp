@@ -1,31 +1,16 @@
 package com.example.linkusapp.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Dialog;
+import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.util.Base64;
-import android.util.Log;
-import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.example.linkusapp.R;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-public class SearchAddress extends AppCompatActivity {
-
-
+public class SearchAddress extends Activity {
     private WebView webView;
     //    private TextView addressText;
     private Handler handler;
@@ -134,5 +119,6 @@ public class SearchAddress extends AppCompatActivity {
 //            });
 //        }
 //    }
+
 
 }

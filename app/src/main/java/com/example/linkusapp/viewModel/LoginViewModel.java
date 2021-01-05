@@ -14,6 +14,7 @@ import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.util.GMailSender;
 import com.example.linkusapp.util.SharedPreference;
+import com.kakao.util.helper.log.Tag;
 
 import java.util.Iterator;
 
@@ -30,6 +31,7 @@ public class LoginViewModel extends AndroidViewModel {
     private SharedPreference prefs;
     public MutableLiveData<String> loginRsLD = new MutableLiveData<String>();
     public MutableLiveData<FindPassword> findPwRsLD = new MutableLiveData<FindPassword>();
+
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();
     public MutableLiveData<String> nickChkResLD = new MutableLiveData<String>();
     public MutableLiveData<String> addUserInfoResLD = new MutableLiveData<String>();
@@ -176,8 +178,8 @@ public class LoginViewModel extends AndroidViewModel {
                 });
     }
 
-    public void saveInfo(String userId,String nickname,String age,String gender,String address){
-        serviceApi.saveInfo(userId,nickname,age,gender,address)
+    public void saveInfo(String userId,String nickname,String age,String gender,String address,String loginMethod){
+        serviceApi.saveInfo(userId,nickname,age,gender,address,loginMethod)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
