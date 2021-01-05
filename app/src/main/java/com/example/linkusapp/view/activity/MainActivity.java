@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
 
