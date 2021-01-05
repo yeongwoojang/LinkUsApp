@@ -2,28 +2,24 @@ package com.example.linkusapp.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.viewModel.LoginViewModel;
-import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.kakao.sdk.user.UserApiClient;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.LogoutResponseCallback;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,16 +30,49 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mSignInClient;
 
     private Button logOut;
+    private TabLayout tabLayout;
+    private SlidingUpPanelLayout slidingUpPanelLayout;
+
+    /*fragment*/
+    private FragmentManager fragmentManager = getSupportFragmentManager();
+    private WriteFragment writeFragment = new WriteFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*slidingUpPanelLayout*/
+        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.slidingView);
+        slidingUpPanelLayout.setTouchEnabled(false);
+
+        /*fragment*/
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container,mainFragment).commitAllowingStateLoss();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.home:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container,mainFragment).commitAllowingStateLoss();
+                        break;
+                    case R.id.board:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container,boardFragment).commitAllowingStateLoss();
+                        break;
+                    case R.id.write:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container,writeFragment).commitAllowingStateLoss();
+                        break;
+                }
+                return true;
+            }
+        });
+
+
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
+
         String loginMethod = viewModel.getLoginMethod();
-
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
@@ -59,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             Uri personPhoto = acct.getPhotoUrl();
             Log.d(TAG, "onCreate: " + personName + ", " + personEmail);
         }
-        /*로그아웃 버튼*/
+        /*로그아웃 버튼*//*
         logOut = (Button) findViewById(R.id.logout);
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 finish();
             }
-        });
+        });*/
 
         /*findViewById(R.id.go_to_board).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
     }
-    //로그아웃하기
+    /*//로그아웃하기
     private void googleSignOut() {
         mSignInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
             @Override
@@ -120,5 +149,5 @@ public class MainActivity extends AppCompatActivity {
 //                        updateUI(null);
                     }
                 });
-    }
+    }*/
 }
