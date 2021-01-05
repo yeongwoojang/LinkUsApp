@@ -15,9 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.SearchAddress" />
+        <activity android:name=".view.AddressActivity" />
         <activity android:name=".view.AddUserInfoActivity" />
-        <activity android:name=".view.ForgotPasswordActivity" />
+        <activity android:name=".view.FindPwActivity" />
         <activity android:name=".view.LoadingActivity" /> <!-- <meta-data -->
         <!-- android:name="com.kakao.sdk.AppKey" -->
         <!-- android:value="@string/kakao_app_key" /> -->

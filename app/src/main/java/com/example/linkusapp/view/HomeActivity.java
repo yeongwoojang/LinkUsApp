@@ -318,7 +318,7 @@ public class HomeActivity extends AppCompatActivity {
         findPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class));
+                startActivity(new Intent(getApplicationContext(), FindPwActivity.class));
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });

@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
+import com.example.linkusapp.view.adapter.BoardAdapter;
+import com.example.linkusapp.view.adapter.PartAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -129,14 +129,14 @@ public class AddUserInfoActivity extends AppCompatActivity {
         searchAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SearchAddress.class);
+                Intent intent = new Intent(getApplicationContext(), AddressActivity.class);
                 startActivityForResult(intent,SEARCH_ADDRESS_ACTIVITY);
             }
         });
         searchAddressEt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SearchAddress.class);
+                Intent intent = new Intent(getApplicationContext(), AddressActivity.class);
                 startActivityForResult(intent,SEARCH_ADDRESS_ACTIVITY);
             }
         });

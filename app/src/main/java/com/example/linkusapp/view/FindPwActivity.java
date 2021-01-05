@@ -15,7 +15,7 @@ import com.example.linkusapp.util.GMailSender;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
-public class ForgotPasswordActivity extends AppCompatActivity {
+public class FindPwActivity extends AppCompatActivity {
 
     private EditText idEt,emailEt;
     private Button findBtn;
