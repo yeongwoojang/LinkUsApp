@@ -186,7 +186,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 switch (loginMethod){
-                    case  "general" :{
+                    case  "일반" :{
                         //일반 로그아웃
                         viewModel.cancelAutoLogin();
                         break;
@@ -196,12 +196,12 @@ public class AddUserInfoActivity extends AppCompatActivity {
                         googleSignOut();
                         break;
                     }
-                    case "facebook" :{
+                    case "Facebook" :{
                         //facebook 로그아웃
                         LoginManager.getInstance().logOut();
                         break;
                     }
-                    case "kakao" :{
+                    case "Kakao" :{
                         UserApiClient.getInstance().logout(error ->{
                             if(error !=null){
                                 Log.e(TAG, "로그아웃 실패. SDK에서 토큰 삭제됨", error);
