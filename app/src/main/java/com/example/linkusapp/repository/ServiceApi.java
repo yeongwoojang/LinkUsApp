@@ -55,4 +55,11 @@ public interface ServiceApi {
             @Field("address") String address,
             @Field("loginMethod") String loginMethod
     );
+
+    @FormUrlEncoded
+    @POST("/android/withdraw")
+    Call<String> withDraw(
+        @Field("userId")      String userId,
+        @Field("loginMethod") String loginMethod
+    );
 }

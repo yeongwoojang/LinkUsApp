@@ -27,10 +27,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:fontFamily="@font/nanum_square_ac_eb"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:text="그룹만들기"
                     android:textColor="@color/black"
-                    android:textSize="23dp" />
+                    android:textSize="16dp" />
             </androidx.appcompat.widget.Toolbar>
             <LinearLayout
                 android:layout_below="@+id/toolbar"
@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="그룹 기본 정보"
-                    android:fontFamily="@font/nanum_square_ac_eb"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     android:paddingTop="20dp"
@@ -57,7 +57,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     android:hint="그룹명"
-                    android:fontFamily="@font/nanum_square_ac_l"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:padding="10dp"
                     android:theme="@style/EditTheme"
                     android:maxLength="20"
@@ -72,7 +72,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="30dp"
                     android:hint="그룹 설명"
-                    android:fontFamily="@font/nanum_square_ac_l"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:gravity="start"
                     android:padding="10dp"
                     android:theme="@style/EditTheme"
@@ -106,7 +106,7 @@
                     android:layout_marginBottom="16dp"
                     android:gravity="start"
                     android:hint="그룹목표"
-                    android:fontFamily="@font/nanum_square_ac_l"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:padding="10dp"
                     android:theme="@style/EditTheme"
                     android:maxLength="50"
@@ -121,7 +121,7 @@
                     android:layout_marginLeft="100dp"
                     android:text="next"
                     android:textSize="15dp"
-                    android:fontFamily="@font/nanum_square_ac_eb"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:textColor="@color/white"
                     android:background="@color/red500"
                     />

@@ -35,6 +35,7 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();
     public MutableLiveData<String> nickChkResLD = new MutableLiveData<String>();
     public MutableLiveData<String> addUserInfoResLD = new MutableLiveData<String>();
+    public MutableLiveData<String> withDrawREDLD = new MutableLiveData<String>();
 
 
     public LoginViewModel(@NonNull Application application){
@@ -42,7 +43,54 @@ public class LoginViewModel extends AndroidViewModel {
         serviceApi = RetrofitClient.getClient(application).create(ServiceApi.class);
         prefs = new SharedPreference(application);
     }
+    /*SharedPreference*/
+    public void autoLogin(boolean value){
+        prefs.putInfoAutoLogin(value);
+    }
+    public boolean isAutoLogin(){
+        return prefs.getInfoAutoLogin();
+    }
+    public String getLoginSession() {
+        String userSession= " ";
+        Iterator<String> iterator = prefs.getCookies().iterator();
+        if (iterator != null) {
+            while (iterator.hasNext()) {
+                userSession = iterator.next();
+                userSession = userSession.split(";")[0].split("=")[1];
+                Log.d("SESSION", "getLoginSession: " +userSession);
+            }
+        }
+        return userSession;
+    }
+    public String getAddress(){
+        return prefs.getAddress();
+    }
+    public String getNickname(){
+        return prefs.getNickname();
+    }
+    public void removeUserIdPref(){
+        prefs.removeCookies();
+    }
+    public void cancelAutoLogin(){
+        prefs.cancelAutoLogin();
+    }
+    public String getLoginMethod(){
+        return prefs.getLoginMethod();
+    }
+    public void putLoginMethod(String value){
+        prefs.putLoginMethod(value);
+    }
+    public void removeLoginMethod(){
+        prefs.removeLoginMethod();
+    }
+    public void putAddress(String value) {
+        prefs.putAddress(value);
+    }
+    public void putNickname(String value){
+        prefs.putNickname(value);
+    }
 
+    /*ServiceApi*/
     public void login(String userId,String password) {
         serviceApi.login(userId, password).enqueue(new Callback<String>() {
             @Override
@@ -112,7 +160,6 @@ public class LoginViewModel extends AndroidViewModel {
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = response.body();
                 Log.d("a", "onResponse: "+result);
-
             }
 
             @Override
@@ -120,46 +167,6 @@ public class LoginViewModel extends AndroidViewModel {
 
             }
         });
-    }
-
-    public void autoLogin(boolean value){
-        prefs.putInfoAutoLogin(value);
-    }
-
-    public boolean isAutoLogin(){
-        return prefs.getInfoAutoLogin();
-    }
-
-    public String getLoginSession() {
-        String userSession= " ";
-        Iterator<String> iterator = prefs.getCookies().iterator();
-        if (iterator != null) {
-            while (iterator.hasNext()) {
-                userSession = iterator.next();
-                userSession = userSession.split(";")[0].split("=")[1];
-                Log.d("SESSION", "getLoginSession: " +userSession);
-            }
-        }
-        return userSession;
-    }
-
-    public void removeUserIdPref(){
-        prefs.removeCookies();
-    }
-    public void cancelAutoLogin(){
-        prefs.cancelAutoLogin();
-    }
-
-    public String getLoginMethod(){
-        return prefs.getLoginMethod();
-    }
-
-    public void putLoginMethod(String value){
-        prefs.putLoginMethod(value);
-    }
-
-    public void removeLoginMethod(){
-        prefs.removeLoginMethod();
     }
 
     public void nickNameChk(String userNickname) {
@@ -192,6 +199,21 @@ public class LoginViewModel extends AndroidViewModel {
 
                     }
                 });
+    }
+    /*탈퇴하기*/
+    public void withDraw(String userId,String loginMethod){
+        serviceApi.withDraw(userId,loginMethod).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body();
+                withDrawREDLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
     }
 
 }

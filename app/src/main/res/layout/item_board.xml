@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="분야"
-                android:fontFamily="@font/nanum_square_ac_b" />
+                android:fontFamily="@font/nanum_barun_gothic" />
 
             <TextView
                 android:id="@+id/area"
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:text="지역"
                 android:layout_marginLeft="10dp"
-                android:fontFamily="@font/nanum_square_ac_b" />
+                android:fontFamily="@font/nanum_barun_gothic" />
         </LinearLayout>
 
         <TextView
@@ -43,27 +43,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="이름"
-            android:fontFamily="@font/nanum_square_ac_b" />
+            android:fontFamily="@font/nanum_barun_gothic" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="그룹명"
-            android:fontFamily="@font/nanum_square_ac_b" />
+            android:fontFamily="@font/nanum_barun_gothic" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="그룹 목표"
-            android:fontFamily="@font/nanum_square_ac_b" />
+            android:fontFamily="@font/nanum_barun_gothic" />
 
         <TextView
             android:id="@+id/writing_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2021-01-04"
-            android:fontFamily="@font/nanum_square_ac_b"/>
+            android:fontFamily="@font/nanum_barun_gothic"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

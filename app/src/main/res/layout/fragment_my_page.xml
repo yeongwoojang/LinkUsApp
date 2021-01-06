@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/gray100"
+    android:id="@+id/my"
     tools:context=".view.fragment.MyPageFragment">
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +28,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/nanum_square_ac_b"
+                        android:fontFamily="@font/nanum_barun_gothic"
                         android:text="마이 페이지"
                         android:textColor="@color/black"
                         android:textSize="16dp" />
@@ -37,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@+id/toolbar"
-                    android:background="@color/black" />
+                    android:background="@color/gray300" />
             </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -76,10 +77,10 @@
                         android:textColor="@color/gray500"
                         android:textSize="16dp"/>
                     <TextView
-                        android:id="@+id/id_tv"
+                        android:id="@+id/method_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="아이디"
+                        android:text="로그인 방식"
                         android:textColor="@color/gray500"
                         android:fontFamily="@font/nanum_barun_gothic"
                         android:textSize="16dp"/>
@@ -131,7 +132,7 @@
                     android:gravity="left|center"
                     android:background="@color/transparent"
                     android:fontFamily="@font/nanum_barun_gothic"
-                    android:drawableLeft="@drawable/mystudy_foreground"
+                    android:drawableLeft="@drawable/group_foreground"
                     android:layout_below="@+id/my_address"
                     />
                 <Button
@@ -142,7 +143,7 @@
                     android:gravity="left|center"
                     android:background="@color/transparent"
                     android:fontFamily="@font/nanum_barun_gothic"
-                    android:drawableLeft="@drawable/mystudy_foreground"
+                    android:drawableLeft="@drawable/management_foreground"
                     android:layout_below="@+id/my_study"
                     />
             </RelativeLayout>
@@ -180,7 +181,7 @@
                     android:layout_below="@+id/share_app"
                     />
                 <Button
-                    android:id="@+id/retire_app"
+                    android:id="@+id/withdraw_app"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="  탈퇴하기"

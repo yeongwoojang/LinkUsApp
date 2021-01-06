@@ -30,10 +30,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:text="스터디 그룹"
                     android:textColor="@color/black"
-                    android:textSize="23dp"/>
+                    android:textSize="16dp"/>
                 <ImageButton
                     android:id="@+id/write_btn"
                     android:layout_width="wrap_content"
@@ -64,6 +64,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
+                android:fontFamily="@font/nanum_barun_gothic"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
                 android:hint="검색할 내용을 입력하세요."
                 android:paddingLeft="12dp"

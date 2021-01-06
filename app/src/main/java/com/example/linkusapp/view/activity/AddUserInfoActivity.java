@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.util.SharedPreference;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
@@ -54,6 +55,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
     private GoogleSignInClient googleSignInClient;
     private CallbackManager callbackManager;
     private ISessionCallback sessionCallback;
+    private SharedPreference prefs;
 
     /*닉네임중복확인 유무*/
     boolean isCertify = false;
@@ -93,10 +95,8 @@ public class AddUserInfoActivity extends AppCompatActivity {
         setAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-                if(position != 0){
                     age = parent.getItemAtPosition(position).toString();
                     Snackbar.make(findViewById(R.id.add_user_info), age, Snackbar.LENGTH_SHORT).show();
-                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -148,10 +148,15 @@ public class AddUserInfoActivity extends AppCompatActivity {
                 if(!isCertify){
                     Snackbar.make(findViewById(R.id.add_user_info), "닉네임 중복검사 실시해주세요.", Snackbar.LENGTH_SHORT).show();
                 }
+                else if(age.equals("선택")){
+                    Snackbar.make(findViewById(R.id.add_user_info), "나이를 선택해주세요.", Snackbar.LENGTH_SHORT).show();
+                }
                 else if (searchAddressEt.getText().toString().trim().equals("")){
                     Snackbar.make(findViewById(R.id.add_user_info), "주소 검색 실시해주세요.", Snackbar.LENGTH_SHORT).show();
                 }
                 else{
+                    viewModel.putNickname(userNickname);
+                    viewModel.putAddress(address);
                     viewModel.saveInfo(currentId,userNickname,age,gender,address,loginMethod);
                     Snackbar.make(findViewById(R.id.add_user_info), "회원님의 정보가 저장되었습니다.", Snackbar.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));

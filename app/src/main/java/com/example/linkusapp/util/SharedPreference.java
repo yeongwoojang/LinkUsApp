@@ -28,7 +28,6 @@ public class SharedPreference {
         prefs.edit().remove("cookies").apply();
     }
 
-
     //자동로그인 관련 메소드
     //-----------------------------------------------------------
     public void putInfoAutoLogin(boolean value) {
@@ -56,5 +55,21 @@ public class SharedPreference {
     public void removeLoginMethod() {
         prefs.edit().remove("loginMethod").apply();
     }
+    //회원 정보 얻기
+    public void putAddress(String value) {
+        prefs.edit().putString("address", value).apply();
+    }
+    public String getAddress() {
+        return prefs.getString("address","");
+    }
 
+    public void putNickname(String value){
+        prefs.edit().putString("nickname",value).apply();
+    }
+    public String getNickname() {
+        return prefs.getString("nickname","");
+    }
+    public void removeNickname() {
+        prefs.edit().remove("adress").apply();
+    }
 }

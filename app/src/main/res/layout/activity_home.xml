@@ -32,12 +32,12 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:autoSizeTextType="uniform"
-            android:fontFamily="@font/nanum_square_ac_eb"
+            android:fontFamily="@font/nanum_barun_gothic"
             android:gravity="center"
             android:text="Link US"
             android:textColor="@color/black"
             android:textSize="40dp"
-            android:textStyle="bold" />
+            />
 
     </LinearLayout>
 
@@ -57,7 +57,7 @@
             android:id="@+id/id_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/nanum_square_ac_b"
+            android:fontFamily="@font/nanum_barun_gothic"
             android:hint="ID"
             android:inputType="text"
             android:maxLength="12"
@@ -69,6 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:fontFamily="@font/nanum_barun_gothic"
             android:hint="Password"
             android:inputType="textPassword"
             android:maxLength="12"
@@ -82,6 +83,7 @@
             android:layout_marginTop="2dp"
             android:gravity="right"
             android:text="Forgot password?"
+            android:fontFamily="@font/nanum_barun_gothic"
             android:textColor="@color/red500" />
 
         <CheckedTextView
@@ -90,6 +92,7 @@
             android:layout_height="wrap_content"
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:gravity="center"
+            android:fontFamily="@font/nanum_barun_gothic"
             android:text="자동로그인" />
     </LinearLayout>
 
@@ -102,7 +105,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/form_button_round"
         android:elevation="8dp"
-        android:fontFamily="@font/nanum_square_ac_b"
+        android:fontFamily="@font/nanum_barun_gothic"
         android:text="Login"
         android:textColor="@color/white"
         android:textSize="15dp"
@@ -115,7 +118,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/nanum_square_ac_b"
+        android:fontFamily="@font/nanum_barun_gothic"
         android:gravity="center"
         android:text="Sign in with"
         android:textColor="@color/black"
@@ -183,7 +186,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/nanum_square_ac_b"
+            android:fontFamily="@font/nanum_barun_gothic"
             android:text="Don't have an account?"
             android:textColor="@color/black" />
         <TextView
@@ -191,7 +194,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:fontFamily="@font/nanum_square_ac_b"
+            android:fontFamily="@font/nanum_barun_gothic"
             android:text="Sign up"
             android:textColor="@color/black"
             android:textSize="15dp" />
