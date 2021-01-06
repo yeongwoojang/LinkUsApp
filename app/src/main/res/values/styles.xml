@@ -5,9 +5,30 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:dialogTheme">@style/CustomDatePickerDialog</item>
+        <item name="android:datePickerStyle">@style/MyDatePickerStyle</item>
     </style>
 
     <style name="EditTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="CustomDatePickerDialog" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:datePickerStyle">@style/MyDatePickerStyle</item>
+        <item name="android:textColor">@color/red700</item>
+        <item name="colorAccent">@color/red500</item>
+        <item name="colorPrimary">@color/red500</item>
+        <item name="colorControlActivated">@color/red500</item>
+        <item name="android:colorForeground">@color/red500</item>
+        <item name="elevation">8dp</item>
+    </style>
+
+    <style name="MyDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+        <item name="android:calendarViewShown">false</item>
+        <item name="android:spinnersShown">true</item>
+        <item name="android:colorForeground">@color/white</item>
+        <item name="background">@color/white</item>
+    </style>
+
 </resources>
