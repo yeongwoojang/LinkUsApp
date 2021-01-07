@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
@@ -16,28 +17,10 @@ import java.util.List;
 
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHolder> {
 
-    private List<Board> mItems = new ArrayList<>();
+    private List<Board> boardList;
 
-    public class BoardViewHolder extends RecyclerView.ViewHolder {
-        TextView partTextView;
-        TextView areaTextView;
-        TextView nicknameTextView;
-        TextView titleTextView;
-        TextView dateTextView;
-
-        public BoardViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            partTextView = itemView.findViewById(R.id.part);
-            areaTextView = itemView.findViewById(R.id.area);
-            nicknameTextView = itemView.findViewById(R.id.nickname);
-            titleTextView = itemView.findViewById(R.id.title);
-            dateTextView = itemView.findViewById(R.id.writing_day);
-        }
-    }
-
-    public BoardAdapter(List<Board> list){
-        mItems = list;
+    public BoardAdapter(List<Board> boardList){
+        this.boardList = boardList;
     }
 
     @NonNull
@@ -45,28 +28,58 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
     public BoardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_board,parent,false);
         return new BoardViewHolder(view);
-
-//        Context context = parent.getContext() ;
-//        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
-//
-//        View view = inflater.inflate(R.layout.item_board, parent, false) ;
-//        BoardViewHolder vh = new BoardViewHolder(view) ;
-//        return vh ;
     }
 
     @Override
     public void onBindViewHolder(@NonNull BoardViewHolder holder, int position) {
-        Board board = mItems.get(position);
-
-        holder.partTextView.setText(board.getPart());
-        holder.areaTextView.setText(board.getArea());
-        holder.nicknameTextView.setText(board.getUserNickname());
-        holder.titleTextView.setText(board.getTitle());
-        holder.dateTextView.setText(board.getWriteTime());
+        if (holder instanceof BoardAdapter.BoardViewHolder) {
+            holder.onBind(position);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return boardList.size();
+    }
+
+
+    public class BoardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        private int position;
+        private CardView cardView;
+        private TextView gPart;
+        private TextView gArea;
+        private TextView gReader;
+        private TextView gName;
+        private TextView gGoal;
+        private TextView gJoinMethod;
+
+        public BoardViewHolder(@NonNull View itemView) {
+            super(itemView);
+            cardView = itemView.findViewById(R.id.board_item);
+            gPart = itemView.findViewById(R.id.g_part);
+            gArea = itemView.findViewById(R.id.g_area);
+            gReader = itemView.findViewById(R.id.g_reader);
+            gName = itemView.findViewById(R.id.g_name);
+            gGoal = itemView.findViewById(R.id.g_goal);
+            gJoinMethod = itemView.findViewById(R.id.g_join_method);
+
+        }
+
+        public void onBind(int position) {
+            this.position = position;
+            gPart.setText(boardList.get(position).getgPart());
+            gArea.setText(boardList.get(position).getgArea());
+            gReader.setText(boardList.get(position).getgReader());
+            gName.setText(boardList.get(position).getgName());
+            gGoal.setText(boardList.get(position).getgGoal());
+            gJoinMethod.setText(boardList.get(position).getgJoinMethod());
+            cardView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+        }
     }
 }

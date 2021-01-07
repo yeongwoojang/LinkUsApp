@@ -1,62 +1,69 @@
 package com.example.linkusapp.model.vo;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Board {
 
-    private String userNickname;
-    private String title;
-    private String part;
-    private String area;
-    private String writeTime;
+    @SerializedName("G_PART")
+    private String gPart;
 
-    public Board(String part, String area, String userNickname, String title, String writeTime) {
-        this.part = part;
-        this.area = area;
-        this.userNickname = userNickname;
-        this.title = title;
-        this.writeTime = writeTime;
+    @SerializedName("G_AREA")
+    private String gArea;
+
+    @SerializedName("G_READER")
+    private String gReader;
+
+    @SerializedName("G_NAME")
+    private String gName;
+
+    @SerializedName("G_GOAL")
+    private String gGoal;
+
+    @SerializedName("G_JOIN_METHOD")
+    private String gJoinMethod;
+
+
+    public String getgPart() {
+        return gPart;
     }
 
-    public Board() {
-
+    public void setgPart(String gPart) {
+        this.gPart = gPart;
     }
 
-    public String getUserNickname() {
-        return userNickname;
+    public String getgArea() {
+        return gArea;
     }
 
-    public void setUserNickname(String userNickname) {
-        this.userNickname = userNickname;
+    public void setgArea(String gArea) {
+        this.gArea = gArea;
     }
 
-    public String getTitle() {
-        return title;
+    public String getgReader() {
+        return gReader;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setgReader(String gReader) {
+        this.gReader = gReader;
     }
 
-    public String getPart() {
-        return part;
+    public String getgName() {
+        return gName;
     }
 
-    public void setPart(String part) {
-        this.part = part;
+    public void setgName(String gName) {
+        this.gName = gName;
     }
 
-    public String getArea() {
-        return area;
+    public String getgGoal() {
+        return gGoal;
     }
 
-    public void setArea(String area) {
-        this.area = area;
+    public void setgGoal(String gGoal) {
+        this.gGoal = gGoal;
     }
 
-    public String getWriteTime() {
-        return writeTime;
-    }
+    public String getgJoinMethod() { return gJoinMethod; }
 
-    public void setWriteTime(String writeTime) {
-        this.writeTime = writeTime;
-    }
+    public void setgJoinMethod(String gJoinMethod) { this.gJoinMethod = gJoinMethod; }
 }

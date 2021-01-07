@@ -1,5 +1,6 @@
 package com.example.linkusapp.repository;
 
+import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 
 import retrofit2.Call;
@@ -55,4 +56,8 @@ public interface ServiceApi {
             @Field("address") String address,
             @Field("loginMethod") String loginMethod
     );
+
+    // 스터디 그룹(게시글) 전체를 서버에 요청
+    @GET("/android/boardAll")
+    Call<BoardInfo> getAllBoard();
 }
