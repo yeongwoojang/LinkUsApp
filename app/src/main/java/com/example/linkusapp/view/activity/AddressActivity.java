@@ -50,9 +50,7 @@ public class AddressActivity extends Activity {
                 webView.loadUrl("javascript:sample2_execDaumPostcode();");
             }
         });
-
         webView.loadUrl("http://ec2-15-164-129-208.ap-northeast-2.compute.amazonaws.com:3000/");
-
     }
 
 

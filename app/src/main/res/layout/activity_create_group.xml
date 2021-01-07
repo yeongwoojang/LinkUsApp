@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/create_group_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -86,7 +87,7 @@
                     android:layout_height="150dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/form_edt_box"
                     android:fontFamily="@font/nanum_square_ac_l"
                     android:gravity="start"
@@ -103,7 +104,29 @@
                     android:layout_marginRight="12dp"
                     android:layout_marginBottom="20dp"
                     android:background="@color/gray50" />
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_ac_eb"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:text="스터디 분야"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+                <Spinner
+                    android:id="@+id/spinner_part"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:padding="10dp"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/bm_dohyeon_ttf"
+                    android:entries="@array/part"
+                    android:background="@drawable/form_spinner"
+                    />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -172,6 +195,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:orientation="horizontal">
 
                     <Button
@@ -212,6 +236,66 @@
                         android:textColor="@color/gray400"
                         android:textSize="20dp" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/gray50" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_ac_eb"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:text="스터디 활동 지역"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/white"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/study_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="서울시 관악구"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
+                            android:fontFamily="@font/nanum_square_acr"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:text=" * 회원정보에 설정된 지역으로 설정됩니다."
+                            android:textColor="@color/gray400"
+                            android:textSize="11dp"
+                            android:fontFamily="@font/nanum_square_acr"
+                            />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -273,7 +357,8 @@
                             android:layout_marginTop="15dp"
                             android:layout_weight="6"
                             android:background="@color/transparent"
-                            android:src="@drawable/icon_check" />
+                            android:src="@drawable/icon_check"
+                            android:tag="free" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -320,12 +405,13 @@
 
                         <ImageButton
                             android:id="@+id/btn_approval_join"
-                            android:layout_marginTop="15dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
                             android:layout_weight="6"
                             android:background="@color/transparent"
-                            android:src="@drawable/icon_check" />
+                            android:src="@drawable/icon_check"
+                            android:tag="approval" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
