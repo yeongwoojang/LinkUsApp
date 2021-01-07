@@ -1,5 +1,7 @@
 package com.example.linkusapp.repository;
 
+import com.example.linkusapp.model.vo.Address;
+import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 
 import retrofit2.Call;
@@ -62,4 +64,21 @@ public interface ServiceApi {
         @Field("userId")      String userId,
         @Field("loginMethod") String loginMethod
     );
+
+    @FormUrlEncoded
+    @POST("/android/addAddress")
+    Call<String> addAddress(
+            @Field("userNickname") String userNickname,
+            @Field("address") String address
+    );
+
+    @FormUrlEncoded
+    @POST("/android/updateAddress")
+    Call<String> updateAddress(
+            @Field("userNickname") String userNickname,
+            @Field("address") String address
+    );
+
+    @GET("/android/userAddress")
+    Call<AddressInfo> userAddress(@Query("userNickname") String userNickname);
 }

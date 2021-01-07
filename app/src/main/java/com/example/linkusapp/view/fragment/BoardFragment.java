@@ -12,6 +12,7 @@ import com.example.linkusapp.R;
 
 public class BoardFragment extends Fragment {
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
