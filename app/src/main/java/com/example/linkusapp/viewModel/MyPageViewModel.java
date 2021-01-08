@@ -1,17 +1,20 @@
 package com.example.linkusapp.viewModel;
 
 import android.app.Application;
+import android.location.Address;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.linkusapp.model.vo.Address;
 import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.util.SharedPreference;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,7 +34,6 @@ public class MyPageViewModel extends AndroidViewModel {
         super(application);
         serviceApi = RetrofitClient.getClient(application).create(ServiceApi.class);
         prefs = new SharedPreference(application);
-
     }
     public String getNickname() { return prefs.getNickname();}
     public void addAddress(String userNickname,String address){

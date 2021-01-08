@@ -2,12 +2,12 @@ package com.example.linkusapp.model.vo;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Address {
+public class UserAddress {
 
-    @SerializedName("NICKNAME")
+    @SerializedName("A_USER")
     private String nickname;
 
-    @SerializedName("ADDRESS")
+    @SerializedName("A_ADDRESS")
     private String address;
 
     public String getNickname() {
@@ -34,7 +34,7 @@ public class Address {
                 '}';
     }
 
-    public Address(String nickname, String address, String road) {
+    public UserAddress(String nickname, String address, String road) {
         this.nickname = nickname;
         this.address = address;
     }

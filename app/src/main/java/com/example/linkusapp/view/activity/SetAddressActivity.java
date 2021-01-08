@@ -24,12 +24,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.model.vo.UserAddress;
 import com.example.linkusapp.util.GpsTracker;
 import com.example.linkusapp.view.adapter.AddressAdapter;
 import com.example.linkusapp.viewModel.MyPageViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -41,6 +43,7 @@ public class SetAddressActivity extends AppCompatActivity {
     private MyPageViewModel viewModel;
     private String nickname;
     private RecyclerView recentAddressView;
+    private List<UserAddress> addressList = new ArrayList<>();
     /*주소 검색*/
     private static final  int SEARCH_ADDRESS_ACTIVITY = 10000;
 
@@ -102,7 +105,18 @@ public class SetAddressActivity extends AppCompatActivity {
         });
         /*최근 주소*/
         recentAddressView.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
+        viewModel.userAddress(viewModel.getNickname());
 
+        viewModel.userAddressRsLD.observe(this,addressInfo -> {
+            if (addressInfo.getCode().equals("200")){
+                addressList = addressInfo.getJsonArray();
+                Log.d("recycle", "onCreate: "+addressList);
+                AddressAdapter addressAdapter = new AddressAdapter(addressList);
+                recentAddressView.setAdapter(addressAdapter);
+            }else{
+                Snackbar.make(findViewById(R.id.set_address_layout), "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
+            }
+        });
         /*주소 변경*/
         correctBtn.setOnClickListener(new View.OnClickListener() {
             @Override

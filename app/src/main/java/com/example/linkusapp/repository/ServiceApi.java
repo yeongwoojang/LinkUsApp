@@ -1,6 +1,5 @@
 package com.example.linkusapp.repository;
 
-import com.example.linkusapp.model.vo.Address;
 import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 

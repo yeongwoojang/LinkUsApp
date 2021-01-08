@@ -9,7 +9,7 @@ public class AddressInfo {
     private String code;
 
     @SerializedName("jsonArray")
-    private List<Address> address;
+    private List<UserAddress> jsonArray;
 
 
     public String getCode() {
@@ -20,16 +20,11 @@ public class AddressInfo {
         this.code = code;
     }
 
-    public AddressInfo(String code, List<Address> address) {
-        this.code = code;
-        this.address = address;
+    public List<UserAddress> getJsonArray() {
+        return jsonArray;
     }
 
-    public List<Address> getAddress() {
-        return address;
-    }
-
-    public void setAddress(List<Address> address) {
-        this.address = address;
+    public void setJsonArray(List<UserAddress> jsonArray) {
+        this.jsonArray = jsonArray;
     }
 }

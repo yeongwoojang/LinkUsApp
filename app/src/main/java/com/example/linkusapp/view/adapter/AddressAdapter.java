@@ -3,39 +3,49 @@ package com.example.linkusapp.view.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
-import com.example.linkusapp.model.vo.Address;
-import com.example.linkusapp.model.vo.Board;
+import com.example.linkusapp.model.vo.UserAddress;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressViewHolder> {
 
 
-    private ArrayList<Address> mDataset;
+    private List<UserAddress> mDataset;
 
-    public class AddressViewHolder extends RecyclerView.ViewHolder {
+    public AddressAdapter(List<UserAddress> addressList) {
+        this.mDataset = addressList;
+        notifyDataSetChanged();
+    }
 
-        TextView addressTV;
+    /**/
+    public class AddressViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        private int position;
+        private TextView addressTV;
+        private CardView cardView;
         public AddressViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            cardView = itemView.findViewById(R.id.cardview);
             addressTV = itemView.findViewById(R.id.item_address);
         }
-    }
-    public AddressAdapter(ArrayList<Address> myDataset){
-        myDataset = myDataset;
-    }
+        public void onBind(int position){
+            this.position = position;
+            addressTV.setText(mDataset.get(position).getAddress());
+            cardView.setOnClickListener(this);
+        }
 
+        @Override
+        public void onClick(View view) {
+
+        }
+    }
     @NonNull
     @Override
     public AddressViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,9 +54,9 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     }
     @Override
     public void onBindViewHolder(@NonNull AddressViewHolder holder, int position) {
-        Address address = mDataset.get(position);
-
-        holder.addressTV.setText(address.getAddress());
+        if (holder instanceof AddressAdapter.AddressViewHolder) {
+            holder.onBind(position);
+        }
     }
     @Override
     public int getItemCount() {
