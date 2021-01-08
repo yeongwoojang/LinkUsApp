@@ -7,7 +7,7 @@ public class Board {
     @SerializedName("G_PART")
     private String gPart;
 
-    @SerializedName("G_AREA")
+    @SerializedName("ADDRESS")
     private String gArea;
 
     @SerializedName("G_READER")
@@ -16,8 +16,8 @@ public class Board {
     @SerializedName("G_NAME")
     private String gName;
 
-    @SerializedName("G_GOAL")
-    private String gGoal;
+    @SerializedName("G_PURPOSE")
+    private String gPurpose;
 
     @SerializedName("G_JOIN_METHOD")
     private String gJoinMethod;
@@ -55,12 +55,12 @@ public class Board {
         this.gName = gName;
     }
 
-    public String getgGoal() {
-        return gGoal;
+    public String getgPurpose() {
+        return gPurpose;
     }
 
-    public void setgGoal(String gGoal) {
-        this.gGoal = gGoal;
+    public void setgPurpose(String gPurpose) {
+        this.gPurpose = gPurpose;
     }
 
     public String getgJoinMethod() { return gJoinMethod; }

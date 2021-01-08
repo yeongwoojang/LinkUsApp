@@ -51,7 +51,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
         private TextView gArea;
         private TextView gReader;
         private TextView gName;
-        private TextView gGoal;
+        private TextView gPurpose;
         private TextView gJoinMethod;
 
         public BoardViewHolder(@NonNull View itemView) {
@@ -61,7 +61,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
             gArea = itemView.findViewById(R.id.g_area);
             gReader = itemView.findViewById(R.id.g_reader);
             gName = itemView.findViewById(R.id.g_name);
-            gGoal = itemView.findViewById(R.id.g_goal);
+            gPurpose = itemView.findViewById(R.id.g_purpose);
             gJoinMethod = itemView.findViewById(R.id.g_join_method);
 
         }
@@ -72,7 +72,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
             gArea.setText(boardList.get(position).getgArea());
             gReader.setText(boardList.get(position).getgReader());
             gName.setText(boardList.get(position).getgName());
-            gGoal.setText(boardList.get(position).getgGoal());
+            gPurpose.setText(boardList.get(position).getgPurpose());
             gJoinMethod.setText(boardList.get(position).getgJoinMethod());
             cardView.setOnClickListener(this);
         }

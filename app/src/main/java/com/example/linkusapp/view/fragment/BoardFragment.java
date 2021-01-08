@@ -107,7 +107,6 @@ public class BoardFragment extends Fragment{
                 boardList = boardInfo.getJsonArray();
                 BoardAdapter boardAdapter = new BoardAdapter(boardList);
                 boardRecyclerView.setAdapter(boardAdapter);
-                Snackbar.make(view, "스터디 그룹 LOAD", Snackbar.LENGTH_SHORT).show();
             }else if(boardInfo.getCode()==204){
                 Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
             }else{
