@@ -54,4 +54,13 @@
         <item>59세</item>
         <item>60세</item>
     </string-array>
+    <string-array name="part">
+        <item>어학</item>
+        <item>교양</item>
+        <item>프로그래밍</item>
+        <item>취업</item>
+        <item>취미</item>
+        <item>자율</item>
+        <item>기타</item>
+    </string-array>
 </resources>

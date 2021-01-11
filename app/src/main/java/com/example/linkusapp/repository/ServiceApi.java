@@ -1,6 +1,5 @@
 package com.example.linkusapp.repository;
 
-import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 
 import retrofit2.Call;
@@ -54,6 +53,24 @@ public interface ServiceApi {
             @Field("age") String age,
             @Field("gender") String gender,
             @Field("address") String address,
+            @Field("loginMethod") String loginMethod
+    );
+
+    @GET("/android/getUserInfo")
+    Call<UserInfo> getUserInfo(
+            @Query("loginMethod") String loginMethod
+    );
+
+    @FormUrlEncoded
+    @POST("/android/createGroup")
+    Call<String> createGroup(
+            @Field("g_name") String gName,
+            @Field("g_explanation") String gExplanation,
+            @Field("g_part") String gPart,
+            @Field("g_purpose") String gPurpose,
+            @Field("g_start_date") String gStartDate,
+            @Field("g_end_date") String gEndDate,
+            @Field("g_join_method") String gJoinMetho,
             @Field("loginMethod") String loginMethod
     );
 
