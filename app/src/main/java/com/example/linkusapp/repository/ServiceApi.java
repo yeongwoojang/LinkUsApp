@@ -1,6 +1,8 @@
 package com.example.linkusapp.repository;
 
+import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.FindPassword;
+import com.example.linkusapp.model.vo.UserInfo;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

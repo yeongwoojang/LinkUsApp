@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.linkusapp.R;
 import com.example.linkusapp.view.activity.HomeActivity;
 import com.example.linkusapp.view.activity.SetAddressActivity;
+import com.example.linkusapp.view.activity.UpdateUserActivity;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,8 +33,8 @@ public class MyPageFragment extends Fragment {
 
     private TextView nickNameTV,addressTV,methodTV;
     private LoginViewModel viewModel;
-    private Button logout,withdraw,shareApp,setAddress;
-    private String loginMethod;
+    private Button logout,withdraw,shareApp,setAddress,updateInfo;
+    private String loginMethod,userNickname,userAddress;
     private GoogleSignInClient mSignInClient;
     private String userId;
 
@@ -53,8 +54,19 @@ public class MyPageFragment extends Fragment {
         withdraw = (Button) view.findViewById(R.id.withdraw_app);
         shareApp = (Button) view.findViewById(R.id.share_app);
         setAddress = (Button) view.findViewById(R.id.my_address);
+        updateInfo = (Button) view.findViewById(R.id.update_info);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        loginMethod = viewModel.getLoginMethod();
+        viewModel.getUserInfo();
+        viewModel.getUserInfoRsLD.observe(getViewLifecycleOwner(),userInfo -> {
+            if(userInfo.getUser()!=null){
+                userId = userInfo.getUser().getUserId();
+                userAddress = userInfo.getUser().getAddress();
+                loginMethod = userInfo.getUser().getLoginMethod();
+                nickNameTV.setText(userInfo.getUser().getUserNickname());
+                addressTV.setText(userInfo.getUser().getAddress());
+                methodTV.setText(userInfo.getUser().getLoginMethod());
+            }
+        });
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
@@ -66,16 +78,21 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        methodTV.setText(viewModel.getLoginMethod());
-        addressTV.setText(viewModel.getAddress());
-        nickNameTV.setText(viewModel.getNickname());
         userId = viewModel.getLoginSession();
-
+        /*회원정보 수정*/
+        updateInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), UpdateUserActivity.class));
+            }
+        });
         /*내지역설정*/
         setAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), SetAddressActivity.class));
+                Intent intent = new Intent(getActivity(),SetAddressActivity.class);
+                intent.putExtra("Nickname",userAddress);
+                startActivity(intent);
             }
         });
 

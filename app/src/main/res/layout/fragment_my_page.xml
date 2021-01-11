@@ -46,16 +46,16 @@
                 android:orientation="vertical"
                 android:layout_margin="16dp"
                 >
+
                 <TextView
                     android:id="@+id/nickname_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="닉네임"
                     android:fontFamily="@font/nanum_barun_gothic"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
+                    android:text="닉네임"
                     android:textColor="@color/black"
-                    />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                 </LinearLayout>
             </LinearLayout>
             <Button
-                android:id="@+id/join_btn"
+                android:id="@+id/update_info"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginLeft="16dp"

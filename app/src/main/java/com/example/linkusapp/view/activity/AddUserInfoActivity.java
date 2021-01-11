@@ -108,13 +108,15 @@ public class AddUserInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 userNickname = nicknameEt.getText().toString().trim();
-                if (!userNickname.equals("") && userNickname.length() <= 10) {
+                if(userNickname.equals("")||!userNickname.matches("^[a-zA-Z0-9가-힣]+$")) {
+                    Snackbar.make(findViewById(R.id.add_user_info),"조건에 맞는 닉네임을 입력해주세요.",Snackbar.LENGTH_SHORT).show();
+                    isCertify = false;
+                }else if(userNickname.length() >= 10){
+                    Snackbar.make(findViewById(R.id.add_user_info),"닉네임 길이 10자 이하로 작성해주세요.",Snackbar.LENGTH_SHORT).show();
+                    isCertify = false;
+                }else{
                     viewModel.nickNameChk(userNickname);
                     isCertify = true;
-                } else {
-                    nicknameEt.setText(" ");
-                    Snackbar.make(findViewById(R.id.add_user_info), "조건에 맞는 닉네임을 입력해주세요", Snackbar.LENGTH_SHORT).show();
-                    isCertify = false;
                 }
             }
         });

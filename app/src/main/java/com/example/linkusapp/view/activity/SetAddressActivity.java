@@ -2,6 +2,7 @@ package com.example.linkusapp.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,6 +18,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -62,7 +64,8 @@ public class SetAddressActivity extends AppCompatActivity {
         correctBtn = (Button) findViewById(R.id.correct_btn);
         recentAddressView = (RecyclerView) findViewById(R.id.recent_address_rv);
         viewModel = new ViewModelProvider(this).get(MyPageViewModel.class);
-        nickname = viewModel.getNickname();
+        Intent intent = getIntent();
+        nickname = intent.getExtras().get("nickname").toString();
 
         /*툴바 뒤로가기 버튼*/
         findViewById(R.id.back_btn).setOnClickListener(new View.OnClickListener() {

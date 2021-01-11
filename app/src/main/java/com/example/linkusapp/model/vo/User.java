@@ -28,6 +28,13 @@ public class User {
     @SerializedName("LOGIN_METHOD")
     @Expose
     private String loginMethod;
+    @SerializedName("USER_NICKNAME")
+    @Expose
+    private String userNickname;
+
+    public String getUserNickname() {
+        return userNickname;
+    }
 
     public String getUserId() {
         return userId;

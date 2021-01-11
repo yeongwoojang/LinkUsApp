@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.FindPassword;
+import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.util.SharedPreference;
@@ -58,7 +59,6 @@ public class MyPageViewModel extends AndroidViewModel {
                 String code =response.body();
                 updateAddressRsLD.postValue(code);
             }
-
             @Override
             public void onFailure(Call<String> call, Throwable t) {
 

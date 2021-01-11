@@ -34,7 +34,6 @@ public class CreateGrpViewModel extends AndroidViewModel {
                 UserInfo result = response.body();
                 userLiveData.postValue(result);
             }
-
             @Override
             public void onFailure(Call<UserInfo> call, Throwable t) {
 
