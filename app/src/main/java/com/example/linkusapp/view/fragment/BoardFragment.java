@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -64,23 +65,54 @@ public class BoardFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ArrayList<String> list = new ArrayList<>();
+        viewModel = new ViewModelProvider(this).get(BoardViewModel.class);
+        ArrayList<String> partList = new ArrayList<>();
         String[] part = {"전체", "어학", "교양", "프로그래밍", "취업","취미", "자율", "기타"};
         for (int i=0; i<part.length; i++) {
-            list.add(part[i]);
+            partList.add(part[i]);
         }
+
         partRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        PartAdapter adapter = new PartAdapter(list) ;
+        PartAdapter adapter = new PartAdapter(partList) ;
         partRecyclerView.setAdapter(adapter);
 
-        // 분야 아이템 클릭시 event
+
+        boardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
+        viewModel.getAllBoard();
+        viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
+            if(boardInfo.getCode()==200){
+                boardList = boardInfo.getJsonArray();
+                BoardAdapter boardAdapter = new BoardAdapter(boardList, getActivity());
+                boardRecyclerView.setAdapter(boardAdapter);
+            }else if(boardInfo.getCode()==204){
+                Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
+            }else{
+                Snackbar.make(view, "오류", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+        //분야 아이템 클릭시 event
         adapter.setOnItemClickListener(new PartAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
+                String gPart;
                 if(position == 0){
                     Toast.makeText(getApplicationContext(),"전체",Toast.LENGTH_SHORT).show();
                 }else if(position == 1){
+                    gPart = part[1];
+                    viewModel.getPartBoard(gPart);
                     Toast.makeText(getApplicationContext(),"어학",Toast.LENGTH_SHORT).show();
+                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
+                        if(boardPartInfo.getCode()==200){
+                            boardList = boardPartInfo.getJsonArray();
+                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+                            boardRecyclerView.setAdapter(boardAdapter);
+                        }else if(boardPartInfo.getCode()==204){
+                            Log.d(TAG, "onItemClick: 게시글 없음");
+                        }else{
+                            Log.d(TAG, "onItemClick: 오류");
+                        }
+                    });
                 }else if(position == 2){
                     Toast.makeText(getApplicationContext(),"교양",Toast.LENGTH_SHORT).show();
                 }else if(position == 3){
@@ -94,23 +126,6 @@ public class BoardFragment extends Fragment{
                 }else{
                     Toast.makeText(getApplicationContext(),"기타",Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-
-        boardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
-
-        viewModel = new ViewModelProvider(this).get(BoardViewModel.class);
-        viewModel.getAllBoard();
-
-        viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
-            if(boardInfo.getCode()==200){
-                boardList = boardInfo.getJsonArray();
-                BoardAdapter boardAdapter = new BoardAdapter(boardList);
-                boardRecyclerView.setAdapter(boardAdapter);
-            }else if(boardInfo.getCode()==204){
-                Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
-            }else{
-                Snackbar.make(view, "오류", Snackbar.LENGTH_SHORT).show();
             }
         });
     }

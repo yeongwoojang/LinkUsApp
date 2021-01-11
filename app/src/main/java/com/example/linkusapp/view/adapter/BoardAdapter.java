@@ -1,5 +1,6 @@
 package com.example.linkusapp.view.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHolder> {
 
     private List<Board> boardList;
+    public Context context;
 
-    public BoardAdapter(List<Board> boardList){
+    public BoardAdapter(List<Board> boardList, Context context){
         this.boardList = boardList;
+        this.context = context;
     }
 
     @NonNull

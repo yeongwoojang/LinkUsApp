@@ -27,43 +27,31 @@ public class Board {
         return gPart;
     }
 
-    public void setgPart(String gPart) {
-        this.gPart = gPart;
-    }
 
     public String getgArea() {
         return gArea;
     }
 
-    public void setgArea(String gArea) {
-        this.gArea = gArea;
-    }
+
 
     public String getgReader() {
         return gReader;
     }
 
-    public void setgReader(String gReader) {
-        this.gReader = gReader;
-    }
+
 
     public String getgName() {
         return gName;
     }
 
-    public void setgName(String gName) {
-        this.gName = gName;
-    }
+
 
     public String getgPurpose() {
         return gPurpose;
     }
 
-    public void setgPurpose(String gPurpose) {
-        this.gPurpose = gPurpose;
-    }
 
     public String getgJoinMethod() { return gJoinMethod; }
 
-    public void setgJoinMethod(String gJoinMethod) { this.gJoinMethod = gJoinMethod; }
+
 }

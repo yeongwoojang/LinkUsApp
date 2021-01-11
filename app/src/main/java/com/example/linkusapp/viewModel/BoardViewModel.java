@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.linkusapp.model.vo.BoardInfo;
+import com.example.linkusapp.model.vo.BoardPartInfo;
 import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.util.SharedPreference;
@@ -20,6 +21,7 @@ public class BoardViewModel extends AndroidViewModel {
     private SharedPreference prefs;
 
     public MutableLiveData<BoardInfo> boardRsLD = new MutableLiveData<BoardInfo>();
+    public MutableLiveData<BoardPartInfo> boardPartRsLD = new MutableLiveData<BoardPartInfo>();
 
     public BoardViewModel(@NonNull Application application) {
         super(application);
@@ -37,6 +39,20 @@ public class BoardViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<BoardInfo> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getPartBoard(String gPart){
+        service.getPartBoard(gPart).enqueue(new Callback<BoardPartInfo>() {
+            @Override
+            public void onResponse(Call<BoardPartInfo> call, Response<BoardPartInfo> response) {
+                BoardPartInfo result = response.body();
+                boardPartRsLD.postValue(result);
+            }
+            @Override
+            public void onFailure(Call<BoardPartInfo> call, Throwable t) {
 
             }
         });
