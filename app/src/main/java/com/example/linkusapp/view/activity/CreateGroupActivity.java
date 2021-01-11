@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -169,7 +170,19 @@ public class CreateGroupActivity extends AppCompatActivity {
                 String startDate  =startDateBt.getText().toString().trim();
                 String endDate = endDateBt.getText().toString().trim();
                 String joinMethod = joinTag;
-                viewModel.createGroup(groupName,groupExplanation,part,groupPurpose,startDate,endDate,joinMethod);
+                if(startDate.matches("^[가-힣]+$") ||endDate.matches("^[가-힣]+$")){
+                    startDate = "미정";
+                    endDate ="미정";
+                }
+                //부정확한 그룹명인지 아닌지 체크
+                if(!groupName.matches("^[a-zA-Z0-9가-힣]+$")) {
+                    Snackbar.make(findViewById(R.id.create_group_page),"올바르지 않은 그룹명입니다.",Snackbar.LENGTH_SHORT).show();
+                }else{
+                    viewModel.createGroup(groupName,groupExplanation,part,groupPurpose,startDate,endDate,joinMethod);
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                    finish();
+                }
             }
         });
 

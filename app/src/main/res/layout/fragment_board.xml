@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginRight="10dp"
-                    android:src="@drawable/ic_baseline_create_24"
+                    android:src="@drawable/icon_pencil"
                     android:background="@color/transparent" />
             </FrameLayout>
         </androidx.appcompat.widget.Toolbar>
