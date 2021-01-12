@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/my_study_group"
     tools:context=".view.activity.MyStudyGroupActivity">
 
     <RelativeLayout
@@ -36,6 +37,7 @@
             android:layout_below="@+id/toolbar"
             android:background="@color/gray300" />
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_study_group_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar_div">

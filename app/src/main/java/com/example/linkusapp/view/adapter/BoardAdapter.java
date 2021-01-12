@@ -1,8 +1,7 @@
 package com.example.linkusapp.view.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,44 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
+import com.example.linkusapp.view.activity.GroupMainActivity;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHolder> {
+public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHolder> implements View.OnClickListener {
 
     private List<Board> boardList;
-    private Context context;
-    public BoardAdapter(List<Board> boardList, Context context){
-        this.boardList = boardList;
-        this.context = context;
-    }
+    private Activity getActivity;
 
-    @NonNull
-    @Override
-    public BoardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_board,parent,false);
-        return new BoardViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull BoardViewHolder holder, int position) {
-        if (holder instanceof BoardAdapter.BoardViewHolder) {
-            holder.onBind(position);
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        return boardList.size();
-    }
-
-
-    public class BoardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
-        int position;
+    //ViewHolder 시작
+    public class BoardViewHolder extends RecyclerView.ViewHolder{
         private CardView cardView;
         private TextView gPart;
         private TextView gArea;
@@ -71,21 +43,52 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
             gJoinMethod = itemView.findViewById(R.id.g_join_method);
         }
 
-        public void onBind(int position) {
-            Log.d("seq", "onBind: ");
-            this.position = position;
-            gPart.setText(boardList.get(position).getgPart());
-            gArea.setText(boardList.get(position).getgArea());
-            gReader.setText(boardList.get(position).getgReader());
-            gName.setText(boardList.get(position).getgName());
-            gPurpose.setText(boardList.get(position).getgPurpose());
-            gJoinMethod.setText(boardList.get(position).getgJoinMethod());
-            cardView.setOnClickListener(this);
-        }
 
-        @Override
-        public void onClick(View v) {
-            context.startActivity(new Intent(context.getApplicationContext(),));
-        }
     }
+    //ViewHolder 끝
+
+    public void updateItem(List<Board> items){
+        boardList = items;
+        notifyDataSetChanged();
+    }
+
+    public BoardAdapter(List<Board> boardList, Activity getActivity){
+        this.boardList = boardList;
+        this.getActivity = getActivity;
+    }
+
+    @NonNull
+    @Override
+    public BoardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_board,parent,false);
+        return new BoardViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull BoardViewHolder holder, int position) {
+        Board board = boardList.get(position);
+        holder.gPart.setText(board.getgPart());
+        holder.gArea.setText(board.getgArea());
+        holder.gReader.setText(board.getgReader());
+        holder.gName.setText(board.getgName());
+        holder.gPurpose.setText(board.getgPurpose());
+        holder.gJoinMethod.setText(board.getgJoinMethod());
+        holder.cardView.setTag(position);
+        holder.cardView.setOnClickListener(this);
+    }
+
+    @Override
+    public int getItemCount() {
+        return boardList.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(getActivity, GroupMainActivity.class);
+        intent.putExtra("board",boardList.get((int)v.getTag()));
+        getActivity.startActivity(intent);
+        getActivity.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+    }
+
+
 }

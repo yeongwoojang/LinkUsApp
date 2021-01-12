@@ -2,6 +2,7 @@ package com.example.linkusapp.viewModel;
 
 import android.app.Application;
 import android.location.Address;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -28,7 +29,11 @@ public class MyPageViewModel extends AndroidViewModel {
     public MutableLiveData<String> addAddressRsLD = new MutableLiveData<String>();
     public MutableLiveData<String> updateAddressRsLD = new MutableLiveData<String>();
     public MutableLiveData<AddressInfo> userAddressRsLD = new MutableLiveData<AddressInfo>();
+    public MutableLiveData<String> removeAddressRsLD = new MutableLiveData<String>();
 
+    public void i(){
+        Log.d("dfasdf", "i: ");
+    }
 
 
     public MyPageViewModel(@NonNull Application application) {
@@ -75,6 +80,20 @@ public class MyPageViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<AddressInfo> call, Throwable t) {
+
+            }
+        });
+    }
+    public void removeAddress(String userAddress){
+        serviceApi.removeAddress(userAddress).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body();
+                removeAddressRsLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
 
             }
         });

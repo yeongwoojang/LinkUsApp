@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
     }
+
     /*//로그아웃하기
     private void googleSignOut() {
         mSignInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {

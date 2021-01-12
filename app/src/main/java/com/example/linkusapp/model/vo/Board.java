@@ -2,7 +2,11 @@ package com.example.linkusapp.model.vo;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Board {
+import java.io.Serializable;
+
+public class Board implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @SerializedName("G_PART")
     private String gPart;
@@ -22,6 +26,8 @@ public class Board {
     @SerializedName("G_JOIN_METHOD")
     private String gJoinMethod;
 
+    @SerializedName("G_MEMBER_CNT")
+    private String gMemberCnt;
 
     public String getgPart() {
         return gPart;
@@ -46,4 +52,7 @@ public class Board {
 
     public String getgJoinMethod() { return gJoinMethod; }
 
+    public String getgMemberCnt() {
+        return gMemberCnt;
+    }
 }

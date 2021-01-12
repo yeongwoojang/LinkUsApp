@@ -107,15 +107,14 @@ public class SetAddressActivity extends AppCompatActivity {
             }
         });
         /*최근 주소*/
+        AddressAdapter addressAdapter = new AddressAdapter(addressList,this, viewModel,nickname);
+        recentAddressView.setAdapter(addressAdapter);
         recentAddressView.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         viewModel.userAddress(viewModel.getNickname());
 
         viewModel.userAddressRsLD.observe(this,addressInfo -> {
             if (addressInfo.getCode().equals("200")){
-                addressList = addressInfo.getJsonArray();
-                Log.d("recycle", "onCreate: "+addressList);
-                AddressAdapter addressAdapter = new AddressAdapter(addressList);
-                recentAddressView.setAdapter(addressAdapter);
+                addressAdapter.updateItem(addressInfo.getJsonArray());
             }else{
                 Snackbar.make(findViewById(R.id.set_address_layout), "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
             }

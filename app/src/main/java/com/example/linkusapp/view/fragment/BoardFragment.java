@@ -72,18 +72,22 @@ public class BoardFragment extends Fragment{
             partList.add(part[i]);
         }
 
+        // BoardRecyclerView에 BoardAdapter 장착
+        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+        boardRecyclerView.setAdapter(boardAdapter);
+
         partRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         PartAdapter adapter = new PartAdapter(partList) ;
         partRecyclerView.setAdapter(adapter);
+
 
 
         boardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
         viewModel.getAllBoard();
         viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
             if(boardInfo.getCode()==200){
-                boardList = boardInfo.getJsonArray();
-                BoardAdapter boardAdapter = new BoardAdapter(boardList);
-                boardRecyclerView.setAdapter(boardAdapter);
+                //boardInfo를 읽어오면 BoardRecyclerview의 내용을 업데이트.
+                boardAdapter.updateItem(boardInfo.getJsonArray());
             }else if(boardInfo.getCode()==204){
                 Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
             }else{

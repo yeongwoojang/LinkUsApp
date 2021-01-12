@@ -81,9 +81,6 @@ public interface ServiceApi {
     @GET("/android/boardAll")
     Call<BoardInfo> getAllBoard();
 
-
-
-
     @FormUrlEncoded
     @POST("/android/withdraw")
     Call<String> withDraw(
@@ -111,4 +108,11 @@ public interface ServiceApi {
     @FormUrlEncoded
     @POST("/android/updateUserInfo")
     Call<String> updateUserInfo(@Field("userNickname") String userNickname,@Field("userPassword") String userPassword);
+
+    @GET("/android/userBoardAll")
+    Call<BoardInfo> userBoardAll(@Query("userNickname") String userNickname);
+
+    @FormUrlEncoded
+    @POST("/android/removeAddress")
+    Call<String> removeAddress(@Field("userNickname") String userAddress);
 }
