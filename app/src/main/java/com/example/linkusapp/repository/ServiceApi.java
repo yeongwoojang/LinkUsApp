@@ -64,6 +64,6 @@ public interface ServiceApi {
 
     // 분야별 스터디 그룹을 서버에 요청
     @FormUrlEncoded
-    @POST("/android/boardPart")
-    Call<BoardPartInfo> getPartBoard(@Field("G_PART") String gPart);
+    @GET("/android/boardPart")
+    Call<BoardPartInfo> getPartBoard(@Field("g_part") String gPart);
 }

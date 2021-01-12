@@ -44,6 +44,7 @@ public class BoardFragment extends Fragment{
     private BoardViewModel viewModel;
 
     private List<Board> boardList = new ArrayList<>();
+//    private ArrayList<String> partList = new ArrayList<>();
 
     // 뷰 만드는 곳
     @Override
@@ -66,24 +67,27 @@ public class BoardFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(BoardViewModel.class);
+
         ArrayList<String> partList = new ArrayList<>();
         String[] part = {"전체", "어학", "교양", "프로그래밍", "취업","취미", "자율", "기타"};
         for (int i=0; i<part.length; i++) {
             partList.add(part[i]);
         }
 
-        partRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        partRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         PartAdapter adapter = new PartAdapter(partList) ;
         partRecyclerView.setAdapter(adapter);
 
 
         boardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
+        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+        boardRecyclerView.setAdapter(boardAdapter);
+
         viewModel.getAllBoard();
+
         viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
             if(boardInfo.getCode()==200){
-                boardList = boardInfo.getJsonArray();
-                BoardAdapter boardAdapter = new BoardAdapter(boardList, getActivity());
-                boardRecyclerView.setAdapter(boardAdapter);
+                boardAdapter.updateItem(boardInfo.getJsonArray());
             }else if(boardInfo.getCode()==204){
                 Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
             }else{
@@ -91,40 +95,107 @@ public class BoardFragment extends Fragment{
             }
         });
 
-        //분야 아이템 클릭시 event
         adapter.setOnItemClickListener(new PartAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                String gPart;
+                String gpart;
                 if(position == 0){
-                    Toast.makeText(getApplicationContext(),"전체",Toast.LENGTH_SHORT).show();
-                }else if(position == 1){
-                    gPart = part[1];
-                    viewModel.getPartBoard(gPart);
-                    Toast.makeText(getApplicationContext(),"어학",Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onItemClick: " + part[0]);
+                    viewModel.getPartBoard(part[0]);
                     viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
-                        if(boardPartInfo.getCode()==200){
+                        if(boardPartInfo.getCode() == 200){
+                            Log.d(TAG, "onItemClick: code == 200");
+                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
                             boardList = boardPartInfo.getJsonArray();
                             BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
                             boardRecyclerView.setAdapter(boardAdapter);
-                        }else if(boardPartInfo.getCode()==204){
-                            Log.d(TAG, "onItemClick: 게시글 없음");
-                        }else{
-                            Log.d(TAG, "onItemClick: 오류");
+                        }
+                    });
+                }
+                else if(position == 1){
+                    Log.d(TAG, "onItemClick: " + part[1]);
+                    viewModel.getPartBoard(part[1]);
+                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
+                        if(boardPartInfo.getCode() == 200){
+                            Log.d(TAG, "onItemClick: code == 200");
+                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
+                            boardList = boardPartInfo.getJsonArray();
+                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+                            boardRecyclerView.setAdapter(boardAdapter);
                         }
                     });
                 }else if(position == 2){
-                    Toast.makeText(getApplicationContext(),"교양",Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onItemClick: " + part[2]);
+                    viewModel.getPartBoard(part[2]);
+                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
+                        if(boardPartInfo.getCode() == 200){
+                            Log.d(TAG, "onItemClick: code == 200");
+                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
+                            boardList = boardPartInfo.getJsonArray();
+                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+                            boardRecyclerView.setAdapter(boardAdapter);
+                        }
+                    });
                 }else if(position == 3){
-                    Toast.makeText(getApplicationContext(),"프로그래밍",Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onItemClick: " + part[3]);
+                    viewModel.getPartBoard(part[3]);
+                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
+                        if(boardPartInfo.getCode() == 200){
+                            Log.d(TAG, "onItemClick: code == 200");
+                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
+                            boardList = boardPartInfo.getJsonArray();
+                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+                            boardRecyclerView.setAdapter(boardAdapter);
+                        }
+                    });
                 }else if(position == 4){
-                    Toast.makeText(getApplicationContext(),"취업",Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onItemClick: " + part[4]);
+                    viewModel.getPartBoard(part[4]);
+                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
+                        if(boardPartInfo.getCode() == 200){
+                            Log.d(TAG, "onItemClick: code == 200");
+                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
+                            boardList = boardPartInfo.getJsonArray();
+                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+                            boardRecyclerView.setAdapter(boardAdapter);
+                        }
+                    });
                 }else if(position == 5){
-                    Toast.makeText(getApplicationContext(),"취미",Toast.LENGTH_SHORT).show();
-                }else if(position == 6) {
-                    Toast.makeText(getApplicationContext(), "자율", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getApplicationContext(),"기타",Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onItemClick: " + part[5]);
+                    viewModel.getPartBoard(part[5]);
+                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
+                        if(boardPartInfo.getCode() == 200){
+                            Log.d(TAG, "onItemClick: code == 200");
+                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
+                            boardList = boardPartInfo.getJsonArray();
+                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+                            boardRecyclerView.setAdapter(boardAdapter);
+                        }
+                    });
+                }else if(position == 6){
+                    Log.d(TAG, "onItemClick: " + part[6]);
+                    viewModel.getPartBoard(part[6]);
+                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
+                        if(boardPartInfo.getCode() == 200){
+                            Log.d(TAG, "onItemClick: code == 200");
+                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
+                            boardList = boardPartInfo.getJsonArray();
+                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+                            boardRecyclerView.setAdapter(boardAdapter);
+                        }
+                    });
+                }else if(position == 7){
+                    Log.d(TAG, "onItemClick: " + part[7]);
+                    viewModel.getPartBoard(part[7]);
+                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
+                        if(boardPartInfo.getCode() == 200){
+                            Log.d(TAG, "onItemClick: code == 200");
+                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
+                            boardList = boardPartInfo.getJsonArray();
+                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+                            boardRecyclerView.setAdapter(boardAdapter);
+                        }
+                    });
                 }
             }
         });

@@ -22,36 +22,30 @@ public class Board {
     @SerializedName("G_JOIN_METHOD")
     private String gJoinMethod;
 
+    @SerializedName("G_MEMBER_CNT")
+    private String gMemberCnt;
 
     public String getgPart() {
         return gPart;
     }
 
-
     public String getgArea() {
         return gArea;
     }
-
-
 
     public String getgReader() {
         return gReader;
     }
 
-
-
     public String getgName() {
         return gName;
     }
-
-
 
     public String getgPurpose() {
         return gPurpose;
     }
 
-
     public String getgJoinMethod() { return gJoinMethod; }
 
-
+    public String getgMemberCnt() { return gMemberCnt; }
 }

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".view.activity.GroupMainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@color/white">
+
+                    <ImageButton
+                        android:id="@+id/back_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:src="@drawable/icon_close"></ImageButton>
+
+                    <TextView
+                        android:id="@+id/txt_group_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/nanum_square_ac_b"
+                        android:text="그룹명"
+                        android:textColor="@color/black"
+                        android:textSize="23dp" />
+                </androidx.appcompat.widget.Toolbar>
+
+                <ImageView
+                    android:id="@+id/background_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:layout_below="@+id/toolbar"
+                    android:src="@drawable/image_study" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/background_img"
+                    android:background="@color/gray50"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="16dp">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp">
+
+                            <TextView
+                                android:id="@+id/member_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:background="@drawable/form_round_line_button"
+                                android:fontFamily="@font/nanum_square_ac_eb"
+                                android:gravity="center_vertical"
+                                android:paddingLeft="35dp"
+                                android:paddingRight="15dp"
+                                android:text="멤버 20명"
+                                android:textColor="@color/red500" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:src="@drawable/icon_member" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:background="@drawable/form_button_round"
+                                android:paddingLeft="35dp"
+                                android:paddingRight="15dp"
+                                android:text="멤버초대"
+                                android:textColor="@color/white" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:src="@drawable/icon_add_group"
+                                android:translationZ="100dp" />
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="16dp"
+                        >
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/icon_reader"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/nanum_square_ac_b"
+                            android:layout_marginLeft="5dp"
+                            android:text="리더 : 장영우"
+                            android:textColor="@color/black"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="16dp"
+                        >
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/icon_add_member"
+                            ></ImageView>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_ac_b"
+                            android:layout_marginLeft="5dp"
+                            android:text="가입방식 : 자유"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="16dp"
+                        >
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/icon_calendar"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:fontFamily="@font/nanum_square_ac_b"
+                            android:text="기간 : 2021-01-01~2022-01-01"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                    <!--                <TextView-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="30dp"-->
+                    <!--                    android:text="2021-01-01~2022-01-01"-->
+                    <!--                    android:layout_marginTop="10dp"-->
+                    <!--                    android:layout_marginLeft="16dp"-->
+                    <!--                    android:paddingLeft="15dp"-->
+                    <!--                    android:paddingRight="15dp"-->
+                    <!--                    android:gravity="center_vertical"-->
+                    <!--                    android:textColor="@color/red500"-->
+                    <!--                    android:fontFamily="@font/nanum_square_acr"-->
+                    <!--                    android:background="@drawable/form_round_line_button"-->
+                    <!--                    />-->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_marginLeft="30dp"
+                            android:background="@drawable/form_button_round"
+                            android:fontFamily="@font/nanum_square_ac_eb"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:text="그룹 설명"
+                            android:textColor="@color/white"
+                            android:translationY="5dp"
+                            android:translationZ="5dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_margin="16dp"
+                            android:background="@drawable/form_round_layout">
+
+                            <TextView
+                                android:id="@+id/txt_group_expl"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="20dp"
+                                android:text="그룹설명"
+                                android:textSize="12dp" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_marginLeft="30dp"
+                            android:background="@drawable/form_button_round"
+                            android:fontFamily="@font/nanum_square_ac_eb"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:text="그룹목표"
+                            android:textColor="@color/white"
+                            android:translationY="5dp"
+                            android:translationZ="5dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_margin="16dp"
+                            android:background="@drawable/form_round_layout">
+
+                            <TextView
+                                android:id="@+id/txt_group_purpose"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="20dp"
+                                android:text="그룹목표"
+                                android:textSize="12dp" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        android:background="@color/red500"
+        android:text="가입하기"
+        android:fontFamily="@font/nanum_square_ac_eb"
+        android:textColor="@color/white" />
+</LinearLayout>
