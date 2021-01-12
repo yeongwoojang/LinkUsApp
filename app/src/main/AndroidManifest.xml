@@ -20,6 +20,8 @@
         <activity android:name=".view.activity.MyStudyGroupActivity"></activity>
         <activity android:name=".view.activity.UpdateUserActivity" />
         <activity android:name=".view.activity.SetAddressActivity" />
+        <activity android:name=".view.activity.GroupMainActivity">
+        </activity>
         <activity android:name=".view.activity.CreateGroupActivity" />
         <activity android:name=".view.activity.MainActivity" />
         <activity android:name=".view.activity.AddressActivity" />

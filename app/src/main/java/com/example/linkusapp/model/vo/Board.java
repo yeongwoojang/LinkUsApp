@@ -1,62 +1,49 @@
 package com.example.linkusapp.model.vo;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Board {
 
-    private String userNickname;
-    private String title;
-    private String part;
-    private String area;
-    private String writeTime;
+    @SerializedName("G_PART")
+    private String gPart;
 
-    public Board(String part, String area, String userNickname, String title, String writeTime) {
-        this.part = part;
-        this.area = area;
-        this.userNickname = userNickname;
-        this.title = title;
-        this.writeTime = writeTime;
+    @SerializedName("ADDRESS")
+    private String gArea;
+
+    @SerializedName("G_READER")
+    private String gReader;
+
+    @SerializedName("G_NAME")
+    private String gName;
+
+    @SerializedName("G_PURPOSE")
+    private String gPurpose;
+
+    @SerializedName("G_JOIN_METHOD")
+    private String gJoinMethod;
+
+
+    public String getgPart() {
+        return gPart;
     }
 
-    public Board() {
 
+    public String getgArea() {
+        return gArea;
     }
 
-    public String getUserNickname() {
-        return userNickname;
+    public String getgReader() {
+        return gReader;
     }
 
-    public void setUserNickname(String userNickname) {
-        this.userNickname = userNickname;
+    public String getgName() {
+        return gName;
     }
 
-    public String getTitle() {
-        return title;
+    public String getgPurpose() {
+        return gPurpose;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public String getgJoinMethod() { return gJoinMethod; }
 
-    public String getPart() {
-        return part;
-    }
-
-    public void setPart(String part) {
-        this.part = part;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
-    }
-
-    public String getWriteTime() {
-        return writeTime;
-    }
-
-    public void setWriteTime(String writeTime) {
-        this.writeTime = writeTime;
-    }
 }

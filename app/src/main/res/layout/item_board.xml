@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/board_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="16dp"
@@ -20,50 +21,86 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="10dp">
 
             <TextView
-                android:id="@+id/part"
+                android:id="@+id/g_part"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="분야"
-                android:fontFamily="@font/nanum_barun_gothic" />
+                android:background="@drawable/item_board_text_background1"
+                android:textColor="@color/white"
+                android:fontFamily="@font/nanum_square_ac_b" />
 
             <TextView
-                android:id="@+id/area"
+                android:id="@+id/g_area"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="지역"
+                android:background="@drawable/item_board_text_background1"
+                android:textColor="@color/white"
                 android:layout_marginLeft="10dp"
-                android:fontFamily="@font/nanum_barun_gothic" />
+                android:fontFamily="@font/nanum_square_ac_b" />
         </LinearLayout>
 
         <TextView
-            android:id="@+id/nickname"
+            android:id="@+id/g_reader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이름"
-            android:fontFamily="@font/nanum_barun_gothic" />
-
+            android:text="그룹장 닉네임"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/nanum_square_ac_b"/>
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/g_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="그룹명"
-            android:fontFamily="@font/nanum_barun_gothic" />
-
-        <TextView
+            android:textSize="20dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/blue400"
+            android:fontFamily="@font/nanum_square_ac_b" />
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="그룹 목표"
-            android:fontFamily="@font/nanum_barun_gothic" />
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/writing_day"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="그룹 목표"
+                android:background="@drawable/item_board_text_background2"
+                android:fontFamily="@font/nanum_square_ac_b" />
+
+            <TextView
+                android:id="@+id/g_purpose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전교 1등"
+                android:textColor="@color/red300"
+                android:fontFamily="@font/nanum_square_ac_b"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2021-01-04"
-            android:fontFamily="@font/nanum_barun_gothic"/>
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가입 방식"
+                android:background="@drawable/item_board_text_background2"
+                android:fontFamily="@font/nanum_square_ac_b" />
+
+            <TextView
+                android:id="@+id/g_join_method"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="승인"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/nanum_square_ac_b"/>
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
