@@ -82,4 +82,10 @@ public interface ServiceApi {
 
 
 
+
+
+
+    @POST("/android/message")
+    Call<Void> createGroup();
+
 }

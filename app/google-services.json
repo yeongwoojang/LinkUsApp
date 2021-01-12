@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "30285820762",
+    "project_id": "linkusapp-299911",
+    "storage_bucket": "linkusapp-299911.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30285820762:android:538412ebdfe80b1178b963",
+        "android_client_info": {
+          "package_name": "com.example.linkusapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "30285820762-fm028giptt8ajgq523av5q7gq1s1mnu2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.linkusapp",
+            "certificate_hash": "3bc7d960fa0e65ae825c7d7e06270e2a85d72457"
+          }
+        },
+        {
+          "client_id": "30285820762-be0nlpeakjref4vuuthqukeosdedvl89.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZcm3seVpQbjHElE25tIVzh4HxyIRGgCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "30285820762-be0nlpeakjref4vuuthqukeosdedvl89.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

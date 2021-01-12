@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -40,7 +41,6 @@ public class BoardFragment extends Fragment{
     ImageButton createBtn;
     private RecyclerView partRecyclerView;
     private RecyclerView boardRecyclerView;
-
     private BoardViewModel viewModel;
 
     private List<Board> boardList = new ArrayList<>();
@@ -72,61 +72,25 @@ public class BoardFragment extends Fragment{
             partList.add(part[i]);
         }
 
+        // BoardRecyclerView에 BoardAdapter 장착
+        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+        boardRecyclerView.setAdapter(boardAdapter);
+
         partRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         PartAdapter adapter = new PartAdapter(partList) ;
         partRecyclerView.setAdapter(adapter);
-
 
         boardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
         viewModel.getAllBoard();
         viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
             if(boardInfo.getCode()==200){
-                boardList = boardInfo.getJsonArray();
-                BoardAdapter boardAdapter = new BoardAdapter(boardList);
-                boardRecyclerView.setAdapter(boardAdapter);
+                //boardInfo를 읽어오면 BoardRecyclerview의 내용을 업데이트.
+                boardAdapter.updateItem(boardInfo.getJsonArray());
             }else if(boardInfo.getCode()==204){
                 Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
             }else{
                 Snackbar.make(view, "오류", Snackbar.LENGTH_SHORT).show();
             }
         });
-
-        //분야 아이템 클릭시 event
-//        adapter.setOnItemClickListener(new PartAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View v, int position) {
-//                String gPart;
-//                if(position == 0){
-//                    Toast.makeText(getApplicationContext(),"전체",Toast.LENGTH_SHORT).show();
-//                }else if(position == 1){
-//                    gPart = part[1];
-//                    viewModel.getPartBoard(gPart);
-//                    Toast.makeText(getApplicationContext(),"어학",Toast.LENGTH_SHORT).show();
-//                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
-//                        if(boardPartInfo.getCode()==200){
-//                            boardList = boardPartInfo.getJsonArray();
-//                            BoardAdapter boardAdapter = new BoardAdapter(boardList);
-//                            boardRecyclerView.setAdapter(boardAdapter);
-//                        }else if(boardPartInfo.getCode()==204){
-//                            Log.d(TAG, "onItemClick: 게시글 없음");
-//                        }else{
-//                            Log.d(TAG, "onItemClick: 오류");
-//                        }
-//                    });
-//                }else if(position == 2){
-//                    Toast.makeText(getApplicationContext(),"교양",Toast.LENGTH_SHORT).show();
-//                }else if(position == 3){
-//                    Toast.makeText(getApplicationContext(),"프로그래밍",Toast.LENGTH_SHORT).show();
-//                }else if(position == 4){
-//                    Toast.makeText(getApplicationContext(),"취업",Toast.LENGTH_SHORT).show();
-//                }else if(position == 5){
-//                    Toast.makeText(getApplicationContext(),"취미",Toast.LENGTH_SHORT).show();
-//                }else if(position == 6) {
-//                    Toast.makeText(getApplicationContext(), "자율", Toast.LENGTH_SHORT).show();
-//                }else{
-//                    Toast.makeText(getApplicationContext(),"기타",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
     }
 }
