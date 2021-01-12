@@ -39,6 +39,8 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<String> withDrawREDLD = new MutableLiveData<String>();
     public MutableLiveData<UserInfo> getUserInfoRsLD = new MutableLiveData<>();
     public MutableLiveData<String> updateAddressRsLD = new MutableLiveData<String>();
+    public MutableLiveData<String> updateUserInfoRsLD = new MutableLiveData<String>();
+
 
 
 
@@ -234,6 +236,20 @@ public class LoginViewModel extends AndroidViewModel {
                 String code =response.body();
                 updateAddressRsLD.postValue(code);
             }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+    public void updateUserInfo(String userNickname, String userPassword){
+        serviceApi.updateUserInfo(userNickname,userPassword).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String code = response.body();
+                updateUserInfoRsLD.postValue(code);
+            }
+
             @Override
             public void onFailure(Call<String> call, Throwable t) {
 

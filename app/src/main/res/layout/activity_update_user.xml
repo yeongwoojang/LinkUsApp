@@ -39,7 +39,6 @@
             android:background="@color/gray300" />
     </RelativeLayout>
     <ImageView
-        android:id="@+id/picture"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="@drawable/img_people"
@@ -83,31 +82,60 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="닉네임"
-            android:textSize="16dp"
-            android:fontFamily="@font/nanum_barun_gothic"
-            android:textColor="@color/black"
-            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="닉네임"
+                android:textSize="16dp"
+                android:fontFamily="@font/nanum_barun_gothic"
+                android:textColor="@color/black"
+                />
+            <Button
+                android:id="@+id/nickname_check"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/button_background2"
+                android:fontFamily="@font/nanum_barun_gothic"
+                android:text="중복확인"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/red500" />
+        </RelativeLayout>
         <EditText
             android:id="@+id/nickname_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nanum_barun_gothic"/>
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="비밀번호"
-            android:textSize="16dp"
-            android:fontFamily="@font/nanum_barun_gothic"
-            android:textColor="@color/black"
-            />
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호"
+                android:textSize="16dp"
+                android:fontFamily="@font/nanum_barun_gothic"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="(8자리 이상 영문자,숫자,특수문자로 조합)"
+                android:textSize="12dp"
+                android:fontFamily="@font/nanum_barun_gothic"
+                android:textColor="@color/gray500"
+                />
+        </LinearLayout>
         <EditText
             android:id="@+id/password_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLength="20"
+            android:maxLines="1"
             android:fontFamily="@font/nanum_barun_gothic"/>
         <TextView
             android:layout_width="wrap_content"
@@ -121,12 +149,16 @@
             android:id="@+id/password2_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="8자리 이상 영문자 (*특수문자 포함)"
+            android:maxLength="20"
+            android:maxLines="1"
             android:fontFamily="@font/nanum_barun_gothic"/>
         <Button
             android:id="@+id/save_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="저장"
+            android:textColor="@color/red500"
             android:background="@drawable/button_background2"
             />
     </LinearLayout>

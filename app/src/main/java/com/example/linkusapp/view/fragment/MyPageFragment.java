@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.view.activity.HomeActivity;
+import com.example.linkusapp.view.activity.MyStudyGroupActivity;
 import com.example.linkusapp.view.activity.SetAddressActivity;
 import com.example.linkusapp.view.activity.UpdateUserActivity;
 import com.example.linkusapp.viewModel.LoginViewModel;
@@ -33,7 +34,7 @@ public class MyPageFragment extends Fragment {
 
     private TextView nickNameTV,addressTV,methodTV;
     private LoginViewModel viewModel;
-    private Button logout,withdraw,shareApp,setAddress,updateInfo;
+    private Button logout,withdraw,shareApp,setAddress,updateInfo,myGroup;
     private String loginMethod,userNickname,userAddress;
     private GoogleSignInClient mSignInClient;
     private String userId;
@@ -55,10 +56,12 @@ public class MyPageFragment extends Fragment {
         shareApp = (Button) view.findViewById(R.id.share_app);
         setAddress = (Button) view.findViewById(R.id.my_address);
         updateInfo = (Button) view.findViewById(R.id.update_info);
+        myGroup = (Button) view.findViewById(R.id.my_study);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         viewModel.getUserInfo();
         viewModel.getUserInfoRsLD.observe(getViewLifecycleOwner(),userInfo -> {
             if(userInfo.getUser()!=null){
+                userNickname = userInfo.getUser().getUserNickname();
                 userId = userInfo.getUser().getUserId();
                 userAddress = userInfo.getUser().getAddress();
                 loginMethod = userInfo.getUser().getLoginMethod();
@@ -91,11 +94,19 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),SetAddressActivity.class);
-                intent.putExtra("Nickname",userAddress);
+                intent.putExtra("nickname",userNickname);
                 startActivity(intent);
             }
         });
-
+        /*내 스터디 그룹*/
+        myGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MyStudyGroupActivity.class);
+                intent.putExtra("nickname",userNickname);
+                startActivity(intent);
+            }
+        });
         /*앱 공유하기 버튼*/
         shareApp.setOnClickListener(new View.OnClickListener() {
             @Override

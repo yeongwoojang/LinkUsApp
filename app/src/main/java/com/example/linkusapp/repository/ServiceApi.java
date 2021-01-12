@@ -99,4 +99,8 @@ public interface ServiceApi {
 
     @GET("/android/userAddress")
     Call<AddressInfo> userAddress(@Query("userNickname") String userNickname);
+
+    @FormUrlEncoded
+    @POST("/android/updateUserInfo")
+    Call<String> updateUserInfo(@Field("userNickname") String userNickname,@Field("userPassword") String userPassword);
 }
