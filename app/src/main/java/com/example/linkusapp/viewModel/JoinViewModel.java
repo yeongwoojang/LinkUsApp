@@ -24,6 +24,7 @@ import retrofit2.Response;
 
 public class JoinViewModel extends AndroidViewModel {
 
+
     private ServiceApi service;
 
     public MutableLiveData<String> joinRsLD = new MutableLiveData<String>();

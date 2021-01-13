@@ -2,6 +2,9 @@ package com.example.linkusapp.repository;
 
 import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
+import com.example.linkusapp.model.vo.BoardInfo;
+import com.example.linkusapp.model.vo.BoardPartInfo;
+import com.example.linkusapp.model.vo.BoardSearchInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.UserInfo;
 
@@ -80,6 +83,13 @@ public interface ServiceApi {
     // 스터디 그룹(게시글) 전체를 서버에 요청
     @GET("/android/boardAll")
     Call<BoardInfo> getAllBoard();
+
+    // 분야별 스터디 그룹을 서버에 요청
+    @GET("/android/boardPart")
+    Call<BoardPartInfo> getPartBoard(@Query("gPart") String gPart);
+
+    @GET("/android/boardSearch")
+    Call<BoardSearchInfo> getSearchBoard(@Query("keyword") String keyword);
 
     @FormUrlEncoded
     @POST("/android/withdraw")
