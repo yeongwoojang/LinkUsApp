@@ -10,6 +10,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.linkusapp.model.vo.FindPassword;
+import com.example.linkusapp.model.vo.User;
+import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.util.GMailSender;
@@ -35,7 +37,8 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();
     public MutableLiveData<String> nickChkResLD = new MutableLiveData<String>();
     public MutableLiveData<String> addUserInfoResLD = new MutableLiveData<String>();
-
+    private MutableLiveData<String> tkInsertRes = new MutableLiveData<>();
+    public MutableLiveData<UserInfo> userLiveData = new MutableLiveData<UserInfo>();
 
     public LoginViewModel(@NonNull Application application){
         super(application);
@@ -192,6 +195,41 @@ public class LoginViewModel extends AndroidViewModel {
 
                     }
                 });
+    }
+
+    public void registrationAppToken(String appToken,String nickName){
+        serviceApi.registrationAppToken(appToken,nickName,prefs.getLoginMethod()).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                tkInsertRes.postValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+    public void getUserInfoFromDB(){
+        serviceApi.getUserInfo(prefs.getLoginMethod()).enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                UserInfo result = response.body();
+                userLiveData.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+
+            }
+        });
+    }
+    public void putUserInfo(User user){
+        prefs.putUserInfo(user);
+
+    }
+    public User getUserInfoFromShared(){
+        return prefs.getUserInfo();
     }
 
 }

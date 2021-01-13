@@ -1,10 +1,8 @@
 package com.example.linkusapp.view.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,15 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.viewModel.CreateGrpViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 public class GroupMainActivity extends AppCompatActivity {
 
@@ -55,7 +49,6 @@ public class GroupMainActivity extends AppCompatActivity {
         period.setText("기간 : "+board.getgStartDate()+" ~ "+board.getgEndDate());
         groupExplTxt.setText(board.getgExplanation());
         groupPurposeTxt.setText(board.getgPurpose());
-        FirebaseApp.initializeApp(this);
 
         viewModel = new ViewModelProvider(this).get(CreateGrpViewModel.class);
         backBt.setOnClickListener(new View.OnClickListener() {
@@ -64,29 +57,12 @@ public class GroupMainActivity extends AppCompatActivity {
                 finish();
             }
         });
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("firebase", "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
 
-                        // Get new FCM registration token
-                        String token = task.getResult();
-                        Log.d("token", "onComplete: "+token);
-                        // Log and toast
-//                                String msg = getString(R.string.msg_token_fmt, token);
-//                                Log.d("MyFirebaseInstanceIDService", msg);
-//                                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
         inviteBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("firebase", "onClick: ");
-                viewModel.test();
+                viewModel.inviteMember("서강준");
             }
         });
     }

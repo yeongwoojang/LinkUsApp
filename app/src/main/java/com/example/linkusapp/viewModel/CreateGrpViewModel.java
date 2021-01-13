@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
@@ -55,8 +56,8 @@ public class CreateGrpViewModel extends AndroidViewModel {
         });
     }
 
-    public void test(){
-        service.createGroup().enqueue(new Callback<Void>() {
+    public void inviteMember(String nickname){
+        service.inviteMember(nickname).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
 
@@ -68,4 +69,6 @@ public class CreateGrpViewModel extends AndroidViewModel {
             }
         });
     }
+
+
 }

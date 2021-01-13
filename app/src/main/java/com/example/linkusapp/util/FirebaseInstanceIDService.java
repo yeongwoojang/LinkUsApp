@@ -1,4 +1,4 @@
-package com.example.linkusapp;
+package com.example.linkusapp.util;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -17,6 +17,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.example.linkusapp.R;
+import com.example.linkusapp.repository.RetrofitClient;
+import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.view.activity.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,27 +27,38 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class FirebaseInstanceIDService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseInstanceIDService";
 
+
+
     @Override
-    public void onNewToken(@NonNull String s) {
-        Log.e("firebase", "FirebaseInstanceIDService : " + s);
-        sendRegistrationToServer(s);
+    public void onNewToken(@NonNull String token) {
+        Log.e("firebase", "FirebaseInstanceIDService : " + token);
+//        sendRegistrationToServer(token);
+
     }
 
+    //fcm메시지를 받았을 떄 실행되는 메소드
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         sendNotification(remoteMessage);
     }
+
+    //fcm 메시지를 받았을 때 실행할 메소드
     private void sendNotification(RemoteMessage remoteMessage) {
 
         String title = remoteMessage.getData().get("title");
         String message = remoteMessage.getData().get("message");
 
         /**
-         * 오레오 버전부터는 Notification Channel이 없으면 푸시가 생성되지 않는 현상이 있습니다.
+         * 오레오 버전부터는 Notification Channel이 없으면 푸시가 생성되지 않기 때문에 분기
+         * 처리를 해준다.
          * **/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -92,7 +106,8 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
         }
     }
     private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
+
     }
+
 
 }
