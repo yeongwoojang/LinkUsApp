@@ -66,11 +66,10 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".FirebaseInstanceIDService"
+            android:name="com.example.linkusapp.util.FirebaseInstanceIDService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
         <meta-data

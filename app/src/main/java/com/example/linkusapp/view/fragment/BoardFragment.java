@@ -1,5 +1,6 @@
 package com.example.linkusapp.view.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.os.Bundle;
 
@@ -17,7 +18,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
@@ -37,11 +41,14 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class BoardFragment extends Fragment{
 
-    ImageButton createBtn;
+    private ImageButton createBtn;
     private RecyclerView partRecyclerView;
     private RecyclerView boardRecyclerView;
+    private EditText searchEdit;
+    private ImageButton searchBtn;
 
     private BoardViewModel viewModel;
+    private Spinner spinner;
 
     private List<Board> boardList = new ArrayList<>();
 //    private ArrayList<String> partList = new ArrayList<>();
@@ -56,6 +63,9 @@ public class BoardFragment extends Fragment{
         partRecyclerView = (RecyclerView)view.findViewById(R.id.part_recyclerview);
         boardRecyclerView = (RecyclerView)view.findViewById(R.id.board_recyclerview);
         createBtn = (ImageButton)view.findViewById(R.id.write_btn);
+        spinner = (Spinner)view.findViewById(R.id.spinner_address);
+        searchEdit = (EditText)view.findViewById(R.id.search_bar);
+        searchBtn = (ImageButton)view.findViewById(R.id.search_btn);
 
         return view;
     }
@@ -95,20 +105,40 @@ public class BoardFragment extends Fragment{
             }
         });
 
+        searchBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                viewModel.getSearchBoard(searchEdit.getText().toString());
+                viewModel.boardSearchRsLD.observe(getViewLifecycleOwner(), boardSearchInfo -> {
+                    if(boardSearchInfo.getCode()==200){
+                        boardList = boardSearchInfo.getJsonArray();
+                        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+                        boardRecyclerView.setAdapter(boardAdapter);
+                    }else if(boardSearchInfo.getCode()==204){
+                        Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
+                    }else{
+                        Snackbar.make(view, "오류", Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
         adapter.setOnItemClickListener(new PartAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 String gpart;
                 if(position == 0){
                     Log.d(TAG, "onItemClick: " + part[0]);
-                    viewModel.getPartBoard(part[0]);
-                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
-                        if(boardPartInfo.getCode() == 200){
-                            Log.d(TAG, "onItemClick: code == 200");
-                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
-                            boardList = boardPartInfo.getJsonArray();
+                    viewModel.getAllBoard();
+                    viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
+                        if(boardInfo.getCode()==200){
+                            boardList = boardInfo.getJsonArray();
                             BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
                             boardRecyclerView.setAdapter(boardAdapter);
+                        }else if(boardInfo.getCode()==204){
+                            Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
+                        }else{
+                            Snackbar.make(view, "오류", Snackbar.LENGTH_SHORT).show();
                         }
                     });
                 }

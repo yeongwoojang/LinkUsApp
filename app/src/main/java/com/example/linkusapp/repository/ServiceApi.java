@@ -2,7 +2,9 @@ package com.example.linkusapp.repository;
 
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.BoardPartInfo;
+import com.example.linkusapp.model.vo.BoardSearchInfo;
 import com.example.linkusapp.model.vo.FindPassword;
+import com.example.linkusapp.model.vo.UserInfo;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -46,6 +48,11 @@ public interface ServiceApi {
     @GET("/android/chkScdUserInfo")
     Call<String> chkScdUserInfo(@Query("userId") String userId, @Query("loginMethod") String loginMethod);
 
+    @GET("/android/getUserInfo")
+    Call<UserInfo> getUserInfo(
+            @Query("loginMethod") String loginMethod
+    );
+
 
     @FormUrlEncoded
     @POST("/android/userInfo")
@@ -63,7 +70,21 @@ public interface ServiceApi {
     Call<BoardInfo> getAllBoard();
 
     // 분야별 스터디 그룹을 서버에 요청
-    @FormUrlEncoded
     @GET("/android/boardPart")
-    Call<BoardPartInfo> getPartBoard(@Field("g_part") String gPart);
+    Call<BoardPartInfo> getPartBoard(@Query("gPart") String gPart);
+
+    @GET("/android/boardSearch")
+    Call<BoardSearchInfo> getSearchBoard(@Query("keyword") String keyword);
+
+    //-------------------------FCM 관련 메소드------------------------
+
+    //fcm 전송메소드
+    @FormUrlEncoded
+    @POST("/android/inviteMemver")
+    Call<Void> inviteMember(@Field("targetUser") String nickname);
+
+    //DB에 현재 유저의 앱토큰을 저장하는 메소드
+    @FormUrlEncoded
+    @POST("/android/registrationAppToken")
+    Call<String> registrationAppToken(@Field("appToken")String appToken,@Field("nickname")String nickname,@Field("loginMethod")String loginMethod);
 }

@@ -52,16 +52,26 @@
             android:scrollbars="none">
         </androidx.recyclerview.widget.RecyclerView>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="지역"/>
+
+            <Spinner
+                android:id="@+id/spinner_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"/>
 
             <EditText
                 android:id="@+id/search_bar"
                 android:layout_width="250dp"
                 android:layout_height="30dp"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
@@ -70,19 +80,23 @@
                 android:textSize="15dp" />
 
             <ImageButton
-                android:id="@+id/search_bt"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="right"
-                android:layout_marginTop="21dp"
+                android:id="@+id/search_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_alignRight="@+id/search_bar"
                 android:background="@color/transparent"
                 android:src="@drawable/ic_baseline_search_24"/>
-        </FrameLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/board_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            ></androidx.recyclerview.widget.RecyclerView>
-    </LinearLayout>
+        </LinearLayout>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/board_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ></androidx.recyclerview.widget.RecyclerView>
+        </FrameLayout>
+    </LinearLayout>
 </LinearLayout>
