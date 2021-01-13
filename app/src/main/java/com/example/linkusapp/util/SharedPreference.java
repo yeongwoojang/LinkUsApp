@@ -89,22 +89,4 @@ public class SharedPreference {
     public void putNickname(String value){
         prefs.edit().putString("nickname",value).apply();
     }
-
-    //현재 로그인한 유저 전체 정보 관련 메소드
-    public void putUserInfo(User user){
-        Gson gson = new GsonBuilder().create();
-        String userJson = gson.toJson(user,User.class);
-        prefs.edit().putString("userInfo",userJson).apply();
-    }
-    public User getUserInfo(){
-        Gson gson = new GsonBuilder().create();
-        String userJson = prefs.getString("userInfo","");
-        User userInfo = gson.fromJson(userJson,User.class);
-        Log.d("userInfo", "getUserInfo: "+ userJson);
-        return userInfo;
-    }
-    public void removeUserInfo(){
-        prefs.edit().remove("userInfo").apply();
-    }
-
 }

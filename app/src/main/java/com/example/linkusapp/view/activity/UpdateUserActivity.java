@@ -40,23 +40,23 @@ public class UpdateUserActivity extends AppCompatActivity {
         nicknameChk = (Button) findViewById(R.id.nickname_check);
         exit = (ImageButton) findViewById(R.id.back_btn);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        viewModel.getUserInfo();
-        viewModel.getUserInfoRsLD.observe(this,userInfo -> {
-            checkNickname =userInfo.getUser().getUserNickname();
-            checkPW = userInfo.getUser().getPassword();
-            String Method = userInfo.getUser().getLoginMethod();
-            id.setText(userInfo.getUser().getUserId());
-            loginMethod.setText(userInfo.getUser().getLoginMethod());
-            nickname.setText(checkNickname);
-            if(loginMethod.equals("일반")){
-                password.setText(checkPW);
-            }else {
-                password.setText("소셜로그인은 변경할 수 없습니다.");
-                password2.setText("소셜로그인은 변경할 수 없습니다.");
-                password.setEnabled(false);
-                password2.setEnabled(false);
-            }
-        });
+//        viewModel.getUserInfo();
+//        viewModel.getUserInfoRsLD.observe(this,userInfo -> {
+//            checkNickname =userInfo.getUser().getUserNickname();
+//            checkPW = userInfo.getUser().getPassword();
+//            String Method = userInfo.getUser().getLoginMethod();
+//            id.setText(userInfo.getUser().getUserId());
+//            loginMethod.setText(userInfo.getUser().getLoginMethod());
+//            nickname.setText(checkNickname);
+//            if(loginMethod.equals("일반")){
+//                password.setText(checkPW);
+//            }else {
+//                password.setText("소셜로그인은 변경할 수 없습니다.");
+//                password2.setText("소셜로그인은 변경할 수 없습니다.");
+//                password.setEnabled(false);
+//                password2.setEnabled(false);
+//            }
+//        });
 
         exit.setOnClickListener(new View.OnClickListener() {
             @Override

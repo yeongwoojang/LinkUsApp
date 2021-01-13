@@ -2,6 +2,7 @@ package com.example.linkusapp.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,8 @@ import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.repository.ServiceApi;
+import com.example.linkusapp.view.activity.CreateGroupActivity;
+import com.example.linkusapp.view.activity.LoadingActivity;
 import com.example.linkusapp.view.adapter.BoardAdapter;
 import com.example.linkusapp.view.adapter.PartAdapter;
 import com.example.linkusapp.viewModel.BoardViewModel;
@@ -66,7 +69,7 @@ public class BoardFragment extends Fragment{
         spinner = (Spinner)view.findViewById(R.id.spinner_address);
         searchEdit = (EditText)view.findViewById(R.id.search_bar);
         searchBtn = (ImageButton)view.findViewById(R.id.search_btn);
-
+        createBtn = (ImageButton)view.findViewById(R.id.write_btn);
         return view;
     }
 
@@ -122,6 +125,14 @@ public class BoardFragment extends Fragment{
                 });
             }
         });
+
+        createBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), CreateGroupActivity.class));
+            }
+        });
+
 
         adapter.setOnItemClickListener(new PartAdapter.OnItemClickListener() {
             @Override

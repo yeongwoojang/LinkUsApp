@@ -46,16 +46,6 @@ public class BoardViewModel extends AndroidViewModel {
             }
         });
     }
-    public void userBoardAll(String userNickname){
-        service.userBoardAll(userNickname).enqueue(new Callback<BoardInfo>() {
-            @Override
-            public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
-                BoardInfo result = response.body();
-                userGroupRsLD.postValue(result);
-            }
-
-            @Override
-            public void onFailure(Call<BoardInfo> call, Throwable t) {
 
     public void getPartBoard(String gPart){
         service.getPartBoard(gPart).enqueue(new Callback<BoardPartInfo>() {
@@ -82,6 +72,20 @@ public class BoardViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<BoardSearchInfo> call, Throwable t) {
+
+            }
+        });
+    }
+    public void userBoardAll(String userNickname){
+        service.userBoardAll(userNickname).enqueue(new Callback<BoardInfo>() {
+            @Override
+            public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
+                BoardInfo result = response.body();
+                userGroupRsLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<BoardInfo> call, Throwable t) {
 
             }
         });

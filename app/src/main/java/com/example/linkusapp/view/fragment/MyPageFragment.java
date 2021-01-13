@@ -58,18 +58,18 @@ public class MyPageFragment extends Fragment {
         updateInfo = (Button) view.findViewById(R.id.update_info);
         myGroup = (Button) view.findViewById(R.id.my_study);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        viewModel.getUserInfo();
-        viewModel.getUserInfoRsLD.observe(getViewLifecycleOwner(),userInfo -> {
-            if(userInfo.getUser()!=null){
-                userNickname = userInfo.getUser().getUserNickname();
-                userId = userInfo.getUser().getUserId();
-                userAddress = userInfo.getUser().getAddress();
-                loginMethod = userInfo.getUser().getLoginMethod();
-                nickNameTV.setText(userInfo.getUser().getUserNickname());
-                addressTV.setText(userInfo.getUser().getAddress());
-                methodTV.setText(userInfo.getUser().getLoginMethod());
-            }
-        });
+//        viewModel.getUserInfo();
+//        viewModel.getUserInfoRsLD.observe(getViewLifecycleOwner(),userInfo -> {
+//            if(userInfo.getUser()!=null){
+//                userNickname = userInfo.getUser().getUserNickname();
+//                userId = userInfo.getUser().getUserId();
+//                userAddress = userInfo.getUser().getAddress();
+//                loginMethod = userInfo.getUser().getLoginMethod();
+//                nickNameTV.setText(userInfo.getUser().getUserNickname());
+//                addressTV.setText(userInfo.getUser().getAddress());
+//                methodTV.setText(userInfo.getUser().getLoginMethod());
+//            }
+//        });
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
