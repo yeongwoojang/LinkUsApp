@@ -20,6 +20,7 @@ import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.UserAddress;
 import com.example.linkusapp.viewModel.MyPageViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -30,12 +31,9 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     private Activity getActivity;
     private MyPageViewModel viewModel;
     private String nickname;
-
-
     /**/
     public class AddressViewHolder extends RecyclerView.ViewHolder{
 
-        private int position;
         private TextView addressTV;
         private CardView cardView;
         private ImageButton remove;
@@ -57,7 +55,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         this.getActivity = getActivity;
         this.nickname = nickname;
         this.viewModel = viewModel;
-        Log.d("dfas", nickname);
     }
     @NonNull
     @Override
@@ -68,9 +65,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     @Override
     public void onBindViewHolder(@NonNull AddressViewHolder holder, int position) {
         UserAddress address = mDataset.get(position);
-        holder.addressTV.setText(mDataset.get(position).getAddress());
+        holder.addressTV.setText(address.getAddress());
         holder.cardView.setTag(position);
         holder.cardView.setOnClickListener(this);
+        holder.remove.setTag(position);
+        holder.remove.setOnClickListener(this);
        /* holder.remove.setTag(position);
         holder.remove.setOnClickListener(this);*/
     }
@@ -80,8 +79,16 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     }
     @Override
     public void onClick(View view) {
-
-        viewModel.updateAddress(nickname,mDataset.get((int) view.getTag()).getAddress());
+                switch (view.getId()) {
+                    case R.id.cardview:
+                        viewModel.updateAddress(nickname, mDataset.get((int) view.getTag()).getAddress());
+                        break;
+                    case R.id.remove_btn:
+                        viewModel.removeAddress(mDataset.get((int) view.getTag()).getAddress());
+                        mDataset.remove((int)view.getTag());
+                        notifyItemRemoved((int)view.getTag());
+                        notifyItemRangeChanged((int)view.getTag(), getItemCount());
+                        break;
+        }
     }
-
 }

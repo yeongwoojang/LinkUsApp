@@ -3,6 +3,10 @@ package com.example.linkusapp.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.linkusapp.model.vo.User;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,10 +70,18 @@ public class SharedPreference {
     public void putNickname(String value){
         prefs.edit().putString("nickname",value).apply();
     }
-    public String getNickname() {
-        return prefs.getString("nickname","");
+    //현재 로그인한 유저 전체 정보 관련 메소드
+    public void putUserInfo(User user){
+        Gson gson = new GsonBuilder().create();
+        String userJson = gson.toJson(user,User.class);
+        prefs.edit().putString("userInfo",userJson).apply();
     }
-    public void removeNickname() {
-        prefs.edit().remove("adress").apply();
+    public User getUserInfo(){
+        Gson gson = new GsonBuilder().create();
+        User userInfo = gson.fromJson(prefs.getString("userInfo",""),User.class);
+        return userInfo;
+    }
+    public void removeUserInfo(){
+        prefs.edit().remove("userInfo").apply();
     }
 }

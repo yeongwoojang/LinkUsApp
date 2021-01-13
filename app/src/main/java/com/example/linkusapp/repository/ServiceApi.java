@@ -114,5 +114,5 @@ public interface ServiceApi {
 
     @FormUrlEncoded
     @POST("/android/removeAddress")
-    Call<String> removeAddress(@Field("userNickname") String userAddress);
+    Call<String> removeAddress(@Field("userAddress") String userAddress);
 }

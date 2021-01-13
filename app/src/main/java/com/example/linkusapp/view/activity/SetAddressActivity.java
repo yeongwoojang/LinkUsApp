@@ -66,6 +66,7 @@ public class SetAddressActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(MyPageViewModel.class);
         Intent intent = getIntent();
         nickname = intent.getExtras().get("nickname").toString();
+        Log.d("asdfasdf", nickname);
 
         /*툴바 뒤로가기 버튼*/
         findViewById(R.id.back_btn).setOnClickListener(new View.OnClickListener() {
@@ -110,7 +111,7 @@ public class SetAddressActivity extends AppCompatActivity {
         AddressAdapter addressAdapter = new AddressAdapter(addressList,this, viewModel,nickname);
         recentAddressView.setAdapter(addressAdapter);
         recentAddressView.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
-        viewModel.userAddress(viewModel.getNickname());
+        viewModel.userAddress(nickname);
 
         viewModel.userAddressRsLD.observe(this,addressInfo -> {
             if (addressInfo.getCode().equals("200")){
