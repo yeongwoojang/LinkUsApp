@@ -129,14 +129,4 @@ public interface ServiceApi {
     @POST("/android/removeAddress")
     Call<String> removeAddress(@Field("userAddress") String userAddress);
 
-    //-------------------------FCM 관련 메소드------------------------
-    //fcm 전송메소드
-    @FormUrlEncoded
-    @POST("/android/inviteMemver")
-    Call<Void> inviteMember(@Field("targetUser") String nickname);
-
-    //DB에 현재 유저의 앱토큰을 저장하는 메소드
-    @FormUrlEncoded
-    @POST("/android/registrationAppToken")
-    Call<String> registrationAppToken(@Field("appToken")String appToken,@Field("nickname")String nickname,@Field("loginMethod")String loginMethod);
 }
