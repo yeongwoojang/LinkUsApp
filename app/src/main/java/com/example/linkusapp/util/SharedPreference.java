@@ -2,6 +2,7 @@ package com.example.linkusapp.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.linkusapp.model.vo.User;
 import com.google.gson.Gson;
@@ -78,7 +79,9 @@ public class SharedPreference {
     }
     public User getUserInfo(){
         Gson gson = new GsonBuilder().create();
-        User userInfo = gson.fromJson(prefs.getString("userInfo",""),User.class);
+        String userJson = prefs.getString("userInfo","");
+        User userInfo = gson.fromJson(userJson,User.class);
+        Log.d("userInfo", "getUserInfo: "+ userJson);
         return userInfo;
     }
     public void removeUserInfo(){

@@ -20,8 +20,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -91,6 +94,26 @@ public class MainActivity extends AppCompatActivity {
             Uri personPhoto = acct.getPhotoUrl();
             Log.d(TAG, "onCreate: " + personName + ", " + personEmail);
         }
+        //DB에서 읽은 로그인한 유저 정보를 간편하게 사용하기 위해 SharedPreference에 저장
+        viewModel.getUserInfoFromDB();
+        viewModel.userLiveData.observe(this,userInfo -> {
+            viewModel.putUserInfo(userInfo.getUser());
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                        @Override
+                        public void onComplete(@NonNull Task<String> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w("firebase", "Fetching FCM registration token failed", task.getException());
+                                return;
+                            }
+                            // Get new FCM registration token
+                            String token = task.getResult();
+                            Log.d("token", "onComplete: "+token);
+                            viewModel.registrationAppToken(token,viewModel.getUserInfoFromShared().getUserNickname());
+                        }
+                    });
+        });
+
         /*로그아웃 버튼*//*
         logOut = (Button) findViewById(R.id.logout);
         logOut.setOnClickListener(new View.OnClickListener() {
