@@ -61,6 +61,13 @@ public class SharedPreference {
     public void removeLoginMethod() {
         prefs.edit().remove("loginMethod").apply();
     }
+    //회원 정보 얻기
+    public void putAddress(String value) {
+        prefs.edit().putString("address", value).apply();
+    }
+    public String getAddress() {
+        return prefs.getString("address","");
+    }
 
 
     //현재 로그인한 유저 전체 정보 관련 메소드
@@ -79,4 +86,8 @@ public class SharedPreference {
     public void removeUserInfo(){
         prefs.edit().remove("userInfo").apply();
     }
+    public void putNickname(String value){
+        prefs.edit().putString("nickname",value).apply();
+    }
+
 }

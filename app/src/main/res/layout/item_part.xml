@@ -15,7 +15,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:textSize="20dp"
-        android:fontFamily="@font/nanum_square_ac_b"
+        android:fontFamily="@font/nanum_barun_gothic"
         android:textColor="@color/black"
         tools:ignore="MissingConstraints" />
 

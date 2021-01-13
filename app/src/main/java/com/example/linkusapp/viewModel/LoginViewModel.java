@@ -37,8 +37,16 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();
     public MutableLiveData<String> nickChkResLD = new MutableLiveData<String>();
     public MutableLiveData<String> addUserInfoResLD = new MutableLiveData<String>();
+
+    public MutableLiveData<String> withDrawREDLD = new MutableLiveData<String>();
+    public MutableLiveData<UserInfo> getUserInfoRsLD = new MutableLiveData<>();
+    public MutableLiveData<String> updateAddressRsLD = new MutableLiveData<String>();
+    public MutableLiveData<String> updateUserInfoRsLD = new MutableLiveData<String>();
     private MutableLiveData<String> tkInsertRes = new MutableLiveData<>();
     public MutableLiveData<UserInfo> userLiveData = new MutableLiveData<UserInfo>();
+
+
+
 
     public LoginViewModel(@NonNull Application application){
         super(application);
@@ -164,7 +172,12 @@ public class LoginViewModel extends AndroidViewModel {
     public void removeLoginMethod(){
         prefs.removeLoginMethod();
     }
-
+    public void putAddress(String value) {
+        prefs.putAddress(value);
+    }
+    public void putNickname(String value){
+        prefs.putNickname(value);
+    }
     public void nickNameChk(String userNickname) {
         serviceApi.nickNameChk(userNickname)
                 .enqueue(new Callback<String>() {
@@ -196,12 +209,53 @@ public class LoginViewModel extends AndroidViewModel {
                     }
                 });
     }
+    /*탈퇴하기*/
+    public void withDraw(String userId,String loginMethod){
+        serviceApi.withDraw(userId,loginMethod).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body();
+                withDrawREDLD.postValue(result);
+            }
 
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+    public void updateAddress(String userNickname, String address){
+        serviceApi.updateAddress(userNickname,address).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String code =response.body();
+                updateAddressRsLD.postValue(code);
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
     public void registrationAppToken(String appToken,String nickName){
         serviceApi.registrationAppToken(appToken,nickName,prefs.getLoginMethod()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 tkInsertRes.postValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+    public void updateUserInfo(String userNickname, String userPassword){
+        serviceApi.updateUserInfo(userNickname,userPassword).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String code = response.body();
+                updateUserInfoRsLD.postValue(code);
             }
 
             @Override

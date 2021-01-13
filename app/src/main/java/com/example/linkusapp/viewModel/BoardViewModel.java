@@ -20,6 +20,7 @@ public class BoardViewModel extends AndroidViewModel {
     private SharedPreference prefs;
 
     public MutableLiveData<BoardInfo> boardRsLD = new MutableLiveData<BoardInfo>();
+    public MutableLiveData<BoardInfo> userGroupRsLD = new MutableLiveData<BoardInfo>();
 
     public BoardViewModel(@NonNull Application application) {
         super(application);
@@ -33,6 +34,20 @@ public class BoardViewModel extends AndroidViewModel {
             public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
                 BoardInfo result = response.body();
                 boardRsLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<BoardInfo> call, Throwable t) {
+
+            }
+        });
+    }
+    public void userBoardAll(String userNickname){
+        service.userBoardAll(userNickname).enqueue(new Callback<BoardInfo>() {
+            @Override
+            public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
+                BoardInfo result = response.body();
+                userGroupRsLD.postValue(result);
             }
 
             @Override

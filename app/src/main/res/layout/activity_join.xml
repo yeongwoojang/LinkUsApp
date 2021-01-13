@@ -35,10 +35,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:text="회원가입"
                     android:textColor="@color/black"
-                    android:textSize="23dp" />
+                    android:textSize="16dp" />
             </androidx.appcompat.widget.Toolbar>
 
             <View
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="40dp"
-                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:text="아이디"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
@@ -86,7 +86,7 @@
                         android:layout_width="110dp"
                         android:layout_height="30dp"
                         android:background="@drawable/button_background2"
-                        android:fontFamily="@font/nanum_square_ac_b"
+                        android:fontFamily="@font/nanum_barun_gothic"
                         android:text="중복확인"
                         android:textColor="@color/red500" />
                 </LinearLayout>
@@ -95,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:text="비밀번호"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
@@ -117,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:text="비밀번호 확인"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:text="이름"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
@@ -161,7 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:text="이메일"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
@@ -187,7 +187,7 @@
                         android:layout_width="110dp"
                         android:layout_height="30dp"
                         android:background="@drawable/button_background2"
-                        android:fontFamily="@font/nanum_square_ac_b"
+                        android:fontFamily="@font/nanum_barun_gothic"
                         android:text="인증번호 전송"
                         android:textColor="@color/red500" />
                 </LinearLayout>
@@ -196,7 +196,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:text="인증번호"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
@@ -236,7 +236,7 @@
                         android:layout_width="110dp"
                         android:layout_height="30dp"
                         android:background="@drawable/button_background2"
-                        android:fontFamily="@font/nanum_square_ac_b"
+                        android:fontFamily="@font/nanum_barun_gothic"
                         android:text="확인"
                         android:textColor="@color/red500" />
                 </LinearLayout>
@@ -249,7 +249,7 @@
                     android:layout_marginRight="16dp"
                     android:background="@drawable/button_background"
                     android:elevation="8dp"
-                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:fontFamily="@font/nanum_barun_gothic"
                     android:text="회원가입"
                     android:textColor="@color/white"
                     android:textSize="30dp" />

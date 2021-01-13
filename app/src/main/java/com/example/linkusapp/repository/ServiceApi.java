@@ -1,5 +1,6 @@
 package com.example.linkusapp.repository;
 
+import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.UserInfo;
@@ -80,7 +81,36 @@ public interface ServiceApi {
     @GET("/android/boardAll")
     Call<BoardInfo> getAllBoard();
 
+    @FormUrlEncoded
+    @POST("/android/withdraw")
+    Call<String> withDraw(
+        @Field("userId")      String userId,
+        @Field("loginMethod") String loginMethod
+    );
 
+    @FormUrlEncoded
+    @POST("/android/addAddress")
+    Call<String> addAddress(
+            @Field("userNickname") String userNickname,
+            @Field("address") String address
+    );
+
+    @FormUrlEncoded
+    @POST("/android/updateAddress")
+    Call<String> updateAddress(
+            @Field("userNickname") String userNickname,
+            @Field("address") String address
+    );
+
+    @GET("/android/userAddress")
+    Call<AddressInfo> userAddress(@Query("userNickname") String userNickname);
+
+    @FormUrlEncoded
+    @POST("/android/updateUserInfo")
+    Call<String> updateUserInfo(@Field("userNickname") String userNickname,@Field("userPassword") String userPassword);
+
+    @GET("/android/userBoardAll")
+    Call<BoardInfo> userBoardAll(@Query("userNickname") String userNickname);
 
 
 
@@ -89,6 +119,20 @@ public interface ServiceApi {
     //fcm 전송메소드
     @FormUrlEncoded
     @POST("/android/inviteMember")
+    Call<Void> inviteMember(@Field("targetUser") String nickname);
+
+    //DB에 현재 유저의 앱토큰을 저장하는 메소드
+    @FormUrlEncoded
+    @POST("/android/registrationAppToken")
+    Call<String> registrationAppToken(@Field("appToken")String appToken,@Field("nickname")String nickname,@Field("loginMethod")String loginMethod);
+    @FormUrlEncoded
+    @POST("/android/removeAddress")
+    Call<String> removeAddress(@Field("userAddress") String userAddress);
+
+    //-------------------------FCM 관련 메소드------------------------
+    //fcm 전송메소드
+    @FormUrlEncoded
+    @POST("/android/inviteMemver")
     Call<Void> inviteMember(@Field("targetUser") String nickname);
 
     //DB에 현재 유저의 앱토큰을 저장하는 메소드
