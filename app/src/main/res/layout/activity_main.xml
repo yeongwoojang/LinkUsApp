@@ -35,8 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:itemBackground="@color/red500"
-            app:itemIconTint="@drawable/menu_selector_color"
-            app:itemTextColor="@drawable/menu_selector_color"
+            app:itemIconTint="@color/white"
+            app:itemTextColor="@color/white"
             android:layout_alignParentBottom="true"
             app:menu="@menu/tab_menu" />
     </RelativeLayout>

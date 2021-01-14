@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:id="@+id/set_address_layout"
+    tools:context=".view.activity.SetAddressActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/white">
+            <ImageButton
+                android:id="@+id/back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:src="@drawable/icon_left_arrow"
+                android:layout_gravity="center_vertical"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_barun_gothic"
+                android:text="내 지역 설정"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+        </androidx.appcompat.widget.Toolbar>
+        <View
+            android:id="@+id/toolbar_div"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/toolbar"
+            android:background="@color/gray300" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        >
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="스터디 지역 선택"
+            android:fontFamily="@font/nanum_square_ac_eb"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="지역은 시,군까지만 설정 가능합니다."
+            android:fontFamily="@font/nanum_square_ac_eb"
+            android:textSize="10dp"
+            android:layout_below="@+id/tv1"
+            android:gravity="center"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/address_et"
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="주소 입력해주세요."
+            android:background="@drawable/button_background4"
+            android:maxLines="1"
+            />
+    </LinearLayout>
+    <Button
+        android:id="@+id/current_address_Btn"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="  현 위치로 주소 설정"
+        android:background="@drawable/button_background5"
+        android:drawableStart="@drawable/location_foreground"
+        android:stateListAnimator="@null"
+        android:gravity="left|center"
+        />
+    <Button
+        android:id="@+id/correct_btn"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_background5"
+        android:stateListAnimator="@null"
+        android:text="선택 완료"
+        android:fontFamily="@font/nanum_barun_gothic"
+        />
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="최근 주소"
+        android:fontFamily="@font/nanum_square_ac_b"
+        android:textColor="@color/black"
+        android:textSize="16dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recent_address_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

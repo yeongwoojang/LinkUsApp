@@ -62,4 +62,16 @@ public class LoadingViewModel extends AndroidViewModel {
         }
         userIdLiveData.postValue(userId);
     }
+    public void getNicknameSession(){
+        String nickname = " ";
+        Iterator<String> iterator = prefs.getCookies().iterator();
+        if (iterator != null) {
+            while (iterator.hasNext()) {
+                nickname = iterator.next();
+                nickname = nickname.split(";")[0].split("=")[1];
+                Log.d("SESSION", "getNicknameSession: " +nickname);
+            }
+        }
+        userIdLiveData.postValue(nickname);
+    }
 }

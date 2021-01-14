@@ -72,6 +72,10 @@ dependencies {
     //RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
+    //navigation component
+    implementation 'androidx.navigation:navigation-fragment:2.1.0'
+    implementation 'androidx.navigation:navigation-ui:2.1.0'
+
     //Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:26.2.0')
     // Add the dependency for the Firebase SDK for Google Analytics

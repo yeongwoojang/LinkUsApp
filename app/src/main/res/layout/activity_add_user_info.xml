@@ -24,10 +24,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:fontFamily="@font/nanum_square_ac_b"
+            android:fontFamily="@font/nanum_barun_gothic"
             android:text="2차 회원 정보"
             android:textColor="@color/black"
-            android:textSize="23dp" />
+            android:textSize="16dp" />
 
     </androidx.appcompat.widget.Toolbar>
     <View
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="40dp"
-            android:fontFamily="@font/nanum_square_ac_b"
+            android:fontFamily="@font/nanum_barun_gothic"
             android:text="닉네임 설정"
             android:textColor="@color/black"
             android:textSize="15dp" />
@@ -58,7 +58,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
-
             <EditText
                 android:id="@+id/set_nickname"
                 android:layout_width="270dp"
@@ -66,6 +65,7 @@
                 android:layout_marginLeft="16dp"
                 android:hint="최대 10글자(공백 포함x)"
                 android:maxLength="10"
+                android:fontFamily="@font/nanum_barun_gothic"
                 android:textSize="13dp" />
 
             <Button
@@ -73,7 +73,7 @@
                 android:layout_width="110dp"
                 android:layout_height="30dp"
                 android:background="@drawable/button_background2"
-                android:fontFamily="@font/nanum_square_ac_b"
+                android:fontFamily="@font/nanum_barun_gothic"
                 android:text="중복확인"
                 android:textColor="@color/red500" />
         </LinearLayout>
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="40dp"
-            android:fontFamily="@font/nanum_square_ac_b"
+            android:fontFamily="@font/nanum_barun_gothic"
             android:text="나이"
             android:textColor="@color/black"
             android:textSize="15dp" />
@@ -100,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
-                android:fontFamily="@font/bm_dohyeon_ttf"
+                android:fontFamily="@font/nanum_barun_gothic"
                 android:entries="@array/age"
                 />
         </LinearLayout>
@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="40dp"
-            android:fontFamily="@font/nanum_square_ac_b"
+            android:fontFamily="@font/nanum_barun_gothic"
             android:text="성별 설정"
             android:textColor="@color/black"
             android:textSize="15dp" />
@@ -134,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/red500"
                 android:checked="true"
-                android:fontFamily="@font/nanum_square_ac_b"
+                android:fontFamily="@font/nanum_barun_gothic"
                 android:text="남자" />
 
             <RadioButton
@@ -144,7 +144,7 @@
                 android:layout_marginLeft="20dp"
                 android:buttonTint="@color/red500"
                 android:checked="false"
-                android:fontFamily="@font/nanum_square_ac_b"
+                android:fontFamily="@font/nanum_barun_gothic"
                 android:text="여자" />
         </RadioGroup>
         <TextView
@@ -152,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="40dp"
-            android:fontFamily="@font/nanum_square_ac_b"
+            android:fontFamily="@font/nanum_barun_gothic"
             android:text="내 지역 설정"
             android:textColor="@color/black"
             android:textSize="15dp" />
@@ -170,13 +170,14 @@
                 android:layout_marginLeft="16dp"
                 android:hint="우측 주소 검색 버튼 이용하세요."
                 android:focusableInTouchMode="false"
+                android:fontFamily="@font/nanum_barun_gothic"
                 android:textSize="13dp" />
             <Button
                 android:id="@+id/search_address_btn"
                 android:layout_width="110dp"
                 android:layout_height="30dp"
                 android:background="@drawable/button_background2"
-                android:fontFamily="@font/nanum_square_ac_b"
+                android:fontFamily="@font/nanum_barun_gothic"
                 android:text="주소 검색"
                 android:textColor="@color/red500" />
         </LinearLayout>
@@ -187,7 +188,7 @@
             android:layout_margin="16dp"
             android:background="@drawable/button_background"
             android:elevation="8dp"
-            android:fontFamily="@font/nanum_square_ac_b"
+            android:fontFamily="@font/nanum_barun_gothic"
             android:text="저장"
             android:textColor="@color/white"
             android:textSize="30dp" />

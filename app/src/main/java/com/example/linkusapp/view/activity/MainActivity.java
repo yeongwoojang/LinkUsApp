@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                             // Get new FCM registration token
                             String token = task.getResult();
                             Log.d("token", "onComplete: "+token);
-                            viewModel.registrationAppToken(token,viewModel.getUserInfoFromShared().getUserNickname());
+                        viewModel.registrationAppToken(token,viewModel.getUserInfoFromShared().getUserNickname());
                         }
                     });
         });

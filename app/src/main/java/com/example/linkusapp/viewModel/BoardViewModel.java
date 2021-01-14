@@ -24,6 +24,7 @@ public class BoardViewModel extends AndroidViewModel {
     public MutableLiveData<BoardInfo> boardRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardPartInfo> boardPartRsLD = new MutableLiveData<BoardPartInfo>();
     public MutableLiveData<BoardSearchInfo> boardSearchRsLD = new MutableLiveData<BoardSearchInfo>();
+    public MutableLiveData<BoardInfo> userGroupRsLD = new MutableLiveData<BoardInfo>();
 
 
     public BoardViewModel(@NonNull Application application) {
@@ -72,6 +73,20 @@ public class BoardViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<BoardSearchInfo> call, Throwable t) {
+
+            }
+        });
+    }
+    public void userBoardAll(String userNickname){
+        service.userBoardAll(userNickname).enqueue(new Callback<BoardInfo>() {
+            @Override
+            public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
+                BoardInfo result = response.body();
+                userGroupRsLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<BoardInfo> call, Throwable t) {
 
             }
         });
