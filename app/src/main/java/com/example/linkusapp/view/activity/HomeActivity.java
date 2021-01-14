@@ -85,6 +85,8 @@ public class HomeActivity extends AppCompatActivity {
     private boolean isAutoLogin = false;
     private Context mContext;
 
+    //fcm으로부터 받은 데이터
+    private String recUser ="";
     @Override
     protected void onStart() {
         super.onStart();
@@ -113,6 +115,12 @@ public class HomeActivity extends AppCompatActivity {
         pwEditText = (EditText) findViewById(R.id.pw_et);
         findPassword = (TextView) findViewById(R.id.find_password);
         autoLoginBox = (CheckedTextView) findViewById(R.id.chk_auto_login);
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle!=null){
+            recUser = bundle.getString("user");
+           Toast.makeText(this,recUser,Toast.LENGTH_SHORT).show();
+        }
 
         //일반 자동로그인 코드
         generalAutoLogin();

@@ -96,8 +96,10 @@
                         </FrameLayout>
 
                         <FrameLayout
+                            android:id="@+id/req_join_layout"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            >
 
                             <Button
                                 android:id="@+id/invite_btn"
@@ -106,7 +108,7 @@
                                 android:background="@drawable/form_button_round"
                                 android:paddingLeft="35dp"
                                 android:paddingRight="15dp"
-                                android:text="멤버초대"
+                                android:text="가입 요청"
                                 android:textColor="@color/white" />
 
                             <ImageView

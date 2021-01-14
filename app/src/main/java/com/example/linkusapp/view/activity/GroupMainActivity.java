@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ public class GroupMainActivity extends AppCompatActivity {
 
     private ImageButton backBt;
     private TextView groupNameTxt, memberCntTxt,readerNameTxt,joinMethodTxt,period,groupExplTxt,groupPurposeTxt;
+    private FrameLayout reqJoinLayout;
     Button inviteBt;
 
     CreateGrpViewModel viewModel;
@@ -41,6 +43,7 @@ public class GroupMainActivity extends AppCompatActivity {
         groupPurposeTxt = (TextView)findViewById(R.id.txt_group_purpose);
         backBt = (ImageButton)findViewById(R.id.back_btn);
         inviteBt = (Button)findViewById(R.id.invite_btn);
+        reqJoinLayout = (FrameLayout)findViewById(R.id.req_join_layout);
 
         groupNameTxt.setText(board.getgName());
         memberCntTxt.setText("멤버 "+board.getgMemberCnt());
@@ -49,6 +52,10 @@ public class GroupMainActivity extends AppCompatActivity {
         period.setText("기간 : "+board.getgStartDate()+" ~ "+board.getgEndDate());
         groupExplTxt.setText(board.getgExplanation());
         groupPurposeTxt.setText(board.getgPurpose());
+
+        if(board.getgJoinMethod().equals("자유형")){
+            reqJoinLayout.setVisibility(View.INVISIBLE);
+        }
 
         viewModel = new ViewModelProvider(this).get(CreateGrpViewModel.class);
         backBt.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +69,8 @@ public class GroupMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("firebase", "onClick: ");
-                viewModel.inviteMember("서강준");
+                String user = viewModel.getUserInfoFromShared().getUserNickname();
+                viewModel.requestJoin(board.getgReader(),user);
             }
         });
     }

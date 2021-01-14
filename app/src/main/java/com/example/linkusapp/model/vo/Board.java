@@ -41,7 +41,6 @@ public class Board implements Serializable {
         return gPart;
     }
 
-
     public String getgArea() {
         return gArea;
     }

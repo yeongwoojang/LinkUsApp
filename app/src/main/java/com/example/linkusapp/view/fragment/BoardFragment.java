@@ -83,13 +83,11 @@ public class BoardFragment extends Fragment{
 
         ArrayList<String> partList = new ArrayList<>();
         String[] part = {"전체", "어학", "교양", "프로그래밍", "취업","취미", "자율", "기타"};
-        for (int i=0; i<part.length; i++) {
-            partList.add(part[i]);
-        }
+        for (int i=0; i<part.length; i++) { partList.add(part[i]); }
 
         partRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
-        PartAdapter adapter = new PartAdapter(partList) ;
-        partRecyclerView.setAdapter(adapter);
+        PartAdapter partAdapter = new PartAdapter(partList) ;
+        partRecyclerView.setAdapter(partAdapter);
 
 
         boardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
@@ -115,8 +113,7 @@ public class BoardFragment extends Fragment{
                 viewModel.boardSearchRsLD.observe(getViewLifecycleOwner(), boardSearchInfo -> {
                     if(boardSearchInfo.getCode()==200){
                         boardList = boardSearchInfo.getJsonArray();
-                        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
-                        boardRecyclerView.setAdapter(boardAdapter);
+                        boardAdapter.updateItem(boardList);
                     }else if(boardSearchInfo.getCode()==204){
                         Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
                     }else{
@@ -134,107 +131,29 @@ public class BoardFragment extends Fragment{
         });
 
 
-        adapter.setOnItemClickListener(new PartAdapter.OnItemClickListener() {
+        partAdapter.setOnItemClickListener(new PartAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                String gpart;
                 if(position == 0){
                     Log.d(TAG, "onItemClick: " + part[0]);
                     viewModel.getAllBoard();
                     viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
                         if(boardInfo.getCode()==200){
                             boardList = boardInfo.getJsonArray();
-                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
-                            boardRecyclerView.setAdapter(boardAdapter);
+                            boardAdapter.updateItem(boardList);
                         }else if(boardInfo.getCode()==204){
                             Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
                         }else{
                             Snackbar.make(view, "오류", Snackbar.LENGTH_SHORT).show();
                         }
                     });
-                }
-                else if(position == 1){
-                    Log.d(TAG, "onItemClick: " + part[1]);
-                    viewModel.getPartBoard(part[1]);
+                }else{
+                    viewModel.getPartBoard(part[position]);
                     viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
                         if(boardPartInfo.getCode() == 200){
                             Log.d(TAG, "onItemClick: code == 200");
-                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
                             boardList = boardPartInfo.getJsonArray();
-                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
-                            boardRecyclerView.setAdapter(boardAdapter);
-                        }
-                    });
-                }else if(position == 2){
-                    Log.d(TAG, "onItemClick: " + part[2]);
-                    viewModel.getPartBoard(part[2]);
-                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
-                        if(boardPartInfo.getCode() == 200){
-                            Log.d(TAG, "onItemClick: code == 200");
-                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
-                            boardList = boardPartInfo.getJsonArray();
-                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
-                            boardRecyclerView.setAdapter(boardAdapter);
-                        }
-                    });
-                }else if(position == 3){
-                    Log.d(TAG, "onItemClick: " + part[3]);
-                    viewModel.getPartBoard(part[3]);
-                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
-                        if(boardPartInfo.getCode() == 200){
-                            Log.d(TAG, "onItemClick: code == 200");
-                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
-                            boardList = boardPartInfo.getJsonArray();
-                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
-                            boardRecyclerView.setAdapter(boardAdapter);
-                        }
-                    });
-                }else if(position == 4){
-                    Log.d(TAG, "onItemClick: " + part[4]);
-                    viewModel.getPartBoard(part[4]);
-                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
-                        if(boardPartInfo.getCode() == 200){
-                            Log.d(TAG, "onItemClick: code == 200");
-                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
-                            boardList = boardPartInfo.getJsonArray();
-                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
-                            boardRecyclerView.setAdapter(boardAdapter);
-                        }
-                    });
-                }else if(position == 5){
-                    Log.d(TAG, "onItemClick: " + part[5]);
-                    viewModel.getPartBoard(part[5]);
-                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
-                        if(boardPartInfo.getCode() == 200){
-                            Log.d(TAG, "onItemClick: code == 200");
-                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
-                            boardList = boardPartInfo.getJsonArray();
-                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
-                            boardRecyclerView.setAdapter(boardAdapter);
-                        }
-                    });
-                }else if(position == 6){
-                    Log.d(TAG, "onItemClick: " + part[6]);
-                    viewModel.getPartBoard(part[6]);
-                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
-                        if(boardPartInfo.getCode() == 200){
-                            Log.d(TAG, "onItemClick: code == 200");
-                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
-                            boardList = boardPartInfo.getJsonArray();
-                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
-                            boardRecyclerView.setAdapter(boardAdapter);
-                        }
-                    });
-                }else if(position == 7){
-                    Log.d(TAG, "onItemClick: " + part[7]);
-                    viewModel.getPartBoard(part[7]);
-                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
-                        if(boardPartInfo.getCode() == 200){
-                            Log.d(TAG, "onItemClick: code == 200");
-                            //boardAdapter.updateItem(boardPartInfo.getJsonArray());
-                            boardList = boardPartInfo.getJsonArray();
-                            BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
-                            boardRecyclerView.setAdapter(boardAdapter);
+                            boardAdapter.updateItem(boardList);
                         }
                     });
                 }

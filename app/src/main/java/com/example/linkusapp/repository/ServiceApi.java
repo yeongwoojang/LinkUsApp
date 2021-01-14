@@ -6,9 +6,11 @@ import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.BoardPartInfo;
 import com.example.linkusapp.model.vo.BoardSearchInfo;
 import com.example.linkusapp.model.vo.FindPassword;
+import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.model.vo.UserInfo;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -122,14 +124,12 @@ public interface ServiceApi {
     @GET("/android/userBoardAll")
     Call<BoardInfo> userBoardAll(@Query("userNickname") String userNickname);
 
-
-
 //-------------------------FCM 관련 메소드------------------------
 
     //fcm 전송메소드
     @FormUrlEncoded
-    @POST("/android/inviteMember")
-    Call<Void> inviteMember(@Field("targetUser") String nickname);
+    @POST("/android/requestJoin")
+    Call<Void> requestJoin(@Field("targetUser") String nickname, @Field("user") String user);
 
     //DB에 현재 유저의 앱토큰을 저장하는 메소드
     @FormUrlEncoded

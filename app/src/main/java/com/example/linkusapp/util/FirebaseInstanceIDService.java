@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -20,12 +21,15 @@ import androidx.core.app.NotificationCompat;
 import com.example.linkusapp.R;
 import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
+import com.example.linkusapp.view.activity.HomeActivity;
 import com.example.linkusapp.view.activity.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,14 +51,44 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        sendNotification(remoteMessage);
+        String title = "";
+        String body = "";
+        String user = "";
+        if (remoteMessage.getData().size() > 0) {
+            Log.d("message", "getNotification() ");
+            title = remoteMessage.getData().get("title");
+            body = remoteMessage.getData().get("body");
+            user = remoteMessage.getData().get("user");
+//            Log.d("message", "getNotification() "+title+", "+body);
+            Map<String,String> data = remoteMessage.getData();
+
+        }
+
+        //앱이 포어그라운드 상태에서 Notification을 받는 경우
+//        if (remoteMessage.getNotification() != null) {
+//            Log.d("message", "getData() ");
+//            title = remoteMessage.getNotification().getTitle();
+//            body = remoteMessage.getNotification().getBody();
+////            Log.d("message", "getData() "+title+", "+body);
+//        }
+        Log.d("test", "onMessageReceived: "+title+body+user);
+        sendNotification(title,body,user);
     }
 
     //fcm 메시지를 받았을 때 실행할 메소드
-    private void sendNotification(RemoteMessage remoteMessage) {
+    private void sendNotification(String title, String body,String user) {
+        Intent intent;
+        PendingIntent pendingIntent;
 
-        String title = remoteMessage.getData().get("title");
-        String message = remoteMessage.getData().get("message");
+        intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("user",user); //push정보 중 body값을 HomeActivity로 넘긴다.
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder;
+        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
         /**
          * 오레오 버전부터는 Notification Channel이 없으면 푸시가 생성되지 않기 때문에 분기
@@ -62,52 +96,33 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
          * **/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            String channel = "채널";
-            String channel_nm = "채널명";
+            String channelId = "test push";
+            String channelName = "test Push Message";
+            String channelDescription = "New test Information";
 
-            NotificationManager notichannel = (android.app.NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationChannel channelMessage = new NotificationChannel(channel, channel_nm,
-                    android.app.NotificationManager.IMPORTANCE_DEFAULT);
-            channelMessage.setDescription("채널에 대한 설명.");
-            channelMessage.enableLights(true);
-            channelMessage.enableVibration(true);
-            channelMessage.setShowBadge(false);
-            channelMessage.setVibrationPattern(new long[]{100, 200, 100, 200});
-            notichannel.createNotificationChannel(channelMessage);
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription(channelDescription);
+            //각종 채널에 대한 설정
+            channel.enableLights(true);
+            channel.setLightColor(Color.RED);
+            channel.enableVibration(true);
+            channel.setVibrationPattern(new long[]{100, 200, 100, 200});
+            notificationManager.createNotificationChannel(channel);
 
-            NotificationCompat.Builder notificationBuilder =
-                    new NotificationCompat.Builder(this, channel)
-                            .setSmallIcon(R.drawable.ic_launcher_background)
-                            .setContentTitle(title)
-                            .setContentText(message)
-                            .setChannelId(channel)
-                            .setAutoCancel(true)
-                            .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-
-            NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-            notificationManager.notify(9999, notificationBuilder.build());
-
-        } else {
-            NotificationCompat.Builder notificationBuilder =
-                    new NotificationCompat.Builder(this, "")
-                            .setSmallIcon(R.drawable.ic_launcher_background)
-                            .setContentTitle(title)
-                            .setContentText(message)
-                            .setAutoCancel(true)
-                            .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-
-            NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-            notificationManager.notify(9999, notificationBuilder.build());
-
+            //channel이 등록된 builder
+            notificationBuilder = new NotificationCompat.Builder(this, channelId);
+        }else{
+            notificationBuilder = new NotificationCompat.Builder(this,"");
         }
-    }
-    private void sendRegistrationToServer(String token) {
+        notificationBuilder.setSmallIcon(R.drawable.icon_pencil)
+                .setContentTitle(title)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent)
+                .setContentText(body);
 
+        notificationManager.notify(9999 /* ID of notification */, notificationBuilder.build());
     }
-
 
 }
