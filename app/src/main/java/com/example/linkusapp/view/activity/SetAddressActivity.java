@@ -2,7 +2,6 @@ package com.example.linkusapp.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,7 +17,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -66,7 +64,6 @@ public class SetAddressActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(MyPageViewModel.class);
         Intent intent = getIntent();
         nickname = intent.getExtras().get("nickname").toString();
-        Log.d("asdfasdf", nickname);
 
         /*툴바 뒤로가기 버튼*/
         findViewById(R.id.back_btn).setOnClickListener(new View.OnClickListener() {
@@ -101,10 +98,10 @@ public class SetAddressActivity extends AppCompatActivity {
 
                 String address = getCurrentAddress(latitude,longitude);
                 String[] arrAddress = address.split(" ");
-                if(arrAddress[0].equals("대한민국")){
-                    arrAddress[0] = "경기";
+                if(arrAddress[3].contains("구")){
+                    addressET.setText(arrAddress[1]+", "+arrAddress[2]+", "+arrAddress[3]);
                 }
-                addressET.setText(arrAddress[0]+','+arrAddress[1]);
+                addressET.setText(arrAddress[1]+", "+arrAddress[2]);
             }
         });
         /*최근 주소*/

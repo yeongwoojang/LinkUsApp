@@ -127,9 +127,10 @@ public interface ServiceApi {
 //-------------------------FCM 관련 메소드------------------------
 
     //fcm 전송메소드
+    //fcm 전송메소드
     @FormUrlEncoded
-    @POST("/android/inviteMember")
-    Call<Void> inviteMember(@Field("targetUser") String nickname);
+    @POST("/android/requestJoin")
+    Call<Void> requestJoin(@Field("targetUser") String nickname, @Field("user") String user);
 
     //DB에 현재 유저의 앱토큰을 저장하는 메소드
     @FormUrlEncoded

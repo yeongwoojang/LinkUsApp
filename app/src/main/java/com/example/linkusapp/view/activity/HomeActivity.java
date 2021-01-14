@@ -80,6 +80,8 @@ public class HomeActivity extends AppCompatActivity {
     //----------------viewModel------------------------------------
     private LoginViewModel viewModel;
     //----------------viewModel------------------------------------
+    //fcm으로부터 받은 데이터
+    private String recUser ="";
 
     private InputMethodManager imm;
     private boolean isAutoLogin = false;
@@ -98,6 +100,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Bundle bundle = getIntent().getExtras();
+        if(bundle!=null){
+            recUser = bundle.getString("user");
+            Toast.makeText(this,recUser,Toast.LENGTH_SHORT).show();
+        }
 
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         mContext = this;

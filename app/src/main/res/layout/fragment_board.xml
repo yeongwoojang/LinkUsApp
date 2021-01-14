@@ -19,13 +19,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp">
-                <ImageButton
-                    android:id="@+id/back_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/transparent"
-                    android:src="@drawable/icon_left_arrow"
-                    android:layout_gravity="center_vertical"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -44,7 +37,12 @@
                     android:background="@color/transparent" />
             </FrameLayout>
         </androidx.appcompat.widget.Toolbar>
-
+        <View
+            android:id="@+id/toolbar_div"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/toolbar"
+            android:background="@color/gray300" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/part_recyclerview"
             android:layout_height="wrap_content"
@@ -90,14 +88,25 @@
                 android:src="@drawable/ic_baseline_search_24"/>
         </LinearLayout>
 
-        <FrameLayout
+        <ViewSwitcher
+            android:id="@+id/switcher"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/board_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                ></androidx.recyclerview.widget.RecyclerView>
-        </FrameLayout>
+                />
+            <TextView
+                android:id="@+id/empty_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="조건에 맞는 그룹이 없습니다."
+                android:fontFamily="@font/nanum_barun_gothic"
+                android:textSize="25dp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                />
+        </ViewSwitcher>
     </LinearLayout>
 </LinearLayout>

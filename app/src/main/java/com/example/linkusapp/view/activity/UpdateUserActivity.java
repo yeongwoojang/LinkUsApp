@@ -16,13 +16,15 @@ import com.example.linkusapp.R;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.lang.reflect.Method;
+
 public class UpdateUserActivity extends AppCompatActivity {
-    private TextView id,loginMethod;
+    private TextView id,method;
     private EditText nickname, password,password2;
     private Button save,nicknameChk;
     private ImageButton exit;
     private LoginViewModel viewModel;
-    private String checkNickname,checkPW;
+    private String checkNickname,checkPW,loginMethod;
 
     boolean isCertify = false;
 
@@ -32,7 +34,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_user);
 
         id = (TextView) findViewById(R.id.id_tv);
-        loginMethod = (TextView) findViewById(R.id.update_method_tv);
+        method = (TextView) findViewById(R.id.update_method_tv);
         nickname = (EditText) findViewById(R.id.nickname_et);
         password = (EditText) findViewById(R.id.password_et);
         password2 = (EditText) findViewById(R.id.password2_et);
@@ -40,23 +42,22 @@ public class UpdateUserActivity extends AppCompatActivity {
         nicknameChk = (Button) findViewById(R.id.nickname_check);
         exit = (ImageButton) findViewById(R.id.back_btn);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-//        viewModel.getUserInfo();
-//        viewModel.getUserInfoRsLD.observe(this,userInfo -> {
-//            checkNickname =userInfo.getUser().getUserNickname();
-//            checkPW = userInfo.getUser().getPassword();
-//            String Method = userInfo.getUser().getLoginMethod();
-//            id.setText(userInfo.getUser().getUserId());
-//            loginMethod.setText(userInfo.getUser().getLoginMethod());
-//            nickname.setText(checkNickname);
-//            if(loginMethod.equals("일반")){
-//                password.setText(checkPW);
-//            }else {
-//                password.setText("소셜로그인은 변경할 수 없습니다.");
-//                password2.setText("소셜로그인은 변경할 수 없습니다.");
-//                password.setEnabled(false);
-//                password2.setEnabled(false);
-//            }
-//        });
+
+        /*유저 정보*/
+        checkNickname =viewModel.getUserInfoFromShared().getUserNickname();
+        checkPW = viewModel.getUserInfoFromShared().getPassword();
+        loginMethod = viewModel.getUserInfoFromShared().getLoginMethod();
+        id.setText(viewModel.getUserInfoFromShared().getUserId());
+        method.setText(viewModel.getUserInfoFromShared().getLoginMethod());
+        nickname.setText(viewModel.getUserInfoFromShared().getUserNickname());
+        if(method.equals("일반")){
+            password.setText(checkPW);
+        }else {
+            password.setText("소셜로그인은 변경할 수 없습니다.");
+            password2.setText("소셜로그인은 변경할 수 없습니다.");
+            password.setEnabled(false);
+            password2.setEnabled(false);
+        }
 
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,13 +99,13 @@ public class UpdateUserActivity extends AppCompatActivity {
                 if(!isCertify){
                     Snackbar.make(findViewById(R.id.update_user_layout), "닉네임 중복 검사 실시 해주세요.", Snackbar.LENGTH_SHORT).show();
                 }/*비밀번호 조건 검사*/
-                else if(loginMethod.equals("일반")&&!passwd.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{8,15}.$")){
+                else if(method.equals("일반")&&!passwd.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{8,15}.$")){
                     Snackbar.make(findViewById(R.id.update_user_layout), "비밀번호는 영문,특수문자,숫자 조합입니다.", Snackbar.LENGTH_SHORT).show();
                 }/*비밀번호 확인과 동일 검사*/
                 else if(passwd.equals(password2.getText())){
                     Snackbar.make(findViewById(R.id.update_user_layout), "비밀번호가 일치하지 않습니다.", Snackbar.LENGTH_SHORT).show();
                 }
-                else if(loginMethod.equals("일반")){
+                else if(method.equals("일반")){
                     viewModel.updateUserInfo(nick,passwd);
                 }
                 viewModel.updateUserInfo(nick,checkPW);

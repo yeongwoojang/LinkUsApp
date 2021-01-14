@@ -1,7 +1,6 @@
 package com.example.linkusapp.view.adapter;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
-import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.UserAddress;
 import com.example.linkusapp.viewModel.MyPageViewModel;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -70,8 +63,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         holder.cardView.setOnClickListener(this);
         holder.remove.setTag(position);
         holder.remove.setOnClickListener(this);
-       /* holder.remove.setTag(position);
-        holder.remove.setOnClickListener(this);*/
     }
     @Override
     public int getItemCount() {
