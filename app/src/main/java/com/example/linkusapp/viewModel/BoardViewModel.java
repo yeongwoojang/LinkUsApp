@@ -25,6 +25,7 @@ public class BoardViewModel extends AndroidViewModel {
     public MutableLiveData<BoardPartInfo> boardPartRsLD = new MutableLiveData<BoardPartInfo>();
     public MutableLiveData<BoardSearchInfo> boardSearchRsLD = new MutableLiveData<BoardSearchInfo>();
 
+
     public BoardViewModel(@NonNull Application application) {
         super(application);
         service = RetrofitClient.getClient(application).create(ServiceApi.class);
