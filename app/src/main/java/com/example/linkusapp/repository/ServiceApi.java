@@ -121,9 +121,6 @@ public interface ServiceApi {
 
     @GET("/android/userBoardAll")
     Call<BoardInfo> userBoardAll(@Query("userNickname") String userNickname);
-
-
-
 //-------------------------FCM 관련 메소드------------------------
 
     //fcm 전송메소드

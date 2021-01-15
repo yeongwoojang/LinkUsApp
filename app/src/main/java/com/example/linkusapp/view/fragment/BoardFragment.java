@@ -53,7 +53,6 @@ public class BoardFragment extends Fragment{
     private RecyclerView boardRecyclerView;
     private EditText searchEdit;
     private ImageButton searchBtn;
-    private ViewSwitcher viewSwitcher;
 
     private BoardViewModel viewModel;
     private TextView emptyView;
@@ -77,7 +76,6 @@ public class BoardFragment extends Fragment{
         searchBtn = (ImageButton)view.findViewById(R.id.search_btn);
         createBtn = (ImageButton)view.findViewById(R.id.write_btn);
         emptyView = (TextView)view.findViewById(R.id.empty_group);
-        viewSwitcher = (ViewSwitcher)view.findViewById(R.id.switcher);
         return view;
     }
 
@@ -147,16 +145,11 @@ public class BoardFragment extends Fragment{
                     viewModel.getAllBoard();
                     viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
                         if(boardInfo.getCode()==200){
-                            viewSwitcher.showNext();
                             boardList = boardInfo.getJsonArray();
                             boardAdapter.updateItem(boardList);
-                        }else if(boardInfo.getCode()==204){
+                        }else if(boardInfo.getCode()==204) {
                             Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
-                            viewSwitcher.showNext();
-                        }else if(boardAdapter.getItemCount()==0){
-                            Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
-                        }
-                        else{
+                        }else{
                             Snackbar.make(view, "오류", Snackbar.LENGTH_SHORT).show();
                         }
                     });
@@ -167,6 +160,12 @@ public class BoardFragment extends Fragment{
                             Log.d(TAG, "onItemClick: code == 200");
                             boardList = boardPartInfo.getJsonArray();
                             boardAdapter.updateItem(boardList);
+                            boardRecyclerView.setVisibility(View.VISIBLE);
+                            emptyView.setVisibility(View.GONE);
+                        }
+                        else if(boardPartInfo.getCode()==204){
+                            boardRecyclerView.setVisibility(View.GONE);
+                            emptyView.setVisibility(View.VISIBLE);
                         }
                     });
                 }

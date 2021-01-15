@@ -33,6 +33,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
         private TextView gName;
         private TextView gPurpose;
         private TextView gJoinMethod;
+        private TextView emptyView;
 
         public BoardViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -43,6 +44,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
             gName = itemView.findViewById(R.id.g_name);
             gPurpose = itemView.findViewById(R.id.g_purpose);
             gJoinMethod = itemView.findViewById(R.id.g_join_method);
+            emptyView = itemView.findViewById(R.id.empty_group);
         }
 
 

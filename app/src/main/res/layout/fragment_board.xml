@@ -88,7 +88,8 @@
                 android:src="@drawable/ic_baseline_search_24"/>
         </LinearLayout>
 
-        <ViewSwitcher
+
+        <FrameLayout
             android:id="@+id/switcher"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -103,10 +104,11 @@
                 android:layout_height="wrap_content"
                 android:text="조건에 맞는 그룹이 없습니다."
                 android:fontFamily="@font/nanum_barun_gothic"
-                android:textSize="25dp"
-                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textColor="@color/gray500"
                 android:gravity="center"
+                android:visibility="invisible"
                 />
-        </ViewSwitcher>
+        </FrameLayout>
     </LinearLayout>
 </LinearLayout>
