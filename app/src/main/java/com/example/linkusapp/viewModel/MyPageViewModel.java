@@ -41,6 +41,7 @@ public class MyPageViewModel extends AndroidViewModel {
         serviceApi = RetrofitClient.getClient(application).create(ServiceApi.class);
         prefs = new SharedPreference(application);
     }
+
     public void addAddress(String userNickname,String address){
         serviceApi.addAddress(userNickname,address).enqueue(new Callback<String>() {
             @Override
@@ -69,6 +70,7 @@ public class MyPageViewModel extends AndroidViewModel {
             }
         });
     }
+
     public void userAddress(String userNickname){
         serviceApi.userAddress(userNickname).enqueue(new Callback<AddressInfo>() {
             @Override
@@ -83,6 +85,7 @@ public class MyPageViewModel extends AndroidViewModel {
             }
         });
     }
+
     public void removeAddress(String userAddress){
         serviceApi.removeAddress(userAddress).enqueue(new Callback<String>() {
             @Override

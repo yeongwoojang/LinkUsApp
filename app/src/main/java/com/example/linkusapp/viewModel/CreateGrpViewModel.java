@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.linkusapp.model.vo.MemberCount;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.repository.RetrofitClient;
@@ -22,6 +23,7 @@ public class CreateGrpViewModel extends AndroidViewModel {
 
     public MutableLiveData<UserInfo> userLiveData = new MutableLiveData<UserInfo>();
     public MutableLiveData<String> createGroupRes = new MutableLiveData<>();
+    public MutableLiveData<MemberCount> memberCount = new MutableLiveData<>();
     public MutableLiveData<String> joinGroupRes = new MutableLiveData<>();
 
     public CreateGrpViewModel(@NonNull Application application) {
@@ -59,6 +61,20 @@ public class CreateGrpViewModel extends AndroidViewModel {
         return prefs.getUserInfo();
     }
 
+    public void getMemberCount(String gName){
+        service.getMemberCount(gName).enqueue(new Callback<MemberCount>() {
+            @Override
+            public void onResponse(Call<MemberCount> call, Response<MemberCount> response) {
+                memberCount.postValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<MemberCount> call, Throwable t) {
+
+            }
+        });
+    }
+
     public void joinGroup(String gName, String gMemberId, String gMemberNick){
         service.joinGroup(gName,gMemberId,gMemberNick).enqueue(new Callback<String>() {
             @Override
@@ -74,8 +90,8 @@ public class CreateGrpViewModel extends AndroidViewModel {
         });
     }
 
-    public void requestJoin(String nickname,String user){
-        service.requestJoin(nickname,user).enqueue(new Callback<Void>() {
+    public void requestJoin(String nickname,String userNick,String userAge, String userGender, String address ){
+        service.requestJoin(nickname,userNick,userAge,userGender,address).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
 

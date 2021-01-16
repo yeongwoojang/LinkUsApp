@@ -21,12 +21,17 @@ import com.google.firebase.FirebaseApp;
 
 public class GroupMainActivity extends AppCompatActivity {
 
+    //views
     private ImageButton backBt;
     private TextView groupNameTxt, memberCntTxt,readerNameTxt,joinMethodTxt,period,groupExplTxt,groupPurposeTxt;
     private FrameLayout reqJoinLayout;
-    Button inviteBt, joinGroupBt;
+    Button requestJoinBt, joinGroupBt;
 
+    //viewModel
     CreateGrpViewModel viewModel;
+
+    //현재 그룹에 참여한 맴버 수
+    int memberCount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +49,7 @@ public class GroupMainActivity extends AppCompatActivity {
         groupExplTxt = (TextView)findViewById(R.id.txt_group_expl);
         groupPurposeTxt = (TextView)findViewById(R.id.txt_group_purpose);
         backBt = (ImageButton)findViewById(R.id.back_btn);
-        inviteBt = (Button)findViewById(R.id.invite_btn);
+        requestJoinBt = (Button)findViewById(R.id.request_join_btn);
         reqJoinLayout = (FrameLayout)findViewById(R.id.req_join_layout);
         joinGroupBt = (Button)findViewById(R.id.join_group_bt);
 
@@ -56,11 +61,17 @@ public class GroupMainActivity extends AppCompatActivity {
         groupExplTxt.setText(board.getgExplanation());
         groupPurposeTxt.setText(board.getgPurpose());
 
-        if(board.getgJoinMethod().equals("자유형")){
+        //현재 그룹에 참여한 인원 표시.
+
+
+        if(board.getgJoinMethod().equals("자유")){
             reqJoinLayout.setVisibility(View.INVISIBLE);
+        }else{
+            reqJoinLayout.setVisibility(View.VISIBLE);
         }
 
         viewModel = new ViewModelProvider(this).get(CreateGrpViewModel.class);
+        viewModel.getMemberCount(board.getgName());
         backBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,31 +84,43 @@ public class GroupMainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //그룹 가입 방식이 자유형일 경우
                 if(board.getgJoinMethod().equals("자유")){
-                    User user = viewModel.getUserInfoFromShared();
-                    String userId = user.getUserId();
-                    String userNick = user.getUserNickname();
-                    viewModel.joinGroup(board.getgName(),userId,userNick);
+//                    viewModel.getMemberCount(board.getgName());
+                    if(memberCount<Integer.parseInt(board.getgMemberLimit())){
+                        User user = viewModel.getUserInfoFromShared();
+                        String userId = user.getUserId();
+                        String userNick = user.getUserNickname();
+                        viewModel.joinGroup(board.getgName(),userId,userNick);
+                    }else{
+                        Snackbar.make(findViewById(R.id.group_main_layout), "인원이 꽉 찼습니다." ,Snackbar.LENGTH_SHORT).show();
+                    }
                 //그룹 가입 방식이 승이형일 경우
                 }else{
-
+                    Snackbar.make(findViewById(R.id.group_main_layout), "리더의 승인을 받아야 가입할 수 있습니다." ,Snackbar.LENGTH_SHORT).show();
                 }
             }
+        });
+        //그룹의 현재 멤버 수를 가져온다.
+        viewModel.memberCount.observe(this, memberCount -> {
+            this.memberCount= memberCount.getMemberCount();
+
         });
 
         viewModel.joinGroupRes.observe(this,response ->{
             if(response.equals("200")){
                 Snackbar.make(findViewById(R.id.group_main_layout), "그룹에 가입되었습니다.", Snackbar.LENGTH_SHORT).show();
+            }else if(response.equals("204")){
+                Snackbar.make(findViewById(R.id.group_main_layout), "이미 가입한 그룹입니다.", Snackbar.LENGTH_SHORT).show();
             }else{
-                Snackbar.make(findViewById(R.id.group_main_layout), "가입이 실패했습니다.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.group_main_layout), "요청이 실패했습니다.", Snackbar.LENGTH_SHORT).show();
             }
         } );
 
-        inviteBt.setOnClickListener(new View.OnClickListener() {
+        requestJoinBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("firebase", "onClick: ");
-                String user = viewModel.getUserInfoFromShared().getUserNickname();
-                viewModel.requestJoin(board.getgReader(),user);
+                User user = viewModel.getUserInfoFromShared();
+                viewModel.requestJoin(board.getgReader(),user.getUserNickname(),user.getAge(),user.getGender(),user.getAddress());
             }
         });
     }

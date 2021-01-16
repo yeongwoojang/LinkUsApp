@@ -103,7 +103,7 @@
                             >
 
                             <Button
-                                android:id="@+id/invite_btn"
+                                android:id="@+id/request_join_btn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
                                 android:background="@drawable/form_button_round"

@@ -6,8 +6,12 @@ import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.BoardPartInfo;
 import com.example.linkusapp.model.vo.BoardSearchInfo;
 import com.example.linkusapp.model.vo.FindPassword;
+import com.example.linkusapp.model.vo.MemberCount;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.model.vo.UserInfo;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -125,6 +129,10 @@ public interface ServiceApi {
     @GET("/android/userBoardAll")
     Call<BoardInfo> userBoardAll(@Query("userNickname") String userNickname);
 
+
+    @GET("/android/countGroupMember")
+    Call<MemberCount> getMemberCount(@Query("gName") String gName);
+
     @FormUrlEncoded
     @POST("/android/joinGroup")
     Call<String> joinGroup(@Field("gName") String gName, @Field("gMemberId") String gMemberId, @Field("gMemberNick") String gMemberNick);
@@ -134,7 +142,12 @@ public interface ServiceApi {
     //fcm 전송메소드
     @FormUrlEncoded
     @POST("/android/requestJoin")
-    Call<Void> requestJoin(@Field("targetUser") String nickname, @Field("user") String user);
+    Call<Void> requestJoin(
+            @Field("targetUser") String nickname,
+            @Field("userNick") String userNick,
+            @Field("userAge") String userAge,
+            @Field("userGender") String userGender,
+            @Field("address") String address);
 
     //DB에 현재 유저의 앱토큰을 저장하는 메소드
     @FormUrlEncoded
