@@ -81,7 +81,10 @@ public class HomeActivity extends AppCompatActivity {
     private LoginViewModel viewModel;
     //----------------viewModel------------------------------------
     //fcm으로부터 받은 데이터
-    private String recUser ="";
+    private String recUserNick ="";
+    private String recUserAge ="";
+    private String recUserGender ="";
+    private String recAddress ="";
 
     private InputMethodManager imm;
     private boolean isAutoLogin = false;
@@ -102,9 +105,13 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
-            recUser = bundle.getString("user");
-            Toast.makeText(this,recUser,Toast.LENGTH_SHORT).show();
+            recUserNick = bundle.getString("userNick");
+            recUserGender = bundle.getString("userAge");
+            recUserAge = bundle.getString("userGender");
+            recAddress = bundle.getString("address");
+
         }
+        Toast.makeText(this,recUserNick+"\n"+recUserAge+"\n"+recUserGender+"\n"+recAddress,Toast.LENGTH_SHORT).show();
 
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         mContext = this;

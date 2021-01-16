@@ -1,16 +1,13 @@
 package com.example.linkusapp.view.fragment;
 
-import android.annotation.SuppressLint;
-import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,27 +15,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewSwitcher;
+
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
-import com.example.linkusapp.model.vo.BoardInfo;
-import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.view.activity.CreateGroupActivity;
-import com.example.linkusapp.view.activity.LoadingActivity;
 import com.example.linkusapp.view.adapter.BoardAdapter;
 import com.example.linkusapp.view.adapter.PartAdapter;
 import com.example.linkusapp.viewModel.BoardViewModel;
 import com.google.android.material.snackbar.Snackbar;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +48,11 @@ public class BoardFragment extends Fragment{
     private BoardViewModel viewModel;
     private TextView emptyView;
     private Spinner spinner;
+    private int partPosition;
 
+    private String address;
+    private Context mContext;
+    List<String> addressList = new ArrayList<>();
     private List<Board> boardList = new ArrayList<>();
 //    private ArrayList<String> partList = new ArrayList<>();
 
@@ -100,6 +95,24 @@ public class BoardFragment extends Fragment{
         BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
         boardRecyclerView.setAdapter(boardAdapter);
 
+        addressList.add("전체");
+        viewModel.allAddress();
+        viewModel.allAddressRsLD.observe(getViewLifecycleOwner(),result -> {
+            Log.d("dfasdf", result.getJsonArray().toString());
+            Log.d("dfasdf2", result.getJsonArray().size()+"");
+            if(result.getCode() == 200){
+                for (int i = 0; i<result.getJsonArray().size();i++){
+                    address = result.getJsonArray().get(i).getgArea();
+                    addressList.add(address);
+                }
+                ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>( getActivity(), android.R.layout.simple_spinner_item, addressList);
+                spinner.setAdapter(spinnerAdapter);
+                spinner.setSelection(getIndex(spinner,"전체"));
+            }else{
+                Log.d(TAG, "onViewCreated: err");
+            }
+        });
+
         viewModel.getAllBoard();
 
         viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
@@ -136,15 +149,57 @@ public class BoardFragment extends Fragment{
             }
         });
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                address = spinner.getSelectedItem().toString();
+                mContext = getContext();
+                if(address.equals("전체")){
+                    for(int j = 0; j<part.length;j++){
+                        if(j == partPosition)
+                        {
+                            viewModel.getPartBoard(part[j]);
+                            viewModel.boardPartRsLD.observe(getViewLifecycleOwner(),boardPartInfo -> {
+                                if(boardPartInfo.getCode()==200){
+                                    boardList= boardPartInfo.getJsonArray();
+                                    boardAdapter.updateItem(boardList);
+                                }
+                            });
+                        }
+                    }
+                }else{
+                    for(int j = 0; j<part.length;j++){
+                        if(j == partPosition)
+                        {
+                            viewModel.optionBoard(part[j],address);
+                            viewModel.optionBoardRsLD.observe(getViewLifecycleOwner(),boardInfo -> {
+                                if(boardInfo.getCode()==200){
+                                    boardList= boardInfo.getJsonArray();
+                                    boardAdapter.updateItem(boardList);
+                                }
+                            });
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
         partAdapter.setOnItemClickListener(new PartAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 if(position == 0){
-                    Log.d(TAG, "onItemClick: " + part[0]);
+                    partPosition = position;
                     viewModel.getAllBoard();
                     viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
                         if(boardInfo.getCode()==200){
+                            spinner.setSelection(getIndex(spinner,"전체"));
                             boardList = boardInfo.getJsonArray();
                             boardAdapter.updateItem(boardList);
                         }else if(boardInfo.getCode()==204) {
@@ -154,10 +209,12 @@ public class BoardFragment extends Fragment{
                         }
                     });
                 }else{
+                    partPosition = position;
                     viewModel.getPartBoard(part[position]);
                     viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
                         if(boardPartInfo.getCode() == 200){
                             Log.d(TAG, "onItemClick: code == 200");
+                            spinner.setSelection(getIndex(spinner,"전체"));
                             boardList = boardPartInfo.getJsonArray();
                             boardAdapter.updateItem(boardList);
                             boardRecyclerView.setVisibility(View.VISIBLE);
@@ -171,5 +228,13 @@ public class BoardFragment extends Fragment{
                 }
             }
         });
+    }
+    private int getIndex(Spinner spinner, String item) {
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(item)) {
+                return i;
+            }
+        }
+        return 0;
     }
 }

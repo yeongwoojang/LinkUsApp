@@ -1,7 +1,7 @@
 package com.example.linkusapp.repository;
 
 import com.example.linkusapp.model.vo.AddressInfo;
-import com.example.linkusapp.model.vo.BoardInfo;
+import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.BoardPartInfo;
 import com.example.linkusapp.model.vo.BoardSearchInfo;
@@ -121,6 +121,12 @@ public interface ServiceApi {
 
     @GET("/android/userBoardAll")
     Call<BoardInfo> userBoardAll(@Query("userNickname") String userNickname);
+
+    @GET("/android/allAddress")
+    Call<BoardInfo> allAddress();
+
+    @GET("/android/optionBoard")
+    Call<BoardInfo> optionBoard(@Query("g_part") String gPart, @Query("address") String address);
 //-------------------------FCM 관련 메소드------------------------
 
     //fcm 전송메소드

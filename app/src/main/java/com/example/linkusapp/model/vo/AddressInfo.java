@@ -11,7 +11,6 @@ public class AddressInfo {
     @SerializedName("jsonArray")
     private List<UserAddress> jsonArray;
 
-
     public String getCode() {
         return code;
     }

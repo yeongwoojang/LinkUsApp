@@ -29,6 +29,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Calendar;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -53,37 +54,45 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         String title = "";
         String body = "";
-        String user = "";
+        String userNick = "";
+        String userAge = "";
+        String userGender = "";
+        String address = "";
         if (remoteMessage.getData().size() > 0) {
             Log.d("message", "getNotification() ");
             title = remoteMessage.getData().get("title");
             body = remoteMessage.getData().get("body");
-            user = remoteMessage.getData().get("user");
-            Log.d("message", "getNotification() "+title+", "+body);
-            Map<String,String> data = remoteMessage.getData();
+            userNick = remoteMessage.getData().get("userNick");
+            userAge = remoteMessage.getData().get("userAge");
+            userGender = remoteMessage.getData().get("userGender");
+            address = remoteMessage.getData().get("address");
+//            Log.d("message", "getNotification() "+title+", "+body);
 
         }
 
         //앱이 포어그라운드 상태에서 Notification을 받는 경우
-        if (remoteMessage.getNotification() != null) {
-            Log.d("message", "getData() ");
-            title = remoteMessage.getNotification().getTitle();
-            body = remoteMessage.getNotification().getBody();
-            Log.d("message", "getData() "+title+", "+body);
-        }
-        sendNotification(title,body,user);
+//        if (remoteMessage.getNotification() != null) {
+//            Log.d("message", "getData() ");
+//            title = remoteMessage.getNotification().getTitle();
+//            body = remoteMessage.getNotification().getBody();
+////            Log.d("message", "getData() "+title+", "+body);
+//        }
+        sendNotification(title,body,userNick,userAge,userGender,address);
     }
 
     //fcm 메시지를 받았을 때 실행할 메소드
-    private void sendNotification(String title, String body,String user) {
+    private void sendNotification(String title, String body,String userNick,String userAge,String userGender, String address) {
         Intent intent;
         PendingIntent pendingIntent;
-
+        int id = (int) Calendar.getInstance().getTimeInMillis();
         intent = new Intent(this, HomeActivity.class);
-        intent.putExtra("user",user); //push정보 중 body값을 HomeActivity로 넘긴다.
+        intent.putExtra("userNick",userNick); //push정보 중 body값을 HomeActivity로 넘긴다.
+        intent.putExtra("userAge",userAge); //push정보 중 body값을 HomeActivity로 넘긴다.
+        intent.putExtra("userGender",userGender); //push정보 중 body값을 HomeActivity로 넘긴다.
+        intent.putExtra("address",address); //push정보 중 body값을 HomeActivity로 넘긴다.
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
+        pendingIntent = PendingIntent.getActivity(this,id,intent,PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder;
@@ -99,7 +108,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
             String channelName = "test Push Message";
             String channelDescription = "New test Information";
 
-            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription(channelDescription);
             //각종 채널에 대한 설정
             channel.enableLights(true);
@@ -117,11 +126,13 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
                 .setAutoCancel(true)
+                .setPriority(NotificationManager.IMPORTANCE_MAX)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
                 .setContentText(body);
 
-        notificationManager.notify(9999 /* ID of notification */, notificationBuilder.build());
+
+        notificationManager.notify(id /* ID of notification */, notificationBuilder.build());
     }
 
 }
