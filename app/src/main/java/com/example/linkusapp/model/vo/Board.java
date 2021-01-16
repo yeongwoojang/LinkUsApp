@@ -25,8 +25,8 @@ public class Board implements Serializable {
     @SerializedName("G_JOIN_METHOD")
     private String gJoinMethod;
 
-    @SerializedName("G_MEMBER_CNT")
-    private String gMemberCnt;
+    @SerializedName("G_MEMBER_LIMIT")
+    private String gMemberLimit;
 
     @SerializedName("G_START_DATE")
     private String gStartDate;
@@ -59,8 +59,8 @@ public class Board implements Serializable {
 
     public String getgJoinMethod() { return gJoinMethod; }
 
-    public String getgMemberCnt() {
-        return gMemberCnt;
+    public String getgMemberLimit() {
+        return gMemberLimit;
     }
 
     public String getgStartDate() {
@@ -84,7 +84,7 @@ public class Board implements Serializable {
                 ", gName='" + gName + '\'' +
                 ", gPurpose='" + gPurpose + '\'' +
                 ", gJoinMethod='" + gJoinMethod + '\'' +
-                ", gMemberCnt='" + gMemberCnt + '\'' +
+                ", gMemberCnt='" + gMemberLimit + '\'' +
                 ", gStartDate='" + gStartDate + '\'' +
                 ", gEndDate='" + gEndDate + '\'' +
                 ", gExplanation='" + gExplanation + '\'' +

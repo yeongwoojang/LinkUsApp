@@ -21,7 +21,8 @@ public class CreateGrpViewModel extends AndroidViewModel {
     private SharedPreference prefs;
 
     public MutableLiveData<UserInfo> userLiveData = new MutableLiveData<UserInfo>();
-    public MutableLiveData<String> resultCode = new MutableLiveData<>();
+    public MutableLiveData<String> createGroupRes = new MutableLiveData<>();
+    public MutableLiveData<String> joinGroupRes = new MutableLiveData<>();
 
     public CreateGrpViewModel(@NonNull Application application) {
         super(application);
@@ -41,11 +42,11 @@ public class CreateGrpViewModel extends AndroidViewModel {
             }
         });
     }
-    public void createGroup(String gName, String gExplanation, String gPart, String gPurpose, String gStartDate, String gEndDate, String gJoinMethod){
-        service.createGroup(gName,gExplanation,gPart,gPurpose,gStartDate,gEndDate,gJoinMethod,prefs.getLoginMethod()).enqueue(new Callback<String>() {
+    public void createGroup(String gName, String gExplanation, String gPart, String gPurpose, String gMemberLimit, String gStartDate, String gEndDate, String gJoinMethod){
+        service.createGroup(gName,gExplanation,gPart,gPurpose,gMemberLimit,gStartDate,gEndDate,gJoinMethod,prefs.getLoginMethod()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                resultCode.postValue(response.body());
+                createGroupRes.postValue(response.body());
             }
 
             @Override
@@ -56,6 +57,21 @@ public class CreateGrpViewModel extends AndroidViewModel {
     }
     public User getUserInfoFromShared(){
         return prefs.getUserInfo();
+    }
+
+    public void joinGroup(String gName, String gMemberId, String gMemberNick){
+        service.joinGroup(gName,gMemberId,gMemberNick).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body();
+                joinGroupRes.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
     }
 
     public void requestJoin(String nickname,String user){

@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
+import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.viewModel.CreateGrpViewModel;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseApp;
 
 public class GroupMainActivity extends AppCompatActivity {
@@ -22,7 +24,7 @@ public class GroupMainActivity extends AppCompatActivity {
     private ImageButton backBt;
     private TextView groupNameTxt, memberCntTxt,readerNameTxt,joinMethodTxt,period,groupExplTxt,groupPurposeTxt;
     private FrameLayout reqJoinLayout;
-    Button inviteBt;
+    Button inviteBt, joinGroupBt;
 
     CreateGrpViewModel viewModel;
     @Override
@@ -44,9 +46,10 @@ public class GroupMainActivity extends AppCompatActivity {
         backBt = (ImageButton)findViewById(R.id.back_btn);
         inviteBt = (Button)findViewById(R.id.invite_btn);
         reqJoinLayout = (FrameLayout)findViewById(R.id.req_join_layout);
+        joinGroupBt = (Button)findViewById(R.id.join_group_bt);
 
         groupNameTxt.setText(board.getgName());
-        memberCntTxt.setText("멤버 "+board.getgMemberCnt());
+        memberCntTxt.setText("인원제한 "+board.getgMemberLimit()+"명");
         readerNameTxt.setText("리더 :"+board.getgReader());
         joinMethodTxt.setText("가입방식 :"+board.getgJoinMethod());
         period.setText("기간 : "+board.getgStartDate()+" ~ "+board.getgEndDate());
@@ -64,6 +67,30 @@ public class GroupMainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        joinGroupBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //그룹 가입 방식이 자유형일 경우
+                if(board.getgJoinMethod().equals("자유")){
+                    User user = viewModel.getUserInfoFromShared();
+                    String userId = user.getUserId();
+                    String userNick = user.getUserNickname();
+                    viewModel.joinGroup(board.getgName(),userId,userNick);
+                //그룹 가입 방식이 승이형일 경우
+                }else{
+
+                }
+            }
+        });
+
+        viewModel.joinGroupRes.observe(this,response ->{
+            if(response.equals("200")){
+                Snackbar.make(findViewById(R.id.group_main_layout), "그룹에 가입되었습니다.", Snackbar.LENGTH_SHORT).show();
+            }else{
+                Snackbar.make(findViewById(R.id.group_main_layout), "가입이 실패했습니다.", Snackbar.LENGTH_SHORT).show();
+            }
+        } );
 
         inviteBt.setOnClickListener(new View.OnClickListener() {
             @Override

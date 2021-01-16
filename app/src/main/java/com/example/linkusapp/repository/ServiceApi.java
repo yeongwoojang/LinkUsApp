@@ -26,14 +26,14 @@ public interface ServiceApi {
             @Field("userId") String userId,
             @Field("password") String password,
             @Field("userEmail") String userEmail
-         );
+    );
 
     @GET("/android/idChk")
     Call<String> chkId(@Query("userId") String userId);
 
     @FormUrlEncoded
     @POST("/android/login")
-    Call<String> login(@Field("userId") String userId,@Field("password") String password);
+    Call<String> login(@Field("userId") String userId, @Field("password") String password);
 
     @GET("/android/findPw")
     Call<FindPassword> findPw(@Query("userId") String userId, @Query("email") String email);
@@ -76,9 +76,10 @@ public interface ServiceApi {
             @Field("g_explanation") String gExplanation,
             @Field("g_part") String gPart,
             @Field("g_purpose") String gPurpose,
+            @Field("g_member_limit") String gMemberLimit,
             @Field("g_start_date") String gStartDate,
             @Field("g_end_date") String gEndDate,
-            @Field("g_join_method") String gJoinMetho,
+            @Field("g_join_method") String gJoinMethod,
             @Field("loginMethod") String loginMethod
     );
 
@@ -96,8 +97,8 @@ public interface ServiceApi {
     @FormUrlEncoded
     @POST("/android/withdraw")
     Call<String> withDraw(
-        @Field("userId")      String userId,
-        @Field("loginMethod") String loginMethod
+            @Field("userId") String userId,
+            @Field("loginMethod") String loginMethod
     );
 
     @FormUrlEncoded
@@ -119,10 +120,14 @@ public interface ServiceApi {
 
     @FormUrlEncoded
     @POST("/android/updateUserInfo")
-    Call<String> updateUserInfo(@Field("userNickname") String userNickname,@Field("userPassword") String userPassword);
+    Call<String> updateUserInfo(@Field("userNickname") String userNickname, @Field("userPassword") String userPassword);
 
     @GET("/android/userBoardAll")
     Call<BoardInfo> userBoardAll(@Query("userNickname") String userNickname);
+
+    @FormUrlEncoded
+    @POST("/android/joinGroup")
+    Call<String> joinGroup(@Field("gName") String gName, @Field("gMemberId") String gMemberId, @Field("gMemberNick") String gMemberNick);
 
 //-------------------------FCM 관련 메소드------------------------
 
@@ -134,7 +139,8 @@ public interface ServiceApi {
     //DB에 현재 유저의 앱토큰을 저장하는 메소드
     @FormUrlEncoded
     @POST("/android/registrationAppToken")
-    Call<String> registrationAppToken(@Field("appToken")String appToken,@Field("nickname")String nickname,@Field("loginMethod")String loginMethod);
+    Call<String> registrationAppToken(@Field("appToken") String appToken, @Field("nickname") String nickname, @Field("loginMethod") String loginMethod);
+
     @FormUrlEncoded
     @POST("/android/removeAddress")
     Call<String> removeAddress(@Field("userAddress") String userAddress);

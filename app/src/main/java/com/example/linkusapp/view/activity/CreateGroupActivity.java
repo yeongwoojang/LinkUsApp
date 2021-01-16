@@ -28,18 +28,19 @@ import java.util.Calendar;
 public class CreateGroupActivity extends AppCompatActivity {
 
 
-    ImageButton backBt,freeJoinBt,approvalJoinBt;
-    EditText edtGroupName, edtGroupExplanation, edtGroupPurpose;
+    ImageButton backBt, freeJoinBt, approvalJoinBt;
+    EditText edtGroupName, edtGroupExplanation, edtGroupPurpose, edtMemberLimit;
     Button nextBt, startDateBt, endDateBt, resetPeriodBt, createGroupBt;
     TextView addressText;
     Spinner partSpinner;
     private static int year, month, day;
     private Calendar calendar;
-    private  String buttonId;
+    private String buttonId;
     private String joinTag = null;
     private String part = "어학";
     //viewModel
     CreateGrpViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,22 +51,23 @@ public class CreateGroupActivity extends AppCompatActivity {
         edtGroupName = (EditText) findViewById(R.id.edt_group_name);
         edtGroupExplanation = (EditText) findViewById(R.id.edt_group_explanation);
         edtGroupPurpose = (EditText) findViewById(R.id.edt_group_purpose);
+        edtMemberLimit = (EditText) findViewById(R.id.edt_member_limit);
         nextBt = (Button) findViewById(R.id.btn_create_group);
         startDateBt = (Button) findViewById(R.id.btn_start_date);
         endDateBt = (Button) findViewById(R.id.btn_end_date);
-        resetPeriodBt = (Button)findViewById(R.id.btn_reset_period);
-        createGroupBt = (Button)findViewById(R.id.btn_create_group);
-        freeJoinBt = (ImageButton)findViewById(R.id.btn_free_join);
-        approvalJoinBt = (ImageButton)findViewById(R.id.btn_approval_join);
-        addressText = (TextView)findViewById(R.id.study_address);
-        partSpinner = (Spinner)findViewById(R.id.spinner_part);
+        resetPeriodBt = (Button) findViewById(R.id.btn_reset_period);
+        createGroupBt = (Button) findViewById(R.id.btn_create_group);
+        freeJoinBt = (ImageButton) findViewById(R.id.btn_free_join);
+        approvalJoinBt = (ImageButton) findViewById(R.id.btn_approval_join);
+        addressText = (TextView) findViewById(R.id.study_address);
+        partSpinner = (Spinner) findViewById(R.id.spinner_part);
 
         //viewModel 초기화
         viewModel = new ViewModelProvider(this).get(CreateGrpViewModel.class);
         //유저정보 호출
         viewModel.getUserInfo();
-        viewModel.userLiveData.observe(this,userInfo -> {
-            if(userInfo.getUser()!=null){
+        viewModel.userLiveData.observe(this, userInfo -> {
+            if (userInfo.getUser() != null) {
                 addressText.setText(userInfo.getUser().getAddress());
             }
         });
@@ -83,10 +85,11 @@ public class CreateGroupActivity extends AppCompatActivity {
         partSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-                if(position != 0){
+                if (position != 0) {
                     part = parent.getItemAtPosition(position).toString();
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 Snackbar.make(findViewById(R.id.create_group_page), "분야를 선택해주세요", Snackbar.LENGTH_SHORT).show();
@@ -129,16 +132,16 @@ public class CreateGroupActivity extends AppCompatActivity {
         freeJoinBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!freeJoinBt.getTag().toString().equals(joinTag)){
+                if (!freeJoinBt.getTag().toString().equals(joinTag)) {
                     int color = ContextCompat.getColor(getApplicationContext(), R.color.red500);
                     freeJoinBt.setColorFilter(color);
                     color = ContextCompat.getColor(getApplicationContext(), R.color.gray400);
                     approvalJoinBt.setColorFilter(color);
                     joinTag = freeJoinBt.getTag().toString();
-                }else{
+                } else {
                     int color = ContextCompat.getColor(getApplicationContext(), R.color.gray400);
                     freeJoinBt.setColorFilter(color);
-                    joinTag =null;
+                    joinTag = null;
                 }
             }
         });
@@ -146,16 +149,16 @@ public class CreateGroupActivity extends AppCompatActivity {
         approvalJoinBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!approvalJoinBt.getTag().toString().equals(joinTag)){
+                if (!approvalJoinBt.getTag().toString().equals(joinTag)) {
                     int color = ContextCompat.getColor(getApplicationContext(), R.color.red500);
                     approvalJoinBt.setColorFilter(color);
                     color = ContextCompat.getColor(getApplicationContext(), R.color.gray400);
                     freeJoinBt.setColorFilter(color);
                     joinTag = approvalJoinBt.getTag().toString();
-                }else{
+                } else {
                     int color = ContextCompat.getColor(getApplicationContext(), R.color.gray400);
                     approvalJoinBt.setColorFilter(color);
-                    joinTag =null;
+                    joinTag = null;
                 }
 
             }
@@ -167,18 +170,22 @@ public class CreateGroupActivity extends AppCompatActivity {
                 String groupName = edtGroupName.getText().toString().trim();
                 String groupExplanation = edtGroupExplanation.getText().toString().trim();
                 String groupPurpose = edtGroupPurpose.getText().toString().trim();
-                String startDate  =startDateBt.getText().toString().trim();
+                String memberLimit = edtMemberLimit.getText().toString().trim();
+                String startDate = startDateBt.getText().toString().trim();
                 String endDate = endDateBt.getText().toString().trim();
                 String joinMethod = joinTag;
-                if(startDate.matches("^[가-힣]+$") ||endDate.matches("^[가-힣]+$")){
+                if (startDate.matches("^[가-힣]+$") || endDate.matches("^[가-힣]+$")) {
                     startDate = "미정";
-                    endDate ="미정";
+                    endDate = "미정";
                 }
                 //부정확한 그룹명인지 아닌지 체크
-                if(!groupName.matches("^[a-zA-Z0-9가-힣]+$")) {
-                    Snackbar.make(findViewById(R.id.create_group_page),"올바르지 않은 그룹명입니다.",Snackbar.LENGTH_SHORT).show();
-                }else{
-                    viewModel.createGroup(groupName,groupExplanation,part,groupPurpose,startDate,endDate,joinMethod);
+                if (!groupName.matches("^[a-zA-Z0-9가-힣]+$")) {
+                    Snackbar.make(findViewById(R.id.create_group_page), "올바르지 않은 그룹명입니다.", Snackbar.LENGTH_SHORT).show();
+                }else if (Integer.parseInt(memberLimit) < 2 || Integer.parseInt(memberLimit) > 20) {
+                    Snackbar.make(findViewById(R.id.create_group_page), "인원 제한이 올바르지 않습니다.", Snackbar.LENGTH_SHORT).show();
+
+                } else {
+                    viewModel.createGroup(groupName, groupExplanation, part, groupPurpose, memberLimit, startDate, endDate, joinMethod);
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     overridePendingTransition(R.anim.left_in, R.anim.right_out);
                     finish();
@@ -186,14 +193,15 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
         });
 
-        viewModel.resultCode.observe(this,code ->{
-          if(code.equals("200")){
-              Snackbar.make(findViewById(R.id.create_group_page),"그룹생성완료",Snackbar.LENGTH_SHORT).show();
-          }else{
-              Snackbar.make(findViewById(R.id.create_group_page),"그룹생성 실패",Snackbar.LENGTH_SHORT).show();
-          }
+        viewModel.createGroupRes.observe(this, code -> {
+            if (code.equals("200")) {
+                Snackbar.make(findViewById(R.id.create_group_page), "그룹생성완료", Snackbar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(findViewById(R.id.create_group_page), "그룹생성 실패", Snackbar.LENGTH_SHORT).show();
+            }
         });
     }
+
     //DatePickerDialog 생성코드
     public void OnClickHandler(View view) {
         DatePickerDialog dialog = new DatePickerDefaultLight(this, R.style.CustomDatePickerDialog, listener, year, month, day);
@@ -202,26 +210,27 @@ public class CreateGroupActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.form_date_picker);
         dialog.show();
     }
+
     //DatePickerDialog에서 날짜 선택하고 확인버튼 눌렀을 때 이벤트 설정
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int _year, int monthOfYear, int dayOfMonth) {
-            if(buttonId.equals(startDateBt.getTag().toString())){
-                startDateBt.setText(_year+" / "+(monthOfYear+1)+" / "+dayOfMonth);
+            if (buttonId.equals(startDateBt.getTag().toString())) {
+                startDateBt.setText(_year + " / " + (monthOfYear + 1) + " / " + dayOfMonth);
                 startDateBt.setTextColor(getResources().getColor(R.color.white));
                 startDateBt.setBackgroundResource(R.drawable.form_button_date_ok);
                 startDateBt.setEnabled(false);
 
-            }else{
-                endDateBt.setText(_year+" / "+(monthOfYear+1)+" / "+dayOfMonth);
+            } else {
+                endDateBt.setText(_year + " / " + (monthOfYear + 1) + " / " + dayOfMonth);
                 endDateBt.setTextColor(getResources().getColor(R.color.white));
                 endDateBt.setBackgroundResource(R.drawable.form_button_date_ok);
                 endDateBt.setEnabled(false);
 
             }
-            calendar.set(Calendar.YEAR,_year);
-            calendar.set(Calendar.MONTH,monthOfYear);
-            calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+            calendar.set(Calendar.YEAR, _year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             view.setMinDate(calendar.getTimeInMillis());
 
         }
