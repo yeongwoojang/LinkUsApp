@@ -14,28 +14,7 @@ public class UserAddress {
         return nickname;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
     public String getAddress() {
         return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    @Override
-    public String toString() {
-        return "Address{" +
-                "nickname='" + nickname + '\'' +
-                ", address='" + address + '\'' +
-                '}';
-    }
-
-    public UserAddress(String nickname, String address, String road) {
-        this.nickname = nickname;
-        this.address = address;
     }
 }

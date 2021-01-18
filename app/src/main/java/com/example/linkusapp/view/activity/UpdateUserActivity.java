@@ -90,7 +90,9 @@ public class UpdateUserActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.update_user_layout), "이미 사용중인 닉네임입니다.", Snackbar.LENGTH_SHORT).show();
             }
         });
+
         save.setOnClickListener(new View.OnClickListener() {
+            String loginMethod = viewModel.getLoginMethod();
             @Override
             public void onClick(View view) {
                 String nick = nickname.getText().toString();
@@ -106,9 +108,9 @@ public class UpdateUserActivity extends AppCompatActivity {
                     Snackbar.make(findViewById(R.id.update_user_layout), "비밀번호가 일치하지 않습니다.", Snackbar.LENGTH_SHORT).show();
                 }
                 else if(method.equals("일반")){
-                    viewModel.updateUserInfo(nick,passwd);
+                    viewModel.updateUserInfo(nick,passwd,loginMethod);
                 }
-                viewModel.updateUserInfo(nick,checkPW);
+                viewModel.updateUserInfo(nick,checkPW,loginMethod);
             }
         });
         viewModel.updateUserInfoRsLD.observe(this,code ->{

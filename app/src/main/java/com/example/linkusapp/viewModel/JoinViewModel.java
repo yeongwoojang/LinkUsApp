@@ -29,7 +29,6 @@ public class JoinViewModel extends AndroidViewModel {
 
     public MutableLiveData<String> joinRsLD = new MutableLiveData<String>();
     public MutableLiveData<String> idChkResLD = new MutableLiveData<String>();
-
     public MutableLiveData<String> count = new MutableLiveData<String>();
     public CountDownTimer countDownTimer;
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();

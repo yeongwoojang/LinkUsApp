@@ -228,8 +228,8 @@ public class LoginViewModel extends AndroidViewModel {
             }
         });
     }
-    public void updateUserInfo(String userNickname, String userPassword){
-        serviceApi.updateUserInfo(userNickname,userPassword).enqueue(new Callback<String>() {
+    public void updateUserInfo(String userNickname, String userPassword, String loginMethod){
+        serviceApi.updateUserInfo(userNickname,userPassword,loginMethod).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String code = response.body();
