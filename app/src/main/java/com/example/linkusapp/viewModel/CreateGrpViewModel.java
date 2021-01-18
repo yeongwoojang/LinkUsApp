@@ -104,19 +104,6 @@ public class CreateGrpViewModel extends AndroidViewModel {
         });
     }
 
-    public void requestJoin(String nickname,String user){
-        service.requestJoin(nickname,user).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-
-            }
-        });
-    }
 
 
 }

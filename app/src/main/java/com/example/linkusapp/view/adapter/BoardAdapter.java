@@ -44,7 +44,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
             gName = itemView.findViewById(R.id.g_name);
             gPurpose = itemView.findViewById(R.id.g_purpose);
             gJoinMethod = itemView.findViewById(R.id.g_join_method);
-            emptyView = itemView.findViewById(R.id.empty_group);
         }
 
 

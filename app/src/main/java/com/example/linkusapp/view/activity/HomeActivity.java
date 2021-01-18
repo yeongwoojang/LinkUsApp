@@ -80,20 +80,10 @@ public class HomeActivity extends AppCompatActivity {
     //----------------viewModel------------------------------------
     private LoginViewModel viewModel;
     //----------------viewModel------------------------------------
-    //fcm으로부터 받은 데이터
-    private String recUserNick ="";
-    private String recUserAge ="";
-    private String recUserGender ="";
-    private String recAddress ="";
-
     private InputMethodManager imm;
     private boolean isAutoLogin = false;
     private Context mContext;
-    //fcm으로부터 받은 데이터
-    private String recUserNick ="";
-    private String recUserAge ="";
-    private String recUserGender ="";
-    private String recAddress ="";
+
 
     //fcm으로부터 받은 데이터
     private String recUserNick ="";
@@ -138,14 +128,6 @@ public class HomeActivity extends AppCompatActivity {
         findPassword = (TextView) findViewById(R.id.find_password);
         autoLoginBox = (CheckedTextView) findViewById(R.id.chk_auto_login);
 
-        Bundle bundle = getIntent().getExtras();
-        if(bundle!=null){
-            recUserNick = bundle.getString("userNick");
-            recUserGender = bundle.getString("userAge");
-            recUserAge = bundle.getString("userGender");
-            recAddress = bundle.getString("address");
-
-        }
         Toast.makeText(this,recUserNick+"\n"+recUserAge+"\n"+recUserGender+"\n"+recAddress,Toast.LENGTH_SHORT).show();
         //일반 자동로그인 코드
         generalAutoLogin();
