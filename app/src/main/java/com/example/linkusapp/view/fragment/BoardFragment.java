@@ -1,16 +1,12 @@
 package com.example.linkusapp.view.fragment;
 
-import android.annotation.SuppressLint;
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,20 +14,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
-import com.example.linkusapp.model.vo.BoardInfo;
-import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.view.activity.CreateGroupActivity;
-import com.example.linkusapp.view.activity.LoadingActivity;
 import com.example.linkusapp.view.adapter.BoardAdapter;
 import com.example.linkusapp.view.adapter.PartAdapter;
 import com.example.linkusapp.viewModel.BoardViewModel;
@@ -53,6 +45,7 @@ public class BoardFragment extends Fragment{
 
     private BoardViewModel viewModel;
     private Spinner spinner;
+    private TextView emptyView;
 
     private List<Board> boardList = new ArrayList<>();
 //    private ArrayList<String> partList = new ArrayList<>();
@@ -71,6 +64,7 @@ public class BoardFragment extends Fragment{
         searchEdit = (EditText)view.findViewById(R.id.search_bar);
         searchBtn = (ImageButton)view.findViewById(R.id.search_btn);
         createBtn = (ImageButton)view.findViewById(R.id.write_btn);
+        emptyView = (TextView)view.findViewById(R.id.empty_group);
         return view;
     }
 
@@ -156,6 +150,12 @@ public class BoardFragment extends Fragment{
                             Log.d(TAG, "onItemClick: code == 200");
                             boardList = boardPartInfo.getJsonArray();
                             boardAdapter.updateItem(boardList);
+                            boardRecyclerView.setVisibility(View.VISIBLE);
+//                            emptyView.setVisibility(View.GONE);
+                        }
+                        else if(boardPartInfo.getCode()==204){
+                            boardRecyclerView.setVisibility(View.GONE);
+//                            emptyView.setVisibility(View.VISIBLE);
                         }
                     });
                 }

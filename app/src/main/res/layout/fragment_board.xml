@@ -93,6 +93,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 ></androidx.recyclerview.widget.RecyclerView>
+            <TextView
+                android:id="@+id/empty_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="조건에 맞는 그룹이 없습니다."
+                android:fontFamily="@font/nanum_barun_gothic"
+                android:textSize="20dp"
+                android:textColor="@color/gray500"
+                android:gravity="center"
+                android:visibility="invisible"
+                />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
