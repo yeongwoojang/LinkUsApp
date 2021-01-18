@@ -1,16 +1,19 @@
 package com.example.linkusapp.viewModel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.BoardAddressInfo;
 import com.example.linkusapp.model.vo.BoardConditionInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.BoardPartInfo;
 import com.example.linkusapp.model.vo.BoardSearchInfo;
+import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.util.SharedPreference;
@@ -29,6 +32,8 @@ public class BoardViewModel extends AndroidViewModel {
     public MutableLiveData<BoardAddressInfo> boardAddressRsLD = new MutableLiveData<BoardAddressInfo>();
     public MutableLiveData<BoardConditionInfo> boardConditionRsLD = new MutableLiveData<BoardConditionInfo>();
     public MutableLiveData<BoardInfo> userGroupRsLD = new MutableLiveData<BoardInfo>();
+    public MutableLiveData<BoardInfo> allAddressRsLD = new MutableLiveData<BoardInfo>();
+    public MutableLiveData<BoardInfo> optionBoardRsLD = new MutableLiveData<BoardInfo>();
 
 
     public BoardViewModel(@NonNull Application application) {
@@ -57,6 +62,7 @@ public class BoardViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<BoardPartInfo> call, Response<BoardPartInfo> response) {
                 BoardPartInfo result = response.body();
+                Log.d("onResponse: ",result.toString());
                 boardPartRsLD.postValue(result);
             }
             @Override
@@ -121,6 +127,34 @@ public class BoardViewModel extends AndroidViewModel {
             public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
                 BoardInfo result = response.body();
                 userGroupRsLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<BoardInfo> call, Throwable t) {
+
+            }
+        });
+    }
+    public void allAddress(){
+        service.allAddress().enqueue(new Callback<BoardInfo>() {
+            @Override
+            public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
+                BoardInfo result = response.body();
+                allAddressRsLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<BoardInfo> call, Throwable t) {
+
+            }
+        });
+    }
+    public void optionBoard(String gPart,String address){
+        service.optionBoard(gPart,address).enqueue(new Callback<BoardInfo>() {
+            @Override
+            public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
+                BoardInfo result = response.body();
+                optionBoardRsLD.postValue(result);
             }
 
             @Override

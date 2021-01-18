@@ -4,9 +4,13 @@ import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.BoardAddressInfo;
 import com.example.linkusapp.model.vo.BoardConditionInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
+import com.example.linkusapp.model.vo.Board;
+import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.BoardPartInfo;
 import com.example.linkusapp.model.vo.BoardSearchInfo;
 import com.example.linkusapp.model.vo.FindPassword;
+import com.example.linkusapp.model.vo.MemberCount;
+import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.model.vo.UserInfo;
 
 import retrofit2.Call;
@@ -75,6 +79,7 @@ public interface ServiceApi {
             @Field("g_explanation") String gExplanation,
             @Field("g_part") String gPart,
             @Field("g_purpose") String gPurpose,
+            @Field("g_member_limit") String gMemberLimit,
             @Field("g_start_date") String gStartDate,
             @Field("g_end_date") String gEndDate,
             @Field("g_join_method") String gJoinMetho,
@@ -101,8 +106,8 @@ public interface ServiceApi {
     @FormUrlEncoded
     @POST("/android/withdraw")
     Call<String> withDraw(
-        @Field("userId")      String userId,
-        @Field("loginMethod") String loginMethod
+            @Field("userId") String userId,
+            @Field("loginMethod") String loginMethod
     );
 
     @FormUrlEncoded
@@ -129,14 +134,29 @@ public interface ServiceApi {
     @GET("/android/userBoardAll")
     Call<BoardInfo> userBoardAll(@Query("userNickname") String userNickname);
 
+    @GET("/android/allAddress")
+    Call<BoardInfo> allAddress();
 
+    @GET("/android/optionBoard")
+    Call<BoardInfo> optionBoard(@Query("g_part") String gPart, @Query("address") String address);
+    @GET("/android/countGroupMember")
+    Call<MemberCount> getMemberCount(@Query("gName") String gName);
+
+    @FormUrlEncoded
+    @POST("/android/joinGroup")
+    Call<String> joinGroup(@Field("gName") String gName, @Field("gMemberId") String gMemberId, @Field("gMemberNick") String gMemberNick);
 
 //-------------------------FCM 관련 메소드------------------------
 
     //fcm 전송메소드
     @FormUrlEncoded
-    @POST("/android/inviteMember")
-    Call<Void> inviteMember(@Field("targetUser") String nickname);
+    @POST("/android/requestJoin")
+    Call<Void> requestJoin(
+            @Field("targetUser") String nickname,
+            @Field("userNick") String userNick,
+            @Field("userAge") String userAge,
+            @Field("userGender") String userGender,
+            @Field("address") String address);
 
     //DB에 현재 유저의 앱토큰을 저장하는 메소드
     @FormUrlEncoded
@@ -146,8 +166,4 @@ public interface ServiceApi {
     @POST("/android/removeAddress")
     Call<String> removeAddress(@Field("userAddress") String userAddress);
 
-    //fcm 전송메소드
-    @FormUrlEncoded
-    @POST("/android/requestJoin")
-    Call<Void> requestJoin(@Field("targetUser") String nickname, @Field("user") String user);
 }

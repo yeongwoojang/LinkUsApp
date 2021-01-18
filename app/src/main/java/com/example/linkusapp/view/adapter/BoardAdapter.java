@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
         private TextView gName;
         private TextView gPurpose;
         private TextView gJoinMethod;
+        private TextView emptyView;
 
         public BoardViewHolder(@NonNull View itemView) {
             super(itemView);

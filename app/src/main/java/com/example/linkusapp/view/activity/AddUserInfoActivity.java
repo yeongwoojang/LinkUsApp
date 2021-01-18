@@ -77,13 +77,12 @@ public class AddUserInfoActivity extends AppCompatActivity {
 
         saveBtn.setPaintFlags(saveBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        currentId = viewModel.getLoginSession();
+        currentId = viewModel.getUserInfoFromShared().getUserId();
 
 
-        Log.d("loginSession", "onCreate: "+viewModel.getLoginSession());
+        Log.d("loginSession", "onCreate: "+viewModel.getUserInfoFromShared().getUserId());
         //어떤 방시으로 로그인 된 계정인지 체크
-        String loginMethod = viewModel.getLoginMethod();
-        Log.d("asdasda", "onCreate: "+loginMethod);
+        String loginMethod = viewModel.getUserInfoFromShared().getLoginMethod();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -135,6 +134,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
                 startActivityForResult(intent,SEARCH_ADDRESS_ACTIVITY);
             }
         });
+        /*내 지역 설정*/
         searchAddressEt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -157,8 +157,6 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     Snackbar.make(findViewById(R.id.add_user_info), "주소 검색 실시해주세요.", Snackbar.LENGTH_SHORT).show();
                 }
                 else{
-                    viewModel.putNickname(userNickname);
-                    viewModel.putAddress(address);
                     viewModel.saveInfo(currentId,userNickname,age,gender,address,loginMethod);
                     Snackbar.make(findViewById(R.id.add_user_info), "회원님의 정보가 저장되었습니다.", Snackbar.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));

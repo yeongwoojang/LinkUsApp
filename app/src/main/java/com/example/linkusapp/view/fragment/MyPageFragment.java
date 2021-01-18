@@ -35,7 +35,7 @@ public class MyPageFragment extends Fragment {
     private TextView nickNameTV,addressTV,methodTV;
     private LoginViewModel viewModel;
     private Button logout,withdraw,shareApp,setAddress,updateInfo,myGroup;
-    private String loginMethod,userNickname,userAddress;
+    private String loginMethod,userNickname;
     private GoogleSignInClient mSignInClient;
     private String userId;
 
@@ -58,6 +58,8 @@ public class MyPageFragment extends Fragment {
         updateInfo = (Button) view.findViewById(R.id.update_info);
         myGroup = (Button) view.findViewById(R.id.my_study);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+
+
 //        viewModel.getUserInfo();
 //        viewModel.getUserInfoRsLD.observe(getViewLifecycleOwner(),userInfo -> {
 //            if(userInfo.getUser()!=null){
@@ -81,7 +83,13 @@ public class MyPageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        userId = viewModel.getLoginSession();
+        /*유저정보*/
+        userId = viewModel.getUserInfoFromShared().getUserId();
+        loginMethod = viewModel.getUserInfoFromShared().getLoginMethod();
+        userNickname=viewModel.getUserInfoFromShared().getUserNickname();
+        nickNameTV.setText(userNickname);
+        addressTV.setText(viewModel.getUserInfoFromShared().getAddress());
+        methodTV.setText(loginMethod);
         /*회원정보 수정*/
         updateInfo.setOnClickListener(new View.OnClickListener() {
             @Override

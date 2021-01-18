@@ -25,22 +25,16 @@ import retrofit2.Response;
 public class MyPageViewModel extends AndroidViewModel {
 
     private ServiceApi serviceApi;
-    private SharedPreference prefs;
     public MutableLiveData<String> addAddressRsLD = new MutableLiveData<String>();
     public MutableLiveData<String> updateAddressRsLD = new MutableLiveData<String>();
     public MutableLiveData<AddressInfo> userAddressRsLD = new MutableLiveData<AddressInfo>();
     public MutableLiveData<String> removeAddressRsLD = new MutableLiveData<String>();
 
-    public void i(){
-        Log.d("dfasdf", "i: ");
-    }
-
-
     public MyPageViewModel(@NonNull Application application) {
         super(application);
         serviceApi = RetrofitClient.getClient(application).create(ServiceApi.class);
-        prefs = new SharedPreference(application);
     }
+
     public void addAddress(String userNickname,String address){
         serviceApi.addAddress(userNickname,address).enqueue(new Callback<String>() {
             @Override
@@ -69,6 +63,7 @@ public class MyPageViewModel extends AndroidViewModel {
             }
         });
     }
+
     public void userAddress(String userNickname){
         serviceApi.userAddress(userNickname).enqueue(new Callback<AddressInfo>() {
             @Override
@@ -83,6 +78,7 @@ public class MyPageViewModel extends AndroidViewModel {
             }
         });
     }
+
     public void removeAddress(String userAddress){
         serviceApi.removeAddress(userAddress).enqueue(new Callback<String>() {
             @Override

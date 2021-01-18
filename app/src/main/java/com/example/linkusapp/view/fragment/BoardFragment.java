@@ -67,9 +67,9 @@ public class BoardFragment extends Fragment{
         partRecyclerView = (RecyclerView)view.findViewById(R.id.part_recyclerview);
         boardRecyclerView = (RecyclerView)view.findViewById(R.id.board_recyclerview);
         createBtn = (ImageButton)view.findViewById(R.id.write_btn);
+        spinner = (Spinner)view.findViewById(R.id.spinner_address);
         searchEdit = (EditText)view.findViewById(R.id.search_bar);
         searchBtn = (ImageButton)view.findViewById(R.id.search_btn);
-        spinner = (Spinner)view.findViewById(R.id.spinner_address);
         createBtn = (ImageButton)view.findViewById(R.id.write_btn);
         return view;
     }
@@ -135,6 +135,7 @@ public class BoardFragment extends Fragment{
         partAdapter.setOnItemClickListener(new PartAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
+                String gpart;
                 if(position == 0){
                     Log.d(TAG, "onItemClick: " + part[0]);
 //                    viewModel.getAllBoard();

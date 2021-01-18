@@ -169,15 +169,6 @@ public class LoginViewModel extends AndroidViewModel {
         prefs.putLoginMethod(value);
     }
 
-    public void removeLoginMethod(){
-        prefs.removeLoginMethod();
-    }
-    public void putAddress(String value) {
-        prefs.putAddress(value);
-    }
-    public void putNickname(String value){
-        prefs.putNickname(value);
-    }
     public void nickNameChk(String userNickname) {
         serviceApi.nickNameChk(userNickname)
                 .enqueue(new Callback<String>() {
@@ -218,19 +209,6 @@ public class LoginViewModel extends AndroidViewModel {
                 withDrawREDLD.postValue(result);
             }
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-            }
-        });
-    }
-    public void updateAddress(String userNickname, String address){
-        serviceApi.updateAddress(userNickname,address).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String code =response.body();
-                updateAddressRsLD.postValue(code);
-            }
             @Override
             public void onFailure(Call<String> call, Throwable t) {
 
