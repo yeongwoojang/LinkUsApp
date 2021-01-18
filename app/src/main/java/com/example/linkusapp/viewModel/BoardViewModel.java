@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.linkusapp.model.vo.BoardAddressInfo;
+import com.example.linkusapp.model.vo.BoardConditionInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.BoardPartInfo;
 import com.example.linkusapp.model.vo.BoardSearchInfo;
@@ -24,6 +26,8 @@ public class BoardViewModel extends AndroidViewModel {
     public MutableLiveData<BoardInfo> boardRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardPartInfo> boardPartRsLD = new MutableLiveData<BoardPartInfo>();
     public MutableLiveData<BoardSearchInfo> boardSearchRsLD = new MutableLiveData<BoardSearchInfo>();
+    public MutableLiveData<BoardAddressInfo> boardAddressRsLD = new MutableLiveData<BoardAddressInfo>();
+    public MutableLiveData<BoardConditionInfo> boardConditionRsLD = new MutableLiveData<BoardConditionInfo>();
     public MutableLiveData<BoardInfo> userGroupRsLD = new MutableLiveData<BoardInfo>();
 
 
@@ -77,6 +81,40 @@ public class BoardViewModel extends AndroidViewModel {
             }
         });
     }
+
+    public void getAddressBoard(String address){
+        service.getAddressBoard(address).enqueue(new Callback<BoardAddressInfo>(){
+
+            @Override
+            public void onResponse(Call<BoardAddressInfo> call, Response<BoardAddressInfo> response) {
+                BoardAddressInfo result = response.body();
+                boardAddressRsLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<BoardAddressInfo> call, Throwable t) {
+
+            }
+        });
+    }
+
+    // 파트 && 지역 묶기
+    public void getConditionBoard(String gPart, String address){
+        service.getConditionBoard(gPart, address).enqueue(new Callback<BoardConditionInfo>(){
+
+            @Override
+            public void onResponse(Call<BoardConditionInfo> call, Response<BoardConditionInfo> response) {
+                BoardConditionInfo result = response.body();
+                boardConditionRsLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<BoardConditionInfo> call, Throwable t) {
+
+            }
+        });
+    }
+
     public void userBoardAll(String userNickname){
         service.userBoardAll(userNickname).enqueue(new Callback<BoardInfo>() {
             @Override

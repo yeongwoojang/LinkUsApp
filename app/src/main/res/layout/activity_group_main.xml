@@ -96,8 +96,10 @@
                         </FrameLayout>
 
                         <FrameLayout
+                            android:id="@+id/req_join_layout"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            >
 
                             <Button
                                 android:id="@+id/invite_btn"
@@ -106,7 +108,7 @@
                                 android:background="@drawable/form_button_round"
                                 android:paddingLeft="35dp"
                                 android:paddingRight="15dp"
-                                android:text="멤버초대"
+                                android:text="가입 요청"
                                 android:textColor="@color/white" />
 
                             <ImageView
@@ -122,74 +124,74 @@
 
                     </LinearLayout>
 
-                   <LinearLayout
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:orientation="horizontal"
-                       android:layout_marginBottom="10dp"
-                       android:layout_marginTop="20dp"
-                       android:layout_marginLeft="16dp"
-                       >
-                       <ImageView
-                           android:layout_width="20dp"
-                           android:layout_height="20dp"
-                           android:layout_gravity="center"
-                           android:src="@drawable/icon_reader"
-                           />
-                    <TextView
-                        android:id="@+id/reader_name_txt"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/nanum_square_ac_b"
-                        android:layout_marginLeft="5dp"
-                        android:text="리더 : 장영우"
-                        android:textColor="@color/black"
-                       />
-                   </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="16dp"
-                    >
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/icon_add_member"
-                        ></ImageView>
-                    <TextView
-                        android:id="@+id/join_method"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/nanum_square_ac_b"
-                        android:layout_marginLeft="5dp"
-                        android:text="가입방식 : 자유"
-                        android:textColor="@color/black" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="16dp"
-                    >
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/icon_calendar"
-                       />
-                    <TextView
-                        android:id="@+id/period"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="16dp"
+                        >
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/icon_reader"
+                            />
+                        <TextView
+                            android:id="@+id/reader_name_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/nanum_square_ac_b"
+                            android:layout_marginLeft="5dp"
+                            android:text="리더 : 장영우"
+                            android:textColor="@color/black"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
-                        android:fontFamily="@font/nanum_square_ac_b"
-                        android:text="기간 : 2021-01-01~2022-01-01"
-                        android:textColor="@color/black" />
-                </LinearLayout>
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="16dp"
+                        >
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/icon_add_member"
+                            ></ImageView>
+                        <TextView
+                            android:id="@+id/join_method"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_ac_b"
+                            android:layout_marginLeft="5dp"
+                            android:text="가입방식 : 자유"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="16dp"
+                        >
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/icon_calendar"
+                            />
+                        <TextView
+                            android:id="@+id/period"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:fontFamily="@font/nanum_square_ac_b"
+                            android:text="기간 : 2021-01-01~2022-01-01"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
                     <!--                <TextView-->
                     <!--                    android:layout_width="wrap_content"-->
                     <!--                    android:layout_height="30dp"-->
