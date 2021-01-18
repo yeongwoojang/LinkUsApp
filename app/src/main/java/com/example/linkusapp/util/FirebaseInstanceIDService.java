@@ -131,7 +131,6 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent)
                 .setContentText(body);
 
-
         notificationManager.notify(id /* ID of notification */, notificationBuilder.build());
     }
 
