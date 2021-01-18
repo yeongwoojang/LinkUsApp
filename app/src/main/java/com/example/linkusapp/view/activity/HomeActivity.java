@@ -80,6 +80,11 @@ public class HomeActivity extends AppCompatActivity {
     //----------------viewModel------------------------------------
     private LoginViewModel viewModel;
     //----------------viewModel------------------------------------
+    //fcm으로부터 받은 데이터
+    private String recUserNick ="";
+    private String recUserAge ="";
+    private String recUserGender ="";
+    private String recAddress ="";
 
     private InputMethodManager imm;
     private boolean isAutoLogin = false;
