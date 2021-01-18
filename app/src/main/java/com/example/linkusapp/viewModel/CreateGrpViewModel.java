@@ -103,9 +103,6 @@ public class CreateGrpViewModel extends AndroidViewModel {
             }
         });
     }
-    public User getUserInfoFromShared(){
-        return prefs.getUserInfo();
-    }
 
     public void requestJoin(String nickname,String user){
         service.requestJoin(nickname,user).enqueue(new Callback<Void>() {
