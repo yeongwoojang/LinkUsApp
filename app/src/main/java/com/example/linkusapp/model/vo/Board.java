@@ -75,19 +75,4 @@ public class Board implements Serializable {
         return gExplanation;
     }
 
-    @Override
-    public String toString() {
-        return "Board{" +
-                "gPart='" + gPart + '\'' +
-                ", gArea='" + gArea + '\'' +
-                ", gReader='" + gReader + '\'' +
-                ", gName='" + gName + '\'' +
-                ", gPurpose='" + gPurpose + '\'' +
-                ", gJoinMethod='" + gJoinMethod + '\'' +
-                ", gMemberCnt='" + gMemberLimit + '\'' +
-                ", gStartDate='" + gStartDate + '\'' +
-                ", gEndDate='" + gEndDate + '\'' +
-                ", gExplanation='" + gExplanation + '\'' +
-                '}';
-    }
 }

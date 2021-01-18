@@ -77,12 +77,11 @@ public class AddUserInfoActivity extends AppCompatActivity {
 
         saveBtn.setPaintFlags(saveBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        currentId = viewModel.getUserInfoFromShared().getUserId();
+        currentId = viewModel.getLoginSession();
 
 
-        Log.d("loginSession", "onCreate: "+viewModel.getUserInfoFromShared().getUserId());
         //어떤 방시으로 로그인 된 계정인지 체크
-        String loginMethod = viewModel.getUserInfoFromShared().getLoginMethod();
+        String loginMethod = viewModel.getLoginMethod();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))

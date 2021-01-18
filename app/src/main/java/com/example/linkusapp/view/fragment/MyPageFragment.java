@@ -147,6 +147,7 @@ public class MyPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 logout();
+                getActivity().finish();
             }
         });
     }
