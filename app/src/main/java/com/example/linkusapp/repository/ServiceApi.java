@@ -4,7 +4,6 @@ import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.BoardAddressInfo;
 import com.example.linkusapp.model.vo.BoardConditionInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
-import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.BoardPartInfo;
 import com.example.linkusapp.model.vo.BoardSearchInfo;
 import com.example.linkusapp.model.vo.FindPassword;
@@ -96,7 +95,7 @@ public interface ServiceApi {
     @GET("/android/boardAddress")
     Call<BoardAddressInfo> getAddressBoard(@Query("address") String address);
 
-    @GET("/android/boardAddress")
+    @GET("/android/boardCondition")
     Call<BoardConditionInfo> getConditionBoard(@Query("gPart") String gPart, @Query("address") String address);
 
     @FormUrlEncoded
