@@ -1,6 +1,8 @@
 package com.example.linkusapp.repository;
 
 import com.example.linkusapp.model.vo.AddressInfo;
+import com.example.linkusapp.model.vo.BoardAddressInfo;
+import com.example.linkusapp.model.vo.BoardConditionInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.BoardPartInfo;
@@ -98,6 +100,12 @@ public interface ServiceApi {
     @GET("/android/boardSearch")
     Call<BoardSearchInfo> getSearchBoard(@Query("keyword") String keyword);
 
+    @GET("/android/boardAddress")
+    Call<BoardAddressInfo> getAddressBoard(@Query("address") String address);
+
+    @GET("/android/boardAddress")
+    Call<BoardConditionInfo> getConditionBoard(@Query("gPart") String gPart, @Query("address") String address);
+
     @FormUrlEncoded
     @POST("/android/withdraw")
     Call<String> withDraw(
@@ -158,4 +166,8 @@ public interface ServiceApi {
     @POST("/android/removeAddress")
     Call<String> removeAddress(@Field("userAddress") String userAddress);
 
+    //fcm 전송메소드
+    @FormUrlEncoded
+    @POST("/android/requestJoin")
+    Call<Void> requestJoin(@Field("targetUser") String nickname, @Field("user") String user);
 }

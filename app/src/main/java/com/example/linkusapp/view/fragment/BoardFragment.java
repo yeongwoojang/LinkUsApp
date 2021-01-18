@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -134,9 +135,10 @@ public class BoardFragment extends Fragment{
         partAdapter.setOnItemClickListener(new PartAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
+                String gpart;
                 if(position == 0){
                     Log.d(TAG, "onItemClick: " + part[0]);
-                    viewModel.getAllBoard();
+//                    viewModel.getAllBoard();
                     viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
                         if(boardInfo.getCode()==200){
                             boardList = boardInfo.getJsonArray();
@@ -157,6 +159,39 @@ public class BoardFragment extends Fragment{
                         }
                     });
                 }
+            }
+        });
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(parent.getItemAtPosition(position).equals("전체")){
+                    Toast.makeText(getApplicationContext(), parent.getItemAtPosition(position) + "지역을 불러왔습니다.",Toast.LENGTH_SHORT).show();
+                    viewModel.getAllBoard();
+                    viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
+                        if(boardInfo.getCode()==200){
+                            boardList = boardInfo.getJsonArray();
+                            boardAdapter.updateItem(boardList);
+                        }else if(boardInfo.getCode()==204){
+                            Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
+                        }else{
+                            Snackbar.make(view, "오류", Snackbar.LENGTH_SHORT).show();
+                        }
+                    });
+                }else{
+                    viewModel.getAddressBoard(parent.getItemAtPosition(position).toString());
+                    Toast.makeText(getApplicationContext(), parent.getItemAtPosition(position) + "지역을 불러왔습니다.",Toast.LENGTH_SHORT).show();
+                    viewModel.boardAddressRsLD.observe(getViewLifecycleOwner(), boardAddressInfo -> {
+                        if(boardAddressInfo.getCode() == 200){
+                            Log.d(TAG, "onItemClick: code == 200");
+                            boardList = boardAddressInfo.getJsonArray();
+                            boardAdapter.updateItem(boardList);
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
