@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.view.activity.HomeActivity;
+import com.example.linkusapp.view.activity.ManageJoinReqActivity;
 import com.example.linkusapp.view.activity.MyStudyGroupActivity;
 import com.example.linkusapp.view.activity.SetAddressActivity;
 import com.example.linkusapp.view.activity.UpdateUserActivity;
@@ -34,7 +35,7 @@ public class MyPageFragment extends Fragment {
 
     private TextView nickNameTV,addressTV,methodTV;
     private LoginViewModel viewModel;
-    private Button logout,withdraw,shareApp,setAddress,updateInfo,myGroup;
+    private Button logout,withdraw,shareApp,setAddress,updateInfo,myGroup,manageJoinReqBt;
     private String loginMethod,userNickname;
     private GoogleSignInClient mSignInClient;
     private String userId;
@@ -57,6 +58,7 @@ public class MyPageFragment extends Fragment {
         setAddress = (Button) view.findViewById(R.id.my_address);
         updateInfo = (Button) view.findViewById(R.id.update_info);
         myGroup = (Button) view.findViewById(R.id.my_study);
+        manageJoinReqBt = (Button)view.findViewById(R.id.sign_access);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
 
@@ -112,6 +114,13 @@ public class MyPageFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MyStudyGroupActivity.class);
                 intent.putExtra("nickname",userNickname);
+                startActivity(intent);
+            }
+        });
+        manageJoinReqBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ManageJoinReqActivity.class);
                 startActivity(intent);
             }
         });

@@ -57,23 +57,36 @@
                     android:textColor="@color/black"
                     android:textSize="20dp" />
 
-                <EditText
-                    android:id="@+id/edt_group_name"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
+                    >
+                <EditText
+                    android:id="@+id/edt_group_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/form_edt_line"
                     android:fontFamily="@font/nanum_square_ac_l"
                     android:hint="그룹명"
-
                     android:inputType="text"
                     android:maxLength="20"
                     android:maxLines="1"
                     android:padding="10dp"
                     android:theme="@style/EditTheme" />
-
+                    <Button
+                        android:id="@+id/btn_g_name_chk"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:text="중복확인"
+                        android:fontFamily="@font/nanum_square_ac_l"
+                        android:textColor="@color/white"
+                        android:background="@drawable/form_button_round"
+                        />
+                </FrameLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

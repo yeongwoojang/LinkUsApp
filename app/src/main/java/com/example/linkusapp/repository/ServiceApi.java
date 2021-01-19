@@ -65,6 +65,9 @@ public interface ServiceApi {
             @Query("loginMethod") String loginMethod
     );
 
+    @GET("/android/chkGroupName")
+    Call<String> chkGroupName(@Query("gName") String gName);
+
     @FormUrlEncoded
     @POST("/android/createGroup")
     Call<String> createGroup(
@@ -132,6 +135,7 @@ public interface ServiceApi {
 
     @GET("/android/optionBoard")
     Call<BoardInfo> optionBoard(@Query("g_part") String gPart, @Query("address") String address);
+
     @GET("/android/countGroupMember")
     Call<MemberCount> getMemberCount(@Query("gName") String gName);
 
