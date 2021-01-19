@@ -62,7 +62,11 @@
                 android:entries="@array/address_array"
                 android:id="@+id/spinner_address"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:overlapAnchor="false"
+                android:dropDownVerticalOffset="55dp"
+                />
 
             <EditText
                 android:id="@+id/search_bar"

@@ -42,7 +42,6 @@ public class MyStudyGroupActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 finish();
             }
