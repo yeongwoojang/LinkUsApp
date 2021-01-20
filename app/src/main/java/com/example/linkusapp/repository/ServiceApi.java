@@ -139,6 +139,10 @@ public interface ServiceApi {
     @POST("/android/joinGroup")
     Call<String> joinGroup(@Field("gName") String gName, @Field("gMemberId") String gMemberId, @Field("gMemberNick") String gMemberNick);
 
+    @FormUrlEncoded
+    @POST("/android/insertRequest")
+    Call<String> insertRequest(@Field("gName")String gName, @Field("userNick")String userNick);
+
 //-------------------------FCM 관련 메소드------------------------
 
     //fcm 전송메소드

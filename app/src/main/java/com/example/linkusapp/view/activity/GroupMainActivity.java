@@ -63,7 +63,6 @@ public class GroupMainActivity extends AppCompatActivity {
 
         //현재 그룹에 참여한 인원 표시.
 
-
         if(board.getgJoinMethod().equals("자유")){
             reqJoinLayout.setVisibility(View.INVISIBLE);
         }else{
@@ -71,6 +70,7 @@ public class GroupMainActivity extends AppCompatActivity {
         }
 
         viewModel = new ViewModelProvider(this).get(CreateGrpViewModel.class);
+        User user = viewModel.getUserInfoFromShared();
         viewModel.getMemberCount(board.getgName());
         backBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,9 +119,16 @@ public class GroupMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("firebase", "onClick: ");
-                User user = viewModel.getUserInfoFromShared();
-                viewModel.requestJoin(board.getgReader(),user.getUserNickname(),user.getAge(),user.getGender(),user.getAddress());
+                viewModel.insertRequest(board.getgName(),user.getUserNickname());
             }
         });
+        viewModel.insertReqRes.observe(this,response ->{
+            if(response.equals("200")){
+                Snackbar.make(findViewById(R.id.group_main_layout), "가입 요청 성공.", Snackbar.LENGTH_SHORT).show();
+                viewModel.requestJoin(board.getgReader(),user.getUserNickname(),user.getAge(),user.getGender(),user.getAddress());
+            }else{
+                Snackbar.make(findViewById(R.id.group_main_layout), "가입 요청 실패.", Snackbar.LENGTH_SHORT).show();
+            }
+        } );
     }
 }

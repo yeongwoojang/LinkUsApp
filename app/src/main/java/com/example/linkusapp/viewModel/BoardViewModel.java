@@ -82,59 +82,12 @@ public class BoardViewModel extends AndroidViewModel {
         });
     }
 
-    public void getAddressBoard(String address){
-        service.getAddressBoard(address).enqueue(new Callback<BoardInfo>(){
-
-            @Override
-            public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
-                BoardInfo result = response.body();
-                boardAddressRsLD.postValue(result);
-            }
-
-            @Override
-            public void onFailure(Call<BoardInfo> call, Throwable t) {
-
-            }
-        });
-    }
-
-    // 파트 && 지역 묶기
-    public void getConditionBoard(String gPart, String address){
-        service.getConditionBoard(gPart, address).enqueue(new Callback<BoardInfo>(){
-
-            @Override
-            public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
-                BoardInfo result = response.body();
-                boardConditionRsLD.postValue(result);
-            }
-
-            @Override
-            public void onFailure(Call<BoardInfo> call, Throwable t) {
-
-            }
-        });
-    }
-
     public void userBoardAll(String userNickname){
         service.userBoardAll(userNickname).enqueue(new Callback<BoardInfo>() {
             @Override
             public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
                 BoardInfo result = response.body();
                 userGroupRsLD.postValue(result);
-            }
-
-            @Override
-            public void onFailure(Call<BoardInfo> call, Throwable t) {
-
-            }
-        });
-    }
-    public void allAddress(){
-        service.allAddress().enqueue(new Callback<BoardInfo>() {
-            @Override
-            public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
-                BoardInfo result = response.body();
-                allAddressRsLD.postValue(result);
             }
 
             @Override

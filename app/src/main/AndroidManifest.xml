@@ -4,12 +4,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> <!-- 현재 위치 관련 권한 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 현재 위치 관련 권한 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".kakao.App"
@@ -21,17 +21,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.InviteManageActivity"></activity>
-        <activity android:name=".view.activity.MyStudyGroupActivity"/>
-        <activity android:name=".view.activity.UpdateUserActivity"/>
-        <activity android:name=".view.activity.SetAddressActivity"/>
-        <activity android:name=".view.activity.GroupMainActivity"/>
-        <activity android:name=".view.activity.CreateGroupActivity"/>
-        <activity android:name=".view.activity.MainActivity"/>
-        <activity android:name=".view.activity.AddressActivity"/>
-        <activity android:name=".view.activity.AddUserInfoActivity"/>
-        <activity android:name=".view.activity.FindPwActivity"/>
-        <activity android:name=".view.activity.LoadingActivity"/>
+        <activity android:name=".CommentActivity"></activity>
+        <activity android:name=".EnterMainGroupActivity" />
+        <activity android:name=".view.activity.InviteManageActivity" />
+        <activity android:name=".view.activity.MyStudyGroupActivity" />
+        <activity android:name=".view.activity.UpdateUserActivity" />
+        <activity android:name=".view.activity.SetAddressActivity" />
+        <activity android:name=".view.activity.GroupMainActivity" />
+        <activity android:name=".view.activity.CreateGroupActivity" />
+        <activity android:name=".view.activity.MainActivity" />
+        <activity android:name=".view.activity.AddressActivity" />
+        <activity android:name=".view.activity.AddUserInfoActivity" />
+        <activity android:name=".view.activity.FindPwActivity" />
+        <activity android:name=".view.activity.LoadingActivity" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
@@ -77,13 +79,15 @@
                     android:scheme="@string/kakao_native_app_key" />
             </intent-filter>
         </activity>
+
         <service
-            android:name="com.example.linkusapp.util.FirebaseInstanceIDService"
+            android:name=".util.FirebaseInstanceIDService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />

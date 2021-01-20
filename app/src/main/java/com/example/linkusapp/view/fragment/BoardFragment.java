@@ -1,16 +1,12 @@
 package com.example.linkusapp.view.fragment;
 
-import android.annotation.SuppressLint;
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +32,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class BoardFragment extends Fragment{
@@ -138,6 +133,7 @@ public class BoardFragment extends Fragment{
                             spinner.setSelection(0);
                             gpart = part[position];
                             boardList = boardInfo.getJsonArray();
+                            Log.d("boardList",boardList.toString());
                             boardAdapter.updateItem(boardList);
                         }else if(boardInfo.getCode()==204){
                             Snackbar.make(view.findViewById(R.id.board_fragment), "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
