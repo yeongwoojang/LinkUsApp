@@ -61,9 +61,6 @@ public class GroupMainActivity extends AppCompatActivity {
         groupExplTxt.setText(board.getgExplanation());
         groupPurposeTxt.setText(board.getgPurpose());
 
-        //현재 그룹에 참여한 인원 표시.
-
-
         if(board.getgJoinMethod().equals("자유")){
             reqJoinLayout.setVisibility(View.INVISIBLE);
         }else{
@@ -71,6 +68,7 @@ public class GroupMainActivity extends AppCompatActivity {
         }
 
         viewModel = new ViewModelProvider(this).get(CreateGrpViewModel.class);
+        User user = viewModel.getUserInfoFromShared();
         viewModel.getMemberCount(board.getgName());
         backBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,8 +118,19 @@ public class GroupMainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d("firebase", "onClick: ");
                 User user = viewModel.getUserInfoFromShared();
-                viewModel.requestJoin(board.getgReader(),user.getUserNickname(),user.getAge(),user.getGender(),user.getAddress());
+
+                viewModel.insertRequest(board.getgName(),user.getUserNickname());
             }
         });
+        viewModel.insertReqRes.observe(this,response ->{
+            if(response.equals("200")){
+                Snackbar.make(findViewById(R.id.group_main_layout), "가입 요청 성공.", Snackbar.LENGTH_SHORT).show();
+                viewModel.requestJoin(board.getgReader(),user.getUserNickname(),user.getAge(),user.getGender(),user.getAddress());
+            }else if(response.equals("204")){
+                Snackbar.make(findViewById(R.id.group_main_layout), "이미 요청했습니다.", Snackbar.LENGTH_SHORT).show();
+            }else{
+                Snackbar.make(findViewById(R.id.group_main_layout), "가입 요처어에 실패했습니다.", Snackbar.LENGTH_SHORT).show();
+            }
+        } );
     }
 }

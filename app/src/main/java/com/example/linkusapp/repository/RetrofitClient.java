@@ -17,8 +17,6 @@ public class RetrofitClient {
 
     private static Retrofit retrofit = null;
 
-
-
     public static Retrofit getClient(Context context){
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 //쿠키를 sharedPreferences에 저장하고 가져온다.

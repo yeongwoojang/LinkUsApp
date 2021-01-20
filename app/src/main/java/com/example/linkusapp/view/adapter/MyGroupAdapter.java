@@ -11,14 +11,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
+import com.example.linkusapp.model.vo.LeaderGroup;
 
 import java.util.List;
 
-public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupViewHolder> {
+public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupViewHolder> implements View.OnClickListener {
+
+    private List<LeaderGroup> items;
+
+    public MyGroupAdapter(List<LeaderGroup> items) {
+        this.items = items;
+    }
 
     public class MyGroupViewHolder extends RecyclerView.ViewHolder{
         private LinearLayout groupLayout;
         private TextView groupName,joinReqCount;
+
         public MyGroupViewHolder(@NonNull View itemView) {
             super(itemView);
             groupLayout = itemView.findViewById(R.id.group_layout);
@@ -27,8 +35,8 @@ public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupV
         }
     }
 
-    public void updateItem(List<Board> items){
-//        boardList = items;
+    public void updateItem(List<LeaderGroup> items){
+        this.items = items;
         notifyDataSetChanged();
     }
 
@@ -36,16 +44,25 @@ public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupV
     @Override
     public MyGroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_group,parent,false);
-        return new MyGroupAdapter.MyGroupViewHolder(view);
+        return new MyGroupViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyGroupViewHolder holder, int position) {
-
+            LeaderGroup leaderGroup = items.get(position);
+            holder.groupName.setText(leaderGroup.getgName());
+            holder.joinReqCount.setText(String.valueOf(leaderGroup.getReqCount()));
+            holder.groupLayout.setOnClickListener(this);
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return this.items.size();
     }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
 }

@@ -26,6 +26,7 @@ public class CreateGrpViewModel extends AndroidViewModel {
     public MutableLiveData<MemberCount> memberCount = new MutableLiveData<>();
     public MutableLiveData<String> joinGroupRes = new MutableLiveData<>();
     public MutableLiveData<String> chkGnameRes = new MutableLiveData<>();
+    public MutableLiveData<String> insertReqRes = new MutableLiveData<>();
 
     public CreateGrpViewModel(@NonNull Application application) {
         super(application);
@@ -114,6 +115,20 @@ public class CreateGrpViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void insertRequest(String gName, String userNick){
+        service.insertRequest(gName,userNick).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                insertReqRes.postValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
 
             }
         });

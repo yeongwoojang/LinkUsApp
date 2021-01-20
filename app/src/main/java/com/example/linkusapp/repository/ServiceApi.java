@@ -3,6 +3,7 @@ package com.example.linkusapp.repository;
 import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.FindPassword;
+import com.example.linkusapp.model.vo.LeaderGroupInfo;
 import com.example.linkusapp.model.vo.MemberCount;
 import com.example.linkusapp.model.vo.UserInfo;
 
@@ -143,6 +144,9 @@ public interface ServiceApi {
     @POST("/android/joinGroup")
     Call<String> joinGroup(@Field("gName") String gName, @Field("gMemberId") String gMemberId, @Field("gMemberNick") String gMemberNick);
 
+    @GET("/android/getLeaderGroup")
+    Call<LeaderGroupInfo> getLeaderGroup(@Query("userNick")String userNick);
+
 //-------------------------FCM 관련 메소드------------------------
 
     //fcm 전송메소드
@@ -162,5 +166,9 @@ public interface ServiceApi {
     @FormUrlEncoded
     @POST("/android/removeAddress")
     Call<String> removeAddress(@Field("userAddress") String userAddress);
+
+    @FormUrlEncoded
+    @POST("/android/insertRequest")
+    Call<String> insertRequest(@Field("gName")String gName, @Field("userNick")String userNick);
 
 }
