@@ -92,6 +92,4 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
         getActivity.startActivity(intent);
         getActivity.overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
-
-
 }

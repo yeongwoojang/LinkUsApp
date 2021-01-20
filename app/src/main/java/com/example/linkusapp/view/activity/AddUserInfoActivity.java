@@ -77,12 +77,11 @@ public class AddUserInfoActivity extends AppCompatActivity {
 
         saveBtn.setPaintFlags(saveBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        currentId = viewModel.getUserInfoFromShared().getUserId();
+        currentId = viewModel.getLoginSession();
 
 
-        Log.d("loginSession", "onCreate: "+viewModel.getUserInfoFromShared().getUserId());
         //어떤 방시으로 로그인 된 계정인지 체크
-        String loginMethod = viewModel.getUserInfoFromShared().getLoginMethod();
+        String loginMethod = viewModel.getLoginMethod();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -94,8 +93,8 @@ public class AddUserInfoActivity extends AppCompatActivity {
         setAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-                    age = parent.getItemAtPosition(position).toString();
-                    Snackbar.make(findViewById(R.id.add_user_info), age, Snackbar.LENGTH_SHORT).show();
+                age = parent.getItemAtPosition(position).toString();
+                Snackbar.make(findViewById(R.id.add_user_info), age, Snackbar.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {

@@ -15,15 +15,7 @@ public class AddressInfo {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public List<UserAddress> getJsonArray() {
         return jsonArray;
-    }
-
-    public void setJsonArray(List<UserAddress> jsonArray) {
-        this.jsonArray = jsonArray;
     }
 }

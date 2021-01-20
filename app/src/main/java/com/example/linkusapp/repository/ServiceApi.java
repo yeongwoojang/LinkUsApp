@@ -1,16 +1,9 @@
 package com.example.linkusapp.repository;
 
 import com.example.linkusapp.model.vo.AddressInfo;
-import com.example.linkusapp.model.vo.BoardAddressInfo;
-import com.example.linkusapp.model.vo.BoardConditionInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
-import com.example.linkusapp.model.vo.Board;
-import com.example.linkusapp.model.vo.BoardInfo;
-import com.example.linkusapp.model.vo.BoardPartInfo;
-import com.example.linkusapp.model.vo.BoardSearchInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.MemberCount;
-import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.model.vo.UserInfo;
 
 import retrofit2.Call;
@@ -29,7 +22,7 @@ public interface ServiceApi {
             @Field("userId") String userId,
             @Field("password") String password,
             @Field("userEmail") String userEmail
-         );
+    );
 
     @GET("/android/idChk")
     Call<String> chkId(@Query("userId") String userId);
@@ -72,6 +65,9 @@ public interface ServiceApi {
             @Query("loginMethod") String loginMethod
     );
 
+    @GET("/android/chkGroupName")
+    Call<String> chkGroupName(@Query("gName") String gName);
+
     @FormUrlEncoded
     @POST("/android/createGroup")
     Call<String> createGroup(
@@ -92,16 +88,16 @@ public interface ServiceApi {
 
     // 분야별 스터디 그룹을 서버에 요청
     @GET("/android/boardPart")
-    Call<BoardPartInfo> getPartBoard(@Query("gPart") String gPart);
+    Call<BoardInfo> getPartBoard(@Query("gPart") String gPart);
 
     @GET("/android/boardSearch")
-    Call<BoardSearchInfo> getSearchBoard(@Query("keyword") String keyword);
+    Call<BoardInfo> getSearchBoard(@Query("keyword") String keyword);
 
     @GET("/android/boardAddress")
-    Call<BoardAddressInfo> getAddressBoard(@Query("address") String address);
+    Call<BoardInfo> getAddressBoard(@Query("address") String address);
 
     @GET("/android/boardCondition")
-    Call<BoardConditionInfo> getConditionBoard(@Query("gPart") String gPart, @Query("address") String address);
+    Call<BoardInfo> getConditionBoard(@Query("gPart") String gPart, @Query("address") String address);
 
     @FormUrlEncoded
     @POST("/android/withdraw")
@@ -129,7 +125,7 @@ public interface ServiceApi {
 
     @FormUrlEncoded
     @POST("/android/updateUserInfo")
-    Call<String> updateUserInfo(@Field("userNickname") String userNickname,@Field("userPassword") String userPassword);
+    Call<String> updateUserInfo(@Field("userNickname") String userNickname,@Field("userPassword") String userPassword, @Field("loginMethod") String loginMethod);
 
     @GET("/android/userBoardAll")
     Call<BoardInfo> userBoardAll(@Query("userNickname") String userNickname);
@@ -139,6 +135,7 @@ public interface ServiceApi {
 
     @GET("/android/optionBoard")
     Call<BoardInfo> optionBoard(@Query("g_part") String gPart, @Query("address") String address);
+
     @GET("/android/countGroupMember")
     Call<MemberCount> getMemberCount(@Query("gName") String gName);
 
