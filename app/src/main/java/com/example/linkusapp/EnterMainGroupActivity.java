@@ -52,7 +52,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         addCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent());
+                startActivity(new Intent(getApplicationContext(),CommentActivity.class));
             }
         });
 

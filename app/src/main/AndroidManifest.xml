@@ -21,7 +21,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CommentActivity"></activity>
+        <activity android:name=".CommentActivity"
+            android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".EnterMainGroupActivity" />
         <activity android:name=".view.activity.InviteManageActivity" />
         <activity android:name=".view.activity.MyStudyGroupActivity" />
