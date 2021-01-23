@@ -1,6 +1,7 @@
 package com.example.linkusapp.viewModel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -8,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.linkusapp.model.vo.LeaderGroupInfo;
 import com.example.linkusapp.model.vo.User;
+import com.example.linkusapp.model.vo.UserInfo;
+import com.example.linkusapp.model.vo.UsersInfo;
 import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.util.SharedPreference;
@@ -21,6 +24,8 @@ public class ManageJoinViewModel extends AndroidViewModel {
     private SharedPreference prefs;
 
     public MutableLiveData<LeaderGroupInfo> leaderGroupRes = new MutableLiveData<>();
+    public MutableLiveData<UsersInfo> reqUserListRes = new MutableLiveData<>();
+
     public ManageJoinViewModel(@NonNull Application application) {
         super(application);
         service = RetrofitClient.getClient(application).create(ServiceApi.class);
@@ -45,4 +50,21 @@ public class ManageJoinViewModel extends AndroidViewModel {
             }
         });
     }
+
+    public void getReqUser(String gName){
+        Log.d("SDAf", "getReqUser: "+gName);
+        service.getReqUser(gName).enqueue(new Callback<UsersInfo>() {
+            @Override
+            public void onResponse(Call<UsersInfo> call, Response<UsersInfo> response) {
+                reqUserListRes.postValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UsersInfo> call, Throwable t) {
+
+            }
+        });
+    }
+
+
 }

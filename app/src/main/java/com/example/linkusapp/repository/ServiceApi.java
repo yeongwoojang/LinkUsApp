@@ -5,7 +5,11 @@ import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.LeaderGroupInfo;
 import com.example.linkusapp.model.vo.MemberCount;
+import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.model.vo.UserInfo;
+import com.example.linkusapp.model.vo.UsersInfo;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -146,6 +150,9 @@ public interface ServiceApi {
 
     @GET("/android/getLeaderGroup")
     Call<LeaderGroupInfo> getLeaderGroup(@Query("userNick")String userNick);
+
+    @GET("/android/getReqUser")
+    Call<UsersInfo> getReqUser(@Query("gName") String gName);
 
 //-------------------------FCM 관련 메소드------------------------
 

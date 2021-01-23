@@ -12,15 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.LeaderGroup;
+import com.example.linkusapp.viewModel.ManageJoinViewModel;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.List;
 
 public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupViewHolder> implements View.OnClickListener {
 
     private List<LeaderGroup> items;
-
-    public MyGroupAdapter(List<LeaderGroup> items) {
+    private SlidingUpPanelLayout slidingView;
+    private ManageJoinViewModel viewModel;
+    public MyGroupAdapter(List<LeaderGroup> items, SlidingUpPanelLayout slidingView, ManageJoinViewModel viewModel) {
         this.items = items;
+        this.slidingView = slidingView;
+        this.viewModel = viewModel;
     }
 
     public class MyGroupViewHolder extends RecyclerView.ViewHolder{
@@ -52,6 +57,7 @@ public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupV
             LeaderGroup leaderGroup = items.get(position);
             holder.groupName.setText(leaderGroup.getgName());
             holder.joinReqCount.setText(String.valueOf(leaderGroup.getReqCount()));
+            holder.groupLayout.setTag(position);
             holder.groupLayout.setOnClickListener(this);
     }
 
@@ -62,7 +68,7 @@ public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupV
 
     @Override
     public void onClick(View v) {
-
+        viewModel.getReqUser(items.get((Integer) v.getTag()).getgName());
     }
 
 }
