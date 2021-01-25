@@ -1,14 +1,20 @@
 package com.example.linkusapp.view.fragment;
 
+import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +38,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class BoardFragment extends Fragment{
@@ -41,6 +48,8 @@ public class BoardFragment extends Fragment{
     private RecyclerView boardRecyclerView;
     private EditText searchEdit;
     private ImageButton searchBtn;
+    private ImageButton refreshBtn;
+    private SwipeRefreshLayout mSwipe;
 
     private BoardViewModel viewModel;
     private Spinner spinner;
@@ -63,6 +72,8 @@ public class BoardFragment extends Fragment{
         searchBtn = (ImageButton)view.findViewById(R.id.search_btn);
         createBtn = (ImageButton)view.findViewById(R.id.write_btn);
         emptyView = (TextView)view.findViewById(R.id.empty_group);
+        refreshBtn = (ImageButton)view.findViewById(R.id.refresh_btn);
+        mSwipe = (SwipeRefreshLayout)view.findViewById(R.id.refresh_layout);
         return view;
     }
 
@@ -73,7 +84,6 @@ public class BoardFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(BoardViewModel.class);
-
         ArrayList<String> partList = new ArrayList<>();
         String[] part = {"전체", "어학", "교양", "프로그래밍", "취업","취미", "자율", "기타"};
         for (int i=0; i<part.length; i++) { partList.add(part[i]); }
@@ -88,7 +98,6 @@ public class BoardFragment extends Fragment{
         boardRecyclerView.setAdapter(boardAdapter);
 
         viewModel.getAllBoard();
-
         viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
             if(boardInfo.getCode()==200){
                 boardAdapter.updateItem(boardInfo.getJsonArray());
@@ -96,6 +105,23 @@ public class BoardFragment extends Fragment{
                 Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
             }else{
                 Snackbar.make(view, "오류", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+        // 당겨서 새로고침
+        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+            }
+        });
+
+        // 버튼클릭 새로고침
+        refreshBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"페이지를 새로고침 하였습니다.",Toast.LENGTH_SHORT).show();
+                listRefresh();
             }
         });
 
@@ -133,7 +159,6 @@ public class BoardFragment extends Fragment{
                             spinner.setSelection(0);
                             gpart = part[position];
                             boardList = boardInfo.getJsonArray();
-                            Log.d("boardList",boardList.toString());
                             boardAdapter.updateItem(boardList);
                         }else if(boardInfo.getCode()==204){
                             Snackbar.make(view.findViewById(R.id.board_fragment), "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
@@ -162,7 +187,7 @@ public class BoardFragment extends Fragment{
         });
         /*여기*/
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
+            @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(parent.getItemAtPosition(position).equals("전체")){
                     viewModel.getAllBoard();
@@ -206,5 +231,12 @@ public class BoardFragment extends Fragment{
                 Snackbar.make(view.findViewById(R.id.board_fragment), "오류", Snackbar.LENGTH_SHORT).show();
             }
         });
+    }
+    private void listRefresh(){
+//        boardRecyclerView.removeAllViewsInLayout();
+//        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+//        boardRecyclerView.setAdapter(boardAdapter);
+        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+        boardAdapter.notifyDataSetChanged();
     }
 }
