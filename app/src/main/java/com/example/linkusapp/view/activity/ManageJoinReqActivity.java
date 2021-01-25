@@ -67,6 +67,5 @@ public class ManageJoinReqActivity extends AppCompatActivity {
             }
         });
 
-
     }
 }
