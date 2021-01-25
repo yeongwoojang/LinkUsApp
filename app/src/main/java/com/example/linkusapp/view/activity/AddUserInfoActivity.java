@@ -93,8 +93,8 @@ public class AddUserInfoActivity extends AppCompatActivity {
         setAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-                    age = parent.getItemAtPosition(position).toString();
-                    Snackbar.make(findViewById(R.id.add_user_info), age, Snackbar.LENGTH_SHORT).show();
+                age = parent.getItemAtPosition(position).toString();
+                Snackbar.make(findViewById(R.id.add_user_info), age, Snackbar.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {

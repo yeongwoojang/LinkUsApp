@@ -4,19 +4,19 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class AddressInfo {
+public class LeaderGroupInfo {
     @SerializedName("code")
-    private String code;
+    private int code;
 
     @SerializedName("jsonArray")
-    private List<UserAddress> jsonArray;
+    List<LeaderGroup> leaderGroupList;
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public List<UserAddress> getJsonArray() {
-        return jsonArray;
+    public List<LeaderGroup> getLeaderGroupList() {
+        return leaderGroupList;
     }
 
 }

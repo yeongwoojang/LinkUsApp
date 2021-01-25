@@ -30,7 +30,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
     ImageButton backBt, freeJoinBt, approvalJoinBt;
     EditText edtGroupName, edtGroupExplanation, edtGroupPurpose, edtMemberLimit;
-    Button nextBt, startDateBt, endDateBt, resetPeriodBt, createGroupBt;
+    Button nextBt, startDateBt, endDateBt, resetPeriodBt, createGroupBt, gNameChkBt;
     TextView addressText;
     Spinner partSpinner;
     private static int year, month, day;
@@ -38,6 +38,8 @@ public class CreateGroupActivity extends AppCompatActivity {
     private String buttonId;
     private String joinTag = null;
     private String part = "어학";
+    private boolean gNameChkFlg = false;
+    private String gName = "";
     //viewModel
     CreateGrpViewModel viewModel;
 
@@ -57,6 +59,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         endDateBt = (Button) findViewById(R.id.btn_end_date);
         resetPeriodBt = (Button) findViewById(R.id.btn_reset_period);
         createGroupBt = (Button) findViewById(R.id.btn_create_group);
+        gNameChkBt = (Button) findViewById(R.id.btn_g_name_chk);
         freeJoinBt = (ImageButton) findViewById(R.id.btn_free_join);
         approvalJoinBt = (ImageButton) findViewById(R.id.btn_approval_join);
         addressText = (TextView) findViewById(R.id.study_address);
@@ -82,6 +85,28 @@ public class CreateGroupActivity extends AppCompatActivity {
         freeJoinBt.setColorFilter(color);
         approvalJoinBt.setColorFilter(color);
 
+        gNameChkBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gName = edtGroupName.getText().toString().trim();
+                if (!validChk(gName)) {
+                    Snackbar.make(findViewById(R.id.create_group_page), "올바르지 않은 그룹명입니다.", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    viewModel.chkGname(gName);
+                }
+            }
+        });
+
+        viewModel.chkGnameRes.observe(this, response -> {
+            if (response.equals("200")) {
+                Snackbar.make(findViewById(R.id.create_group_page), "사용가능한 그룹명입니다.", Snackbar.LENGTH_SHORT).show();
+                gNameChkFlg = true;
+            } else {
+                Snackbar.make(findViewById(R.id.create_group_page), "이미 존재하는 그룹명입니다.", Snackbar.LENGTH_SHORT).show();
+                gName = "";
+                gNameChkFlg = false;
+            }
+        });
         partSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
@@ -167,29 +192,42 @@ public class CreateGroupActivity extends AppCompatActivity {
         createGroupBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String groupName = edtGroupName.getText().toString().trim();
-                String groupExplanation = edtGroupExplanation.getText().toString().trim();
-                String groupPurpose = edtGroupPurpose.getText().toString().trim();
-                String memberLimit = edtMemberLimit.getText().toString().trim();
-                String startDate = startDateBt.getText().toString().trim();
-                String endDate = endDateBt.getText().toString().trim();
-                String joinMethod = joinTag;
-                if (startDate.matches("^[가-힣]+$") || endDate.matches("^[가-힣]+$")) {
-                    startDate = "미정";
-                    endDate = "미정";
-                }
-                //부정확한 그룹명인지 아닌지 체크
-                if (!groupName.matches("^[a-zA-Z0-9가-힣]+$")) {
-                    Snackbar.make(findViewById(R.id.create_group_page), "올바르지 않은 그룹명입니다.", Snackbar.LENGTH_SHORT).show();
-                }else if (Integer.parseInt(memberLimit) < 2 || Integer.parseInt(memberLimit) > 20) {
-                    Snackbar.make(findViewById(R.id.create_group_page), "인원 제한이 올바르지 않습니다.", Snackbar.LENGTH_SHORT).show();
+                if (gNameChkFlg) {
+                    String groupName = edtGroupName.getText().toString().trim();
+                    if (!gName.equals(groupName)) {
+                        gName = "";
+                        Snackbar.make(findViewById(R.id.create_group_page), "그룹명 중복확인을 해주세요.", Snackbar.LENGTH_SHORT).show();
+                        gNameChkFlg = false;
+                    } else {
+                        String groupExplanation = edtGroupExplanation.getText().toString().trim();
+                        String groupPurpose = edtGroupPurpose.getText().toString().trim();
+                        String memberLimit = edtMemberLimit.getText().toString().trim();
+                        String startDate = startDateBt.getText().toString().trim();
+                        String endDate = endDateBt.getText().toString().trim();
+                        String joinMethod = joinTag;
+                        if (startDate.matches("^[가-힣]+$") || endDate.matches("^[가-힣]+$")) {
+                            startDate = "미정";
+                            endDate = "미정";
+                        }
+                        //부정확한 그룹명인지 아닌지 체크
+                        if (!validChk(gName)) {
+                            Snackbar.make(findViewById(R.id.create_group_page), "올바르지 않은 그룹명입니다.", Snackbar.LENGTH_SHORT).show();
+                        } else if (Integer.parseInt(memberLimit) < 2 || Integer.parseInt(memberLimit) > 20) {
+                            Snackbar.make(findViewById(R.id.create_group_page), "인원 제한이 올바르지 않습니다.", Snackbar.LENGTH_SHORT).show();
 
+                        } else {
+                            viewModel.createGroup(gName, groupExplanation, part, groupPurpose, memberLimit, startDate, endDate, joinMethod);
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                            finish();
+                        }
+                    }
                 } else {
-                    viewModel.createGroup(groupName, groupExplanation, part, groupPurpose, memberLimit, startDate, endDate, joinMethod);
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                    finish();
+                    Snackbar.make(findViewById(R.id.create_group_page), "그룹명 중복확인을 해주세요.", Snackbar.LENGTH_SHORT).show();
+
                 }
+
+
             }
         });
 
@@ -245,5 +283,15 @@ public class CreateGroupActivity extends AppCompatActivity {
             this.datePickerDialog = new DatePickerDialog(context, themeResId, listener, year, monthOfYear, dayOfMonth);
 
         }
+    }
+
+    private boolean validChk(String gName){
+        boolean result = false;
+        if (!gName.matches("^[a-zA-Z0-9가-힣]+$")){
+            result = false;
+        }else{
+            result = true;
+        }
+        return result;
     }
 }

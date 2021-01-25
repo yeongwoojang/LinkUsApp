@@ -3,8 +3,13 @@ package com.example.linkusapp.repository;
 import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.FindPassword;
+import com.example.linkusapp.model.vo.LeaderGroupInfo;
 import com.example.linkusapp.model.vo.MemberCount;
+import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.model.vo.UserInfo;
+import com.example.linkusapp.model.vo.UsersInfo;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -22,7 +27,7 @@ public interface ServiceApi {
             @Field("userId") String userId,
             @Field("password") String password,
             @Field("userEmail") String userEmail
-    );
+         );
 
     @GET("/android/idChk")
     Call<String> chkId(@Query("userId") String userId);
@@ -64,6 +69,9 @@ public interface ServiceApi {
     Call<UserInfo> getUserInfo(
             @Query("loginMethod") String loginMethod
     );
+
+    @GET("/android/chkGroupName")
+    Call<String> chkGroupName(@Query("gName") String gName);
 
     @FormUrlEncoded
     @POST("/android/createGroup")
@@ -132,6 +140,7 @@ public interface ServiceApi {
 
     @GET("/android/optionBoard")
     Call<BoardInfo> optionBoard(@Query("g_part") String gPart, @Query("address") String address);
+
     @GET("/android/countGroupMember")
     Call<MemberCount> getMemberCount(@Query("gName") String gName);
 
@@ -139,9 +148,11 @@ public interface ServiceApi {
     @POST("/android/joinGroup")
     Call<String> joinGroup(@Field("gName") String gName, @Field("gMemberId") String gMemberId, @Field("gMemberNick") String gMemberNick);
 
-    @FormUrlEncoded
-    @POST("/android/insertRequest")
-    Call<String> insertRequest(@Field("gName")String gName, @Field("userNick")String userNick);
+    @GET("/android/getLeaderGroup")
+    Call<LeaderGroupInfo> getLeaderGroup(@Query("userNick")String userNick);
+
+    @GET("/android/getReqUser")
+    Call<UsersInfo> getReqUser(@Query("gName") String gName);
 
 //-------------------------FCM 관련 메소드------------------------
 
@@ -162,5 +173,9 @@ public interface ServiceApi {
     @FormUrlEncoded
     @POST("/android/removeAddress")
     Call<String> removeAddress(@Field("userAddress") String userAddress);
+
+    @FormUrlEncoded
+    @POST("/android/insertRequest")
+    Call<String> insertRequest(@Field("gName")String gName, @Field("userNick")String userNick);
 
 }
