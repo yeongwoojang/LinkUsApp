@@ -154,8 +154,14 @@ public interface ServiceApi {
     @GET("/android/getReqUser")
     Call<UsersInfo> getReqUser(@Query("gName") String gName);
 
-//-------------------------FCM 관련 메소드------------------------
+//-------------------------CommentViewModel 메소드------------------------
+    /*comment 추가*/
+    @FormUrlEncoded
+    /*comment 불러오기*/
+    @GET("android/getComment")
+    Call<String> getComment(@Query("bName") String bName);
 
+//-------------------------FCM 관련 메소드------------------------
     //fcm 전송메소드
     @FormUrlEncoded
     @POST("/android/requestJoin")

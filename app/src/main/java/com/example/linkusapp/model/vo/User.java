@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
+    private static final long serialVersionUID =1L;
+
     @SerializedName("USER_ID")
     @Expose
     private String userId;
