@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.LeaderGroup;
@@ -21,6 +23,7 @@ import java.util.List;
 
 public class ManageJoinReqActivity extends AppCompatActivity {
 
+    private TextView groupName;
     private RecyclerView myGroupRecyclerView, requestRecyclerView;
     private MyGroupAdapter myGroupAdapter;
     private RequestAdapter requestAdapter;
@@ -34,6 +37,7 @@ public class ManageJoinReqActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_join_req);
 
+        groupName = (TextView)findViewById(R.id.group_name_txt);
         myGroupRecyclerView = (RecyclerView) findViewById(R.id.my_group_recyclerview);
         requestRecyclerView = (RecyclerView) findViewById(R.id.request_recyclerview);
         slidingView = (SlidingUpPanelLayout) findViewById(R.id.sub_sliding_view);
@@ -47,13 +51,15 @@ public class ManageJoinReqActivity extends AppCompatActivity {
         myGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
 
         //requet 리사이클러뷰 어댑터 생성
-        requestAdapter = new RequestAdapter(users);
+        requestAdapter = new RequestAdapter(users,viewModel,this);
         requestRecyclerView.setAdapter(requestAdapter);
         requestRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
 
 
+
         User user = viewModel.getUserInfoFromShared();
         viewModel.getLeaderGroup(user.getUserNickname());
+
         viewModel.leaderGroupRes.observe(this, leaderGroupInfo -> {
             if (leaderGroupInfo.getCode() == 200) {
                 myGroupAdapter.updateItem(leaderGroupInfo.getLeaderGroupList());
@@ -66,6 +72,14 @@ public class ManageJoinReqActivity extends AppCompatActivity {
                 slidingView.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
             }
         });
+        myGroupAdapter.setGnameListener(new MyGroupAdapter.GroupNameListener() {
+            @Override
+            public void returnGname(String gName) {
+                groupName.setText(gName+" 스터디 그룹에 가입 요청을 한 유저들 입니다.");
+            }
+        });
+
+
 
     }
 }

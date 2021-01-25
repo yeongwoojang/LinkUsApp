@@ -10,7 +10,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_weight="1"
         >
         <TextView
             android:id="@+id/user_nickname"
@@ -19,6 +25,7 @@
             android:text="유저이름 : "
             android:fontFamily="@font/nanum_square_ac_b"
             android:textColor="@color/black"
+            android:padding="5dp"
             />
         <TextView
             android:id="@+id/user_age"
@@ -27,6 +34,7 @@
             android:text="나이 : "
             android:fontFamily="@font/nanum_square_ac_b"
             android:textColor="@color/black"
+            android:padding="5dp"
             />
         <TextView
             android:id="@+id/user_gender"
@@ -35,6 +43,7 @@
             android:text="성별 : "
             android:fontFamily="@font/nanum_square_ac_b"
             android:textColor="@color/black"
+            android:padding="5dp"
             />
         <TextView
             android:id="@+id/user_address"
@@ -43,7 +52,40 @@
             android:text="거주지 :"
             android:fontFamily="@font/nanum_square_ac_b"
             android:textColor="@color/black"
-           />
-
+            android:padding="5dp"
+            />
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="3"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            >
+        <Button
+            android:id="@+id/accept_bt"
+            android:tag="accept"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="승인"
+            android:background="@drawable/form_button_round_blue"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nanum_barun_gothic"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            />
+        <Button
+            android:id="@+id/reject_bt"
+            android:tag="reject"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="거절"
+            android:textColor="@color/white"
+            android:background="@drawable/form_button_round"
+            android:fontFamily="@font/nanum_barun_gothic"
+            android:gravity="center"
+            />
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
