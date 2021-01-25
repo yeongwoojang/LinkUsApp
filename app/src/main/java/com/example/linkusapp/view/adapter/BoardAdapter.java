@@ -2,18 +2,16 @@ package com.example.linkusapp.view.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.linkusapp.EnterMainGroupActivity;
+import com.example.linkusapp.view.activity.EnterMainGroupActivity;
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.view.activity.GroupMainActivity;

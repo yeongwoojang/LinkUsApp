@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/comment_layout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
-    android:background="@color/white"
-    tools:context=".CommentActivity">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -14,11 +11,11 @@
         android:layout_height="60dp"
         android:background="@color/white">
         <TextView
-            android:id="@+id/comment_nickname_tv"
+            android:id="@+id/writer_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nanum_barun_gothic"
-            android:text="그룹명"
+            android:text="작성자 닉네임"
             android:textColor="@color/black"
             android:textSize="23dp" />
     </androidx.appcompat.widget.Toolbar>
@@ -29,33 +26,25 @@
         android:layout_below="@+id/toolbar"
         android:background="@color/gray300" />
     <EditText
-        android:layout_margin="16dp"
-        android:id="@+id/comment_tv"
+        android:gravity="left|top"
+        android:id="@+id/comment_et"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:text="댓글을 입력하세요."
+        android:textColor="@color/black"
         android:textSize="16dp"
-        android:fontFamily="@font/nanum_barun_gothic"
-        android:textColor="@color/gray500"
-        android:layout_below="@+id/toolbar"
-        android:maxLength="10"
-        android:background="@drawable/button_background5"
-        android:gravity="top"
-        />
+        android:hint="내용을 입력하세요."/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_height="60dp"
         android:gravity="right"
-        >
+        android:orientation="horizontal">
         <Button
             android:id="@+id/cancel_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nanum_barun_gothic"
-            android:background="@drawable/button_background2"
-            android:textColor="@color/black"
+            android:background="@drawable/button_background6"
+            android:textColor="@color/white"
             android:stateListAnimator="@null"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
@@ -64,14 +53,14 @@
             android:id="@+id/complete_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:fontFamily="@font/nanum_barun_gothic"
             android:textSize="16dp"
             android:text="완료"
-            android:background="@drawable/button_background2"
+            android:background="@drawable/button_background6"
             android:stateListAnimator="@null"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             />
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

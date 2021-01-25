@@ -1,4 +1,4 @@
-package com.example.linkusapp;
+package com.example.linkusapp.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -10,10 +10,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.viewModel.BoardViewModel;
-
-import org.w3c.dom.Text;
 
 public class EnterMainGroupActivity extends AppCompatActivity {
 
