@@ -42,7 +42,7 @@ public class MyStudyGroupActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 finish();
             }
         });

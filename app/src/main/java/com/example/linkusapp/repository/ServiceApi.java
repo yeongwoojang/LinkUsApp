@@ -27,7 +27,7 @@ public interface ServiceApi {
             @Field("userId") String userId,
             @Field("password") String password,
             @Field("userEmail") String userEmail
-    );
+         );
 
     @GET("/android/idChk")
     Call<String> chkId(@Query("userId") String userId);
@@ -130,7 +130,7 @@ public interface ServiceApi {
 
     @FormUrlEncoded
     @POST("/android/updateUserInfo")
-    Call<String> updateUserInfo(@Field("userNickname") String userNickname,@Field("userPassword") String userPassword, @Field("loginMethod") String loginMethod);
+    Call<String> updateUserInfo(@Field("userNickname") String userNickname,@Field("userPassword") String userPassword,@Field("loginMethod") String loginMethod);
 
     @GET("/android/userBoardAll")
     Call<BoardInfo> userBoardAll(@Query("userNickname") String userNickname);

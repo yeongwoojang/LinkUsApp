@@ -92,11 +92,11 @@ public class UpdateUserActivity extends AppCompatActivity {
         });
 
         save.setOnClickListener(new View.OnClickListener() {
-            String loginMethod = viewModel.getLoginMethod();
             @Override
             public void onClick(View view) {
                 String nick = nickname.getText().toString();
                 String passwd = password.getText().toString();
+                String loginmethod= viewModel.getLoginMethod();
                 /*닉네임 중복 검사*/
                 if(!isCertify){
                     Snackbar.make(findViewById(R.id.update_user_layout), "닉네임 중복 검사 실시 해주세요.", Snackbar.LENGTH_SHORT).show();
@@ -108,9 +108,9 @@ public class UpdateUserActivity extends AppCompatActivity {
                     Snackbar.make(findViewById(R.id.update_user_layout), "비밀번호가 일치하지 않습니다.", Snackbar.LENGTH_SHORT).show();
                 }
                 else if(method.equals("일반")){
-                    viewModel.updateUserInfo(nick,passwd,loginMethod);
+                    viewModel.updateUserInfo(nick,passwd,loginmethod);
                 }
-                viewModel.updateUserInfo(nick,checkPW,loginMethod);
+                viewModel.updateUserInfo(nick,checkPW,loginmethod);
             }
         });
         viewModel.updateUserInfoRsLD.observe(this,code ->{

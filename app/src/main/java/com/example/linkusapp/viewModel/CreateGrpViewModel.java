@@ -25,8 +25,8 @@ public class CreateGrpViewModel extends AndroidViewModel {
     public MutableLiveData<String> createGroupRes = new MutableLiveData<>();
     public MutableLiveData<MemberCount> memberCount = new MutableLiveData<>();
     public MutableLiveData<String> joinGroupRes = new MutableLiveData<>();
-    public MutableLiveData<String> chkGnameRes = new MutableLiveData<>();
     public MutableLiveData<String> insertReqRes = new MutableLiveData<>();
+    public MutableLiveData<String> chkGnameRes = new MutableLiveData<>();
 
     public CreateGrpViewModel(@NonNull Application application) {
         super(application);

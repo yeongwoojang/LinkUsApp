@@ -127,6 +127,7 @@
     <color name="pink800">#AD1457</color>
     <color name="pink900">#880E4F</color>
 
+    <!--appicon-->
     <color name="app_icon_background">#FFFFFF</color>
     <color name="board_background">#3DDC84</color>
     <color name="cancel_background">#3DDC84</color>
@@ -136,9 +137,5 @@
     <color name="mystudy_background">#3DDC84</color>
     <color name="retire_background">#3DDC84</color>
     <color name="shared_background">#3DDC84</color>
-
-
-
-
 
 </resources>

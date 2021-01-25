@@ -42,7 +42,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:fontFamily="@font/nanum_square_ac_b"
+                        android:fontFamily="@font/nanum_barun_gothic"
                         android:text="그룹명"
                         android:textColor="@color/black"
                         android:textSize="23dp" />
@@ -79,7 +79,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
                                 android:background="@drawable/form_round_line_button"
-                                android:fontFamily="@font/nanum_square_ac_eb"
+                                android:fontFamily="@font/nanum_barun_gothic"
                                 android:gravity="center_vertical"
                                 android:paddingLeft="35dp"
                                 android:paddingRight="15dp"
@@ -110,6 +110,7 @@
                                 android:paddingLeft="35dp"
                                 android:paddingRight="15dp"
                                 android:text="가입 요청"
+                                android:fontFamily="@font/nanum_barun_gothic"
                                 android:textColor="@color/white" />
 
                             <ImageView
@@ -143,7 +144,7 @@
                             android:id="@+id/reader_name_txt"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:fontFamily="@font/nanum_square_ac_b"
+                            android:fontFamily="@font/nanum_barun_gothic"
                             android:layout_marginLeft="5dp"
                             android:text="리더 : 장영우"
                             android:textColor="@color/black"
@@ -166,7 +167,7 @@
                             android:id="@+id/join_method"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_square_ac_b"
+                            android:fontFamily="@font/nanum_barun_gothic"
                             android:layout_marginLeft="5dp"
                             android:text="가입방식 : 자유"
                             android:textColor="@color/black" />
@@ -189,23 +190,10 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="5dp"
-                            android:fontFamily="@font/nanum_square_ac_b"
+                            android:fontFamily="@font/nanum_barun_gothic"
                             android:text="기간 : 2021-01-01~2022-01-01"
                             android:textColor="@color/black" />
                     </LinearLayout>
-                    <!--                <TextView-->
-                    <!--                    android:layout_width="wrap_content"-->
-                    <!--                    android:layout_height="30dp"-->
-                    <!--                    android:text="2021-01-01~2022-01-01"-->
-                    <!--                    android:layout_marginTop="10dp"-->
-                    <!--                    android:layout_marginLeft="16dp"-->
-                    <!--                    android:paddingLeft="15dp"-->
-                    <!--                    android:paddingRight="15dp"-->
-                    <!--                    android:gravity="center_vertical"-->
-                    <!--                    android:textColor="@color/red500"-->
-                    <!--                    android:fontFamily="@font/nanum_square_acr"-->
-                    <!--                    android:background="@drawable/form_round_line_button"-->
-                    <!--                    />-->
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -216,7 +204,7 @@
                             android:layout_height="25dp"
                             android:layout_marginLeft="30dp"
                             android:background="@drawable/form_button_round"
-                            android:fontFamily="@font/nanum_square_ac_eb"
+                            android:fontFamily="@font/nanum_barun_gothic"
                             android:gravity="center_vertical"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
@@ -236,6 +224,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_margin="20dp"
+                                android:fontFamily="@font/nanum_barun_gothic"
                                 android:text="그룹설명"
                                 android:textSize="12dp" />
                         </LinearLayout>
@@ -251,7 +240,7 @@
                             android:layout_height="25dp"
                             android:layout_marginLeft="30dp"
                             android:background="@drawable/form_button_round"
-                            android:fontFamily="@font/nanum_square_ac_eb"
+                            android:fontFamily="@font/nanum_barun_gothic"
                             android:gravity="center_vertical"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
@@ -272,6 +261,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_margin="20dp"
                                 android:text="그룹목표"
+                                android:fontFamily="@font/nanum_barun_gothic"
                                 android:textSize="12dp" />
                         </LinearLayout>
                     </FrameLayout>
@@ -289,6 +279,6 @@
         android:layout_weight="1"
         android:background="@color/red500"
         android:text="가입하기"
-        android:fontFamily="@font/nanum_square_ac_eb"
+        android:fontFamily="@font/nanum_barun_gothic"
         android:textColor="@color/white" />
 </LinearLayout>

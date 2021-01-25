@@ -17,4 +17,5 @@ public class UserAddress {
     public String getAddress() {
         return address;
     }
+
 }

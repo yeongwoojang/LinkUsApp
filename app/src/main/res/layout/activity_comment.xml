@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white">
+        <TextView
+            android:id="@+id/writer_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_barun_gothic"
+            android:text="작성자 닉네임"
+            android:textColor="@color/black"
+            android:textSize="23dp" />
+    </androidx.appcompat.widget.Toolbar>
+    <View
+        android:id="@+id/toolbar_div"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/gray300" />
+    <EditText
+        android:gravity="left|top"
+        android:id="@+id/comment_et"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:hint="내용을 입력하세요."/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="right"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_barun_gothic"
+            android:background="@drawable/button_background6"
+            android:textColor="@color/white"
+            android:stateListAnimator="@null"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="취소"/>
+        <Button
+            android:id="@+id/complete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nanum_barun_gothic"
+            android:textSize="16dp"
+            android:text="완료"
+            android:background="@drawable/button_background6"
+            android:stateListAnimator="@null"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            />
+    </LinearLayout>
+</LinearLayout>

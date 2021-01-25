@@ -2,17 +2,16 @@ package com.example.linkusapp.view.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.linkusapp.view.activity.EnterMainGroupActivity;
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.view.activity.GroupMainActivity;
@@ -33,7 +32,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
         private TextView gName;
         private TextView gPurpose;
         private TextView gJoinMethod;
-        private TextView emptyView;
 
         public BoardViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,10 +85,18 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHol
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(getActivity, GroupMainActivity.class);
-        intent.putExtra("board",boardList.get((int)v.getTag()));
-        getActivity.startActivity(intent);
-        getActivity.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        if(getActivity.toString().contains("MainActivity"))
+        {
+            Intent intent = new Intent(getActivity, GroupMainActivity.class);
+            intent.putExtra("board",boardList.get((int)v.getTag()));
+            getActivity.startActivity(intent);
+            getActivity.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        }else{
+            Intent intent = new Intent(getActivity, EnterMainGroupActivity.class);
+            intent.putExtra("board",boardList.get((int)v.getTag()));
+            getActivity.startActivity(intent);
+            getActivity.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        }
     }
 
 
