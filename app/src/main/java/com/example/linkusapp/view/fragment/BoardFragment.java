@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,6 +49,7 @@ public class BoardFragment extends Fragment{
     private EditText searchEdit;
     private ImageButton searchBtn;
     private ImageButton refreshBtn;
+    private SwipeRefreshLayout mSwipe;
 
     private BoardViewModel viewModel;
     private Spinner spinner;
@@ -71,6 +73,7 @@ public class BoardFragment extends Fragment{
         createBtn = (ImageButton)view.findViewById(R.id.write_btn);
         emptyView = (TextView)view.findViewById(R.id.empty_group);
         refreshBtn = (ImageButton)view.findViewById(R.id.refresh_btn);
+        mSwipe = (SwipeRefreshLayout)view.findViewById(R.id.refresh_layout);
         return view;
     }
 
@@ -105,6 +108,15 @@ public class BoardFragment extends Fragment{
             }
         });
 
+        // 당겨서 새로고침
+        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+            }
+        });
+
+        // 버튼클릭 새로고침
         refreshBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
