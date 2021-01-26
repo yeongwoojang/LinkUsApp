@@ -17,9 +17,11 @@ import com.example.linkusapp.viewModel.BoardViewModel;
 public class EnterMainGroupActivity extends AppCompatActivity {
 
     private ImageButton backBtn,addCommentBtn,settingBtn;
-    private TextView leaderTv,partTv,periodTv,noticeTv;
+    private TextView leaderTv,partTv,periodTv,noticeTv,groupNameTv;
     private RecyclerView commentRv;
     private BoardViewModel viewModel;
+    private String gName;
+    private String userNickname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,11 +34,14 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         partTv = (TextView) findViewById(R.id.part_tv);
         periodTv = (TextView) findViewById(R.id.period_tv);
         noticeTv =(TextView) findViewById(R.id.notice_tv);
+        groupNameTv = (TextView) findViewById(R.id.group_name_tv);
         commentRv = (RecyclerView) findViewById(R.id.comment_rv);
 
         viewModel = new ViewModelProvider(this).get(BoardViewModel.class);
         Intent intent = getIntent();
         Board board = (Board)intent.getSerializableExtra("board");
+        gName = board.getgName();
+        groupNameTv.setText(gName);
         leaderTv.setText("리더 : "+board.getgReader());
         partTv.setText("분야 : "+board.getgPart());
         periodTv.setText("기간 : "+board.getgStartDate()+" ~ "+board.getgEndDate());
@@ -48,10 +53,13 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 finish();
             }
         });
+        /*댓글 남기기 버튼*/
         addCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),CommentActivity.class));
+                Intent intent = new Intent(getApplicationContext(),CommentActivity.class);
+                intent.putExtra("groupName",gName);
+                startActivity(intent);
             }
         });
 

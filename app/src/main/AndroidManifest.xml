@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".view.activity.CommentActivity"
-            android:theme="@android:style/Theme.Dialog"/>
+            android:theme="@style/Theme.CustomDialog"/>
         <activity android:name=".view.activity.EnterMainGroupActivity" />
         <activity android:name=".view.activity.ManageJoinReqActivity"></activity>
         <activity android:name=".view.activity.InviteManageActivity" />

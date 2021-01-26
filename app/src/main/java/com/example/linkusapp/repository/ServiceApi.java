@@ -2,6 +2,7 @@ package com.example.linkusapp.repository;
 
 import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
+import com.example.linkusapp.model.vo.CommentInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.LeaderGroupInfo;
 import com.example.linkusapp.model.vo.MemberCount;
@@ -12,6 +13,7 @@ import com.example.linkusapp.model.vo.UsersInfo;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -157,9 +159,12 @@ public interface ServiceApi {
 //-------------------------CommentViewModel 메소드------------------------
     /*comment 추가*/
     @FormUrlEncoded
+    @POST("android/insertComment")
+    Call<String> insertComment(@Field("bName") String bName,@Field("bWriter") String bWriter,@Field("bComment") String bComment,@Field("bSecret") String bSecret);
+
     /*comment 불러오기*/
     @GET("android/getComment")
-    Call<String> getComment(@Query("bName") String bName);
+    Call<CommentInfo> getComment(@Query("bName") String bName);
 
 //-------------------------FCM 관련 메소드------------------------
     //fcm 전송메소드
