@@ -26,6 +26,7 @@ public class ManageJoinViewModel extends AndroidViewModel {
     public MutableLiveData<LeaderGroupInfo> leaderGroupRes = new MutableLiveData<>();
     public MutableLiveData<UsersInfo> reqUserListRes = new MutableLiveData<>();
     public MutableLiveData<String> joinGroupRes = new MutableLiveData<>();
+    public MutableLiveData<String> deleteRes = new MutableLiveData<>();
 
     public ManageJoinViewModel(@NonNull Application application) {
         super(application);
@@ -72,6 +73,20 @@ public class ManageJoinViewModel extends AndroidViewModel {
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = response.body();
                 joinGroupRes.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void deleteRequest(String gName,String userNick){
+        service.deleteRequest(gName,userNick).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                deleteRes.postValue(response.body());
             }
 
             @Override

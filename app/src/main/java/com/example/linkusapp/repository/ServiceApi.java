@@ -12,6 +12,7 @@ import com.example.linkusapp.model.vo.UsersInfo;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -177,5 +178,8 @@ public interface ServiceApi {
     @FormUrlEncoded
     @POST("/android/insertRequest")
     Call<String> insertRequest(@Field("gName")String gName, @Field("userNick")String userNick);
+
+    @DELETE("/android/deleteRequest")
+    Call<String> deleteRequest(@Query("gName")String gName, @Query("userNick")String userNick);
 
 }

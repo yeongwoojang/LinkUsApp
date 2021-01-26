@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,10 +29,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
      private ManageJoinViewModel viewModel;
      private Context mContext;
     private Toast toast;
+    private String gName ="";
     public class RequestViewHolder extends RecyclerView.ViewHolder{
 
         private TextView nickNameText, ageText, genderText, addressText;
-        private Button acceptBt, rejectBt;
+        private ImageButton acceptBt;
         public RequestViewHolder(@NonNull View itemView) {
             super(itemView);
             nickNameText = itemView.findViewById(R.id.user_nickname);
@@ -39,13 +41,15 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
             genderText = itemView.findViewById(R.id.user_gender);
             addressText = itemView.findViewById(R.id.user_address);
             acceptBt = itemView.findViewById(R.id.accept_bt);
-            rejectBt = itemView.findViewById(R.id.reject_bt);
         }
     }
 
     public void updateItem(List<User> items){
         this.items = items;
         notifyDataSetChanged();
+    }
+    public void removeItem(int position){
+        notifyItemRemoved(position);
     }
 
     public RequestAdapter(List<User> items, ManageJoinViewModel viewModel, Context context) {
@@ -64,12 +68,12 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
     @Override
     public void onBindViewHolder(@NonNull RequestViewHolder holder, int position) {
         User user = items.get(position);
-        holder.nickNameText.setText("닉네임 : "+user.getUserNickname());
+        holder.nickNameText.setText(user.getUserNickname());
         holder.ageText.setText("나이 : "+ user.getAge());
         holder.genderText.setText("성별 : "+(user.getGender().equals("M") ? "남자" : "여자"));
         holder.addressText.setText("거주지 : "+user.getAddress());
+        holder.acceptBt.setTag(position);
         holder.acceptBt.setOnClickListener(this);
-        holder.rejectBt.setOnClickListener(this);
     }
 
     @Override
@@ -79,54 +83,37 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
 
     @Override
     public void onClick(View v) {
-        if(v.getTag().equals("accept")){
             new AlertDialog.Builder(mContext)
                     .setMessage("가입 요청을 수락하시겠습니까?")
                     .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if(toast!=null){
-                                toast.cancel();
-                            }
-                            toast =  Toast.makeText(mContext,"가입을 요청을 수락했습니다.",Toast.LENGTH_SHORT);
-                            toast.show();
+                            //가입요청한 유저를 그룹에 추가
+                            viewModel.joinGroup(gName,items.get((int)v.getTag()).getUserId(),items.get((int)v.getTag()).getUserNickname());
+                            //DB에서 요청목록 삭제
+                            viewModel.deleteRequest(gName,items.get((int)v.getTag()).getUserNickname());
+
                         }
                     })
-                    .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("거절", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            //DB에서 요청목록 삭제
+                            viewModel.deleteRequest(gName,items.get((int)v.getTag()).getUserNickname());
                             if(toast!=null){
                                 toast.cancel();
                             }
-                            toast = Toast.makeText(mContext,"취소되었습니다.",Toast.LENGTH_SHORT);
+                            toast = Toast.makeText(mContext,"가입 요청을 거절했습니다.",Toast.LENGTH_SHORT);
                             toast.show();
                         }
                     }).show();
-        }else{
-            new AlertDialog.Builder(mContext)
-                    .setMessage("가입 요청을 거절하시겠습니까?")
-                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if(toast!=null){
-                                toast.cancel();
-                            }
-                            toast = Toast.makeText(mContext,"가입을 요청을 거절했습니다.",Toast.LENGTH_LONG);
-                            toast.show();
-                        }
-                    })
-                    .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if(toast!=null){
-                                toast.cancel();
-                            }
-                           toast = Toast.makeText(mContext,"취소되었습니다.",Toast.LENGTH_LONG);
-                            toast.show();
-                        }
-                    }).show();
-        }
+    }
 
+    public void setgName(String gName) {
+        this.gName = gName;
+    }
 
+    public String getgName() {
+        return gName;
     }
 }

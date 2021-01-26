@@ -71,7 +71,6 @@ public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupV
     @Override
     public void onClick(View v) {
         String gName = items.get((Integer) v.getTag()).getgName();
-        Log.d("adapterGname", "onClick: "+gName);
         viewModel.getReqUser(gName);
         if(mListener!=null){
             mListener.returnGname(gName);
