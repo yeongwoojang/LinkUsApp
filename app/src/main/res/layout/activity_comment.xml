@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="300dp"
+    android:id="@+id/comment_activity"
     android:background="@color/white">
 
     <androidx.appcompat.widget.Toolbar

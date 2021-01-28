@@ -34,7 +34,7 @@ public class CommentViewModel extends AndroidViewModel {
         return prefs.getUserInfo();
     }
 
-    public void insertComment(String bName, String bWriter, String bComment, String bSecret){
+    public void insertComment(String bName, String bWriter, String bComment, boolean bSecret){
         service.insertComment(bName,bWriter,bComment,bSecret).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
