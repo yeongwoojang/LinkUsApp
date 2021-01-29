@@ -1,13 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fillViewport="true"
     tools:context=".view.fragment.MainFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="main" />
+        android:orientation="vertical"
+        >
+        <FrameLayout
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:text="LinkUs"
+                android:gravity="center"
+                android:fontFamily="@font/nanum_square_ac_b"
+                android:textSize="30dp"
+                android:textColor="@color/black"
+                android:translationZ="999dp"
+                android:layout_marginTop="10dp"
+               />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/form_round_img"
+                >
+        <com.example.linkusapp.view.custom.RoundImageView
+            android:id="@+id/logo_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/img_programer"
+            android:background="@drawable/form_round_img"
+            />
+            </LinearLayout>
+        </FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/red300"
+            android:text="Feed yout body"
+            android:textSize="20dp"
+            android:fontFamily="@font/nanum_square_ac_b"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginBottom="5dp"
+           />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/red300"
+            android:text="Feed yout body"
+            android:textSize="20dp"
+            android:fontFamily="@font/nanum_square_ac_b"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginBottom="5dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/red300"
+            android:text="Feed yout body"
+            android:textSize="20dp"
+            android:fontFamily="@font/nanum_square_ac_b"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginBottom="5dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/red300"
+            android:text="Feed yout body"
+            android:textSize="20dp"
+            android:fontFamily="@font/nanum_square_ac_b"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginBottom="5dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/red300"
+            android:text="Feed yout body"
+            android:textSize="20dp"
+            android:fontFamily="@font/nanum_square_ac_b"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginBottom="5dp"
+            />
+    </LinearLayout>
 
-</FrameLayout>
+</ScrollView>

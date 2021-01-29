@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.linkusapp.R;
@@ -25,7 +26,8 @@ import java.util.List;
 
 public class ManageJoinReqActivity extends AppCompatActivity {
 
-    private TextView groupName;
+    private TextView groupName, emptyText;
+    private ImageButton backBt;
     private RecyclerView myGroupRecyclerView, requestRecyclerView;
     private MyGroupAdapter myGroupAdapter;
     private RequestAdapter requestAdapter;
@@ -40,6 +42,8 @@ public class ManageJoinReqActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_join_req);
 
         groupName = (TextView)findViewById(R.id.group_name_txt);
+        emptyText = (TextView)findViewById(R.id.empty_txt);
+        backBt = (ImageButton)findViewById(R.id.btn_back);
         myGroupRecyclerView = (RecyclerView) findViewById(R.id.my_group_recyclerview);
         requestRecyclerView = (RecyclerView) findViewById(R.id.request_recyclerview);
         slidingView = (SlidingUpPanelLayout) findViewById(R.id.sub_sliding_view);
@@ -62,6 +66,9 @@ public class ManageJoinReqActivity extends AppCompatActivity {
         viewModel.leaderGroupRes.observe(this, leaderGroupInfo -> {
             if (leaderGroupInfo.getCode() == 200) {
                 myGroupAdapter.updateItem(leaderGroupInfo.getLeaderGroupList());
+            }else if(leaderGroupInfo.getCode()==204){
+                myGroupAdapter.updateItem(new ArrayList<LeaderGroup>());
+                emptyText.setVisibility(View.VISIBLE);
             }
         });
 
@@ -94,6 +101,7 @@ public class ManageJoinReqActivity extends AppCompatActivity {
         viewModel.deleteRes.observe(this, response ->{
             if(response.equals("200")){
                 viewModel.getReqUser(requestAdapter.getgName());
+                viewModel.getLeaderGroup(user.getUserNickname());
             }
         });
 
@@ -118,7 +126,12 @@ public class ManageJoinReqActivity extends AppCompatActivity {
             }
         });
 
-
+        backBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 }

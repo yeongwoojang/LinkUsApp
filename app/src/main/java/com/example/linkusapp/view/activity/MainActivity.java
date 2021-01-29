@@ -52,10 +52,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*slidingUpPanelLayout*/
-        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.slidingView);
-        slidingUpPanelLayout.setTouchEnabled(false);
-
         /*fragment*/
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mainFragment).commitAllowingStateLoss();
 
