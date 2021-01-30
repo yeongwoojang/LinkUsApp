@@ -20,13 +20,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp">
-                <ImageButton
-                    android:id="@+id/back_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/transparent"
-                    android:src="@drawable/icon_left_arrow"
-                    android:layout_gravity="center_vertical"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -105,7 +98,8 @@
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/refresh_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="gone">
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/board_recyclerview"
                     android:layout_width="match_parent"
@@ -121,7 +115,7 @@
                 android:textSize="20dp"
                 android:textColor="@color/gray500"
                 android:gravity="center"
-                android:visibility="invisible"
+                android:visibility="gone"
                 />
         </LinearLayout>
     </LinearLayout>

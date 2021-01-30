@@ -38,7 +38,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class BoardFragment extends Fragment{
@@ -56,7 +55,7 @@ public class BoardFragment extends Fragment{
     private TextView emptyView;
 
     private List<Board> boardList = new ArrayList<>();
-    private String gpart;
+    private String gpart ="전체";
     // 뷰 만드는 곳
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,8 +99,12 @@ public class BoardFragment extends Fragment{
         viewModel.getAllBoard();
         viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
             if(boardInfo.getCode()==200){
+                mSwipe.setVisibility(View.VISIBLE);
+                emptyView.setVisibility(View.GONE);
                 boardAdapter.updateItem(boardInfo.getJsonArray());
             }else if(boardInfo.getCode()==204){
+                mSwipe.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
                 Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
             }else{
                 Snackbar.make(view, "오류", Snackbar.LENGTH_SHORT).show();
@@ -156,12 +159,16 @@ public class BoardFragment extends Fragment{
                 if(position == 0){
                     viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
                         if(boardInfo.getCode()==200){
+                            emptyView.setVisibility(View.GONE);
+                            mSwipe.setVisibility(View.VISIBLE);
                             spinner.setSelection(0);
                             gpart = part[position];
                             boardList = boardInfo.getJsonArray();
                             boardAdapter.updateItem(boardList);
                         }else if(boardInfo.getCode()==204){
                             Snackbar.make(view.findViewById(R.id.board_fragment), "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
+                            mSwipe.setVisibility(View.GONE);
+                            emptyView.setVisibility(View.VISIBLE);
                         }else{
                             Snackbar.make(view.findViewById(R.id.board_fragment), "오류", Snackbar.LENGTH_SHORT).show();
                         }
@@ -170,15 +177,15 @@ public class BoardFragment extends Fragment{
                     viewModel.getPartBoard(part[position]);
                     viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
                         if(boardPartInfo.getCode() == 200){
+                            mSwipe.setVisibility(View.VISIBLE);
+                            emptyView.setVisibility(View.GONE);
                             spinner.setSelection(0);
                             gpart = part[position];
                             boardList = boardPartInfo.getJsonArray();
                             boardAdapter.updateItem(boardList);
-                            boardRecyclerView.setVisibility(View.VISIBLE);
-                            emptyView.setVisibility(View.GONE);
                         }
                         else if(boardPartInfo.getCode()==204){
-                            boardRecyclerView.setVisibility(View.GONE);
+                            mSwipe.setVisibility(View.GONE);
                             emptyView.setVisibility(View.VISIBLE);
                         }
                     });
@@ -204,28 +211,28 @@ public class BoardFragment extends Fragment{
         });
         viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
             if(boardInfo.getCode()==200){
+                mSwipe.setVisibility(View.VISIBLE);
+                emptyView.setVisibility(View.GONE);
                 boardList = boardInfo.getJsonArray();
                 Log.d("onViewCreated: ",boardList.get(0).toString());
                 boardAdapter.updateItem(boardList);
-                boardRecyclerView.setVisibility(View.VISIBLE);
-                emptyView.setVisibility(View.GONE);
             }else if(boardInfo.getCode()==204){
-                Snackbar.make(view.findViewById(R.id.board_fragment), "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
-                boardRecyclerView.setVisibility(View.GONE);
+                mSwipe.setVisibility(View.GONE);
                 emptyView.setVisibility(View.VISIBLE);
+                Snackbar.make(view.findViewById(R.id.board_fragment), "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
             }else{
                 Snackbar.make(view.findViewById(R.id.board_fragment), "오류", Snackbar.LENGTH_SHORT).show();
             }
         });
         viewModel.optionBoardRsLD.observe(getViewLifecycleOwner(),boardInfo -> {
             if(boardInfo.getCode() == 200){
+                mSwipe.setVisibility(View.VISIBLE);
+                emptyView.setVisibility(View.GONE);
                 boardList = boardInfo.getJsonArray();
                 boardAdapter.updateItem(boardList);
-                boardRecyclerView.setVisibility(View.VISIBLE);
-                emptyView.setVisibility(View.GONE);
             }else if(boardInfo.getCode()==204){
                 Snackbar.make(view.findViewById(R.id.board_fragment), "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
-                boardRecyclerView.setVisibility(View.GONE);
+                mSwipe.setVisibility(View.GONE);
                 emptyView.setVisibility(View.VISIBLE);
             }else{
                 Snackbar.make(view.findViewById(R.id.board_fragment), "오류", Snackbar.LENGTH_SHORT).show();

@@ -35,12 +35,21 @@
                 android:fontFamily="@font/nanum_barun_gothic"
                 android:layout_below="@+id/item_comment_tv"
                 />
+            <TextView
+                android:id="@+id/partition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" | "
+                android:textSize="10dp"
+                android:fontFamily="@font/nanum_barun_gothic"
+                android:layout_below="@+id/item_comment_tv"
+                />
             <Button
                 android:id="@+id/item_reply_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="10dp"
                 android:layout_below="@+id/item_comment_tv"
-                android:layout_toRightOf="@+id/item_time_tv"
+                android:layout_toRightOf="@+id/partition"
                 android:text="답글 달기"
                 android:textSize="10dp"
                 android:fontFamily="@font/nanum_barun_gothic"
