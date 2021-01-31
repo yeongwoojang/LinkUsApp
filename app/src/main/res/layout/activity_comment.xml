@@ -1,85 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="300dp"
     android:id="@+id/comment_activity"
     android:background="@color/white">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/white">
-        <TextView
-            android:id="@+id/writer_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nanum_barun_gothic"
-            android:text="작성자 닉네임"
-            android:textColor="@color/black"
-            android:textSize="23dp" />
-    </androidx.appcompat.widget.Toolbar>
-    <View
-        android:id="@+id/toolbar_div"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/toolbar"
-        android:background="@color/gray300" />
-    <EditText
-        android:gravity="left|top"
-        android:id="@+id/comment_et"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="@color/black"
-        android:background="@color/transparent"
-        android:layout_below="@+id/toolbar_div"
-        android:layout_above="@+id/button_layout"
-        android:textSize="16dp"
-        android:hint="내용을 입력하세요."/>
     <RelativeLayout
-        android:id="@+id/button_layout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        >
-        <CheckedTextView
-            android:id="@+id/chk_secret_write"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:fontFamily="@font/nanum_barun_gothic"
-            android:gravity="center"
-            android:text="비밀글 작성 하기"
-            android:textSize="16dp" />
-        <Button
-            android:id="@+id/cancel_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nanum_barun_gothic"
-            android:background="@drawable/button_background2"
-            android:textColor="@color/red500"
-            android:stateListAnimator="@null"
-            android:layout_marginRight="16dp"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/white">
+            <TextView
+                android:id="@+id/writer_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_barun_gothic"
+                android:text="작성자 닉네임"
+                android:textColor="@color/black"
+                android:textSize="23dp" />
+        </androidx.appcompat.widget.Toolbar>
+        <View
+            android:id="@+id/toolbar_div"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/toolbar"
+            android:background="@color/gray300" />
+        <EditText
+            android:gravity="left|top"
+            android:id="@+id/comment_et"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/black"
+            android:background="@color/transparent"
+            android:layout_below="@+id/toolbar_div"
+            android:layout_above="@+id/button_layout"
             android:textSize="16dp"
-            android:layout_toLeftOf="@+id/complete_btn"
-            android:padding="3dp"
-            android:text="취소"/>
-        <Button
-            android:id="@+id/complete_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:fontFamily="@font/nanum_barun_gothic"
-            android:textSize="16dp"
-            android:text="완료"
-            android:background="@drawable/button_background6"
-            android:stateListAnimator="@null"
-            android:layout_alignParentRight="true"
-            android:padding="3dp"
-            />
+            android:hint="내용을 입력하세요."/>
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            >
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/cancel_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_barun_gothic"
+                android:background="@color/transparent"
+                android:textColor="@color/red500"
+                android:stateListAnimator="@null"
+                android:layout_marginRight="16dp"
+                android:textSize="16dp"
+                android:padding="3dp"
+                android:text="취소"/>
+            <Button
+                android:id="@+id/complete_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red500"
+                android:fontFamily="@font/nanum_barun_gothic"
+                android:textSize="16dp"
+                android:text="완료"
+                android:background="@color/transparent"
+                android:stateListAnimator="@null"
+                android:padding="3dp"
+                />
+        </LinearLayout>
+
     </RelativeLayout>
-</RelativeLayout>
+</LinearLayout>

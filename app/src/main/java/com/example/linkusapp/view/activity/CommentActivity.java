@@ -42,16 +42,17 @@ public class CommentActivity extends AppCompatActivity{
         commentEt = (EditText) findViewById(R.id.comment_et);
         comfirm = (Button) findViewById(R.id.complete_btn);
         cancel = (Button) findViewById(R.id.cancel_btn);
-        checkedSecret = (CheckedTextView) findViewById(R.id.chk_secret_write);
+//        checkedSecret = (CheckedTextView) findViewById(R.id.chk_secret_write);
         viewModel = new ViewModelProvider(this).get(CommentViewModel.class);
         writer = viewModel.getUserInfoFromShared().getUserNickname();
         writerTv.setText(writer);
-        checkedSecret.setOnClickListener(new View.OnClickListener() {
+        /*checkedSecret.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isSecret = checkedSecret.isChecked();
+                Log.d("왜 안돼 시발","그니까");
             }
-        });
+        });*/
         /*확인버튼*/
         comfirm.setOnClickListener(new View.OnClickListener() {
             @Override
