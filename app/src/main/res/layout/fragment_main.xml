@@ -12,41 +12,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
-        <FrameLayout
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal"
-            >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|center_horizontal"
-                android:text="LinkUs"
-                android:gravity="center"
-                android:fontFamily="@font/nanum_square_ac_b"
-                android:textSize="30dp"
-                android:textColor="@color/black"
-                android:translationZ="999dp"
-                android:layout_marginTop="10dp"
-               />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="300dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:background="@drawable/form_round_img"
-                >
-        <com.example.linkusapp.view.custom.RoundImageView
-            android:id="@+id/logo_image"
-            android:layout_width="200dp"
+        <ImageView
+            android:layout_width="match_parent"
             android:layout_height="200dp"
             android:src="@drawable/img_programer"
-            android:background="@drawable/form_round_img"
+            android:layout_marginBottom="20dp"
             />
-            </LinearLayout>
-        </FrameLayout>
         <TextView
+            android:id="@+id/test_chat"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="@color/red300"
