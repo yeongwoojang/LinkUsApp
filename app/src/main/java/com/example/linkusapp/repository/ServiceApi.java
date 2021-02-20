@@ -17,6 +17,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface ServiceApi {
@@ -182,4 +183,6 @@ public interface ServiceApi {
     @DELETE("/android/deleteRequest")
     Call<String> deleteRequest(@Query("gName")String gName, @Query("userNick")String userNick);
 
+    @PUT("/android/updatesSelected")
+    Call<String> updateSelected(@Query("userNick") String userNick,@Query("gName") String gName);
 }

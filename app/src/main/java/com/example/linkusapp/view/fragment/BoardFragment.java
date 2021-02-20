@@ -94,7 +94,7 @@ public class BoardFragment extends Fragment{
 
 
         boardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
-        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity(),viewModel,1);
         boardRecyclerView.setAdapter(boardAdapter);
 
         viewModel.getAllBoard();
@@ -236,7 +236,7 @@ public class BoardFragment extends Fragment{
 //        boardRecyclerView.removeAllViewsInLayout();
 //        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
 //        boardRecyclerView.setAdapter(boardAdapter);
-        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity(),viewModel,1);
         boardAdapter.notifyDataSetChanged();
     }
 }

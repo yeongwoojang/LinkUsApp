@@ -88,7 +88,7 @@ public class MyPageFragment extends Fragment {
         /*유저정보*/
         userId = viewModel.getUserInfoFromShared().getUserId();
         loginMethod = viewModel.getUserInfoFromShared().getLoginMethod();
-        userNickname=viewModel.getUserInfoFromShared().getUserNickname();
+        userNickname = viewModel.getUserInfoFromShared().getUserNickname();
         nickNameTV.setText(userNickname);
         addressTV.setText(viewModel.getUserInfoFromShared().getAddress());
         methodTV.setText(loginMethod);

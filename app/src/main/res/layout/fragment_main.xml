@@ -18,62 +18,53 @@
             android:src="@drawable/img_programer"
             android:layout_marginBottom="20dp"
             />
-        <TextView
-            android:id="@+id/test_chat"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/red300"
-            android:text="Feed yout body"
-            android:textSize="20dp"
-            android:fontFamily="@font/nanum_square_ac_b"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:layout_marginBottom="5dp"
-           />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/red300"
-            android:text="Feed yout body"
-            android:textSize="20dp"
-            android:fontFamily="@font/nanum_square_ac_b"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:layout_marginBottom="5dp"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/red300"
-            android:text="Feed yout body"
-            android:textSize="20dp"
-            android:fontFamily="@font/nanum_square_ac_b"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:layout_marginBottom="5dp"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/red300"
-            android:text="Feed yout body"
-            android:textSize="20dp"
-            android:fontFamily="@font/nanum_square_ac_b"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:layout_marginBottom="5dp"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/red300"
-            android:text="Feed yout body"
-            android:textSize="20dp"
-            android:fontFamily="@font/nanum_square_ac_b"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:layout_marginBottom="5dp"
-            />
-    </LinearLayout>
 
+        <Button
+            android:id="@+id/select_study"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:textSize="15dp"
+            android:background="@drawable/form_button_round"
+            android:text="대표 스터디 선택"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nanum_square_ac_l"
+            android:layout_gravity="center"
+            />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            >
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/select_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                />
+            <TextView
+                android:id="@+id/noting_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="내 그룹이 없습니다."
+                android:gravity="center"
+                android:fontFamily="@font/nanum_square_ac_b"
+                android:textColor="@color/gray400"
+                android:visibility="invisible"
+               />
+            <TextView
+                android:id="@+id/default_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="대표 그룹을 설정하지 않았습니다."
+                android:gravity="center"
+                android:fontFamily="@font/nanum_square_ac_b"
+                android:textColor="@color/black"
+                android:visibility="visible"
+               />
+        </FrameLayout>
+
+    </LinearLayout>
 </ScrollView>

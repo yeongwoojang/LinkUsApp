@@ -93,4 +93,5 @@ public class MyPageViewModel extends AndroidViewModel {
             }
         });
     }
+
 }

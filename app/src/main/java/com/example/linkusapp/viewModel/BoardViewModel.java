@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.linkusapp.model.vo.BoardInfo;
+import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.util.SharedPreference;
@@ -28,6 +29,7 @@ public class BoardViewModel extends AndroidViewModel {
     public MutableLiveData<BoardInfo> userGroupRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardInfo> allAddressRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardInfo> optionBoardRsLD = new MutableLiveData<BoardInfo>();
+    public MutableLiveData<String> updateSelectedLD = new MutableLiveData<>();
 
 
     public BoardViewModel(@NonNull Application application) {
@@ -109,5 +111,22 @@ public class BoardViewModel extends AndroidViewModel {
 
             }
         });
+    }
+
+    public void updateSelected(String userNick, String gName){
+        service.updateSelected(userNick,gName).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                updateSelectedLD.postValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+    public User getUserInfoFromShared(){
+        return prefs.getUserInfo();
     }
 }
