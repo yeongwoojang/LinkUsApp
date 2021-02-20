@@ -1,28 +1,25 @@
-package com.example.linkusapp.view.activity;
+package com.example.linkusapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
-
-import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.linkusapp.R;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.linkusapp.viewModel.CommentViewModel;
-import com.google.android.material.snackbar.Snackbar;
+import java.util.Objects;
 
-public class CommentActivity extends AppCompatActivity{
-
-    private TextView writerTv;
+public class CommentDialog extends Dialog {
+    private Context context;
     private EditText commentEt;
     private Button comfirm,cancel;
     private CommentViewModel viewModel;
@@ -33,19 +30,18 @@ public class CommentActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_comment);
-        Intent intent = getIntent();
-        bName = intent.getExtras().getString("groupName");
+        setContentView(R.layout.comment_dialog);
 
-        writerTv = (TextView) findViewById(R.id.writer_tv);
+        Objects.requireNonNull(getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         commentEt = (EditText) findViewById(R.id.comment_et);
         comfirm = (Button) findViewById(R.id.complete_btn);
         cancel = (Button) findViewById(R.id.cancel_btn);
-//        checkedSecret = (CheckedTextView) findViewById(R.id.chk_secret_write);
-        viewModel = new ViewModelProvider(this).get(CommentViewModel.class);
-        writer = viewModel.getUserInfoFromShared().getUserNickname();
-        writerTv.setText(writer);
+        checkedSecret = (CheckedTextView) findViewById(R.id.chk_secret_write);
+
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(CommentViewModel.class);
+       /* writer = viewModel.getUserInfoFromShared().getUserNickname();
+        writerTv.setText(writer);*/
         /*checkedSecret.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,24 +53,29 @@ public class CommentActivity extends AppCompatActivity{
         comfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String comment = commentEt.getText().toString();
-                viewModel.insertComment(bName,writer,comment,isSecret);
-                finish();
+                /*String comment = commentEt.getText().toString();
+                viewModel.insertComment(bName,writer,comment,isSecret);*/
+                dismiss();
             }
         });
         /*취소버튼*/
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                dismiss();
             }
         });
-        viewModel.insertCommentRsLD.observe(this,code ->{
+        /*viewModel.insertCommentRsLD.observe(this,code ->{
             if(code.equals("200")){
                 Snackbar.make(findViewById(R.id.comment_activity),"댓글 등록 완료",Snackbar.LENGTH_SHORT).show();
             }else{
                 Snackbar.make(findViewById(R.id.comment_activity),"댓글 등록 실패",Snackbar.LENGTH_SHORT).show();
             }
-        } );
+        } );*/
+    }
+
+    public CommentDialog(@NonNull Context context) {
+        super(context);
+        this.context=context;
     }
 }

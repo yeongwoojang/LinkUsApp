@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.linkusapp.CommentDialog;
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.viewModel.BoardViewModel;
@@ -22,6 +23,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
     private BoardViewModel viewModel;
     private String gName;
     private String userNickname;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,9 +59,8 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         addCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),CommentActivity.class);
-                intent.putExtra("groupName",gName);
-                startActivity(intent);
+                CommentDialog dlg = new CommentDialog(EnterMainGroupActivity.this);
+                dlg.show();
             }
         });
 

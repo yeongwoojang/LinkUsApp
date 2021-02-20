@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/board_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="3dp"
+    android:layout_marginTop="3dp"
+    android:elevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:paddingStart="10dp">
+
+        <TextView
+            android:id="@+id/g_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="그룹명"
+            android:textSize="15dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/nanum_square_ac_b" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="그룹 목표"
+                android:background="@drawable/item_board_text_background2"
+                android:fontFamily="@font/nanum_square_ac_b" />
+
+            <TextView
+                android:id="@+id/g_purpose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전교 1등"
+                android:textColor="@color/red300"
+                android:fontFamily="@font/nanum_square_ac_b"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

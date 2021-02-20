@@ -21,10 +21,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.CommentActivity"
-            android:theme="@style/Theme.CustomDialog"/>
         <activity android:name=".view.activity.EnterMainGroupActivity" />
-        <activity android:name=".view.activity.ManageJoinReqActivity"></activity>
+        <activity android:name=".view.activity.ManageJoinReqActivity" />
         <activity android:name=".view.activity.InviteManageActivity" />
         <activity android:name=".view.activity.MyStudyGroupActivity" />
         <activity android:name=".view.activity.UpdateUserActivity" />
