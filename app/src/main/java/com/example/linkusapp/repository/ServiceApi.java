@@ -1,6 +1,7 @@
 package com.example.linkusapp.repository;
 
 import com.example.linkusapp.model.vo.AddressInfo;
+import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.LeaderGroupInfo;
@@ -183,6 +184,12 @@ public interface ServiceApi {
     @DELETE("/android/deleteRequest")
     Call<String> deleteRequest(@Query("gName")String gName, @Query("userNick")String userNick);
 
+    //유저의 대표 스터디 그룹을 선택했을 때 UESER테이블의 대표 스터디그룹 컬럼을 업데이트 하는 메소드
     @PUT("/android/updatesSelected")
     Call<String> updateSelected(@Query("userNick") String userNick,@Query("gName") String gName);
+
+    //유저가 선택한 대표 스터디 그룹의 정보를 불러오는 메소드
+    @GET("/android/getSelected")
+    Call<BoardInfo> getSelectedGroup(@Query("userNick") String userNick);
+
 }

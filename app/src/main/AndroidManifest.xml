@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.TestChat"></activity>
+        <activity android:name=".view.activity.TimerDialog" android:theme="@android:style/Theme.Dialog"></activity>
         <activity android:name=".view.activity.CommentActivity" />
         <activity android:name=".view.activity.EnterMainGroupActivity" />
         <activity android:name=".view.activity.ManageJoinReqActivity" />

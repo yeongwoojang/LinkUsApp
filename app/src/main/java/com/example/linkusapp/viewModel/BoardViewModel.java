@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.repository.RetrofitClient;
@@ -30,6 +31,7 @@ public class BoardViewModel extends AndroidViewModel {
     public MutableLiveData<BoardInfo> allAddressRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardInfo> optionBoardRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<String> updateSelectedLD = new MutableLiveData<>();
+    public MutableLiveData<BoardInfo> selectedGroupLD = new MutableLiveData<>();
 
 
     public BoardViewModel(@NonNull Application application) {
@@ -122,6 +124,21 @@ public class BoardViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void  getSelectedGroup(String userNick){
+        service.getSelectedGroup(userNick).enqueue(new Callback<BoardInfo>() {
+            @Override
+            public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
+               BoardInfo result = response.body();
+                selectedGroupLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<BoardInfo> call, Throwable t) {
 
             }
         });
