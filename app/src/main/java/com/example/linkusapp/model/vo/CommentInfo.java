@@ -7,12 +7,12 @@ import java.util.List;
 public class CommentInfo {
 
     @SerializedName("code")
-    private String code;
+    private int code;
 
     @SerializedName("jsonArray")
     private List<Comment> jsonArray;
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 

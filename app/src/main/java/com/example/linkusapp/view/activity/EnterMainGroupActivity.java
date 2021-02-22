@@ -23,6 +23,7 @@ import com.example.linkusapp.viewModel.CommentViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EnterMainGroupActivity extends AppCompatActivity {
@@ -60,7 +61,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(CommentViewModel.class);
         Intent intent = getIntent();
-        Board board = (Board)intent.getSerializableExtra("board");
+        Board board = (Board)intent.getSerializableExtra("board2");
         gName = board.getgName();
         writer = viewModel.getUserInfoFromShared().getUserNickname();
         groupNameTv.setText(gName);
@@ -69,16 +70,27 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         periodTv.setText("기간 : "+board.getgStartDate()+" ~ "+board.getgEndDate());
         noticeTv.setText(board.getgPurpose());
 
+        CommentAdapter commentAdapter = new CommentAdapter(commentList);
+        commentRv.setAdapter(commentAdapter);
+        commentRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
+        viewModel.getComment(gName);
+        viewModel.getCommentRsLD.observe(this,commentInfo -> {
+            if(commentInfo.getCode()==200){
+                Snackbar.make(findViewById(R.id.enter_main_group_activity),"댓글을 불러왔습니다.",Snackbar.LENGTH_SHORT).show();
+                commentAdapter.updateItem(commentInfo.getJsonArray());
+            }else if(commentInfo.getCode()==204){
+                Snackbar.make(findViewById(R.id.enter_main_group_activity),"댓글이 없습니다.",Snackbar.LENGTH_SHORT).show();
+            }else {
+                Snackbar.make(findViewById(R.id.enter_main_group_activity),"오류",Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        /*댓글 리사이클러 뷰*/
-        CommentAdapter adapter = new CommentAdapter(commentList,viewModel);
-        commentRv.setAdapter(adapter);
-        commentRv.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         /*비밀댓글 여부*/
         checkedSecret.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -125,7 +125,7 @@ public class BoardAdapter extends RecyclerView.Adapter implements View.OnClickLi
             getActivity.overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }else if(getActivity.toString().contains("MyStudyGroupActivity")){
             Intent intent = new Intent(getActivity, EnterMainGroupActivity.class);
-            intent.putExtra("board",boardList.get((int)v.getTag()));
+            intent.putExtra("board2",boardList.get((int)v.getTag()));
             getActivity.startActivity(intent);
             getActivity.overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }

@@ -11,15 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Comment;
-import com.example.linkusapp.viewModel.CommentViewModel;
 
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     private List<Comment> mDataset;
-    private CommentViewModel viewModel;
+
     public class CommentViewHolder extends RecyclerView.ViewHolder{
+
         private TextView writerTv,writingTimeTv,commentTv;
         private Button recommentBtn;
         public CommentViewHolder(@NonNull View itemView) {
@@ -34,9 +34,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         mDataset = items;
         notifyDataSetChanged();
     }
-    public CommentAdapter(List<Comment> commentList, CommentViewModel viewModel){
+    public CommentAdapter(List<Comment> commentList){
         mDataset = commentList;
-        this.viewModel = viewModel;
     }
     @NonNull
     @Override

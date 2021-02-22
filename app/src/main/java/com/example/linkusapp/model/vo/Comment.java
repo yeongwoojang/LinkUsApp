@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.util.Date;
 
 public class Comment implements Serializable {
     private static final long serialVersionUID =1L; /*객체 전체 넘길수 있따.*/
@@ -15,13 +16,13 @@ public class Comment implements Serializable {
     private String bName;
 
     @SerializedName("B_WRITER")
-    private int bWriter;
+    private String bWriter;
 
     @SerializedName("B_COMMENT")
-    private int bComment;
+    private String bComment;
 
     @SerializedName("B_WRITETIME")
-    private int bWriteTime;
+    private String bWriteTime;
 
     @SerializedName("B_SECRET")
     private int bSecret;
@@ -34,15 +35,15 @@ public class Comment implements Serializable {
         return bName;
     }
 
-    public int getbWriter() {
+    public String getbWriter() {
         return bWriter;
     }
 
-    public int getbComment() {
+    public String getbComment() {
         return bComment;
     }
 
-    public int getbWriteTime() {
+    public String getbWriteTime() {
         return bWriteTime;
     }
 
