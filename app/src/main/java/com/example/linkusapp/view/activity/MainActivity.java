@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.view.fragment.BoardFragment;
 import com.example.linkusapp.view.fragment.MainFragment;
 import com.example.linkusapp.view.fragment.MyPageFragment;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         /*fragment*/
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mainFragment).commitAllowingStateLoss();
