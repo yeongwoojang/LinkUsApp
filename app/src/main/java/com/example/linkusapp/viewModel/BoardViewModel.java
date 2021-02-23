@@ -66,15 +66,13 @@ public class BoardViewModel extends AndroidViewModel {
         });
     }
 
-    public void getSearchBoard(String keyword){
-        service.getSearchBoard(keyword).enqueue(new Callback<BoardInfo>(){
-
+    public void getSearchBoard(String keyword1, String keyword2){
+        service.getSearchBoard(keyword1, keyword2).enqueue(new Callback<BoardInfo>(){
             @Override
             public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
                 BoardInfo result = response.body();
                 boardSearchRsLD.postValue(result);
             }
-
             @Override
             public void onFailure(Call<BoardInfo> call, Throwable t) {
 

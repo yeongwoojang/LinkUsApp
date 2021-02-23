@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    tools:context=".view.activity.TimerDialog">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ImageButton
+            android:id="@+id/btn_dialog_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/form_round_img"
+            android:src="@drawable/icon_close"
+            android:padding="5dp"
+            android:layout_margin="10dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/timer"
+            android:fontFamily="@font/nanum_square_ac_l"
+            android:gravity="center"
+            android:text="공부 시간"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:translationY="-20dp" />
+
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/nanum_square_ac_l"
+            android:gravity="center"
+            android:text="00:00:00"
+            android:textColor="@color/black"
+            android:textSize="50dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/timer"
+            >
+            <Button
+                android:id="@+id/btn_timer_start"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:translationZ="1dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/button_background2"
+                android:fontFamily="@font/nanum_square_ac_b"
+                android:text="start"
+                android:textColor="@color/red400"
+                android:textSize="15dp" />
+            <LinearLayout
+                android:id="@+id/container_pause"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="invisible"
+                >
+                <Button
+                    android:id="@+id/btn_timer_pause"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/button_background2"
+                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:text="pause"
+                    android:textColor="@color/red400"
+                    android:textSize="15dp" />
+
+                <Button
+                    android:id="@+id/btn_cancel_timer"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/button_background2"
+                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:text="cancel"
+                    android:textColor="@color/red400"
+                    android:textSize="15dp" />
+            </LinearLayout>
+        </FrameLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

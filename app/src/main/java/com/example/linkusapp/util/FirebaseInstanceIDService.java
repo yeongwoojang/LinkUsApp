@@ -91,7 +91,9 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
         intent.putExtra("userGender",userGender); //push정보 중 body값을 HomeActivity로 넘긴다.
         intent.putExtra("address",address); //push정보 중 body값을 HomeActivity로 넘긴다.
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         pendingIntent = PendingIntent.getActivity(this,id,intent,PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

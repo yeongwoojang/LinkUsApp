@@ -94,7 +94,7 @@ public class BoardFragment extends Fragment{
 
 
         boardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
-        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity(),1);
         boardRecyclerView.setAdapter(boardAdapter);
 
         viewModel.getAllBoard();
@@ -108,32 +108,23 @@ public class BoardFragment extends Fragment{
             }
         });
 
-        // 당겨서 새로고침
-        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-            }
-        });
-
         // 버튼클릭 새로고침
         refreshBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"페이지를 새로고침 하였습니다.",Toast.LENGTH_SHORT).show();
-                listRefresh();
             }
         });
 
         searchBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                viewModel.getSearchBoard(searchEdit.getText().toString());
-                viewModel.boardSearchRsLD.observe(getViewLifecycleOwner(), boardSearchInfo -> {
-                    if(boardSearchInfo.getCode()==200){
-                        boardList = boardSearchInfo.getJsonArray();
+                viewModel.getSearchBoard(searchEdit.getText().toString(), searchEdit.getText().toString());
+                viewModel.boardSearchRsLD.observe(getViewLifecycleOwner(), boardInfo -> {
+                    if(boardInfo.getCode()==200){
+                        boardList = boardInfo.getJsonArray();
                         boardAdapter.updateItem(boardList);
-                    }else if(boardSearchInfo.getCode()==204){
+                    }else if(boardInfo.getCode()==204){
                         Snackbar.make(view.findViewById(R.id.board_fragment), "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
                     }else{
                         Snackbar.make(view.findViewById(R.id.board_fragment), "오류", Snackbar.LENGTH_SHORT).show();
@@ -236,7 +227,7 @@ public class BoardFragment extends Fragment{
 //        boardRecyclerView.removeAllViewsInLayout();
 //        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
 //        boardRecyclerView.setAdapter(boardAdapter);
-        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
+        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity(), 1);
         boardAdapter.notifyDataSetChanged();
     }
 }
