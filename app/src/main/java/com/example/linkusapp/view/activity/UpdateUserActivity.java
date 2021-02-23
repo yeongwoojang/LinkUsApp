@@ -107,10 +107,13 @@ public class UpdateUserActivity extends AppCompatActivity {
                 else if(passwd.equals(password2.getText())){
                     Snackbar.make(findViewById(R.id.update_user_layout), "비밀번호가 일치하지 않습니다.", Snackbar.LENGTH_SHORT).show();
                 }
-                else if(method.equals("일반")){
+                else if(isCertify&&method.equals("일반")){
                     viewModel.updateUserInfo(nick,passwd,loginmethod);
+                    finish();
+                }else if(isCertify&&!method.equals("일반")){
+                    viewModel.updateUserInfo(nick,checkPW,loginmethod);
+                    finish();
                 }
-                viewModel.updateUserInfo(nick,checkPW,loginmethod);
             }
         });
         viewModel.updateUserInfoRsLD.observe(this,code ->{

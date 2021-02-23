@@ -1,5 +1,6 @@
 package com.example.linkusapp.view.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,13 @@ import com.example.linkusapp.model.vo.Comment;
 
 import java.util.List;
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> implements View.OnClickListener{
 
     private List<Comment> mDataset;
+
+    @Override
+    public void onClick(View view) {
+    }
 
     public class CommentViewHolder extends RecyclerView.ViewHolder{
 
@@ -49,7 +54,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         Comment comment = mDataset.get(position);
         holder.writerTv.setText(comment.getbWriter());
         holder.commentTv.setText(comment.getbComment());
-        holder.writingTimeTv.setText(comment.getbWriteTime());
+        holder.writingTimeTv.setText((comment.getbWriteTime().subSequence(2,10)+"  "+comment.getbWriteTime().substring(11,16)));
+        holder.recommentBtn.setTag(position);
+        holder.recommentBtn.setOnClickListener(this);
     }
 
     @Override

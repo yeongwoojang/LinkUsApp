@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         slidingUpPanelLayout.setTouchEnabled(false);
 
         /*fragment*/
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mainFragment).commitAllowingStateLoss();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -97,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getUserInfoFromDB();
         viewModel.userLiveData.observe(this, userInfo -> {
             viewModel.putUserInfo(userInfo.getUser());
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mainFragment).commitAllowingStateLoss();
             FirebaseMessaging.getInstance().getToken()
                     .addOnCompleteListener(new OnCompleteListener<String>() {
                         @Override
