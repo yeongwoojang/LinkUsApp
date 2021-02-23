@@ -40,7 +40,6 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseInstanceIDService";
 
 
-
     @Override
     public void onNewToken(@NonNull String token) {
         Log.e("firebase", "FirebaseInstanceIDService : " + token);
@@ -77,26 +76,29 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 //            body = remoteMessage.getNotification().getBody();
 ////            Log.d("message", "getData() "+title+", "+body);
 //        }
-        sendNotification(title,body,userNick,userAge,userGender,address);
+        sendNotification(title, body, userNick, userAge, userGender, address);
     }
 
     //fcm 메시지를 받았을 때 실행할 메소드
-    private void sendNotification(String title, String body,String userNick,String userAge,String userGender, String address) {
+    private void sendNotification(String title, String body, String userNick, String userAge, String userGender, String address) {
         Intent intent;
         PendingIntent pendingIntent;
         int id = (int) Calendar.getInstance().getTimeInMillis();
         intent = new Intent(this, HomeActivity.class);
-        intent.putExtra("userNick",userNick); //push정보 중 body값을 HomeActivity로 넘긴다.
-        intent.putExtra("userAge",userAge); //push정보 중 body값을 HomeActivity로 넘긴다.
-        intent.putExtra("userGender",userGender); //push정보 중 body값을 HomeActivity로 넘긴다.
-        intent.putExtra("address",address); //push정보 중 body값을 HomeActivity로 넘긴다.
+        intent.putExtra("userNick", userNick); //push정보 중 body값을 HomeActivity로 넘긴다.
+        intent.putExtra("userAge", userAge); //push정보 중 body값을 HomeActivity로 넘긴다.
+        intent.putExtra("userGender", userGender); //push정보 중 body값을 HomeActivity로 넘긴다.
+        intent.putExtra("address", address); //push정보 중 body값을 HomeActivity로 넘긴다.
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        pendingIntent = PendingIntent.getActivity(this,id,intent,PendingIntent.FLAG_ONE_SHOT);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        pendingIntent = PendingIntent.getActivity(this, id, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder;
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         /**
          * 오레오 버전부터는 Notification Channel이 없으면 푸시가 생성되지 않기 때문에 분기
@@ -119,8 +121,8 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 
             //channel이 등록된 builder
             notificationBuilder = new NotificationCompat.Builder(this, channelId);
-        }else{
-            notificationBuilder = new NotificationCompat.Builder(this,"");
+        } else {
+            notificationBuilder = new NotificationCompat.Builder(this, "");
         }
         notificationBuilder.setSmallIcon(R.drawable.icon_pencil)
                 .setContentTitle(title)

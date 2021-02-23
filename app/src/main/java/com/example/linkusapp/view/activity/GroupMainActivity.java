@@ -70,7 +70,7 @@ public class GroupMainActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(CreateGrpViewModel.class);
         User user = viewModel.getUserInfoFromShared();
-        viewModel.getMemberCount(board.getgName());
+        viewModel.getGroupMember(board.getgName());
         backBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,9 +99,10 @@ public class GroupMainActivity extends AppCompatActivity {
             }
         });
         //그룹의 현재 멤버 수를 가져온다.
-        viewModel.memberCount.observe(this, memberCount -> {
-            this.memberCount = memberCount.getMemberCount();
-
+        viewModel.memberCount.observe(this, usersInfo -> {
+            if(usersInfo.getCode()==200){
+               this.memberCount = usersInfo.getUsers().size();
+            }
         });
 
         viewModel.joinGroupRes.observe(this, response -> {

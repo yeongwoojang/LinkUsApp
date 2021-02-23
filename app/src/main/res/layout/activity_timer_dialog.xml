@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
-    android:layout_height="300dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/transparent"
     tools:context=".view.activity.TimerDialog">
 
@@ -14,11 +14,14 @@
 
         <ImageButton
             android:id="@+id/btn_dialog_close"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
-            android:background="@color/transparent"
-            android:src="@drawable/icon_close" />
+            android:background="@drawable/form_round_img"
+            android:src="@drawable/icon_close"
+            android:padding="5dp"
+            android:layout_margin="10dp"
+            />
 
         <TextView
             android:layout_width="match_parent"
@@ -40,7 +43,7 @@
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/nanum_square_ac_l"
             android:gravity="center"
-            android:text="02:53"
+            android:text="00:00:00"
             android:textColor="@color/black"
             android:textSize="50dp" />
 

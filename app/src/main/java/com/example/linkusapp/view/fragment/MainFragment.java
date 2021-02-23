@@ -34,7 +34,7 @@ import java.util.List;
 public class MainFragment extends Fragment {
 
     private Button selectStudy;
-    private TextView defaultText, nothingText, selectedGname;
+    private TextView defaultText, nothingText, selectedGname, groupMemberCount;
     private LinearLayout timerBt;
     private RecyclerView selectRecyclerview;
     private CardView selectedContainer;
@@ -50,6 +50,7 @@ public class MainFragment extends Fragment {
         defaultText = (TextView) view.findViewById(R.id.default_text);
         nothingText = (TextView) view.findViewById(R.id.noting_text);
         selectedGname = (TextView) view.findViewById(R.id.selected_gname);
+        groupMemberCount = (TextView)view.findViewById(R.id.member_count);
         timerBt = (LinearLayout)view.findViewById(R.id.btn_timer);
         selectRecyclerview = (RecyclerView) view.findViewById(R.id.select_recyclerview);
         selectedContainer = (CardView) view.findViewById(R.id.selected_container);
@@ -66,7 +67,7 @@ public class MainFragment extends Fragment {
         adapter = new BoardAdapter(boardList, getActivity(), viewModel, 2);
         selectRecyclerview.setAdapter(adapter);
 
-
+        Log.d("로그인한유저 : ", userNickName);
         viewModel.getSelectedGroup(userNickName);
 
         viewModel.selectedGroupLD.observe(getViewLifecycleOwner(), boardInfo -> {
@@ -76,12 +77,19 @@ public class MainFragment extends Fragment {
                 defaultText.setVisibility(View.INVISIBLE);
                 nothingText.setVisibility(View.INVISIBLE);
                 selectRecyclerview.setVisibility(View.INVISIBLE);
+                viewModel.getGroupMember(boardInfo.getJsonArray().get(0).getgName());
                 selectedGname.setText(boardInfo.getJsonArray().get(0).getgName());
             } else if (boardInfo.getCode() == 204) {
                 selectedContainer.setVisibility(View.INVISIBLE);
                 defaultText.setVisibility(View.VISIBLE);
             }
         });
+
+        viewModel.groupMembersLD.observe(getViewLifecycleOwner(),usersInfo -> {
+            groupMemberCount.setText("멤버수 : "+usersInfo.getUsers().size()+"명");
+        });
+
+
         selectStudy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +110,7 @@ public class MainFragment extends Fragment {
                 nothingText.setVisibility(View.VISIBLE);
             }
         });
+
         viewModel.updateSelectedLD.observe(getViewLifecycleOwner(), response -> {
             if (response.equals("200")) {
                 viewModel.getSelectedGroup(userNickName);
@@ -115,9 +124,9 @@ public class MainFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), TimerDialog.class);
                 startActivity(intent);
-                getActivity().finish();
             }
         });
+
 
     }
 

@@ -124,6 +124,16 @@
                     android:padding="5dp"
                     />
                     <TextView
+                        android:id="@+id/member_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="멤버 수 : "
+                        android:textColor="@color/black"
+                        android:textSize="12dp"
+                        android:fontFamily="@font/nanum_square_ac_l"
+                        android:padding="5dp"
+                        />
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="●그룹 공지사항"

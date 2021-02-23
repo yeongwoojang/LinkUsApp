@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.util.TimerService;
 import com.example.linkusapp.view.activity.HomeActivity;
 import com.example.linkusapp.view.activity.ManageJoinReqActivity;
 import com.example.linkusapp.view.activity.MyStudyGroupActivity;
@@ -155,6 +156,7 @@ public class MyPageFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getActivity().stopService(new Intent(getActivity(), TimerService.class));
                 logout();
                 getActivity().finish();
             }

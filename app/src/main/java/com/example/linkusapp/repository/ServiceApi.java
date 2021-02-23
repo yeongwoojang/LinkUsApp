@@ -1,16 +1,12 @@
 package com.example.linkusapp.repository;
 
 import com.example.linkusapp.model.vo.AddressInfo;
-import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.LeaderGroupInfo;
-import com.example.linkusapp.model.vo.MemberCount;
-import com.example.linkusapp.model.vo.User;
+import com.example.linkusapp.model.vo.GroupMember;
 import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.model.vo.UsersInfo;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;
@@ -144,8 +140,8 @@ public interface ServiceApi {
     @GET("/android/optionBoard")
     Call<BoardInfo> optionBoard(@Query("g_part") String gPart, @Query("address") String address);
 
-    @GET("/android/countGroupMember")
-    Call<MemberCount> getMemberCount(@Query("gName") String gName);
+    @GET("/android/getGroupMember")
+    Call<UsersInfo> getGroupMember(@Query("gName") String gName);
 
     @FormUrlEncoded
     @POST("/android/joinGroup")
@@ -191,5 +187,6 @@ public interface ServiceApi {
     //유저가 선택한 대표 스터디 그룹의 정보를 불러오는 메소드
     @GET("/android/getSelected")
     Call<BoardInfo> getSelectedGroup(@Query("userNick") String userNick);
+
 
 }

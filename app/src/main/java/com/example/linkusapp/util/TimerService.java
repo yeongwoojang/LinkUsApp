@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.RemoteInput;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.view.activity.HomeActivity;
@@ -29,13 +30,14 @@ import com.example.linkusapp.view.activity.TimerDialog;
 
 public class TimerService extends Service {
 
+    //타이머를 관리하는 변수
+    public static MutableLiveData<Boolean> isRunning = new MutableLiveData<>();
+    public static MutableLiveData<String> time2 = new MutableLiveData<>();
 
     private NotificationManager notificationManager;
     private NotificationCompat.Builder builder;
     private Thread timerThread = null;
-    private boolean isRunning = true;
-    private String time;
-    private int min;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -44,29 +46,18 @@ public class TimerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("comm", "onStartCommand: ");
-        time = intent.getStringExtra("time");
-        min = intent.getIntExtra("min",0);
+        Log.d("onStartCommand", "onStartCommand: ");
+        isRunning.setValue(true);
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            notificationManager.createNotificationChannel(new NotificationChannel("default","기본채널",NotificationManager.IMPORTANCE_LOW));
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+            notificationManager.createNotificationChannel(new NotificationChannel("default", "기본채널", NotificationManager.IMPORTANCE_LOW));
         }
-
-
 
         builder = new NotificationCompat.Builder(getApplicationContext(),"default");
         builder.setSmallIcon(R.mipmap.app_icon);
         builder.setContentTitle("스톱워치");
-        builder.setContentText(time);
-
-
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            notificationManager.createNotificationChannel(new NotificationChannel("default","기본채널",NotificationManager.IMPORTANCE_LOW));
-        }
         timerThread = new Thread(new TimerThread());
         timerThread.start(); //스톱워치 시작
-
 
 //        notificationManager.notify(1,builder.build());
         return START_REDELIVER_INTENT;
@@ -74,8 +65,11 @@ public class TimerService extends Service {
 
     @Override
     public void onDestroy() {
+
+        isRunning.setValue(true);
+        timerThread.interrupt();
+        Log.d("onStartCommand", "onDestroy: ");
         super.onDestroy();
-        Log.d("onDestroy", "onDestroy: ");
     }
 
     Handler handler = new Handler(Looper.myLooper()) {
@@ -87,40 +81,43 @@ public class TimerService extends Service {
             int hour = (msg.arg1 / 100) / 360;
 
             @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", hour, min, sec);
-            Intent notiIntent = new Intent(getApplicationContext(), TimerDialog.class);
-            notiIntent.putExtra("noti_time",time);
-            notiIntent.putExtra("noti_min",min);
+            Intent notiIntent = new Intent(getApplicationContext(), HomeActivity.class);
+            notiIntent.setAction(Intent.ACTION_MAIN);
+            notiIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+            notiIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,notiIntent,PendingIntent.FLAG_UPDATE_CURRENT);
             builder.setContentText(result);
             builder.setContentIntent(pendingIntent);
-            time = result;
             startForeground(1,builder.build());
-            Log.d("serviceTh : ", result);
+            time2.postValue(result);
         }
     };
+
 
     public class TimerThread implements Runnable {
         @Override
         public void run() {
-            int i = min;
-
+            int i = 0;
             while (true) {
-                while (isRunning) {
+                while (isRunning.getValue()) {
                     Message msg = new Message();
+                    Message msg2 = new Message();
                     msg.arg1 = i++;
-                    min = msg.arg1;
+//                    min = msg.arg1;
                     handler.sendMessage(msg);
-
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
+                        Log.d("onDestroy", "123");
+                        msg2.arg1 = 0;
+                        handler.sendMessage(msg2);
                         e.printStackTrace();
-
                         //인터럽트 발생 시 return
                         return;
                     }
                 }
             }
+
         }
     }
 }

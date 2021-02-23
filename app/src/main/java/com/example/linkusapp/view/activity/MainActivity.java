@@ -54,10 +54,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        /*fragment*/
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mainFragment).commitAllowingStateLoss();
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -96,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getUserInfoFromDB();
         viewModel.userLiveData.observe(this, userInfo -> {
             viewModel.putUserInfo(userInfo.getUser());
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mainFragment).commitAllowingStateLoss();
             FirebaseMessaging.getInstance().getToken()
                     .addOnCompleteListener(new OnCompleteListener<String>() {
                         @Override
