@@ -54,7 +54,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         Comment comment = mDataset.get(position);
         holder.writerTv.setText(comment.getbWriter());
         holder.commentTv.setText(comment.getbComment());
-        holder.writingTimeTv.setText((comment.getbWriteTime().subSequence(2,10)+"  "+comment.getbWriteTime().substring(11,16)));
+        holder.writingTimeTv.setText((comment.getbWriteTime().substring(2,10)+"  "+comment.getbWriteTime().substring(11,16)));
         holder.recommentBtn.setTag(position);
         holder.recommentBtn.setOnClickListener(this);
     }

@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/board_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/board_fragment"
-    tools:context=".view.fragment.BoardFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".view.fragment.BoardFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@color/transparent">
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -27,90 +30,98 @@
                     android:fontFamily="@font/nanum_barun_gothic"
                     android:text="스터디 그룹"
                     android:textColor="@color/black"
-                    android:textSize="16dp"/>
+                    android:textSize="16dp" />
+
                 <ImageButton
                     android:id="@+id/refresh_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginRight="50dp"
-                    android:src="@drawable/ic_baseline_refresh_24"
-                    android:background="@color/transparent"/>
+                    android:background="@color/transparent"
+                    android:src="@drawable/ic_baseline_refresh_24" />
+
                 <ImageButton
                     android:id="@+id/write_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginRight="10dp"
-                    android:src="@drawable/icon_pencil"
-                    android:background="@color/transparent" />
+                    android:background="@color/transparent"
+                    android:src="@drawable/icon_pencil" />
             </FrameLayout>
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/part_recyclerview"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:scrollbars="none">
-        </androidx.recyclerview.widget.RecyclerView>
-
+            android:layout_height="wrap_content"
+            android:scrollbars="none"/>
+        <Spinner
+            android:id="@+id/spinner_address"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            android:dropDownVerticalOffset="55dp"
+            android:entries="@array/address_array"
+            android:overlapAnchor="false"
+            android:spinnerMode="dropdown" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <Spinner
-                android:entries="@array/address_array"
-                android:id="@+id/spinner_address"
-                android:layout_width="100dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:padding="5dp"
+            >
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:overlapAnchor="false"
-                android:dropDownVerticalOffset="55dp"
-            />
+                android:layout_weight="2"
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/search_bar"
-                android:layout_width="200dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/nanum_barun_gothic"
-                android:background="@drawable/edittext_rounded_corner_rectangle"
-                android:hint="검색할 내용을 입력하세요."
-                android:paddingLeft="12dp"
-                android:textSize="15dp" />
+                <EditText
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:fontFamily="@font/nanum_barun_gothic"
+                    android:hint="검색할 내용을 입력하세요."
+                    android:paddingLeft="12dp"
+                    android:inputType="text"
+                    android:textSize="15dp" />
 
-            <ImageButton
-                android:id="@+id/search_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_alignRight="@+id/search_bar"
-                android:background="@color/transparent"
-                android:src="@drawable/ic_baseline_search_24"/>
+                <ImageButton
+                    android:id="@+id/search_btn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignRight="@+id/search_bar"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/transparent"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_baseline_search_24" />
+            </FrameLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/board_recyclerview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    ></androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/board_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+
             <TextView
                 android:id="@+id/empty_group"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="조건에 맞는 그룹이 없습니다."
+                android:layout_height="match_parent"
                 android:fontFamily="@font/nanum_barun_gothic"
-                android:textSize="20dp"
-                android:textColor="@color/gray500"
                 android:gravity="center"
-                android:visibility="invisible"
-                />
+                android:text="조건에 맞는 그룹이 없습니다."
+                android:textColor="@color/gray500"
+                android:textSize="20dp"
+                android:visibility="invisible" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
