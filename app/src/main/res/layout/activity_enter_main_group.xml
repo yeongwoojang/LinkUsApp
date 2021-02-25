@@ -106,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginLeft="16dp"
+                android:layout_marginBottom="10dp"
                 >
                 <ImageView
                     android:layout_width="20dp"
@@ -121,6 +122,28 @@
                     android:layout_marginLeft="5dp"
                     android:fontFamily="@font/nanum_barun_gothic"
                     android:text="기간 : 2021-01-01~2022-01-01"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="16dp"
+                >
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/group_goal_image_foreground"
+                    />
+                <TextView
+                    android:id="@+id/group_goal_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:fontFamily="@font/nanum_barun_gothic"
+                    android:text="그룹 목표 : 앱개발자 취업하기"
                     android:textColor="@color/black" />
             </LinearLayout>
             <FrameLayout
@@ -143,14 +166,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="16dp"
+                    android:orientation="horizontal"
                     android:background="@drawable/form_round_layout">
-
                     <TextView
                         android:id="@+id/notice_tv"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_margin="20dp"
                         android:text="그룹 공지사항"
                         android:fontFamily="@font/nanum_barun_gothic"

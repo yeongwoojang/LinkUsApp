@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
@@ -18,7 +17,6 @@ import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.Comment;
 import com.example.linkusapp.view.adapter.CommentAdapter;
-import com.example.linkusapp.viewModel.BoardViewModel;
 import com.example.linkusapp.viewModel.CommentViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -29,7 +27,7 @@ import java.util.List;
 public class EnterMainGroupActivity extends AppCompatActivity {
 
     private ImageButton backBtn,settingBtn,sendCommentBtn;
-    private TextView leaderTv,partTv,periodTv,noticeTv,groupNameTv;
+    private TextView leaderTv,partTv,periodTv,groupGoalTv,noticeTv,groupNameTv;
     private RecyclerView commentRv;
     private CommentViewModel viewModel;
     private EditText commentEt;
@@ -54,6 +52,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         partTv = (TextView) findViewById(R.id.part_tv);
         periodTv = (TextView) findViewById(R.id.period_tv);
         noticeTv =(TextView) findViewById(R.id.notice_tv);
+        groupGoalTv = (TextView)findViewById(R.id.group_goal_tv);
         groupNameTv = (TextView) findViewById(R.id.group_name_tv);
         commentRv = (RecyclerView) findViewById(R.id.comment_rv);
         checkedSecret = (CheckedTextView) findViewById(R.id.chk_secret_write);
@@ -68,7 +67,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         leaderTv.setText("리더 : "+board.getgReader());
         partTv.setText("분야 : "+board.getgPart());
         periodTv.setText("기간 : "+board.getgStartDate()+" ~ "+board.getgEndDate());
-        noticeTv.setText(board.getgPurpose());
+        groupGoalTv.setText("그룹 목표 : "+board.getgPurpose());
 
         CommentAdapter commentAdapter = new CommentAdapter(commentList);
         commentRv.setAdapter(commentAdapter);

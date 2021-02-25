@@ -185,7 +185,7 @@ public interface ServiceApi {
     @DELETE("/android/deleteRequest")
     Call<String> deleteRequest(@Query("gName")String gName, @Query("userNick")String userNick);
 
-    //유저의 대표 스터디 그룹을 선택했을 때 UESER테이블의 대표 스터디그룹 컬럼을 업데이트 하는 메소드
+    //유저의 대표 스터디 그룹을 선택했을 때 USER테이블의 대표 스터디그룹 컬럼을 업데이트 하는 메소드
     @PUT("/android/updatesSelected")
     Call<String> updateSelected(@Query("userNick") String userNick,@Query("gName") String gName);
 
