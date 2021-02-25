@@ -73,7 +73,6 @@ public class BoardFragment extends Fragment{
         createBtn = (ImageButton)view.findViewById(R.id.write_btn);
         emptyView = (TextView)view.findViewById(R.id.empty_group);
         refreshBtn = (ImageButton)view.findViewById(R.id.refresh_btn);
-        mSwipe = (SwipeRefreshLayout)view.findViewById(R.id.refresh_layout);
         return view;
     }
 
@@ -112,7 +111,17 @@ public class BoardFragment extends Fragment{
         refreshBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"페이지를 새로고침 하였습니다.",Toast.LENGTH_SHORT).show();
+                viewModel.getRefreshBoard();
+                viewModel.boardRefreshRsLD.observe(getViewLifecycleOwner(), boardInfo -> {
+                    if(boardInfo.getCode()==200){
+                        Toast.makeText(getApplicationContext(),"페이지를 새로고침 하였습니다.",Toast.LENGTH_SHORT).show();
+                        boardAdapter.updateItem(boardInfo.getJsonArray());
+                    }else if(boardInfo.getCode()==204){
+                        Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
+                    }else{
+                        Snackbar.make(view, "오류", Snackbar.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

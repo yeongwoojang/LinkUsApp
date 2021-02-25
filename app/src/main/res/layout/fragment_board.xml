@@ -102,16 +102,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/refresh_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/board_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     ></androidx.recyclerview.widget.RecyclerView>
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
             <TextView
                 android:id="@+id/empty_group"
                 android:layout_width="match_parent"
