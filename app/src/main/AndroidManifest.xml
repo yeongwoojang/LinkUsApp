@@ -25,7 +25,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".view.activity.TimerDialog"/>
-        <activity android:name=".view.activity.CommentActivity" />
         <activity android:name=".view.activity.EnterMainGroupActivity" />
         <activity android:name=".view.activity.ManageJoinReqActivity"></activity>
         <activity android:name=".view.activity.InviteManageActivity" />

@@ -117,4 +117,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </androidx.recyclerview.widget.RecyclerView>
+    <TextView
+        android:layout_marginTop="16dp"
+        android:id="@+id/empty_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="최근 변경한 주소가 없습니다."
+        android:fontFamily="@font/nanum_barun_gothic"
+        android:textSize="20dp"
+        android:textColor="@color/gray500"
+        android:gravity="center"
+        android:visibility="gone"
+        />
 </LinearLayout>

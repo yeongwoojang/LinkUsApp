@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/my_study_group"
+    android:orientation="vertical"
     tools:context=".view.activity.MyStudyGroupActivity">
 
     <RelativeLayout
@@ -36,12 +37,24 @@
             android:layout_height="1dp"
             android:layout_below="@+id/toolbar"
             android:background="@color/gray300" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/my_study_group_rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/toolbar_div">
-        </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/my_study_group_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar_div">
+    </androidx.recyclerview.widget.RecyclerView>
+    <TextView
+        android:layout_marginTop="16dp"
+        android:id="@+id/empty_study_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="내 스터디 그룹이 아직 없습니다!"
+        android:fontFamily="@font/nanum_barun_gothic"
+        android:textSize="20dp"
+        android:textColor="@color/gray500"
+        android:gravity="center"
+        android:visibility="gone"
+        />
 
 </LinearLayout>

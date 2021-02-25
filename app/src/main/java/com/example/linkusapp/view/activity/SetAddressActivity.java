@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
@@ -29,6 +30,8 @@ import com.example.linkusapp.util.GpsTracker;
 import com.example.linkusapp.view.adapter.AddressAdapter;
 import com.example.linkusapp.viewModel.MyPageViewModel;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +46,7 @@ public class SetAddressActivity extends AppCompatActivity {
     private MyPageViewModel viewModel;
     private String nickname;
     private RecyclerView recentAddressView;
+    private TextView emptyAddress;
     private List<UserAddress> addressList = new ArrayList<>();
     /*주소 검색*/
     private static final  int SEARCH_ADDRESS_ACTIVITY = 10000;
@@ -61,6 +65,7 @@ public class SetAddressActivity extends AppCompatActivity {
         currentBtn = (Button) findViewById(R.id.current_address_Btn);
         correctBtn = (Button) findViewById(R.id.correct_btn);
         recentAddressView = (RecyclerView) findViewById(R.id.recent_address_rv);
+        emptyAddress = (TextView)findViewById(R.id.empty_address);
         viewModel = new ViewModelProvider(this).get(MyPageViewModel.class);
         Intent intent = getIntent();
         nickname = intent.getExtras().get("nickname").toString();
@@ -112,9 +117,16 @@ public class SetAddressActivity extends AppCompatActivity {
 
         viewModel.userAddressRsLD.observe(this,addressInfo -> {
             if (addressInfo.getCode().equals("200")){
+                recentAddressView.setVisibility(View.VISIBLE);
+                emptyAddress.setVisibility(View.GONE);
                 addressAdapter.updateItem(addressInfo.getJsonArray());
+            }else if(addressInfo.getCode().equals("204")){
+                recentAddressView.setVisibility(View.GONE);
+                emptyAddress.setVisibility(View.VISIBLE);
             }else{
-                Snackbar.make(findViewById(R.id.set_address_layout), "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
+                recentAddressView.setVisibility(View.GONE);
+                emptyAddress.setVisibility(View.VISIBLE);
+                Snackbar.make(findViewById(R.id.set_address_layout), "최근 변경한 주소가 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
             }
         });
         /*주소 변경*/

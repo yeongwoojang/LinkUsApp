@@ -57,7 +57,6 @@ public class BoardViewModel extends AndroidViewModel {
             }
         });
     }
-
     public void getPartBoard(String gPart){
         service.getPartBoard(gPart).enqueue(new Callback<BoardInfo>() {
             @Override
