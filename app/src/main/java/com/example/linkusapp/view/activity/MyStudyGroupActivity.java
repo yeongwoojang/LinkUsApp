@@ -17,8 +17,6 @@ import com.example.linkusapp.view.adapter.BoardAdapter;
 import com.example.linkusapp.viewModel.BoardViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -100,12 +100,6 @@ public interface ServiceApi {
     @GET("/android/boardSearch")
     Call<BoardInfo> getSearchBoard(@Query("keyword") String keyword);
 
-    @GET("/android/boardAddress")
-    Call<BoardInfo> getAddressBoard(@Query("address") String address);
-
-    @GET("/android/boardCondition")
-    Call<BoardInfo> getConditionBoard(@Query("gPart") String gPart, @Query("address") String address);
-
     @FormUrlEncoded
     @POST("/android/withdraw")
     Call<String> withDraw(
@@ -136,9 +130,6 @@ public interface ServiceApi {
 
     @GET("/android/userBoardAll")
     Call<BoardInfo> userBoardAll(@Query("userNickname") String userNickname);
-
-    @GET("/android/allAddress")
-    Call<BoardInfo> allAddress();
 
     @GET("/android/optionBoard")
     Call<BoardInfo> optionBoard(@Query("g_part") String gPart, @Query("address") String address);
