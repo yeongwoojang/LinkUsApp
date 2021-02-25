@@ -55,7 +55,7 @@ public class BoardFragment extends Fragment{
     private TextView emptyView;
 
     private List<Board> boardList = new ArrayList<>();
-    private String gpart ="전체";
+    private String gPart ="전체";
     // 뷰 만드는 곳
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -162,7 +162,7 @@ public class BoardFragment extends Fragment{
                             emptyView.setVisibility(View.GONE);
                             mSwipe.setVisibility(View.VISIBLE);
                             spinner.setSelection(0);
-                            gpart = part[position];
+                            gPart = part[position];
                             boardList = boardInfo.getJsonArray();
                             boardAdapter.updateItem(boardList);
                         }else if(boardInfo.getCode()==204){
@@ -180,7 +180,7 @@ public class BoardFragment extends Fragment{
                             mSwipe.setVisibility(View.VISIBLE);
                             emptyView.setVisibility(View.GONE);
                             spinner.setSelection(0);
-                            gpart = part[position];
+                            gPart = part[position];
                             boardList = boardPartInfo.getJsonArray();
                             boardAdapter.updateItem(boardList);
                         }
@@ -200,7 +200,7 @@ public class BoardFragment extends Fragment{
                     viewModel.getAllBoard();
                 }else{
                     Log.d("onItemSelected: ", parent.getItemAtPosition(position).toString());
-                    viewModel.optionBoard(gpart,parent.getItemAtPosition(position).toString());
+                    viewModel.optionBoard(gPart,parent.getItemAtPosition(position).toString());
                     Toast.makeText(getApplicationContext(), parent.getItemAtPosition(position) + "지역을 불러왔습니다.",Toast.LENGTH_SHORT).show();
                 }
             }
