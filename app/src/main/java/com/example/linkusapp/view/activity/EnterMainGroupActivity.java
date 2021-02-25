@@ -113,9 +113,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 {
                     Snackbar.make(findViewById(R.id.enter_main_group_activity),"댓글을 입력해 주세요.",Snackbar.LENGTH_SHORT).show();
                 }
-
                 viewModel.insertComment(gName,writer,comment,isSecret);
-
             }
         });
         viewModel.insertCommentRsLD.observe(this,code ->{

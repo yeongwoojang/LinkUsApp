@@ -113,6 +113,19 @@
                     android:orientation="vertical"
                     android:background="@color/transparent"
                     >
+                    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                        android:id="@+id/calendar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:mcv_headerTextAppearance="@style/CalendarWidgetHeader"
+                        app:mcv_selectionColor="@color/yellow400"
+                        android:focusedMonthDateColor="@color/black"
+                        app:mcv_titleAnimationOrientation="vertical"
+                        app:mcv_arrowColor="@color/black"
+                        app:mcv_weekDayTextAppearance="@style/CalendarWidgetWeekDay"
+                        app:mcv_calendarMode="month"/>
+
                 <TextView
                     android:id="@+id/selected_gname"
                     android:layout_width="match_parent"

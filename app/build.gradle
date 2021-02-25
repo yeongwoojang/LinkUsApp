@@ -93,4 +93,7 @@ dependencies {
     implementation('io.socket:socket.io-client:1.0.0') {
         exclude group: 'org.json', module: 'json'
     }
+
+    //캘린더
+    implementation 'com.github.prolificinteractive:material-calendarview:1.4.3'
 }

@@ -36,4 +36,16 @@
         <item name="windowActionBar">false</item>
     </style>
 
+
+    <!--MaterialCalendarView-->
+    <style name="CalendarWidgetHeader">
+        <item name="android:textSize">9pt</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="CalendarWidgetWeekDay" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">7pt</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

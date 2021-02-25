@@ -1,6 +1,7 @@
 package com.example.linkusapp.view.fragment;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,12 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
@@ -25,23 +28,36 @@ import com.example.linkusapp.view.activity.TimerDialog;
 import com.example.linkusapp.view.adapter.BoardAdapter;
 import com.example.linkusapp.view.adapter.MyGroupAdapter;
 import com.example.linkusapp.view.custom.RoundImageView;
+import com.example.linkusapp.view.decorator.SaturDayDecorator;
+import com.example.linkusapp.view.decorator.SunDayDecorator;
+import com.example.linkusapp.view.decorator.TodayDecorator;
+import com.example.linkusapp.view.dialog.PopupDialog;
 import com.example.linkusapp.viewModel.BoardViewModel;
 import com.example.linkusapp.viewModel.LoginViewModel;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment  implements OnDateSelectedListener {
 
     private Button selectStudy;
     private TextView defaultText, nothingText, selectedGname, groupMemberCount;
     private LinearLayout timerBt;
     private RecyclerView selectRecyclerview;
+    MaterialCalendarView materialCalendarView;
     private CardView selectedContainer;
     private BoardAdapter adapter;
     private BoardViewModel viewModel;
     private List<Board> boardList = new ArrayList<>();
 
+    //캘린더관련 변수
+    String selectedDate = "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +65,7 @@ public class MainFragment extends Fragment {
         selectStudy = (Button) view.findViewById(R.id.select_study);
         defaultText = (TextView) view.findViewById(R.id.default_text);
         nothingText = (TextView) view.findViewById(R.id.noting_text);
+        materialCalendarView = view.findViewById(R.id.calendar);
         selectedGname = (TextView) view.findViewById(R.id.selected_gname);
         groupMemberCount = (TextView) view.findViewById(R.id.member_count);
         timerBt = (LinearLayout) view.findViewById(R.id.btn_timer);
@@ -127,11 +144,24 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), TimerDialog.class);
+                intent.putExtra("userNick",userNickName);
                 startActivity(intent);
             }
         });
 
+        //캘린더 관련 기능
+        materialCalendarView.setOnDateChangedListener(this);
+        materialCalendarView.setTopbarVisible(true);
+        materialCalendarView.addDecorators(new TodayDecorator(getActivity()), new SunDayDecorator(getActivity()), new SaturDayDecorator(getActivity()));
+
 
     }
-
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        selectedDate = format.format(date.getDate());
+        Intent intent = new Intent(getActivity(), PopupDialog.class);
+        intent.putExtra("selectedDate",selectedDate);
+        startActivity(intent);
+    }
 }

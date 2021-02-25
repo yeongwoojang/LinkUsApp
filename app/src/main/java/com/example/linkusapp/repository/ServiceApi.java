@@ -194,4 +194,9 @@ public interface ServiceApi {
     Call<BoardInfo> getSelectedGroup(@Query("userNick") String userNick);
 
 
+    //타이머 기록
+    @FormUrlEncoded
+    @POST("/android/insertTimer")
+    Call<String> insertTimer(@Field("userNick") String userNick, @Field("time") String time);
+
 }

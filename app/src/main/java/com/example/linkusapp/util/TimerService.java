@@ -117,7 +117,6 @@ public class TimerService extends Service {
                     }
                 }
             }
-
         }
     }
 }
