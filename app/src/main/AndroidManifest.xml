@@ -27,7 +27,7 @@
         <activity android:name=".view.activity.TimerDialog"/>
         <activity android:name=".view.activity.CommentActivity" />
         <activity android:name=".view.activity.EnterMainGroupActivity" />
-        <activity android:name=".view.activity.ManageJoinReqActivity" />
+        <activity android:name=".view.activity.ManageJoinReqActivity"></activity>
         <activity android:name=".view.activity.InviteManageActivity" />
         <activity android:name=".view.activity.MyStudyGroupActivity" />
         <activity android:name=".view.activity.UpdateUserActivity" />
