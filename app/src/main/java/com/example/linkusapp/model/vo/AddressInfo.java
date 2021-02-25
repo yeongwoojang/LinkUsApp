@@ -18,5 +18,4 @@ public class AddressInfo {
     public List<UserAddress> getJsonArray() {
         return jsonArray;
     }
-
 }

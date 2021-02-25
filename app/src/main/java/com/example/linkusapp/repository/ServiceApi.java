@@ -5,19 +5,18 @@ import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.CommentInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.LeaderGroupInfo;
-import com.example.linkusapp.model.vo.MemberCount;
-import com.example.linkusapp.model.vo.User;
+import com.example.linkusapp.model.vo.GroupMember;
 import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.model.vo.UsersInfo;
 
-import java.util.List;
-
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface ServiceApi {
@@ -98,7 +97,10 @@ public interface ServiceApi {
     Call<BoardInfo> getPartBoard(@Query("gPart") String gPart);
 
     @GET("/android/boardSearch")
-    Call<BoardInfo> getSearchBoard(@Query("keyword") String keyword);
+    Call<BoardInfo> getSearchBoard(@Query("keyword1") String keyword1, @Query("keyword2") String keyword2);
+
+    @GET("/android/boardRefresh")
+    Call<BoardInfo> getRefreshBoard();
 
     @FormUrlEncoded
     @POST("/android/withdraw")
@@ -134,8 +136,8 @@ public interface ServiceApi {
     @GET("/android/optionBoard")
     Call<BoardInfo> optionBoard(@Query("g_part") String gPart, @Query("address") String address);
 
-    @GET("/android/countGroupMember")
-    Call<MemberCount> getMemberCount(@Query("gName") String gName);
+    @GET("/android/getGroupMember")
+    Call<UsersInfo> getGroupMember(@Query("gName") String gName);
 
     @FormUrlEncoded
     @POST("/android/joinGroup")
@@ -179,5 +181,17 @@ public interface ServiceApi {
     @FormUrlEncoded
     @POST("/android/insertRequest")
     Call<String> insertRequest(@Field("gName")String gName, @Field("userNick")String userNick);
+
+    @DELETE("/android/deleteRequest")
+    Call<String> deleteRequest(@Query("gName")String gName, @Query("userNick")String userNick);
+
+    //유저의 대표 스터디 그룹을 선택했을 때 UESER테이블의 대표 스터디그룹 컬럼을 업데이트 하는 메소드
+    @PUT("/android/updatesSelected")
+    Call<String> updateSelected(@Query("userNick") String userNick,@Query("gName") String gName);
+
+    //유저가 선택한 대표 스터디 그룹의 정보를 불러오는 메소드
+    @GET("/android/getSelected")
+    Call<BoardInfo> getSelectedGroup(@Query("userNick") String userNick);
+
 
 }

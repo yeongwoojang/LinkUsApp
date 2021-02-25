@@ -50,4 +50,28 @@ public class Comment implements Serializable {
     public int getbSecret() {
         return bSecret;
     }
+
+    public void setbIdx(int bIdx) {
+        this.bIdx = bIdx;
+    }
+
+    public void setbName(String bName) {
+        this.bName = bName;
+    }
+
+    public void setbWriter(String bWriter) {
+        this.bWriter = bWriter;
+    }
+
+    public void setbComment(String bComment) {
+        this.bComment = bComment;
+    }
+
+    public void setbWriteTime(String bWriteTime) {
+        this.bWriteTime = bWriteTime;
+    }
+
+    public void setbSecret(int bSecret) {
+        this.bSecret = bSecret;
+    }
 }

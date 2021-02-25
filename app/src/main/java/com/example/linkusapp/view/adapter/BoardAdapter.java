@@ -10,12 +10,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.view.activity.EnterMainGroupActivity;
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.view.activity.GroupMainActivity;
+import com.example.linkusapp.viewModel.BoardViewModel;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class BoardAdapter extends RecyclerView.Adapter implements View.OnClickLi
 
     private List<Board> boardList;
     private Activity getActivity;
+    private BoardViewModel viewModel;
     private int mType;
 
     //ViewHolder 시작
@@ -68,9 +71,10 @@ public class BoardAdapter extends RecyclerView.Adapter implements View.OnClickLi
         notifyDataSetChanged();
     }
 
-    public BoardAdapter(List<Board> boardList, Activity getActivity,int type){
+    public BoardAdapter(List<Board> boardList, Activity getActivity, BoardViewModel viewModel, int type){
         this.boardList = boardList;
         this.getActivity = getActivity;
+        this.viewModel = viewModel;
         this.mType = type;
     }
 
@@ -89,7 +93,6 @@ public class BoardAdapter extends RecyclerView.Adapter implements View.OnClickLi
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Log.d("Type", holder.getClass().getName());
         if(holder instanceof BoardViewHolder){
             Board board = boardList.get(position);
             ((BoardViewHolder)(holder)).gPart.setText(board.getgPart());
@@ -105,6 +108,7 @@ public class BoardAdapter extends RecyclerView.Adapter implements View.OnClickLi
             ((SelectViewHolder)(holder)).gName.setText(board.getgName());
             ((SelectViewHolder)(holder)).gPurpose.setText(board.getgPurpose());
             ((SelectViewHolder)(holder)).cardView.setTag(position);
+            ((SelectViewHolder)(holder)).cardView.setOnClickListener(this);
         }
     }
 
@@ -117,15 +121,18 @@ public class BoardAdapter extends RecyclerView.Adapter implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if(getActivity.toString().contains("MainActivity"))
+        if(getActivity.toString().contains("MainActivity")&& mType==1)
         {
             Intent intent = new Intent(getActivity, GroupMainActivity.class);
             intent.putExtra("board",boardList.get((int)v.getTag()));
             getActivity.startActivity(intent);
             getActivity.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        }else if(getActivity.toString().contains("MainActivity")&& mType==2){
+            String userNick = viewModel.getUserInfoFromShared().getUserNickname();
+            viewModel.updateSelected(userNick,boardList.get((int)v.getTag()).getgName());
         }else if(getActivity.toString().contains("MyStudyGroupActivity")){
             Intent intent = new Intent(getActivity, EnterMainGroupActivity.class);
-            intent.putExtra("board2",boardList.get((int)v.getTag()));
+            intent.putExtra("board",boardList.get((int)v.getTag()));
             getActivity.startActivity(intent);
             getActivity.overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
@@ -134,12 +141,11 @@ public class BoardAdapter extends RecyclerView.Adapter implements View.OnClickLi
     @Override
     public int getItemViewType(int position) {
         int viewType;
-        Log.d("viewType", mType+"");
-        if(mType==1){
-            viewType = 1;
-        }else{
-            viewType = 2;
-        }
-        return viewType;
+       if(mType==1){
+           viewType = 1;
+       }else{
+           viewType = 2;
+       }
+       return viewType;
     }
 }

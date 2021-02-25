@@ -61,7 +61,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(CommentViewModel.class);
         Intent intent = getIntent();
-        Board board = (Board)intent.getSerializableExtra("board2");
+        Board board = (Board)intent.getSerializableExtra("board");
         gName = board.getgName();
         writer = viewModel.getUserInfoFromShared().getUserNickname();
         groupNameTv.setText(gName);
@@ -77,7 +77,8 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         viewModel.getCommentRsLD.observe(this,commentInfo -> {
             if(commentInfo.getCode()==200){
                 Snackbar.make(findViewById(R.id.enter_main_group_activity),"댓글을 불러왔습니다.",Snackbar.LENGTH_SHORT).show();
-                commentAdapter.updateItem(commentInfo.getJsonArray());
+                commentList = commentInfo.getJsonArray();
+                commentAdapter.updateItem(commentList);
             }else if(commentInfo.getCode()==204){
                 Snackbar.make(findViewById(R.id.enter_main_group_activity),"댓글이 없습니다.",Snackbar.LENGTH_SHORT).show();
             }else {
@@ -112,7 +113,9 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 {
                     Snackbar.make(findViewById(R.id.enter_main_group_activity),"댓글을 입력해 주세요.",Snackbar.LENGTH_SHORT).show();
                 }
+
                 viewModel.insertComment(gName,writer,comment,isSecret);
+
             }
         });
         viewModel.insertCommentRsLD.observe(this,code ->{

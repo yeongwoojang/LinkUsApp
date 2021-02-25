@@ -1,5 +1,6 @@
 package com.example.linkusapp.view.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupV
     private List<LeaderGroup> items;
     private SlidingUpPanelLayout slidingView;
     private ManageJoinViewModel viewModel;
+    private GroupNameListener mListener = null;
     public MyGroupAdapter(List<LeaderGroup> items, SlidingUpPanelLayout slidingView, ManageJoinViewModel viewModel) {
         this.items = items;
         this.slidingView = slidingView;
@@ -68,7 +70,17 @@ public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupV
 
     @Override
     public void onClick(View v) {
-        viewModel.getReqUser(items.get((Integer) v.getTag()).getgName());
+        String gName = items.get((Integer) v.getTag()).getgName();
+        viewModel.getReqUser(gName);
+        if(mListener!=null){
+            mListener.returnGname(gName);
+        }
     }
 
+    public interface GroupNameListener{
+        void returnGname(String gName);
+    }
+    public void setGnameListener(GroupNameListener listener){
+        this.mListener = listener;
+    }
 }

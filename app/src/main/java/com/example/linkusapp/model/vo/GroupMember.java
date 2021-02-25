@@ -2,7 +2,7 @@ package com.example.linkusapp.model.vo;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MemberCount {
+public class GroupMember {
     @SerializedName("code")
     private int code;
 

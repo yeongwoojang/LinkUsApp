@@ -1,13 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fillViewport="true"
     tools:context=".view.fragment.MainFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="main" />
+        android:orientation="vertical"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/img_programer"
+            android:layout_marginBottom="20dp"
+            />
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+            <LinearLayout
+                android:id="@+id/btn_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                >
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/icon_stopwatch"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="타이머"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:fontFamily="@font/nanum_square_ac_l"
+                android:textColor="@color/black"
+              />
+            </LinearLayout>
+        <Button
+            android:id="@+id/select_study"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textSize="15dp"
+            android:background="@drawable/form_button_round"
+            android:text="대표 스터디 선택"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nanum_square_ac_l"
+            android:padding="5dp"
+            android:layout_gravity="center"
+            android:translationX="90dp"
+            />
+        </LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            >
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/select_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                />
+            <TextView
+                android:id="@+id/noting_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="내 그룹이 없습니다."
+                android:gravity="center"
+                android:fontFamily="@font/nanum_square_ac_b"
+                android:textColor="@color/gray400"
+                android:visibility="invisible"
+               />
+            <TextView
+                android:id="@+id/default_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="대표 그룹을 설정하지 않았습니다."
+                android:gravity="center"
+                android:fontFamily="@font/nanum_square_ac_b"
+                android:textColor="@color/black"
+                android:visibility="visible"
+               />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/selected_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/gray50"
+                android:visibility="invisible"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/transparent"
+                    >
+                <TextView
+                    android:id="@+id/selected_gname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="그룹명"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:padding="5dp"
+                    />
+                    <TextView
+                        android:id="@+id/member_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="멤버 수 : "
+                        android:textColor="@color/black"
+                        android:textSize="12dp"
+                        android:fontFamily="@font/nanum_square_ac_l"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="●그룹 공지사항"
+                        android:textColor="@color/black"
+                        android:textSize="18dp"
+                        android:fontFamily="@font/nanum_square_ac_b"
+                        />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+
+    </LinearLayout>
+</ScrollView>

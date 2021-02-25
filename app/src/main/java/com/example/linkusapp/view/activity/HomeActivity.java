@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -90,6 +91,7 @@ public class HomeActivity extends AppCompatActivity {
     private String recUserAge ="";
     private String recUserGender ="";
     private String recAddress ="";
+
     @Override
     protected void onStart() {
         super.onStart();

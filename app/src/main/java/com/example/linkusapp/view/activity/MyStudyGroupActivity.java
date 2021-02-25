@@ -49,7 +49,7 @@ public class MyStudyGroupActivity extends AppCompatActivity {
                 finish();
             }
         });
-        BoardAdapter userboardAdapter = new BoardAdapter(boardList,this,1);
+        BoardAdapter userboardAdapter = new BoardAdapter(boardList,this,viewModel,1);
         groupRecyclerView.setAdapter(userboardAdapter);
         groupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
         viewModel.userBoardAll(nickname);
