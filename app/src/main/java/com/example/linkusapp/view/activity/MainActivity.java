@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         /*slidingUpPanelLayout*/
-        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.slidingView);
-        slidingUpPanelLayout.setTouchEnabled(false);
+//        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.slidingView);
+//        slidingUpPanelLayout.setTouchEnabled(false);
 
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);

@@ -50,8 +50,8 @@ public class MainFragment extends Fragment {
         defaultText = (TextView) view.findViewById(R.id.default_text);
         nothingText = (TextView) view.findViewById(R.id.noting_text);
         selectedGname = (TextView) view.findViewById(R.id.selected_gname);
-        groupMemberCount = (TextView)view.findViewById(R.id.member_count);
-        timerBt = (LinearLayout)view.findViewById(R.id.btn_timer);
+        groupMemberCount = (TextView) view.findViewById(R.id.member_count);
+        timerBt = (LinearLayout) view.findViewById(R.id.btn_timer);
         selectRecyclerview = (RecyclerView) view.findViewById(R.id.select_recyclerview);
         selectedContainer = (CardView) view.findViewById(R.id.selected_container);
         selectRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
@@ -85,8 +85,12 @@ public class MainFragment extends Fragment {
             }
         });
 
-        viewModel.groupMembersLD.observe(getViewLifecycleOwner(),usersInfo -> {
-            groupMemberCount.setText("멤버수 : "+usersInfo.getUsers().size()+"명");
+        viewModel.groupMembersLD.observe(getViewLifecycleOwner(), usersInfo -> {
+            if (usersInfo.getUsers() != null) {
+                groupMemberCount.setText("멤버수 : " + usersInfo.getUsers().size() + "명");
+            }else{
+                groupMemberCount.setText("멤버수 : " + 0+ "명");
+            }
         });
 
 
