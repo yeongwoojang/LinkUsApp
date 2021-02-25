@@ -2,6 +2,7 @@ package com.example.linkusapp.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -48,8 +50,6 @@ public class BoardFragment extends Fragment{
     private EditText searchEdit;
     private ImageButton searchBtn;
     private ImageButton refreshBtn;
-    private SwipeRefreshLayout mSwipe;
-
     private BoardViewModel viewModel;
     private Spinner spinner;
     private TextView emptyView;
@@ -80,7 +80,6 @@ public class BoardFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         viewModel = new ViewModelProvider(this).get(BoardViewModel.class);
         ArrayList<String> partList = new ArrayList<>();
         String[] part = {"전체", "어학", "교양", "프로그래밍", "취업","취미", "자율", "기타"};
@@ -129,6 +128,8 @@ public class BoardFragment extends Fragment{
         searchBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
                 viewModel.getSearchBoard(searchEdit.getText().toString(), searchEdit.getText().toString());
                 viewModel.boardSearchRsLD.observe(getViewLifecycleOwner(), boardInfo -> {
                     if(boardInfo.getCode()==200){

@@ -28,13 +28,17 @@ import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.util.TimerService;
 import com.example.linkusapp.viewModel.LoginViewModel;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Timer;
 
 public class TimerDialog extends AppCompatActivity {
 
     private TextView timer;
-    private Button startBt, pauseBt, cancelBt;
+    private Button startBt, pauseBt, cancelBt, recordBt;
     private ImageButton closeBt;
     private LinearLayout containerPause;
+//    private TimerViewModel viewModel;
 
     private Intent intent;
     @Override
@@ -48,13 +52,18 @@ public class TimerDialog extends AppCompatActivity {
         startBt = (Button) findViewById(R.id.btn_timer_start);
         pauseBt = (Button) findViewById(R.id.btn_timer_pause);
         cancelBt = (Button) findViewById(R.id.btn_cancel_timer);
+//        recordBt = (Button)findViewById(R.id.btn_record_timer);
         closeBt = (ImageButton) findViewById(R.id.btn_dialog_close);
         containerPause = (LinearLayout) findViewById(R.id.container_pause);
+        String userNick = getIntent().getStringExtra("userNick");
+//        viewModel = new ViewModelProvider(this).get(TimerViewModel.class);
+
         intent = new Intent(getApplicationContext(), TimerService.class);
 
         startBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startBt.setEnabled(false);
                 startService(intent);
             }
         });
@@ -77,10 +86,17 @@ public class TimerDialog extends AppCompatActivity {
 //                timerThread.interrupt(); //스톱워치 종료
                 stopService(intent);
                 containerPause.setVisibility(View.INVISIBLE);
+                startBt.setEnabled(true);
                 startBt.setVisibility(View.VISIBLE);
             }
         });
 
+//        recordBt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewModel.insertTimer(userNick,timer.getText().toString());
+//            }
+//        });
 
         closeBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +119,14 @@ public class TimerDialog extends AppCompatActivity {
             }
             timer.setText(time);
         });
+
+//        viewModel.insertTimerLD.observe(this,response ->{
+//            if(response.equals("200")){
+//                Snackbar.make(findViewById(R.id.timerview),"시간이 기록되었습니다.",Snackbar.LENGTH_SHORT).show();
+//            }else{
+//                Snackbar.make(findViewById(R.id.timerview),"시간이 기록을 실패했습니다..",Snackbar.LENGTH_SHORT).show();
+//            }
+//        } );
 
         TimerService.isRunning.observe(this,isRunning -> {
             if(isRunning){
