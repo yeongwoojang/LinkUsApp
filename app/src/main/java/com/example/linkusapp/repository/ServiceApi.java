@@ -6,6 +6,7 @@ import com.example.linkusapp.model.vo.CommentInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.LeaderGroupInfo;
 import com.example.linkusapp.model.vo.GroupMember;
+import com.example.linkusapp.model.vo.TimerInfo;
 import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.model.vo.UsersInfo;
 
@@ -194,9 +195,20 @@ public interface ServiceApi {
     Call<BoardInfo> getSelectedGroup(@Query("userNick") String userNick);
 
 
-    //타이머 기록
+    //공부시간 최초기록
     @FormUrlEncoded
     @POST("/android/insertTimer")
     Call<String> insertTimer(@Field("userNick") String userNick, @Field("time") String time);
 
+    //공부시간 업데이트
+    @PUT("/android/updateTimer")
+    Call<String> updateTimer(@Query("userNick") String userNick, @Query("time") String time);
+
+    //사용자의 전체 공부시간 조회
+    @GET("/android/entireRecord")
+    Call<TimerInfo> getEntireRecord(@Query("userNick") String userNick);
+
+    //오늘 공부한 시간 조회
+    @GET("/android/getTodayRecord")
+    Call<TimerInfo> getTodayRecord(@Query("userNick") String userNick);
 }

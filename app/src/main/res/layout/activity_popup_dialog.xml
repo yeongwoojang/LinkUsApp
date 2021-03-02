@@ -32,15 +32,5 @@
         android:fontFamily="@font/nanum_square_ac_l"
         android:padding="20dp"
         />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="공부시간 : "
-        android:textSize="15dp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/nanum_square_ac_l"
-        android:padding="20dp"
-        />
-
     </LinearLayout>
 </LinearLayout>

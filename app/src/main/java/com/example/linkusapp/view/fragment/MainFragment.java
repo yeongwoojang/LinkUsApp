@@ -24,10 +24,12 @@ import android.widget.Toast;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.Board;
+import com.example.linkusapp.model.vo.Timer;
 import com.example.linkusapp.view.activity.TimerDialog;
 import com.example.linkusapp.view.adapter.BoardAdapter;
 import com.example.linkusapp.view.adapter.MyGroupAdapter;
 import com.example.linkusapp.view.custom.RoundImageView;
+import com.example.linkusapp.view.decorator.DayDecorator;
 import com.example.linkusapp.view.decorator.SaturDayDecorator;
 import com.example.linkusapp.view.decorator.SunDayDecorator;
 import com.example.linkusapp.view.decorator.TodayDecorator;
@@ -40,6 +42,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +58,8 @@ public class MainFragment extends Fragment  implements OnDateSelectedListener {
     private BoardAdapter adapter;
     private BoardViewModel viewModel;
     private List<Board> boardList = new ArrayList<>();
-
+    private List<Timer> timeList = new ArrayList<>();
+    private DayDecorator dayDecorator;
     //캘린더관련 변수
     String selectedDate = "";
     @Override
@@ -81,6 +85,7 @@ public class MainFragment extends Fragment  implements OnDateSelectedListener {
 
         viewModel = new ViewModelProvider(this).get(BoardViewModel.class);
         String userNickName = viewModel.getUserInfoFromShared().getUserNickname();
+        viewModel.getEntireRecord(userNickName);
         adapter = new BoardAdapter(boardList, getActivity(), viewModel, 2);
         selectRecyclerview.setAdapter(adapter);
 
@@ -136,6 +141,24 @@ public class MainFragment extends Fragment  implements OnDateSelectedListener {
             if (response.equals("200")) {
                 viewModel.getSelectedGroup(userNickName);
 
+
+            }
+        });
+
+        viewModel.entireRecordLD.observe(getViewLifecycleOwner(),timerInfo -> {
+            if(timerInfo.getCode()==200){
+                timeList = timerInfo.getTimer();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                for(int i=0;i<timeList.size();i++){
+
+                    try {
+                        dayDecorator  = new DayDecorator(format.parse(timeList.get(i).getStudyDate()),getActivity());
+                        materialCalendarView.addDecorator(dayDecorator);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }else{
 
             }
         });

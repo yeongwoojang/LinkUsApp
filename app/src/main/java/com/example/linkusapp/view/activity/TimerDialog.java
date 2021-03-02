@@ -31,6 +31,10 @@ import com.example.linkusapp.viewModel.LoginViewModel;
 import com.example.linkusapp.viewModel.TimerViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 
 public class TimerDialog extends AppCompatActivity {
@@ -42,6 +46,9 @@ public class TimerDialog extends AppCompatActivity {
     private TimerViewModel viewModel;
 
     private Intent intent;
+
+    private String curTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +60,7 @@ public class TimerDialog extends AppCompatActivity {
         startBt = (Button) findViewById(R.id.btn_timer_start);
         pauseBt = (Button) findViewById(R.id.btn_timer_pause);
         cancelBt = (Button) findViewById(R.id.btn_cancel_timer);
-        recordBt = (Button)findViewById(R.id.btn_record_timer);
+        recordBt = (Button) findViewById(R.id.btn_record_timer);
         closeBt = (ImageButton) findViewById(R.id.btn_dialog_close);
         containerPause = (LinearLayout) findViewById(R.id.container_pause);
         String userNick = getIntent().getStringExtra("userNick");
@@ -92,12 +99,59 @@ public class TimerDialog extends AppCompatActivity {
             }
         });
 
+
         recordBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.insertTimer(userNick,timer.getText().toString());
+                if (Integer.parseInt(timer.getText().toString().substring(6)) < 15) {
+                    Snackbar.make(findViewById(R.id.timerview), "15초 미만은 기록할 수 없습니다..", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    viewModel.getTodayRecord(userNick); //사용자가 오늘 날짜에 지금까지 공부한 시간 조회
+                    curTime = timer.getText().toString();
+                }
             }
         });
+
+        viewModel.todayRecordLD.observe(this,timerInfo -> {
+            if(timerInfo.getCode()==200){
+                String recordTime = timerInfo.getTimer().get(0).getStudyTime();
+                int hour = Integer.parseInt(recordTime.substring(0,2));
+                int min = Integer.parseInt(recordTime.substring(3,5));
+                int sec = Integer.parseInt(recordTime.substring(6));
+                Log.d("recordTime", hour +" : "+ min+" : "+ sec );
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+                try {
+                    Date date = format.parse(curTime);
+                    calendar.setTime(date);
+
+                    calendar.add(Calendar.HOUR,hour);
+                    calendar.add(Calendar.MINUTE,min);
+                    calendar.add(Calendar.SECOND,sec);
+
+                    String returnDate = format.format(calendar.getTimeInMillis());
+                    Log.d("returnDate", returnDate);
+                    viewModel.updateTimer(userNick,returnDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                Log.d("not200", "오늘은 사용자가 공부 시간을 기록하지 않음.");
+
+                viewModel.insertTimer(userNick, timer.getText().toString()); //오늘의 공부 시간을 최초로 기록
+            }
+            //공부 시간을 기록하면 타이머 초기화.
+            stopService(intent);
+            containerPause.setVisibility(View.INVISIBLE);
+            startBt.setEnabled(true);
+            startBt.setVisibility(View.VISIBLE);
+        });
+
+        viewModel.updateTimerLD.observe(this,response ->{
+            if(response.equals("200")){
+                Snackbar.make(findViewById(R.id.timerview), "오늘의 공부 시간을 업데이트 했습니다.", Snackbar.LENGTH_SHORT).show();
+            }
+        } );
 
         closeBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,13 +161,13 @@ public class TimerDialog extends AppCompatActivity {
         });
 
         //Service에 있는 time을 관찰하며 UI업데이트
-        TimerService.time2.observe(this,time -> {
+        TimerService.time2.observe(this, time -> {
             Log.d("respoo", time);
-            if(!time.equals("00:00:00")){
+            if (!time.equals("00:00:00")) {
                 startBt.setVisibility(View.INVISIBLE);
                 containerPause.setVisibility(View.VISIBLE);
 
-            }else{
+            } else {
                 startBt.setVisibility(View.VISIBLE);
                 containerPause.setVisibility(View.INVISIBLE);
 
@@ -121,18 +175,18 @@ public class TimerDialog extends AppCompatActivity {
             timer.setText(time);
         });
 
-        viewModel.insertTimerLD.observe(this,response ->{
-            if(response.equals("200")){
-                Snackbar.make(findViewById(R.id.timerview),"시간이 기록되었습니다.",Snackbar.LENGTH_SHORT).show();
-            }else{
-                Snackbar.make(findViewById(R.id.timerview),"시간이 기록을 실패했습니다..",Snackbar.LENGTH_SHORT).show();
+        viewModel.insertTimerLD.observe(this, response -> {
+            if (response.equals("200")) {
+                Snackbar.make(findViewById(R.id.timerview), "시간이 기록되었습니다.", Snackbar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(findViewById(R.id.timerview), "시간이 기록을 실패했습니다..", Snackbar.LENGTH_SHORT).show();
             }
-        } );
+        });
 
-        TimerService.isRunning.observe(this,isRunning -> {
-            if(isRunning){
+        TimerService.isRunning.observe(this, isRunning -> {
+            if (isRunning) {
                 pauseBt.setText("pause");
-            }else{
+            } else {
                 pauseBt.setText("start");
             }
         });

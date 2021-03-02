@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.BoardInfo;
+import com.example.linkusapp.model.vo.TimerInfo;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.model.vo.UsersInfo;
 import com.example.linkusapp.repository.RetrofitClient;
@@ -35,6 +36,7 @@ public class BoardViewModel extends AndroidViewModel {
     public MutableLiveData<String> updateSelectedLD = new MutableLiveData<>();
     public MutableLiveData<BoardInfo> selectedGroupLD = new MutableLiveData<>();
     public MutableLiveData<UsersInfo> groupMembersLD = new MutableLiveData<>();
+    public MutableLiveData<TimerInfo> entireRecordLD = new MutableLiveData<>();
 
 
     public BoardViewModel(@NonNull Application application) {
@@ -169,6 +171,20 @@ public class BoardViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<UsersInfo> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getEntireRecord(String userNick){
+        service.getEntireRecord(userNick).enqueue(new Callback<TimerInfo>() {
+            @Override
+            public void onResponse(Call<TimerInfo> call, Response<TimerInfo> response) {
+                entireRecordLD.postValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<TimerInfo> call, Throwable t) {
 
             }
         });
