@@ -101,6 +101,8 @@
             android:name=".util.TimerService"
             android:enabled="true"
             android:exported="true" />
+
+        <receiver android:name=".util.TimerReceiver"/>
     </application>
 
 </manifest>

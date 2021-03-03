@@ -14,15 +14,13 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 
-public class DayDecorator implements DayViewDecorator {
+public class DefaultDecorator implements DayViewDecorator {
 
-    Map<CalendarDay, String> Calandar;
     private CalendarDay date;
     private final Calendar calendar = Calendar.getInstance();
     Context context;
-    public DayDecorator(Date value, Context context) {
+    public DefaultDecorator(Date value, Context context) {
        date = CalendarDay.from(value);
        this.context = context;
     }
@@ -36,7 +34,7 @@ public class DayDecorator implements DayViewDecorator {
     @Override
     public void decorate(DayViewFacade view) {
         view.addSpan(new StyleSpan(Typeface.NORMAL));
-        view.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.calendar_divide));
+        view.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.cal_state_default));
         view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.white)));
         if(date.getCalendar().get(Calendar.DAY_OF_WEEK)== Calendar.SATURDAY){
             view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.blue500)));

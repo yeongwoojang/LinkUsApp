@@ -1,6 +1,7 @@
 package com.example.linkusapp.util;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -8,6 +9,7 @@ import android.app.PendingIntent;
 import android.app.RemoteAction;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
@@ -28,6 +30,8 @@ import com.example.linkusapp.view.activity.HomeActivity;
 import com.example.linkusapp.view.activity.MainActivity;
 import com.example.linkusapp.view.activity.TimerDialog;
 
+import java.util.Calendar;
+
 public class TimerService extends Service {
 
     //타이머를 관리하는 변수
@@ -38,6 +42,9 @@ public class TimerService extends Service {
     private NotificationCompat.Builder builder;
     private Thread timerThread = null;
 
+    private AlarmManager alarmManager;
+    Calendar calendar = Calendar.getInstance();
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -47,6 +54,7 @@ public class TimerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("onStartCommand", "onStartCommand: ");
+        registAlarm(intent);
         isRunning.setValue(true);
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
@@ -94,6 +102,29 @@ public class TimerService extends Service {
     };
 
 
+    public void registAlarm(Intent serviceIntent){
+        Intent intent = new Intent(getApplicationContext(),TimerReceiver.class);
+        intent.putExtra("intent",serviceIntent);
+        calendar.set(Calendar.HOUR_OF_DAY,23);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            alarmManager =  (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
+            }else{
+                alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
+            }
+    }
+
+    public void unRegistAlarm(){
+        Intent intent = new Intent(getApplicationContext(),TimerReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.cancel(pendingIntent);
+    }
+
     public class TimerThread implements Runnable {
         @Override
         public void run() {
@@ -111,6 +142,7 @@ public class TimerService extends Service {
                         Log.d("onDestroy", "123");
                         msg2.arg1 = 0;
                         handler.sendMessage(msg2);
+                        unRegistAlarm();
                         e.printStackTrace();
                         //인터럽트 발생 시 return
                         return;

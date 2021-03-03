@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,7 +47,7 @@ public class TimerDialog extends AppCompatActivity {
     private TimerViewModel viewModel;
 
     private Intent intent;
-
+    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private String curTime;
 
     @Override
@@ -103,11 +104,22 @@ public class TimerDialog extends AppCompatActivity {
         recordBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Integer.parseInt(timer.getText().toString().substring(6)) < 15) {
-                    Snackbar.make(findViewById(R.id.timerview), "15초 미만은 기록할 수 없습니다..", Snackbar.LENGTH_SHORT).show();
-                } else {
-                    viewModel.getTodayRecord(userNick); //사용자가 오늘 날짜에 지금까지 공부한 시간 조회
-                    curTime = timer.getText().toString();
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR,0);
+                calendar.set(Calendar.MINUTE,30);
+                calendar.set(Calendar.SECOND,0);
+                String defaultTime = timeFormat.format(calendar.getTimeInMillis());
+                try {
+                    Date time = timeFormat.parse(timer.getText().toString());
+                    Date t = timeFormat.parse(defaultTime);
+                    if(time.before(t)){
+                        Snackbar.make(findViewById(R.id.timerview), "공부시간 30분 전 까지는 기록할 수 없습니다..", Snackbar.LENGTH_SHORT).show();
+                    }else{
+                        viewModel.getTodayRecord(userNick); //사용자가 오늘 날짜에 지금까지 공부한 시간 조회
+                        curTime = timer.getText().toString();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -120,16 +132,15 @@ public class TimerDialog extends AppCompatActivity {
                 int sec = Integer.parseInt(recordTime.substring(6));
                 Log.d("recordTime", hour +" : "+ min+" : "+ sec );
                 Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
                 try {
-                    Date date = format.parse(curTime);
+                    Date date = timeFormat.parse(curTime);
                     calendar.setTime(date);
 
                     calendar.add(Calendar.HOUR,hour);
                     calendar.add(Calendar.MINUTE,min);
                     calendar.add(Calendar.SECOND,sec);
 
-                    String returnDate = format.format(calendar.getTimeInMillis());
+                    String returnDate = timeFormat.format(calendar.getTimeInMillis());
                     Log.d("returnDate", returnDate);
                     viewModel.updateTimer(userNick,returnDate);
                 } catch (ParseException e) {
