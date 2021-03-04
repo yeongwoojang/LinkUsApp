@@ -24,7 +24,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.dialog.PopupDialog" android:theme="@style/Theme.AppCompat.Dialog.MinWidth"></activity>
+        <activity android:name=".view.activity.ChatActivity" android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".view.dialog.PopupDialog"
+            android:theme="@style/Theme.AppCompat.Dialog.MinWidth" />
         <activity android:name=".view.activity.TimerDialog" />
         <activity android:name=".view.activity.EnterMainGroupActivity" />
         <activity android:name=".view.activity.ManageJoinReqActivity" />
@@ -102,7 +106,7 @@
             android:enabled="true"
             android:exported="true" />
 
-        <receiver android:name=".util.TimerReceiver"/>
+        <receiver android:name=".util.TimerReceiver" />
     </application>
 
 </manifest>

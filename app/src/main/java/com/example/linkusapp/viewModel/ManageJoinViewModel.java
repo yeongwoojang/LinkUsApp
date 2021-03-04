@@ -19,9 +19,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ManageJoinViewModel extends AndroidViewModel {
-    private ServiceApi service;
-    private SharedPreference prefs;
+public class ManageJoinViewModel extends BaseViewModel {
+//    private ServiceApi service;
+//    private SharedPreference prefs;
 
     public MutableLiveData<LeaderGroupInfo> leaderGroupRes = new MutableLiveData<>();
     public MutableLiveData<UsersInfo> reqUserListRes = new MutableLiveData<>();
@@ -30,13 +30,8 @@ public class ManageJoinViewModel extends AndroidViewModel {
 
     public ManageJoinViewModel(@NonNull Application application) {
         super(application);
-        service = RetrofitClient.getClient(application).create(ServiceApi.class);
-        prefs= new SharedPreference(application);
     }
 
-    public User getUserInfoFromShared(){
-        return prefs.getUserInfo();
-    }
 
     public void getLeaderGroup(String userNick){
         service.getLeaderGroup(userNick).enqueue(new Callback<LeaderGroupInfo>() {

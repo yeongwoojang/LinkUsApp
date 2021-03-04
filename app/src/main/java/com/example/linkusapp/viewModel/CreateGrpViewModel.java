@@ -18,9 +18,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CreateGrpViewModel extends AndroidViewModel {
-    private ServiceApi service;
-    private SharedPreference prefs;
+public class CreateGrpViewModel extends BaseViewModel {
+//    private ServiceApi service;
+//    private SharedPreference prefs;
 
     public MutableLiveData<UserInfo> userLiveData = new MutableLiveData<UserInfo>();
     public MutableLiveData<String> createGroupRes = new MutableLiveData<>();
@@ -31,8 +31,8 @@ public class CreateGrpViewModel extends AndroidViewModel {
 
     public CreateGrpViewModel(@NonNull Application application) {
         super(application);
-        this.service = RetrofitClient.getClient(application).create(ServiceApi.class);
-        this.prefs = new SharedPreference(application);
+//        this.service = RetrofitClient.getClient(application).create(ServiceApi.class);
+//        this.prefs = new SharedPreference(application);
     }
     public void getUserInfo(){
         service.getUserInfo(prefs.getLoginMethod()).enqueue(new Callback<UserInfo>() {
@@ -73,9 +73,6 @@ public class CreateGrpViewModel extends AndroidViewModel {
 
             }
         });
-    }
-    public User getUserInfoFromShared(){
-        return prefs.getUserInfo();
     }
 
     public void getGroupMember(String gName){

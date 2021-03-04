@@ -14,8 +14,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TimerViewModel extends AndroidViewModel {
-    private ServiceApi service;
+public class TimerViewModel extends BaseViewModel {
+//    private ServiceApi service;
 
     public MutableLiveData<String> insertTimerLD = new MutableLiveData<>();
     public MutableLiveData<String> updateTimerLD = new MutableLiveData<>();
@@ -24,7 +24,6 @@ public class TimerViewModel extends AndroidViewModel {
 
     public TimerViewModel(@NonNull Application application){
         super(application);
-        service = RetrofitClient.getClient(application).create(ServiceApi.class);
     }
 
     public void insertTimer(String userNick, String time){

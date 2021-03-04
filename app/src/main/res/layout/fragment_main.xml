@@ -31,7 +31,6 @@
                     android:text="공부 시간 관리"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
-
             </FrameLayout>
         </androidx.appcompat.widget.Toolbar>
         <FrameLayout

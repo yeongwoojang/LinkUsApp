@@ -36,7 +36,6 @@ public class MyStudyGroupActivity extends AppCompatActivity {
         Intent intent = getIntent();
         nickname = intent.getExtras().get("nickname").toString();
 
-
         groupRecyclerView = (RecyclerView) findViewById(R.id.my_study_group_rv);
         back = (ImageButton) findViewById(R.id.back_btn);
         emptyStudyGroup = (TextView) findViewById(R.id.empty_study_group);

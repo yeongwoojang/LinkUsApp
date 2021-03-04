@@ -20,9 +20,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BoardViewModel extends AndroidViewModel {
-    ServiceApi service;
-    private SharedPreference prefs;
+public class BoardViewModel extends BaseViewModel {
+//    ServiceApi service;
+//    private SharedPreference prefs;
 
     public MutableLiveData<BoardInfo> boardRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardInfo> boardPartRsLD = new MutableLiveData<BoardInfo>();
@@ -41,8 +41,8 @@ public class BoardViewModel extends AndroidViewModel {
 
     public BoardViewModel(@NonNull Application application) {
         super(application);
-        service = RetrofitClient.getClient(application).create(ServiceApi.class);
-        prefs = new SharedPreference(application);
+//        service = RetrofitClient.getClient(application).create(ServiceApi.class);
+//        prefs = new SharedPreference(application);
     }
 
     public void getAllBoard(){
@@ -188,9 +188,5 @@ public class BoardViewModel extends AndroidViewModel {
 
             }
         });
-    }
-
-    public User getUserInfoFromShared(){
-        return prefs.getUserInfo();
     }
 }
