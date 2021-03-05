@@ -30,7 +30,7 @@
             android:name=".view.dialog.PopupDialog"
             android:theme="@style/Theme.AppCompat.Dialog.MinWidth" />
         <activity android:name=".view.activity.TimerDialog" />
-        <activity android:name=".view.activity.EnterMainGroupActivity" />
+        <activity android:name=".view.activity.EnterMainGroupActivity" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".view.activity.ManageJoinReqActivity" />
         <activity android:name=".view.activity.InviteManageActivity" />
         <activity android:name=".view.activity.MyStudyGroupActivity" />

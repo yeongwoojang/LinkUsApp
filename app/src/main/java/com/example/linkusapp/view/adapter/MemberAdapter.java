@@ -21,8 +21,10 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
     private Context mContext;
     private List<User> items;
     private String myNickname;
-    public MemberAdapter(Context context, List<User> items, String myNickname) {
+    private String gName;
+    public MemberAdapter(Context context, String gName,List<User> items, String myNickname) {
         this.mContext = context;
+        this.gName = gName;
         this.items = items;
         this.myNickname = myNickname;
     }
@@ -52,6 +54,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
     public void onBindViewHolder(@NonNull MemberViewHolder holder, int position) {
         User user = items.get(position);
         holder.txtUserName.setText(user.getUserNickname());
+        holder.btnSendMsg.setTag(position);
         holder.btnSendMsg.setOnClickListener(this);
     }
 
@@ -62,6 +65,10 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
 
     @Override
     public void onClick(View v) {
-        mContext.startActivity(new Intent(mContext, ChatActivity.class));
+        Intent intent = new Intent(mContext, ChatActivity.class);
+        intent.putExtra("gName",gName);
+        intent.putExtra("myNickName",myNickname);
+        intent.putExtra("yourNickName",items.get((int)v.getTag()).getUserNickname());
+        mContext.startActivity(intent);
     }
 }

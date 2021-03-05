@@ -84,18 +84,17 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         commentRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
 
         String myNickname = viewModel.getUserInfoFromShared().getUserNickname();
-        MemberAdapter memberAdapter = new MemberAdapter(this,memberList,myNickname);
+        MemberAdapter memberAdapter = new MemberAdapter(this,gName,memberList,myNickname);
         memberRv.setAdapter(memberAdapter);
         memberRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
 
         viewModel.getComment(gName);
         viewModel.getCommentRsLD.observe(this,commentInfo -> {
             if(commentInfo.getCode()==200){
-                Snackbar.make(findViewById(R.id.enter_main_group_activity),"댓글을 불러왔습니다.",Snackbar.LENGTH_SHORT).show();
                 commentList = commentInfo.getJsonArray();
                 commentAdapter.updateItem(commentList);
             }else if(commentInfo.getCode()==204){
-                Snackbar.make(findViewById(R.id.enter_main_group_activity),"댓글이 없습니다.",Snackbar.LENGTH_SHORT).show();
+
             }else {
                 Snackbar.make(findViewById(R.id.enter_main_group_activity),"오류",Snackbar.LENGTH_SHORT).show();
             }

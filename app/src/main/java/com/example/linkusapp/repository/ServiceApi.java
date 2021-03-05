@@ -211,4 +211,13 @@ public interface ServiceApi {
     //오늘 공부한 시간 조회
     @GET("/android/getTodayRecord")
     Call<TimerInfo> getTodayRecord(@Query("userNick") String userNick);
+
+    @FormUrlEncoded
+    @POST("/android/sendMessage")
+    Call<String> sendMessage(
+            @Field("gName") String gName,
+            @Field("myNickName")String myNickName,
+            @Field("yourNickName")String yourNickName,
+            @Field("msg") String msg,
+            @Field("msgTime")String msgTime);
 }
