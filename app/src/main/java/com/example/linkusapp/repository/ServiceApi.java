@@ -2,6 +2,7 @@ package com.example.linkusapp.repository;
 
 import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
+import com.example.linkusapp.model.vo.ChatInfo;
 import com.example.linkusapp.model.vo.CommentInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.LeaderGroupInfo;
@@ -220,4 +221,7 @@ public interface ServiceApi {
             @Field("yourNickName")String yourNickName,
             @Field("msg") String msg,
             @Field("msgTime")String msgTime);
+
+    @GET("/android/getMessageList")
+    Call<ChatInfo>getMessageList(@Query("gName") String gName, @Query("myNickName") String myNickName, @Query("yourNickName") String yourNickName);
 }

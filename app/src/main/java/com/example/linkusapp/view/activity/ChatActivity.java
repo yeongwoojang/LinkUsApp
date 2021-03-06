@@ -69,12 +69,13 @@ public class ChatActivity extends AppCompatActivity {
         yourNickName = intent.getStringExtra("yourNickName");
         viewModel = new ViewModelProvider(this).get(ChatViewModel.class);
 
+        viewModel.getMessageList(gName,myNickName,yourNickName);
         chatAdapter = new ChatAdapter(this,items,myNickName);
         chatRv.setAdapter(chatAdapter);
         chatRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
 
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         //액티비티 시작하자마자 키보드 올리기
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(edtMsg,0);
         edtMsg.postDelayed(new Runnable() {
             @Override
@@ -84,15 +85,18 @@ public class ChatActivity extends AppCompatActivity {
             }
         },100);
 
-        socket.connect();
+
+        socket.connect(); //소켓연결
+        //소켓에 이벤트 설정
         socket.on(Socket.EVENT_CONNECT,onConnect);
-        socket.on("connectUser",onNewUser);
+//        socket.on("connectUser",onNewUser);
         socket.on("sendMessage",onNewMessage);
 
         JSONObject userObj = new JSONObject();
         try{
+            userObj.put("gName",gName);
             userObj.put("myNickName",myNickName);
-            userObj.put("roomName","1");
+            userObj.put("yourNickName",yourNickName);
             socket.emit("connectUser",userObj);
         }catch (JSONException e){
             e.printStackTrace();
@@ -100,6 +104,10 @@ public class ChatActivity extends AppCompatActivity {
 //        viewModel.sendMsgResLD.observe(this, s -> {
 //            Snackbar.make(findViewById(R.id.chat_layout),"메시지를 전송했습니다.",Snackbar.LENGTH_SHORT).show();
 //        });
+        viewModel.messageLD.observe(this,chatInfo -> {
+            items = chatInfo.getJsonArray();
+            chatAdapter.updateItem(items);
+        });
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
