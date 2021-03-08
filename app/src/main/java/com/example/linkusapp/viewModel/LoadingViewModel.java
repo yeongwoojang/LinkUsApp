@@ -19,18 +19,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoadingViewModel extends AndroidViewModel {
+public class LoadingViewModel extends BaseViewModel {
 
     public MutableLiveData<String> resultCode = new MutableLiveData<String>();
     public MutableLiveData<String> userIdLiveData = new MutableLiveData<>();
 
-    private ServiceApi service;
-    private SharedPreference prefs;
+//    private ServiceApi service;
+//    private SharedPreference prefs;
 
     public LoadingViewModel(@NonNull Application application){
         super(application);
-        service  = RetrofitClient.getClient(application).create(ServiceApi.class);
-        prefs = new SharedPreference(application);
+//        service  = RetrofitClient.getClient(application).create(ServiceApi.class);
+//        prefs = new SharedPreference(application);
     }
     public void chkScdUserInfo(String userId,String loginMethod){
         service.chkScdUserInfo(userId, loginMethod).enqueue(new Callback<String>() {

@@ -22,9 +22,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyPageViewModel extends AndroidViewModel {
+public class MyPageViewModel extends BaseViewModel {
 
-    private ServiceApi serviceApi;
+//    private ServiceApi serviceApi;
     public MutableLiveData<String> addAddressRsLD = new MutableLiveData<String>();
     public MutableLiveData<String> updateAddressRsLD = new MutableLiveData<String>();
     public MutableLiveData<AddressInfo> userAddressRsLD = new MutableLiveData<AddressInfo>();
@@ -32,11 +32,10 @@ public class MyPageViewModel extends AndroidViewModel {
 
     public MyPageViewModel(@NonNull Application application) {
         super(application);
-        serviceApi = RetrofitClient.getClient(application).create(ServiceApi.class);
     }
 
     public void addAddress(String userNickname,String address){
-        serviceApi.addAddress(userNickname,address).enqueue(new Callback<String>() {
+        service.addAddress(userNickname,address).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String code = response.body();
@@ -51,7 +50,7 @@ public class MyPageViewModel extends AndroidViewModel {
     }
 
     public void updateAddress(String userNickname, String address){
-        serviceApi.updateAddress(userNickname,address).enqueue(new Callback<String>() {
+        service.updateAddress(userNickname,address).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String code =response.body();
@@ -65,7 +64,7 @@ public class MyPageViewModel extends AndroidViewModel {
     }
 
     public void userAddress(String userNickname){
-        serviceApi.userAddress(userNickname).enqueue(new Callback<AddressInfo>() {
+        service.userAddress(userNickname).enqueue(new Callback<AddressInfo>() {
             @Override
             public void onResponse(Call<AddressInfo> call, Response<AddressInfo> response) {
                 AddressInfo result = response.body();
@@ -80,7 +79,7 @@ public class MyPageViewModel extends AndroidViewModel {
     }
 
     public void removeAddress(String userAddress){
-        serviceApi.removeAddress(userAddress).enqueue(new Callback<String>() {
+        service.removeAddress(userAddress).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = response.body();

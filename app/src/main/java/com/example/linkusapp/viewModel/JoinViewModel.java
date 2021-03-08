@@ -22,10 +22,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class JoinViewModel extends AndroidViewModel {
+public class JoinViewModel extends BaseViewModel {
 
 
-    private ServiceApi service;
+//    private ServiceApi service;
 
     public MutableLiveData<String> joinRsLD = new MutableLiveData<String>();
     public MutableLiveData<String> idChkResLD = new MutableLiveData<String>();
@@ -36,7 +36,7 @@ public class JoinViewModel extends AndroidViewModel {
 
     public JoinViewModel(@NonNull Application application){
         super(application);
-        service = RetrofitClient.getClient(application.getApplicationContext()).create(ServiceApi.class);
+//        service = RetrofitClient.getClient(application.getApplicationContext()).create(ServiceApi.class);
 
     }
 

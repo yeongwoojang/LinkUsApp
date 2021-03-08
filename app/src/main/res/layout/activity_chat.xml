@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/chat_layout"
+    tools:context=".view.activity.ChatActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chat_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:background="@color/red300"
+        android:weightSum="10"
+        >
+        <EditText
+            android:id="@+id/edt_msg"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="9"
+            android:paddingLeft="5dp"
+            android:layout_gravity="center"
+            android:background="@drawable/form_edt_line"
+            />
+        <Button
+            android:id="@+id/btn_send_msg"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="전송"
+            android:textColor="@color/gray500"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:background="@color/yellow400"
+           />
+    </LinearLayout>
+</LinearLayout>

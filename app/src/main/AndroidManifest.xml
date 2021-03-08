@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".kakao.App"
@@ -24,9 +24,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.TimerDialog"/>
-        <activity android:name=".view.activity.EnterMainGroupActivity" />
-        <activity android:name=".view.activity.ManageJoinReqActivity"></activity>
+        <activity android:name=".view.activity.ChatActivity" android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".view.dialog.PopupDialog"
+            android:theme="@style/Theme.AppCompat.Dialog.MinWidth" />
+        <activity android:name=".view.activity.TimerDialog" />
+        <activity android:name=".view.activity.EnterMainGroupActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".view.activity.ManageJoinReqActivity" />
         <activity android:name=".view.activity.InviteManageActivity" />
         <activity android:name=".view.activity.MyStudyGroupActivity" />
         <activity android:name=".view.activity.UpdateUserActivity" />
@@ -96,10 +101,12 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
-        <service android:name=".util.TimerService"
-                android:enabled="true"
-            android:exported="true"
-            ></service>
+        <service
+            android:name=".util.TimerService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver android:name=".util.TimerReceiver" />
     </application>
 
 </manifest>
