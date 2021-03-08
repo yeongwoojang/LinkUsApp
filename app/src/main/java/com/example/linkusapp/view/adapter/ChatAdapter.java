@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ItemMyChatRoomBinding;
+import com.example.linkusapp.databinding.ItemYourChatRoomBinding;
 import com.example.linkusapp.model.vo.Chat;
 
 import java.util.List;
@@ -19,39 +21,41 @@ import java.util.List;
 public class ChatAdapter extends RecyclerView.Adapter {
 
     private List<Chat> items;
-    private Context mContext;
     private String myNickName;
-    public ChatAdapter(Context context, List<Chat> items,String myNickName) {
-        Log.d("adapter", "ChatAdapter: ");
-        this.mContext = context;
+
+    public ChatAdapter(List<Chat> items, String myNickName) {
         this.items = items;
         this.myNickName = myNickName;
     }
 
-    public void updateItem(List<Chat> items){
-        Log.d("updateItem", "updateItem: ");
+    public void updateItem(List<Chat> items) {
         this.items = items;
         notifyDataSetChanged();
     }
 
-    public class MyChatViewHolder extends RecyclerView.ViewHolder{
-        private TextView txtMsg, txtTime;
-        public MyChatViewHolder(@NonNull View itemView) {
-            super(itemView);
-            txtMsg = itemView.findViewById(R.id.txt_msg);
-            txtTime = itemView.findViewById(R.id.txt_time);
+    public class MyChatViewHolder extends RecyclerView.ViewHolder {
+        private ItemMyChatRoomBinding binding;
+        public MyChatViewHolder(@NonNull ItemMyChatRoomBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
+
+        void bind(Chat chat) {
+            binding.setChat(chat);
+        }
+
+
     }
 
-    public class YourChatViewHolder extends RecyclerView.ViewHolder{
-        private TextView txtYourName,txtYourMsg, txtYourTime;
-        private ImageView youtProfile;
-        public YourChatViewHolder(@NonNull View itemView) {
-            super(itemView);
-            txtYourName = itemView.findViewById(R.id.txt_your_name);
-            txtYourMsg = itemView.findViewById(R.id.txt_your_msg);
-            txtYourTime = itemView.findViewById(R.id.txt_your_time);
-            youtProfile = itemView.findViewById(R.id.img_profile);
+    public class YourChatViewHolder extends RecyclerView.ViewHolder {
+        private ItemYourChatRoomBinding binding;
+        public YourChatViewHolder(ItemYourChatRoomBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        void bind(Chat chat) {
+            binding.setChat(chat);
         }
     }
 
@@ -59,31 +63,30 @@ public class ChatAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view;
-        if(viewType==1){
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_chat_room,parent,false);
-            return new MyChatViewHolder(view);
-        }else{
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_your_chat_room,parent,false);
-            return new YourChatViewHolder(view);
+        if (viewType == 1) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            ItemMyChatRoomBinding binding = ItemMyChatRoomBinding.inflate(inflater, parent, false);
+            return new MyChatViewHolder(binding);
+        } else {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            ItemYourChatRoomBinding binding = ItemYourChatRoomBinding.inflate(inflater, parent, false);
+            return new YourChatViewHolder(binding);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Log.i("onBindViewHolder","onBindViewHolder");
-            if(holder instanceof MyChatViewHolder){
-                Chat chat = items.get(position);
-                ((MyChatViewHolder)(holder)).txtMsg.setText(chat.getMsg());
-                ((MyChatViewHolder)(holder)).txtTime.setText(chat.getMsgTime());
-            }else{
-                Chat chat = items.get(position);
-                ((YourChatViewHolder)(holder)).youtProfile.setImageResource(R.mipmap.app_icon);
-                ((YourChatViewHolder)(holder)).txtYourName.setText(chat.getMsgFrom());
-                ((YourChatViewHolder)(holder)).txtYourMsg.setText(chat.getMsg());
-                ((YourChatViewHolder)(holder)).txtYourTime.setText(chat.getMsgTime());
-            }
+        if (holder instanceof MyChatViewHolder) {
+            Chat chat = items.get(position);
+            ((MyChatViewHolder) (holder)).binding.setChat(chat);
+            ((MyChatViewHolder) (holder)).binding.executePendingBindings();
+        } else {
+            Chat chat = items.get(position);
+            ((YourChatViewHolder) (holder)).binding.setChat(chat);
+            ((YourChatViewHolder) (holder)).binding.executePendingBindings();
+        }
     }
+
 
     @Override
     public int getItemCount() {
@@ -92,10 +95,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        Log.d("Asdfsdafasf", items.get(position).getMsgFrom()+" , "+myNickName);
-        if(items.get(position).getMsgFrom().equals(myNickName)){
+        if (items.get(position).getMsgFrom().equals(myNickName)) {
             return 1;
-        }else{
+        } else {
             return 2;
         }
     }

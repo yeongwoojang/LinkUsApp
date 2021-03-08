@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ActivityChatBinding;
 import com.example.linkusapp.model.vo.Chat;
 import com.example.linkusapp.view.adapter.ChatAdapter;
 import com.example.linkusapp.viewModel.ChatViewModel;
@@ -36,9 +37,7 @@ import io.socket.emitter.Emitter;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private EditText edtMsg;
-    private Button sendBtn;
-    private RecyclerView chatRv;
+    private ActivityChatBinding binding;
     private ChatAdapter chatAdapter;
     private ChatViewModel viewModel;
     private String gName;
@@ -46,6 +45,7 @@ public class ChatActivity extends AppCompatActivity {
     private String yourNickName;
     private Socket socket;
     private List<Chat> items = new ArrayList<>();
+
     {
         try {
             socket = IO.socket("http://ec2-15-164-129-208.ap-northeast-2.compute.amazonaws.com:3000");
@@ -57,11 +57,9 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
-
-        edtMsg = (EditText)findViewById(R.id.edt_msg);
-        chatRv = (RecyclerView)findViewById(R.id.chat_recyclerview);
-        sendBtn = (Button)findViewById(R.id.btn_send_msg);
+        binding = ActivityChatBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         Intent intent = getIntent();
         gName = intent.getStringExtra("gName");
@@ -69,47 +67,53 @@ public class ChatActivity extends AppCompatActivity {
         yourNickName = intent.getStringExtra("yourNickName");
         viewModel = new ViewModelProvider(this).get(ChatViewModel.class);
 
-        viewModel.getMessageList(gName,myNickName,yourNickName);
-        chatAdapter = new ChatAdapter(this,items,myNickName);
-        chatRv.setAdapter(chatAdapter);
-        chatRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
+        viewModel.getMessageList(gName, myNickName, yourNickName);
+        chatAdapter = new ChatAdapter(items, myNickName);
+        binding.chatRecyclerview.setAdapter(chatAdapter);
+        binding.chatRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
 
         //액티비티 시작하자마자 키보드 올리기
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(edtMsg,0);
-        edtMsg.postDelayed(new Runnable() {
+        imm.showSoftInput(binding.edtMsg, 0);
+        binding.edtMsg.postDelayed(new Runnable() {
             @Override
             public void run() {
-                edtMsg.requestFocus();
-                imm.showSoftInput(edtMsg,0);
+                binding.edtMsg.requestFocus();
+                imm.showSoftInput(binding.edtMsg, 0);
             }
-        },100);
+        }, 100);
 
 
         socket.connect(); //소켓연결
         //소켓에 이벤트 설정
-        socket.on(Socket.EVENT_CONNECT,onConnect);
-//        socket.on("connectUser",onNewUser);
-        socket.on("sendMessage",onNewMessage);
+        socket.on(Socket.EVENT_CONNECT, onConnect);
+        socket.on("sendMessage", onNewMessage);
+
 
         JSONObject userObj = new JSONObject();
-        try{
-            userObj.put("gName",gName);
-            userObj.put("myNickName",myNickName);
-            userObj.put("yourNickName",yourNickName);
-            socket.emit("connectUser",userObj);
-        }catch (JSONException e){
+        try {
+            userObj.put("gName", gName);
+            userObj.put("myNickName", myNickName);
+            userObj.put("yourNickName", yourNickName);
+            socket.emit("connectUser", userObj); //채팅방 들어가자마자 room에 유저 등록 -> room에 2명 이상이어야 통신 가능하기 때문
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-//        viewModel.sendMsgResLD.observe(this, s -> {
-//            Snackbar.make(findViewById(R.id.chat_layout),"메시지를 전송했습니다.",Snackbar.LENGTH_SHORT).show();
-//        });
-        viewModel.messageLD.observe(this,chatInfo -> {
+
+        //채팅 내용을 observe하여 recyclerview 업데이트
+        viewModel.messageLD.observe(this, chatInfo -> {
             items = chatInfo.getJsonArray();
             chatAdapter.updateItem(items);
+            binding.chatRecyclerview.post(new Runnable() {
+                @Override
+                public void run() {
+                    binding.chatRecyclerview.scrollToPosition(chatAdapter.getItemCount()-1);
+                }
+            });
         });
 
-        sendBtn.setOnClickListener(new View.OnClickListener() {
+        //메시지 전송 버튼 클릭 이벤트
+        binding.btnSendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMessage();
@@ -117,63 +121,43 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    private void sendMessage(){
+    //메시지를 보냈을 때 실행될 내용
+    private void sendMessage() {
         long now = System.currentTimeMillis();
         Date date = new Date(now);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         String curTime = format.format(date);
 
-        String msg = edtMsg.getText().toString().trim();
-        if(TextUtils.isEmpty(msg)){
+        String msg = binding.edtMsg.getText().toString().trim();
+        if (TextUtils.isEmpty(msg)) {
             return;
         }
-        edtMsg.setText("");
+        binding.edtMsg.setText("");
         JSONObject chatObj = new JSONObject();
         try {
-            chatObj.put("gName",gName);
-            chatObj.put("myNickName",myNickName);
-            chatObj.put("yourNickName",yourNickName);
-            chatObj.put("msg",msg);
-            chatObj.put("msgTime",curTime);
-            chatObj.put("roomName","1");
+            chatObj.put("gName", gName);
+            chatObj.put("myNickName", myNickName);
+            chatObj.put("yourNickName", yourNickName);
+            chatObj.put("msg", msg);
+            chatObj.put("msgTime", curTime);
+            chatObj.put("roomName", "1");
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        viewModel.sendMessage(gName,myNickName,yourNickName,msg,curTime);
-        socket.emit("sendMessage",chatObj);
+        socket.emit("sendMessage", chatObj); //서버에 메시지에대한 정보를 전송
     }
 
+    //소켓에 연결되었을 때의 이벤트
     private Emitter.Listener onConnect = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            Log.i("Socket","Connect");
+            Log.i("Socket", "Connect");
         }
     };
 
-    private Emitter.Listener onNewUser = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    int length = args.length;
-
-                    if(length==0){
-                        return;
-                    }
-                    String userName = args[0].toString();
-                    try{
-                        JSONObject obj = new JSONObject(userName);
-                        userName = obj.getString("username");
-                    }catch (JSONException e){
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-    };
+    //소켓에 메세지를 보냈을 때 실행되는 이벤트
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
@@ -187,17 +171,17 @@ public class ChatActivity extends AppCompatActivity {
                     String myNickName;
                     String yourNickName;
                     String msgTime;
-                    try{
-                        gName = chatobj.getString("gName");
+                    try {
+//                        gName = chatobj.getString("gName");
                         msg = chatobj.getString("msg");
                         myNickName = chatobj.getString("myNickName");
                         yourNickName = chatobj.getString("yourNickName");
                         msgTime = chatobj.getString("msgTime");
 
-                        Chat chat = new Chat(msg,msgTime,yourNickName,myNickName);
+                        Chat chat = new Chat(msg, msgTime, yourNickName, myNickName);
                         items.add(chat);
-                        chatAdapter.updateItem(items);
-                    }catch (Exception e){
+                        chatAdapter.updateItem(items); //리사이 클러뷰를 새로운 채팅내용으로 업데이트
+                    } catch (Exception e) {
                         return;
                     }
                 }
