@@ -1,35 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:bind="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="viewModel"
             type="com.example.linkusapp.viewModel.ChatViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/chat_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         tools:context=".view.activity.ChatActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chat_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/message_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+             />
 
         <LinearLayout
+            android:id="@+id/message_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/red300"
             android:orientation="horizontal"
             android:padding="5dp"
-            android:weightSum="10">
+            android:weightSum="10"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <EditText
                 android:id="@+id/edt_msg"
@@ -44,11 +49,12 @@
                 android:id="@+id/btn_send_msg"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@color/yellow400"
                 android:gravity="center"
                 android:text="전송"
                 android:textColor="@color/gray500" />
         </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

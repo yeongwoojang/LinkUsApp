@@ -105,7 +105,7 @@ public class TimerService extends Service {
     public void registAlarm(Intent serviceIntent){
         Intent intent = new Intent(getApplicationContext(),TimerReceiver.class);
         intent.putExtra("intent",serviceIntent);
-        calendar.set(Calendar.HOUR_OF_DAY,23);
+        calendar.set(Calendar.HOUR_OF_DAY,24);
         calendar.set(Calendar.MINUTE,0);
         calendar.set(Calendar.SECOND,0);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);

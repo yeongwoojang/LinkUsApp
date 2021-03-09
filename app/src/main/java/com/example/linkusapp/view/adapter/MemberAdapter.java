@@ -1,5 +1,6 @@
 package com.example.linkusapp.view.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -70,5 +71,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
         intent.putExtra("myNickName",myNickname);
         intent.putExtra("yourNickName",items.get((int)v.getTag()).getUserNickname());
         mContext.startActivity(intent);
+        Activity activity = (Activity)mContext;
+        activity.overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 }
