@@ -101,4 +101,7 @@ dependencies {
 
     //캘린더
     implementation 'com.github.prolificinteractive:material-calendarview:1.4.3'
+
+    /*엘범 권한*/
+    implementation "gun0912.ted:tedpermission:2.1.0"
 }
