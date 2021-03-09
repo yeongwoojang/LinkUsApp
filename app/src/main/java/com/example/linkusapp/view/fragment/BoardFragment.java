@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -53,6 +54,7 @@ public class BoardFragment extends Fragment{
     private BoardViewModel viewModel;
     private Spinner spinner;
     private TextView emptyView;
+    private int selectedPosition = -1;
 
     private List<Board> boardList = new ArrayList<>();
     private String gpart ="전체";
@@ -90,6 +92,7 @@ public class BoardFragment extends Fragment{
         partRecyclerView.setAdapter(partAdapter);
 
 
+
         boardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
         BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity(),viewModel,1);
         boardRecyclerView.setAdapter(boardAdapter);
@@ -112,9 +115,9 @@ public class BoardFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 viewModel.getRefreshBoard();
+                boardRecyclerView.smoothScrollToPosition(0);
                 viewModel.boardRefreshRsLD.observe(getViewLifecycleOwner(), boardInfo -> {
                     if(boardInfo.getCode()==200){
-                        Toast.makeText(getApplicationContext(),"페이지를 새로고침 하였습니다.",Toast.LENGTH_SHORT).show();
                         boardAdapter.updateItem(boardInfo.getJsonArray());
                     }else if(boardInfo.getCode()==204){
                         Snackbar.make(view, "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();

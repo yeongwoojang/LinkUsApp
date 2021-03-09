@@ -41,6 +41,16 @@
                     android:textColor="@color/white"
                     android:layout_marginLeft="10dp"
                     android:fontFamily="@font/nanum_square_ac_b" />
+
+                <TextView
+                    android:id="@+id/g_join_method"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="승인"
+                    android:background="@drawable/item_board_text_background1"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/nanum_square_ac_b" />
             </LinearLayout>
 
             <TextView
@@ -57,8 +67,8 @@
                 android:text="그룹명"
                 android:textSize="20dp"
                 android:layout_marginBottom="5dp"
-                android:textColor="@color/blue400"
-                android:fontFamily="@font/nanum_square_ac_b" />
+                android:textColor="@color/black"
+                android:fontFamily="@font/nanum_square_ac_b"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,6 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="그룹 목표"
+                    android:textColor="@color/white"
                     android:background="@drawable/item_board_text_background2"
                     android:fontFamily="@font/nanum_square_ac_b" />
 
@@ -77,30 +88,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="전교 1등"
-                    android:textColor="@color/red300"
                     android:fontFamily="@font/nanum_square_ac_b"
                     android:layout_marginLeft="10dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="가입 방식"
-                    android:background="@drawable/item_board_text_background2"
-                    android:fontFamily="@font/nanum_square_ac_b" />
-
-                <TextView
-                    android:id="@+id/g_join_method"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="승인"
-                    android:layout_marginLeft="10dp"
-                    android:fontFamily="@font/nanum_square_ac_b"/>
             </LinearLayout>
         </LinearLayout>
 </androidx.cardview.widget.CardView>
