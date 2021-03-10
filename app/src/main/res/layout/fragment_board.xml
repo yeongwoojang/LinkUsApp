@@ -15,8 +15,8 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/transparent">
+            android:layout_height="50dp"
+            android:background="@color/red500">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -27,17 +27,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/nanum_barun_gothic"
+                    android:fontFamily="@font/nanum_square_ac_b"
                     android:text="스터디 그룹"
-                    android:textColor="@color/black"
-                    android:textSize="16dp" />
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
 
                 <ImageButton
                     android:id="@+id/refresh_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:layout_marginRight="50dp"
+                    android:layout_marginRight="55dp"
                     android:background="@color/transparent"
                     android:src="@drawable/ic_baseline_refresh_24" />
 
@@ -65,12 +65,11 @@
             android:dropDownVerticalOffset="55dp"
             android:entries="@array/address_array"
             android:overlapAnchor="false"
-            android:spinnerMode="dropdown" />
+            android:textAlignment="center"
+            android:paddingLeft="45dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
             android:padding="5dp"
             >
             <FrameLayout
@@ -82,7 +81,7 @@
                 <EditText
                     android:id="@+id/search_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/edittext_rounded_corner_rectangle"
                     android:fontFamily="@font/nanum_barun_gothic"
                     android:hint="검색할 내용을 입력하세요."
@@ -105,12 +104,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/board_recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
                 android:id="@+id/empty_group"
