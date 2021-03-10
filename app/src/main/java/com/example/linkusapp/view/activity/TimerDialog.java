@@ -52,9 +52,10 @@ public class TimerDialog extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityTimerDialogBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(view);
         //타이틀 바 없애는 것
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
 
         String userNick = getIntent().getStringExtra("userNick");
         viewModel = new ViewModelProvider(this).get(TimerViewModel.class);
