@@ -23,12 +23,6 @@ import com.google.firebase.FirebaseApp;
 public class GroupMainActivity extends AppCompatActivity {
 
     private ActivityGroupMainBinding binding;
-    //views
-    private ImageButton backBt;
-    private TextView groupNameTxt, memberCntTxt, readerNameTxt, joinMethodTxt, period, groupExplTxt, groupPurposeTxt;
-    private FrameLayout reqJoinLayout;
-    Button requestJoinBt, joinGroupBt;
-
     //viewModel
     CreateGrpViewModel viewModel;
 
@@ -45,18 +39,6 @@ public class GroupMainActivity extends AppCompatActivity {
         //리사이클러뷰에서 선택한 항목의 정보를 받는부분
         Intent intent = getIntent();
         Board board = (Board) intent.getSerializableExtra("board");
-        Log.d("board", "onCreate: " + board);
-        groupNameTxt = (TextView) findViewById(R.id.txt_group_name);
-        memberCntTxt = (TextView) findViewById(R.id.member_count);
-        readerNameTxt = (TextView) findViewById(R.id.reader_name_txt);
-        joinMethodTxt = (TextView) findViewById(R.id.join_method);
-        period = (TextView) findViewById(R.id.period);
-        groupExplTxt = (TextView) findViewById(R.id.txt_group_expl);
-        groupPurposeTxt = (TextView) findViewById(R.id.txt_group_purpose);
-        backBt = (ImageButton) findViewById(R.id.back_btn);
-        requestJoinBt = (Button) findViewById(R.id.request_join_btn);
-        reqJoinLayout = (FrameLayout) findViewById(R.id.req_join_layout);
-        joinGroupBt = (Button) findViewById(R.id.join_group_bt);
 
         binding.txtGroupName.setText(board.getgName());
         binding.memberCount.setText("인원제한 " + board.getgMemberLimit() + "명");
@@ -87,7 +69,6 @@ public class GroupMainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //그룹 가입 방식이 자유형일 경우
                 if (board.getgJoinMethod().equals("자유")) {
-//                    viewModel.getMemberCount(board.getgName());
                     if (memberCount < Integer.parseInt(board.getgMemberLimit())) {
                         User user = viewModel.getUserInfoFromShared();
                         String userId = user.getUserId();

@@ -94,6 +94,7 @@ public class JoinActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!isSendMail){
                     emailCode = gMailSender.getEmailCode();
+                    Log.d("isSendMail", "onClick: "+binding.joinEmail.getText().toString());
                     viewModel.sendMail(gMailSender,binding.joinEmail.getText().toString(),emailCode);
                 }else{
                     Snackbar.make(binding.joinLayout, "이미 인증코드를 전송했습니다.", Snackbar.LENGTH_SHORT).show();
