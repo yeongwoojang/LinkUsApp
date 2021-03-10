@@ -37,7 +37,6 @@
         <activity android:name=".view.activity.TimerDialog" />
         <activity android:name=".view.activity.EnterMainGroupActivity" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".view.activity.ManageJoinReqActivity" />
-        <activity android:name=".view.activity.InviteManageActivity" />
         <activity android:name=".view.activity.MyStudyGroupActivity" />
         <activity android:name=".view.activity.UpdateUserActivity" />
         <activity android:name=".view.activity.SetAddressActivity" />

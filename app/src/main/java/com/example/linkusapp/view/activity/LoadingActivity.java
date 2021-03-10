@@ -6,28 +6,32 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ActivityLoadingBinding;
 import com.example.linkusapp.viewModel.LoadingViewModel;
 
 public class LoadingActivity extends AppCompatActivity {
 
-    LoadingViewModel viewModel;
+    private LoadingViewModel viewModel;
+    private ActivityLoadingBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loading);
-        viewModel = new ViewModelProvider(this).get(LoadingViewModel.class);
+        binding = ActivityLoadingBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
+        viewModel = new ViewModelProvider(this).get(LoadingViewModel.class);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.loading);
-        findViewById(R.id.loading_text).setAnimation(animation);
+        binding.loadingText.setAnimation(animation);
 
         viewModel.getLoginSession();
         String loginMethod = viewModel.getLoginMethod();
-
         viewModel.userIdLiveData.observe(this, userId -> {
             Log.d("userId", "onCreate: " + userId);
             if (!userId.equals(" ")) {
