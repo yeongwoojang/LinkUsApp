@@ -119,7 +119,6 @@ public class HomeActivity extends AppCompatActivity {
         mContext = this;
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-
         goToJoinBtn = (TextView) findViewById(R.id.go_to_join_btn);
         signinbtn = (Button) findViewById(R.id.sign_in_btn);
         facebookLoginBtn = (ImageButton) findViewById(R.id.facebook_login_btn);

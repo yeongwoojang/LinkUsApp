@@ -15,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -40,26 +39,38 @@
                     android:layout_below="@+id/toolbar"
                     android:background="@color/gray300" />
             </RelativeLayout>
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_margin="16dp"
                 >
-
+                <ImageView
+                    android:id="@+id/profile_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/button_background3"
+                    android:src="@drawable/baseline_profile_picture"
+                    />
                 <TextView
                     android:id="@+id/nickname_tv"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_barun_gothic"
                     android:text="닉네임"
                     android:textColor="@color/black"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:layout_toRightOf="@+id/profile_picture"
+                    android:layout_marginLeft="16dp"
+                    />
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_below="@+id/nickname_tv"
+                    android:layout_toRightOf="@+id/profile_picture"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="16dp"
+                    >
                     <TextView
                         android:id="@+id/address_tv"
                         android:layout_width="wrap_content"
@@ -67,7 +78,7 @@
                         android:text="주소"
                         android:fontFamily="@font/nanum_barun_gothic"
                         android:textColor="@color/gray500"
-                        android:textSize="16dp"
+                        android:textSize="20dp"
                         />
                     <TextView
                         android:layout_width="wrap_content"
@@ -75,7 +86,7 @@
                         android:text="#"
                         android:fontFamily="@font/nanum_barun_gothic"
                         android:textColor="@color/gray500"
-                        android:textSize="16dp"/>
+                        android:textSize="20dp"/>
                     <TextView
                         android:id="@+id/method_tv"
                         android:layout_width="wrap_content"
@@ -83,10 +94,9 @@
                         android:text="로그인 방식"
                         android:textColor="@color/gray500"
                         android:fontFamily="@font/nanum_barun_gothic"
-                        android:textSize="16dp"/>
-
+                        android:textSize="20dp"/>
                 </LinearLayout>
-            </LinearLayout>
+            </RelativeLayout>
             <Button
                 android:id="@+id/update_info"
                 android:layout_width="match_parent"

@@ -138,4 +138,5 @@
     <color name="retire_background">#3DDC84</color>
     <color name="shared_background">#3DDC84</color>
 
+    <color name="mcv_selectionColor">#97FFFFFF</color>
 </resources>

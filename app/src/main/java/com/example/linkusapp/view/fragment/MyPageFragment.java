@@ -40,7 +40,6 @@ public class MyPageFragment extends Fragment {
     private String loginMethod,userNickname;
     private GoogleSignInClient mSignInClient;
     private String userId;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

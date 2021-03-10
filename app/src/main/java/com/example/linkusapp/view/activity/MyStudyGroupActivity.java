@@ -17,8 +17,6 @@ import com.example.linkusapp.view.adapter.BoardAdapter;
 import com.example.linkusapp.viewModel.BoardViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +35,6 @@ public class MyStudyGroupActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         nickname = intent.getExtras().get("nickname").toString();
-
 
         groupRecyclerView = (RecyclerView) findViewById(R.id.my_study_group_rv);
         back = (ImageButton) findViewById(R.id.back_btn);

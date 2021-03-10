@@ -1,10 +1,15 @@
 package com.example.linkusapp.view.activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +21,8 @@ import com.example.linkusapp.R;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 
 public class UpdateUserActivity extends AppCompatActivity {
@@ -25,6 +32,10 @@ public class UpdateUserActivity extends AppCompatActivity {
     private ImageButton exit;
     private LoginViewModel viewModel;
     private String checkNickname,checkPW,loginMethod;
+    private ImageButton setProfile;
+    private static final int REQUEST_CODE = 1;
+    private Uri uri;
+    private Uri profileUri;
 
     boolean isCertify = false;
 
@@ -42,6 +53,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         nicknameChk = (Button) findViewById(R.id.nickname_check);
         exit = (ImageButton) findViewById(R.id.back_btn);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        setProfile = (ImageButton) findViewById(R.id.set_profile_picture);
 
         /*유저 정보*/
         checkNickname =viewModel.getUserInfoFromShared().getUserNickname();
@@ -58,6 +70,22 @@ public class UpdateUserActivity extends AppCompatActivity {
             password.setEnabled(false);
             password2.setEnabled(false);
         }
+        /*프로필 가져오기*/
+        viewModel.getProfile(checkNickname);
+        viewModel.getProfileLiveData.observe(this,profile -> {
+            if(profile.getCode()==200){
+                profileUri = profile.getProfileUri();
+                setProfile.setImageURI(profileUri);
+            }
+        });
+        setProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                startActivityForResult(intent,REQUEST_CODE);
+            }
+        });
 
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,5 +153,13 @@ public class UpdateUserActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.update_user_layout), "회원 정보 수정 오류", Snackbar.LENGTH_SHORT).show();
             }
         } );
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE){
+            uri = data.getData();
+            viewModel.insertProfile(checkNickname,uri+"");
+        }
     }
 }

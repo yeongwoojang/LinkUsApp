@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.BoardInfo;
+import com.example.linkusapp.model.vo.TimerInfo;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.model.vo.UsersInfo;
 import com.example.linkusapp.repository.RetrofitClient;
@@ -19,9 +20,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BoardViewModel extends AndroidViewModel {
-    ServiceApi service;
-    private SharedPreference prefs;
+public class BoardViewModel extends BaseViewModel {
+//    ServiceApi service;
+//    private SharedPreference prefs;
 
     public MutableLiveData<BoardInfo> boardRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardInfo> boardPartRsLD = new MutableLiveData<BoardInfo>();
@@ -35,12 +36,13 @@ public class BoardViewModel extends AndroidViewModel {
     public MutableLiveData<String> updateSelectedLD = new MutableLiveData<>();
     public MutableLiveData<BoardInfo> selectedGroupLD = new MutableLiveData<>();
     public MutableLiveData<UsersInfo> groupMembersLD = new MutableLiveData<>();
+    public MutableLiveData<TimerInfo> entireRecordLD = new MutableLiveData<>();
 
 
     public BoardViewModel(@NonNull Application application) {
         super(application);
-        service = RetrofitClient.getClient(application).create(ServiceApi.class);
-        prefs = new SharedPreference(application);
+//        service = RetrofitClient.getClient(application).create(ServiceApi.class);
+//        prefs = new SharedPreference(application);
     }
 
     public void getAllBoard(){
@@ -174,7 +176,17 @@ public class BoardViewModel extends AndroidViewModel {
         });
     }
 
-    public User getUserInfoFromShared(){
-        return prefs.getUserInfo();
+    public void getEntireRecord(String userNick){
+        service.getEntireRecord(userNick).enqueue(new Callback<TimerInfo>() {
+            @Override
+            public void onResponse(Call<TimerInfo> call, Response<TimerInfo> response) {
+                entireRecordLD.postValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<TimerInfo> call, Throwable t) {
+
+            }
+        });
     }
 }

@@ -25,6 +25,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    buildFeatures{
+        viewBinding = true
+        dataBinding = true
+    }
+
 }
 
 dependencies {
@@ -90,7 +95,13 @@ dependencies {
 
     //socket
     //socket-io
-    implementation('io.socket:socket.io-client:1.0.0') {
+    implementation ('io.socket:socket.io-client:1.0.1') {
         exclude group: 'org.json', module: 'json'
     }
+
+    //캘린더
+    implementation 'com.github.prolificinteractive:material-calendarview:1.4.3'
+
+    /*엘범 권한*/
+    implementation "gun0912.ted:tedpermission:2.1.0"
 }

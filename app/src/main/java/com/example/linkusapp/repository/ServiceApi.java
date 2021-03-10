@@ -2,10 +2,13 @@ package com.example.linkusapp.repository;
 
 import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
+import com.example.linkusapp.model.vo.ChatInfo;
 import com.example.linkusapp.model.vo.CommentInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.LeaderGroupInfo;
 import com.example.linkusapp.model.vo.GroupMember;
+import com.example.linkusapp.model.vo.Profile;
+import com.example.linkusapp.model.vo.TimerInfo;
 import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.model.vo.UsersInfo;
 
@@ -54,6 +57,14 @@ public interface ServiceApi {
     @GET("/android/chkScdUserInfo")
     Call<String> chkScdUserInfo(@Query("userId") String userId, @Query("loginMethod") String loginMethod);
 
+    /*유저 프로필*/
+    @FormUrlEncoded
+    @POST("/android/insertProfile")
+    Call<String> insertProfile(@Field("userNickname") String userNickname,@Field("profileUri") String profileUri);
+
+    @GET("/android/getProfile")
+    Call<Profile> getProfile(@Query("userNickname") String userNickname);
+    /*여기까지*/
 
     @FormUrlEncoded
     @POST("/android/userInfo")
@@ -185,7 +196,7 @@ public interface ServiceApi {
     @DELETE("/android/deleteRequest")
     Call<String> deleteRequest(@Query("gName")String gName, @Query("userNick")String userNick);
 
-    //유저의 대표 스터디 그룹을 선택했을 때 UESER테이블의 대표 스터디그룹 컬럼을 업데이트 하는 메소드
+    //유저의 대표 스터디 그룹을 선택했을 때 USER테이블의 대표 스터디그룹 컬럼을 업데이트 하는 메소드
     @PUT("/android/updatesSelected")
     Call<String> updateSelected(@Query("userNick") String userNick,@Query("gName") String gName);
 
@@ -194,4 +205,32 @@ public interface ServiceApi {
     Call<BoardInfo> getSelectedGroup(@Query("userNick") String userNick);
 
 
+    //공부시간 최초기록
+    @FormUrlEncoded
+    @POST("/android/insertTimer")
+    Call<String> insertTimer(@Field("userNick") String userNick, @Field("time") String time);
+
+    //공부시간 업데이트
+    @PUT("/android/updateTimer")
+    Call<String> updateTimer(@Query("userNick") String userNick, @Query("time") String time);
+
+    //사용자의 전체 공부시간 조회
+    @GET("/android/entireRecord")
+    Call<TimerInfo> getEntireRecord(@Query("userNick") String userNick);
+
+    //오늘 공부한 시간 조회
+    @GET("/android/getTodayRecord")
+    Call<TimerInfo> getTodayRecord(@Query("userNick") String userNick);
+
+    @FormUrlEncoded
+    @POST("/android/sendMessage")
+    Call<String> sendMessage(
+            @Field("gName") String gName,
+            @Field("myNickName")String myNickName,
+            @Field("yourNickName")String yourNickName,
+            @Field("msg") String msg,
+            @Field("msgTime")String msgTime);
+
+    @GET("/android/getMessageList")
+    Call<ChatInfo>getMessageList(@Query("gName") String gName, @Query("myNickName") String myNickName, @Query("yourNickName") String yourNickName);
 }

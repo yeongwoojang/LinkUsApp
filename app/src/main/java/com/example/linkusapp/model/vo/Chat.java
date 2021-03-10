@@ -1,47 +1,51 @@
 package com.example.linkusapp.model.vo;
 
+import com.google.gson.annotations.SerializedName;
+
+import kotlin.jvm.Transient;
+
 public class Chat {
-    private String name;
-    private String script;
-    private String profile_image;
-    private String date_time;
 
-    public Chat(String name, String script, String profile_image, String date_time) {
-        this.name = name;
-        this.script = script;
-        this.profile_image = profile_image;
-        this.date_time = date_time;
+    @SerializedName("ROOM_ID")
+    private int roomId;
+
+    @SerializedName("MSG")
+    private String msg;
+
+    @SerializedName("MSG_TIME")
+    private String msgTime;
+
+    @SerializedName("MSG_TO")
+    private String msgTo;
+
+    @SerializedName("MSG_FROM")
+    private String msgFrom;
+
+
+    public Chat(String msg, String msgTime, String msgTo, String msgFrom) {
+        this.msg = msg;
+        this.msgTime = msgTime;
+        this.msgTo = msgTo;
+        this.msgFrom = msgFrom;
     }
 
-    public String getName() {
-        return name;
+    public int getRoomId() {
+        return roomId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getMsg() {
+        return msg;
     }
 
-    public String getScript() {
-        return script;
+    public String getMsgTime() {
+        return msgTime;
     }
 
-    public void setScript(String script) {
-        this.script = script;
+    public String getMsgTo() {
+        return msgTo;
     }
 
-    public String getProfile_image() {
-        return profile_image;
-    }
-
-    public void setProfile_image(String profile_image) {
-        this.profile_image = profile_image;
-    }
-
-    public String getDate_time() {
-        return date_time;
-    }
-
-    public void setDate_time(String date_time) {
-        this.date_time = date_time;
+    public String getMsgFrom() {
+        return msgFrom;
     }
 }
