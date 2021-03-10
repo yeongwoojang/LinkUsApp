@@ -287,6 +287,7 @@ public class HomeActivity extends AppCompatActivity {
                     ((CheckedTextView) view).setChecked(true);
                     isAutoLogin = true;
                 }
+
             }
         });
 

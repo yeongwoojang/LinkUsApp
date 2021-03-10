@@ -10,9 +10,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ActivityMainBinding;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.view.fragment.BoardFragment;
 import com.example.linkusapp.view.fragment.MainFragment;
@@ -32,14 +34,11 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private ActivityMainBinding binding;
 
     //viewModel
     private LoginViewModel viewModel;
     private GoogleSignInClient mSignInClient;
-
-    private Button logOut;
-    private TabLayout tabLayout;
-    private SlidingUpPanelLayout slidingUpPanelLayout;
 
     /*fragment*/
     private FragmentManager fragmentManager = getSupportFragmentManager();
@@ -47,20 +46,20 @@ public class MainActivity extends AppCompatActivity {
     private BoardFragment boardFragment = new BoardFragment();
     private MyPageFragment myPageFragment = new MyPageFragment();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         /*slidingUpPanelLayout*/
 //        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.slidingView);
 //        slidingUpPanelLayout.setTouchEnabled(false);
 
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {

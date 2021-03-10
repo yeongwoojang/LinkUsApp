@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.FragmentMyPageBinding;
 import com.example.linkusapp.util.TimerService;
 import com.example.linkusapp.view.activity.HomeActivity;
 import com.example.linkusapp.view.activity.ManageJoinReqActivity;
@@ -34,9 +35,8 @@ import com.kakao.sdk.user.UserApiClient;
 
 public class MyPageFragment extends Fragment {
 
-    private TextView nickNameTV,addressTV,methodTV;
+    private FragmentMyPageBinding binding;
     private LoginViewModel viewModel;
-    private Button logout,withdraw,shareApp,setAddress,updateInfo,myGroup,manageJoinReqBt;
     private String loginMethod,userNickname;
     private GoogleSignInClient mSignInClient;
     private String userId;
@@ -48,17 +48,9 @@ public class MyPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_page, container, false);
-        nickNameTV = (TextView) view.findViewById(R.id.nickname_tv);
-        addressTV = (TextView) view.findViewById(R.id.address_tv);
-        methodTV = (TextView) view.findViewById(R.id.method_tv);
-        logout = (Button) view.findViewById(R.id.mypage_logout);
-        withdraw = (Button) view.findViewById(R.id.withdraw_app);
-        shareApp = (Button) view.findViewById(R.id.share_app);
-        setAddress = (Button) view.findViewById(R.id.my_address);
-        updateInfo = (Button) view.findViewById(R.id.update_info);
-        myGroup = (Button) view.findViewById(R.id.my_study);
-        manageJoinReqBt = (Button)view.findViewById(R.id.sign_access);
+
+        binding = FragmentMyPageBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
 
@@ -89,18 +81,18 @@ public class MyPageFragment extends Fragment {
         userId = viewModel.getUserInfoFromShared().getUserId();
         loginMethod = viewModel.getUserInfoFromShared().getLoginMethod();
         userNickname = viewModel.getUserInfoFromShared().getUserNickname();
-        nickNameTV.setText(userNickname);
-        addressTV.setText(viewModel.getUserInfoFromShared().getAddress());
-        methodTV.setText(loginMethod);
+        binding.nicknameTv.setText(userNickname);
+        binding.addressTv.setText(viewModel.getUserInfoFromShared().getAddress());
+        binding.methodTv.setText(loginMethod);
         /*회원정보 수정*/
-        updateInfo.setOnClickListener(new View.OnClickListener() {
+        binding.updateInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), UpdateUserActivity.class));
             }
         });
         /*내지역설정*/
-        setAddress.setOnClickListener(new View.OnClickListener() {
+        binding.myAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),SetAddressActivity.class);
@@ -109,7 +101,7 @@ public class MyPageFragment extends Fragment {
             }
         });
         /*내 스터디 그룹*/
-        myGroup.setOnClickListener(new View.OnClickListener() {
+        binding.myStudy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MyStudyGroupActivity.class);
@@ -117,7 +109,7 @@ public class MyPageFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        manageJoinReqBt.setOnClickListener(new View.OnClickListener() {
+        binding.signAccess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ManageJoinReqActivity.class);
@@ -125,7 +117,7 @@ public class MyPageFragment extends Fragment {
             }
         });
         /*앱 공유하기 버튼*/
-        shareApp.setOnClickListener(new View.OnClickListener() {
+        binding.shareApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent msg = new Intent(Intent.ACTION_SEND);
@@ -137,7 +129,7 @@ public class MyPageFragment extends Fragment {
             }
         });
         /*탈퇴하기 버튼*/
-        withdraw.setOnClickListener(new View.OnClickListener() {
+        binding.withdrawApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 viewModel.withDraw(userId,loginMethod);
@@ -152,7 +144,7 @@ public class MyPageFragment extends Fragment {
             }
         });
         /*로그아웃 버튼*/
-        logout.setOnClickListener(new View.OnClickListener() {
+        binding.mypageLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().stopService(new Intent(getActivity(), TimerService.class));

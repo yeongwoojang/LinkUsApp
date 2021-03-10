@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ActivityEnterMainGroupBinding;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.Comment;
 import com.example.linkusapp.model.vo.User;
@@ -29,13 +30,9 @@ import java.util.List;
 
 public class EnterMainGroupActivity extends AppCompatActivity {
 
-    private ImageButton backBtn, memberBtn,sendCommentBtn;
-    private TextView leaderTv,partTv,periodTv,groupGoalTv,noticeTv,groupNameTv;
-    private RecyclerView commentRv,memberRv;
+    private ActivityEnterMainGroupBinding binding;
+
     private CommentViewModel viewModel;
-    private EditText commentEt;
-    private CheckedTextView checkedSecret;
-    private DrawerLayout drawerLayout;
 
     private boolean isDrOpen = false; //드로어 오픈 여부
     /*비밀 댓글 여부 변수*/
@@ -50,43 +47,32 @@ public class EnterMainGroupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_enter_main_group);
+        binding = ActivityEnterMainGroupBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        backBtn = (ImageButton) findViewById(R.id.back_btn);
-        sendCommentBtn =(ImageButton) findViewById(R.id.comment_send_button);
-        memberBtn = (ImageButton) findViewById(R.id.member_btn);
-        leaderTv = (TextView) findViewById(R.id.leader_tv);
-        partTv = (TextView) findViewById(R.id.part_tv);
-        periodTv = (TextView) findViewById(R.id.period_tv);
-        noticeTv =(TextView) findViewById(R.id.notice_tv);
-        groupGoalTv = (TextView)findViewById(R.id.group_goal_tv);
-        groupNameTv = (TextView) findViewById(R.id.group_name_tv);
-        commentRv = (RecyclerView) findViewById(R.id.comment_rv);
-        memberRv = (RecyclerView)findViewById(R.id.member_rv);
-        checkedSecret = (CheckedTextView) findViewById(R.id.chk_secret_write);
-        commentEt = (EditText) findViewById(R.id.comment_edittext);
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         viewModel = new ViewModelProvider(this).get(CommentViewModel.class);
+
         Intent intent = getIntent();
         Board board = (Board)intent.getSerializableExtra("board");
         gName = board.getgName();
 
         viewModel.getGroupMember(gName);
         writer = viewModel.getUserInfoFromShared().getUserNickname();
-        groupNameTv.setText(gName);
-        leaderTv.setText("리더 : "+board.getgReader());
-        partTv.setText("분야 : "+board.getgPart());
-        periodTv.setText("기간 : "+board.getgStartDate()+" ~ "+board.getgEndDate());
-        groupGoalTv.setText("그룹 목표 : "+board.getgPurpose());
+        binding.groupNameTv.setText(gName);
+        binding.leaderTv.setText("리더 : "+board.getgReader());
+        binding.partTv.setText("분야 : "+board.getgPart());
+        binding.periodTv.setText("기간 : "+board.getgStartDate()+" ~ "+board.getgEndDate());
+        binding.groupGoalTv.setText("그룹 목표 : "+board.getgPurpose());
 
         CommentAdapter commentAdapter = new CommentAdapter(commentList);
-        commentRv.setAdapter(commentAdapter);
-        commentRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
+        binding.commentRv.setAdapter(commentAdapter);
+        binding.commentRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
 
         String myNickname = viewModel.getUserInfoFromShared().getUserNickname();
         MemberAdapter memberAdapter = new MemberAdapter(this,gName,memberList,myNickname);
-        memberRv.setAdapter(memberAdapter);
-        memberRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
+        binding.memberRv.setAdapter(memberAdapter);
+        binding.memberRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
 
         viewModel.getComment(gName);
         viewModel.getCommentRsLD.observe(this,commentInfo -> {
@@ -96,18 +82,18 @@ public class EnterMainGroupActivity extends AppCompatActivity {
             }else if(commentInfo.getCode()==204){
 
             }else {
-                Snackbar.make(findViewById(R.id.enter_main_group_activity),"오류",Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.enterMainGroupActivity,"오류",Snackbar.LENGTH_SHORT).show();
             }
         });
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
         /*비밀댓글 여부*/
-        checkedSecret.setOnClickListener(new View.OnClickListener() {
+        binding.chkSecretWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(((CheckedTextView) view).isChecked()){
@@ -119,34 +105,34 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 }
             }
         });
-        sendCommentBtn.setOnClickListener(new View.OnClickListener() {
+        binding.commentSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String comment = commentEt.getText().toString();
+                String comment = binding.commentEdittext.getText().toString();
                 if(comment.trim().equals(""))
                 {
-                    Snackbar.make(findViewById(R.id.enter_main_group_activity),"댓글을 입력해 주세요.",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(binding.enterMainGroupActivity,"댓글을 입력해 주세요.",Snackbar.LENGTH_SHORT).show();
                 }
                 viewModel.insertComment(gName,writer,comment,isSecret);
             }
         });
 
-        memberBtn.setOnClickListener(new View.OnClickListener() {
+        binding.memberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isDrOpen){
-                    drawerLayout.closeDrawer(Gravity.RIGHT);
+                    binding.drawerLayout.closeDrawer(Gravity.RIGHT);
                 }else{
-                    drawerLayout.openDrawer(Gravity.RIGHT);
+                    binding.drawerLayout.openDrawer(Gravity.RIGHT);
                 }
                 isDrOpen = !isDrOpen;
             }
         });
         viewModel.insertCommentRsLD.observe(this,code ->{
             if(code.equals("200")){
-                Snackbar.make(findViewById(R.id.enter_main_group_activity),"댓글 등록 완료",Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.enterMainGroupActivity,"댓글 등록 완료",Snackbar.LENGTH_SHORT).show();
             }else{
-                Snackbar.make(findViewById(R.id.enter_main_group_activity),"댓글 등록 실패",Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.enterMainGroupActivity,"댓글 등록 실패",Snackbar.LENGTH_SHORT).show();
             }
         } );
 

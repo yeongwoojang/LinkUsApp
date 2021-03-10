@@ -117,9 +117,12 @@ public class JoinViewModel extends BaseViewModel {
                     sendMailRes.postValue(1000);
                 } catch (
                         SendFailedException e) {
+                    Log.d("ERROR", "SendFailedException: ");
                     sendMailRes.postValue(1001);
                 } catch (
                         MessagingException e) {
+                    Log.d("ERROR", "MessagingException: ");
+                    e.printStackTrace();
                     sendMailRes.postValue(1002);
                 } catch (Exception e) {
                     e.printStackTrace();

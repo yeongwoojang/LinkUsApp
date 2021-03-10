@@ -12,32 +12,25 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ItemAddressBinding;
+import com.example.linkusapp.databinding.ItemMyChatRoomBinding;
 import com.example.linkusapp.model.vo.UserAddress;
 import com.example.linkusapp.viewModel.MyPageViewModel;
 
 import java.util.List;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressViewHolder> implements View.OnClickListener{
-
-
     private List<UserAddress> mDataset;
     private Activity getActivity;
     private MyPageViewModel viewModel;
     private String nickname;
     /**/
     public class AddressViewHolder extends RecyclerView.ViewHolder{
-
-        private TextView addressTV;
-        private CardView cardView;
-        private ImageButton remove;
-
-        public AddressViewHolder(@NonNull View itemView) {
-            super(itemView);
-            cardView = itemView.findViewById(R.id.cardview);
-            addressTV = itemView.findViewById(R.id.item_address);
-            remove = itemView.findViewById(R.id.remove_btn);
+        private ItemAddressBinding binding;
+        public AddressViewHolder(@NonNull ItemAddressBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
-
     }
     public void updateItem(List<UserAddress> items){
         mDataset = items;
@@ -52,17 +45,18 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     @NonNull
     @Override
     public AddressViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_address,parent,false);
-        return new AddressViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ItemAddressBinding binding = ItemAddressBinding.inflate(inflater, parent, false);
+        return new AddressViewHolder(binding);
     }
     @Override
     public void onBindViewHolder(@NonNull AddressViewHolder holder, int position) {
         UserAddress address = mDataset.get(position);
-        holder.addressTV.setText(address.getAddress());
-        holder.cardView.setTag(position);
-        holder.cardView.setOnClickListener(this);
-        holder.remove.setTag(position);
-        holder.remove.setOnClickListener(this);
+        holder.binding.itemAddress.setText(address.getAddress());
+        holder.binding.cardview.setTag(position);
+        holder.binding.cardview.setOnClickListener(this);
+        holder.binding.removeBtn.setTag(position);
+        holder.binding.removeBtn.setOnClickListener(this);
     }
     @Override
     public int getItemCount() {

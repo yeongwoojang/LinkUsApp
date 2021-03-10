@@ -162,7 +162,7 @@
                             android:layout_height="20dp"
                             android:layout_gravity="center"
                             android:src="@drawable/icon_add_member"
-                            ></ImageView>
+                            />
                         <TextView
                             android:id="@+id/join_method"
                             android:layout_width="match_parent"

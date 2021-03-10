@@ -80,6 +80,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             Chat chat = items.get(position);
             ((MyChatViewHolder) (holder)).binding.setChat(chat);
             ((MyChatViewHolder) (holder)).binding.executePendingBindings();
+
         } else {
             Chat chat = items.get(position);
             ((YourChatViewHolder) (holder)).binding.setChat(chat);
