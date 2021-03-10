@@ -24,11 +24,8 @@ import java.util.List;
 public class MyStudyGroupActivity extends AppCompatActivity {
 
     private ActivityMyStudyGroupBinding binding;
-    private RecyclerView groupRecyclerView;
     private BoardViewModel viewModel;
     private String nickname;
-    private ImageButton back;
-    private TextView emptyStudyGroup;
     private List<Board> boardList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
