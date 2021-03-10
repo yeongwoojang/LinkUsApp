@@ -7,6 +7,7 @@ import com.example.linkusapp.model.vo.CommentInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.LeaderGroupInfo;
 import com.example.linkusapp.model.vo.GroupMember;
+import com.example.linkusapp.model.vo.Profile;
 import com.example.linkusapp.model.vo.TimerInfo;
 import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.model.vo.UsersInfo;
@@ -56,6 +57,14 @@ public interface ServiceApi {
     @GET("/android/chkScdUserInfo")
     Call<String> chkScdUserInfo(@Query("userId") String userId, @Query("loginMethod") String loginMethod);
 
+    /*유저 프로필*/
+    @FormUrlEncoded
+    @POST("/android/insertProfile")
+    Call<String> insertProfile(@Field("userNickname") String userNickname,@Field("profileUri") String profileUri);
+
+    @GET("/android/getProfile")
+    Call<Profile> getProfile(@Query("userNickname") String userNickname);
+    /*여기까지*/
 
     @FormUrlEncoded
     @POST("/android/userInfo")

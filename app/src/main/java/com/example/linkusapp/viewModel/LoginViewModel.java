@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.linkusapp.model.vo.FindPassword;
+import com.example.linkusapp.model.vo.Profile;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.repository.RetrofitClient;
@@ -44,6 +45,8 @@ public class LoginViewModel extends BaseViewModel {
     public MutableLiveData<String> updateUserInfoRsLD = new MutableLiveData<String>();
     private MutableLiveData<String> tkInsertRes = new MutableLiveData<>();
     public MutableLiveData<UserInfo> userLiveData = new MutableLiveData<UserInfo>();
+    public MutableLiveData<String> insertProfileLiveData = new MutableLiveData<String>();
+    public MutableLiveData<Profile> getProfileLiveData = new MutableLiveData<Profile>();
 
 
 
@@ -260,7 +263,33 @@ public class LoginViewModel extends BaseViewModel {
         prefs.putUserInfo(user);
 
     }
+    public void insertProfile(String userNickname,String profileUri){
+        service.insertProfile(userNickname,profileUri).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body();
+                insertProfileLiveData.postValue(result);
+            }
 
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
 
+            }
+        });
+    }
 
+    public void getProfile(String userNickname){
+        service.getProfile(userNickname).enqueue(new Callback<Profile>() {
+            @Override
+            public void onResponse(Call<Profile> call, Response<Profile> response) {
+                Profile result = response.body();
+                getProfileLiveData.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<Profile> call, Throwable t) {
+
+            }
+        });
+    }
 }
