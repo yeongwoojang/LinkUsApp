@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.EditText;
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityChatBinding;
 import com.example.linkusapp.model.vo.Chat;
+import com.example.linkusapp.util.SoftKeyboard;
 import com.example.linkusapp.view.adapter.ChatAdapter;
 import com.example.linkusapp.viewModel.ChatViewModel;
 import com.google.android.material.snackbar.Snackbar;
@@ -31,11 +34,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class ChatActivity extends AppCompatActivity {
+    private SoftKeyboard softKeyboard;
 
     private ActivityChatBinding binding;
     private ChatAdapter chatAdapter;
@@ -52,6 +57,12 @@ public class ChatActivity extends AppCompatActivity {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        softKeyboard.unRegisterSoftKeyboardCallback();
     }
 
     @Override
@@ -73,15 +84,38 @@ public class ChatActivity extends AppCompatActivity {
         binding.chatRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
 
         //액티비티 시작하자마자 키보드 올리기
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(binding.edtMsg, 0);
-        binding.edtMsg.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                binding.edtMsg.requestFocus();
-                imm.showSoftInput(binding.edtMsg, 0);
-            }
-        }, 100);
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        softKeyboard = new SoftKeyboard(binding.chatLayout,imm);
+//        softKeyboard.setSoftKeyboardCallback(new SoftKeyboard.SoftKeyboardChanged() {
+//            @Override
+//            public void onSoftKeyboardHide() {
+//
+//            }
+//
+//            @Override
+//            public void onSoftKeyboardShow() {
+//                new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Log.d("onSoftKeyboardShow", "run: ");
+//                        binding.chatRecyclerview.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                binding.chatRecyclerview.scrollToPosition(chatAdapter.getItemCount()-1);
+//                            }
+//                        },100);
+//                    }
+//                });
+//            }
+//        });
+//        imm.showSoftInput(binding.edtMsg, 0);
+//        binding.edtMsg.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                binding.edtMsg.requestFocus();
+//                imm.showSoftInput(binding.edtMsg, 0);
+//            }
+//        }, 50);
 
 
         socket.connect(); //소켓연결
@@ -104,12 +138,15 @@ public class ChatActivity extends AppCompatActivity {
         viewModel.messageLD.observe(this, chatInfo -> {
             items = chatInfo.getJsonArray();
             chatAdapter.updateItem(items);
-            binding.chatRecyclerview.post(new Runnable() {
-                @Override
-                public void run() {
-                    binding.chatRecyclerview.scrollToPosition(chatAdapter.getItemCount()-1);
-                }
-            });
+            binding.chatRecyclerview.scrollToPosition(chatAdapter.getItemCount()-1);
+//            binding.chatRecyclerview.post(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                }
+//
+//            });
+
         });
 
         //메시지 전송 버튼 클릭 이벤트
@@ -181,6 +218,12 @@ public class ChatActivity extends AppCompatActivity {
                         Chat chat = new Chat(msg, msgTime, yourNickName, myNickName);
                         items.add(chat);
                         chatAdapter.updateItem(items); //리사이 클러뷰를 새로운 채팅내용으로 업데이트
+                        binding.chatRecyclerview.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                binding.chatRecyclerview.scrollToPosition(chatAdapter.getItemCount()-1);
+                            }
+                        });
                     } catch (Exception e) {
                         return;
                     }
