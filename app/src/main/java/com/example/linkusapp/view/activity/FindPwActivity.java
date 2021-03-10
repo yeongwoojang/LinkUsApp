@@ -11,14 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ActivityForgotPasswordBinding;
 import com.example.linkusapp.util.GMailSender;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 public class FindPwActivity extends AppCompatActivity {
 
-    private EditText idEt,emailEt;
-    private Button findBtn;
+    private ActivityForgotPasswordBinding binding;
 
     private InputMethodManager imm;
 
@@ -27,39 +27,33 @@ public class FindPwActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password);
+        binding = ActivityForgotPasswordBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-        idEt = (EditText) findViewById(R.id.id_et);
-        emailEt = (EditText) findViewById(R.id.email_et);
-        findBtn = (Button) findViewById(R.id.find_btn);
-
-        findBtn.setOnClickListener(new View.OnClickListener() {
+        binding.findBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imm.hideSoftInputFromWindow(emailEt.getWindowToken(),0);
-                String id = idEt.getText().toString().trim();
-                String email = emailEt.getText().toString().trim();
+                imm.hideSoftInputFromWindow(binding.emailEt.getWindowToken(),0);
+                String id = binding.idEt.getText().toString().trim();
+                String email = binding.emailEt.getText().toString().trim();
                 viewModel.findPw(id,email);
             }
         });
 
         viewModel.findPwRsLD.observe(this, findData -> {
             if(findData.getCode().equals("404")){
-                Log.d("RESULT", "onCreate: 실패");
-                Snackbar.make(findViewById(R.id.find_layout), "에러가 발생했습니다.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.findLayout, "에러가 발생했습니다.", Snackbar.LENGTH_SHORT).show();
             }
             else if(findData.getCode().equals("204")){
-                Log.d("RESULT", "onCreate: 204 에러");
-                Snackbar.make(findViewById(R.id.find_layout), "계정의 이메일과 일치하지 않습니다.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.findLayout, "계정의 이메일과 일치하지 않습니다.", Snackbar.LENGTH_SHORT).show();
             }
             else{
-                Log.d("RESULT", "onCreate: 성공");
-                Snackbar.make(findViewById(R.id.find_layout), "이메일주소로 비밀번호를 전송했습니다.", Snackbar.LENGTH_SHORT).show();
-                viewModel.sendMail(gMailSender,emailEt.getText().toString().trim(),findData.getPassword());
-
+                Snackbar.make(binding.findLayout, "이메일주소로 비밀번호를 전송했습니다.", Snackbar.LENGTH_SHORT).show();
+                viewModel.sendMail(gMailSender,binding.emailEt.getText().toString().trim(),findData.getPassword());
             }
         });
     }

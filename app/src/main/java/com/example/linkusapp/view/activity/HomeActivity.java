@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ActivityHomeBinding;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.AccessToken;
@@ -51,6 +52,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
 
+    private ActivityHomeBinding binding;
     //------------------카카오 로그인용----------------------------
 //    private SessionCallback sessionCallback;
 
@@ -104,7 +106,10 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
             recUserNick = bundle.getString("userNick");

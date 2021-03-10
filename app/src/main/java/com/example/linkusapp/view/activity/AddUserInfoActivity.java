@@ -14,11 +14,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ActivityAddUserInfoBinding;
 import com.example.linkusapp.util.SharedPreference;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.CallbackManager;
@@ -35,19 +37,13 @@ import com.kakao.auth.ISessionCallback;
 
 public class AddUserInfoActivity extends AppCompatActivity {
 
-    private ImageButton preBtn;
-    private Button saveBtn;
-    private EditText nicknameEt,searchAddressEt;
-    private Button checkNicknameBtn,searchAddressBtn;
-    private Spinner setAge;
+    private ActivityAddUserInfoBinding binding;
+
     private String age;
-    private RadioGroup genderRadio;
     private String gender = "M";
     private String userNickname;
     private String currentId;
 
-    private long backKeyPressed = 0;
-    private Toast backBtClickToast;
     private GoogleSignInClient mSignInClient;
     private LoginViewModel viewModel;
     private static final  int SEARCH_ADDRESS_ACTIVITY = 10000;
@@ -64,21 +60,14 @@ public class AddUserInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_user_info);
+        binding = ActivityAddUserInfoBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        saveBtn = (Button)findViewById(R.id.save_btn);
-        preBtn = (ImageButton)findViewById(R.id.previous_btn);
-        nicknameEt = (EditText)findViewById(R.id.set_nickname);
-        checkNicknameBtn = (Button)findViewById(R.id.nickname_check_btn);
-        genderRadio = (RadioGroup)findViewById(R.id.join_radio_group);
-        searchAddressEt = (EditText)findViewById(R.id.search_address_et);
-        searchAddressBtn =(Button) findViewById(R.id.search_address_btn);
-        setAge= (Spinner) findViewById(R.id.spinner_age);
 
-        saveBtn.setPaintFlags(saveBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        binding.saveBtn.setPaintFlags(binding.saveBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         currentId = viewModel.getLoginSession();
-
 
         //어떤 방시으로 로그인 된 계정인지 체크
         String loginMethod = viewModel.getLoginMethod();
@@ -90,27 +79,27 @@ public class AddUserInfoActivity extends AppCompatActivity {
         mSignInClient =  GoogleSignIn.getClient(this, gso);
 
         /*나이*/
-        setAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.spinnerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                 age = parent.getItemAtPosition(position).toString();
-                Snackbar.make(findViewById(R.id.add_user_info), age, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.addUserInfo, age, Snackbar.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                Snackbar.make(findViewById(R.id.add_user_info), "나이를 선택해주세요.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.addUserInfo, "나이를 선택해주세요.", Snackbar.LENGTH_SHORT).show();
             }
         });
         /*닉네임 체크*/
-        checkNicknameBtn.setOnClickListener(new View.OnClickListener() {
+        binding.nicknameCheckBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userNickname = nicknameEt.getText().toString().trim();
+                userNickname = binding.setNickname.getText().toString().trim();
                 if(userNickname.equals("")||!userNickname.matches("^[a-zA-Z0-9가-힣]+$")) {
-                    Snackbar.make(findViewById(R.id.add_user_info),"조건에 맞는 닉네임을 입력해주세요.",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(binding.addUserInfo,"조건에 맞는 닉네임을 입력해주세요.",Snackbar.LENGTH_SHORT).show();
                     isCertify = false;
                 }else if(userNickname.length() >= 10){
-                    Snackbar.make(findViewById(R.id.add_user_info),"닉네임 길이 10자 이하로 작성해주세요.",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(binding.addUserInfo,"닉네임 길이 10자 이하로 작성해주세요.",Snackbar.LENGTH_SHORT).show();
                     isCertify = false;
                 }else{
                     viewModel.nickNameChk(userNickname);
@@ -120,13 +109,13 @@ public class AddUserInfoActivity extends AppCompatActivity {
         });
         viewModel.nickChkResLD.observe(this, code -> {
             if (code.equals("200")) {
-                Snackbar.make(findViewById(R.id.add_user_info), "사용가능한 닉네임입니다.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.addUserInfo, "사용가능한 닉네임입니다.", Snackbar.LENGTH_SHORT).show();
             } else {
-                Snackbar.make(findViewById(R.id.add_user_info), "이미 사용중인 닉네임입니다.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.addUserInfo, "이미 사용중인 닉네임입니다.", Snackbar.LENGTH_SHORT).show();
             }
         });
         /*내지역 설정*/
-        searchAddressBtn.setOnClickListener(new View.OnClickListener() {
+        binding.searchAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), AddressActivity.class);
@@ -134,7 +123,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
             }
         });
         /*내 지역 설정*/
-        searchAddressEt.setOnClickListener(new View.OnClickListener() {
+        binding.searchAddressEt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), AddressActivity.class);
@@ -142,40 +131,38 @@ public class AddUserInfoActivity extends AppCompatActivity {
             }
         });
         /*2차 회원 정보 저장버튼*/
-        saveBtn.setOnClickListener(new View.OnClickListener() {
+        binding.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String address = searchAddressEt.getText().toString();
+                String address = binding.searchAddressEt.getText().toString();
                 if(!isCertify){
-                    Snackbar.make(findViewById(R.id.add_user_info), "닉네임 중복검사 실시해주세요.", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(binding.addUserInfo, "닉네임 중복검사 실시해주세요.", Snackbar.LENGTH_SHORT).show();
                 }
                 else if(age.equals("선택")){
-                    Snackbar.make(findViewById(R.id.add_user_info), "나이를 선택해주세요.", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(binding.addUserInfo, "나이를 선택해주세요.", Snackbar.LENGTH_SHORT).show();
                 }
-                else if (searchAddressEt.getText().toString().trim().equals("")){
-                    Snackbar.make(findViewById(R.id.add_user_info), "주소 검색 실시해주세요.", Snackbar.LENGTH_SHORT).show();
+                else if (binding.searchAddressEt.getText().toString().trim().equals("")){
+                    Snackbar.make(binding.addUserInfo, "주소 검색 실시해주세요.", Snackbar.LENGTH_SHORT).show();
                 }
                 else{
                     viewModel.saveInfo(currentId,userNickname,age,gender,address,loginMethod);
-                    Snackbar.make(findViewById(R.id.add_user_info), "회원님의 정보가 저장되었습니다.", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(binding.addUserInfo, "회원님의 정보가 저장되었습니다.", Snackbar.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }
             }
         });
         viewModel.addUserInfoResLD.observe(this, code -> {
             if(code.equals("200")){
-                Log.d("RESULT", "onCreate: 성공");
-                Snackbar.make(findViewById(R.id.add_user_info), "정보 저장 성공", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.addUserInfo, "정보 저장 성공", Snackbar.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 finish();
             }
             else{
-                Log.d("RESULT", "onCreate: 실패");
-                Snackbar.make(findViewById(R.id.add_user_info), "정보저장 실패", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.addUserInfo, "정보저장 실패", Snackbar.LENGTH_SHORT).show();
             }
         });
-        genderRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        binding.joinRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.gender_man) {
@@ -186,7 +173,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
             }
         });
         /*이전 버튼*/
-        preBtn.setOnClickListener(new View.OnClickListener() {
+        binding.previousBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switch (loginMethod){
@@ -234,8 +221,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     String data = intent.getExtras().getString("data");
                     if (data != null) {
-                        Log.d("주소 데이터",data);
-                        searchAddressEt.setText(data);
+                        binding.searchAddressEt.setText(data);
                     }
                 }
                 break;
@@ -247,7 +233,6 @@ public class AddUserInfoActivity extends AppCompatActivity {
         mSignInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-//                updateUI(null);
             }
         });
     }

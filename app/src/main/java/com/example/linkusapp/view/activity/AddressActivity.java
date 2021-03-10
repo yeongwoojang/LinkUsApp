@@ -12,11 +12,8 @@ import com.example.linkusapp.R;
 
 public class AddressActivity extends Activity {
     private WebView webView;
-    //    private TextView addressText;
-    private Handler handler;
 
-    class MyJavaScriptInterface
-    {
+    class MyJavaScriptInterface {
         @JavascriptInterface
         @SuppressWarnings("unused")
         public void processDATA(String data) {
@@ -33,13 +30,6 @@ public class AddressActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_address);
-//        addressText = findViewById(R.id.address_text);
-
-        // WebView 초기화
-//        init_webView();
-//
-//        // 핸들러를 통한 JavaScript 이벤트 반응
-//        handler = new Handler();
         webView = (WebView) findViewById(R.id.address_webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new MyJavaScriptInterface(), "Android");
