@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ActivityManageJoinReqBinding;
 import com.example.linkusapp.model.vo.LeaderGroup;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.model.vo.UsersInfo;
@@ -26,39 +27,31 @@ import java.util.List;
 
 public class ManageJoinReqActivity extends AppCompatActivity {
 
-    private TextView groupName, emptyText;
-    private ImageButton backBt;
-    private RecyclerView myGroupRecyclerView, requestRecyclerView;
+    private ActivityManageJoinReqBinding binding;
     private MyGroupAdapter myGroupAdapter;
     private RequestAdapter requestAdapter;
     private ManageJoinViewModel viewModel;
-    private SlidingUpPanelLayout slidingView;
     private List<LeaderGroup> leaderGroups = new ArrayList<>();
     private List<User> users = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_join_req);
-
-        groupName = (TextView)findViewById(R.id.group_name_txt);
-        emptyText = (TextView)findViewById(R.id.empty_txt);
-        backBt = (ImageButton)findViewById(R.id.btn_back);
-        myGroupRecyclerView = (RecyclerView) findViewById(R.id.my_group_recyclerview);
-        requestRecyclerView = (RecyclerView) findViewById(R.id.request_recyclerview);
-        slidingView = (SlidingUpPanelLayout) findViewById(R.id.sub_sliding_view);
+        binding = ActivityManageJoinReqBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         viewModel = new ViewModelProvider(this).get(ManageJoinViewModel.class);
 
         //myGroup 리사이클러뷰 어댑터 생성
-        myGroupAdapter = new MyGroupAdapter(leaderGroups, slidingView,viewModel);
-        myGroupRecyclerView.setAdapter(myGroupAdapter);
-        myGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+        myGroupAdapter = new MyGroupAdapter(leaderGroups,binding.subSlidingView,viewModel);
+        binding.myGroupRecyclerview.setAdapter(myGroupAdapter);
+        binding.myGroupRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
 
         //requet 리사이클러뷰 어댑터 생성
         requestAdapter = new RequestAdapter(users,viewModel,this);
-        requestRecyclerView.setAdapter(requestAdapter);
-        requestRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+        binding.requestRecyclerview.setAdapter(requestAdapter);
+        binding.requestRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
 
         User user = viewModel.getUserInfoFromShared();
         viewModel.getLeaderGroup(user.getUserNickname());
@@ -68,7 +61,7 @@ public class ManageJoinReqActivity extends AppCompatActivity {
                 myGroupAdapter.updateItem(leaderGroupInfo.getLeaderGroupList());
             }else if(leaderGroupInfo.getCode()==204){
                 myGroupAdapter.updateItem(new ArrayList<LeaderGroup>());
-                emptyText.setVisibility(View.VISIBLE);
+                binding.emptyTxt.setVisibility(View.VISIBLE);
             }
         });
 
@@ -76,7 +69,7 @@ public class ManageJoinReqActivity extends AppCompatActivity {
             Log.d("WhatCode", "onCreate: "+UsersInfo.getCode());
             if (UsersInfo.getCode() == 200) {
                 requestAdapter.updateItem(UsersInfo.getUsers());
-                slidingView.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                binding.subSlidingView.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
             }else if(UsersInfo.getCode() == 204){
                 requestAdapter.updateItem(new ArrayList<User>());
             }
@@ -92,9 +85,9 @@ public class ManageJoinReqActivity extends AppCompatActivity {
 
         viewModel.joinGroupRes.observe(this, response -> {
             if(response.equals("200")){
-                Snackbar.make(findViewById(R.id.sub_sliding_view), "가입되었습니다.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.subSlidingView, "가입되었습니다.", Snackbar.LENGTH_SHORT).show();
             }else{
-                Snackbar.make(findViewById(R.id.sub_sliding_view), "가입이 실패하였습니다.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.subSlidingView, "가입이 실패하였습니다.", Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -106,15 +99,15 @@ public class ManageJoinReqActivity extends AppCompatActivity {
         });
 
         //슬라이딩 드로어 바깥은 클릭하면 드로어를 닫게 해주는 리스너 추가
-        slidingView.setFadeOnClickListener(new View.OnClickListener() {
+        binding.subSlidingView.setFadeOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                slidingView.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                binding.subSlidingView.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             }
         });
 
         //슬라이딩 드로어 상태변화 이벤트리스너 추가
-        slidingView.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+        binding.subSlidingView.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
 
@@ -122,11 +115,11 @@ public class ManageJoinReqActivity extends AppCompatActivity {
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                requestRecyclerView.scrollToPosition(0);
+                binding.requestRecyclerview.scrollToPosition(0);
             }
         });
 
-        backBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

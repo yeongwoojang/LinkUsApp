@@ -52,6 +52,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
 
+
     private ActivityHomeBinding binding;
     //------------------카카오 로그인용----------------------------
 //    private SessionCallback sessionCallback;
@@ -67,26 +68,12 @@ public class HomeActivity extends AppCompatActivity {
     private GoogleSignInClient mSignInClient;
     private static final int RC_SIGN_IN = 9001;
     private static final int RC_GET_TOKEN = 9002;
-    //----------------구글로그인용---------------------------------
-
-    //----------------View-----------------------------------------
-    private TextView goToJoinBtn;
-    private Button signinbtn;
-    private ImageButton kakaoLoginBtn;
-    private ImageButton facebookLoginBtn;
-    private ImageButton googleSignBtn;
-    private EditText idEditText, pwEditText;
-    private TextView findPassword;
-    private CheckedTextView autoLoginBox;
-    //----------------View-----------------------------------------
-
     //----------------viewModel------------------------------------
     private LoginViewModel viewModel;
     //----------------viewModel------------------------------------
     private InputMethodManager imm;
     private boolean isAutoLogin = false;
     private Context mContext;
-
 
     //fcm으로부터 받은 데이터
     private String recUserNick ="";
@@ -102,14 +89,12 @@ public class HomeActivity extends AppCompatActivity {
         refreshIdToken();
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
             recUserNick = bundle.getString("userNick");
@@ -123,16 +108,6 @@ public class HomeActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         mContext = this;
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
-        goToJoinBtn = (TextView) findViewById(R.id.go_to_join_btn);
-        signinbtn = (Button) findViewById(R.id.sign_in_btn);
-        facebookLoginBtn = (ImageButton) findViewById(R.id.facebook_login_btn);
-        kakaoLoginBtn = (ImageButton) findViewById(R.id.kakao_login_btn);
-        googleSignBtn = (ImageButton) findViewById(R.id.google_login_btn);
-        idEditText = (EditText) findViewById(R.id.id_et);
-        pwEditText = (EditText) findViewById(R.id.pw_et);
-        findPassword = (TextView) findViewById(R.id.find_password);
-        autoLoginBox = (CheckedTextView) findViewById(R.id.chk_auto_login);
 
         Toast.makeText(this,recUserNick+"\n"+recUserAge+"\n"+recUserGender+"\n"+recAddress,Toast.LENGTH_SHORT).show();
         //일반 자동로그인 코드
@@ -162,7 +137,6 @@ public class HomeActivity extends AppCompatActivity {
             return null;
         });
 
-
         validateServerClientID();
         //구글 로그인
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -172,9 +146,9 @@ public class HomeActivity extends AppCompatActivity {
         mSignInClient = GoogleSignIn.getClient(this, gso);
 
         /*google 로그인*/
-        googleSignBtn.setOnClickListener(new View.OnClickListener() {
+        binding.googleLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 signInByGoogle();
             }
         });
@@ -224,15 +198,15 @@ public class HomeActivity extends AppCompatActivity {
                 Log.e("Error", "페북 Login 에러");
             }
         });
-        facebookLoginBtn.setOnClickListener(new View.OnClickListener() {
+        /*페북 로그인*/
+        binding.facebookLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 facebookLogin();
             }
         });
-
         /*kakaoTalk 로그인*/
-        kakaoLoginBtn.setOnClickListener(new View.OnClickListener() {
+        binding.kakaoLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 카카오톡으로 로그인
@@ -277,10 +251,9 @@ public class HomeActivity extends AppCompatActivity {
                 });
             }
         });
-
         /*회원가입*/
-        goToJoinBtn.setPaintFlags(goToJoinBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        goToJoinBtn.setOnClickListener(new View.OnClickListener() {
+        binding.goToJoinBtn.setPaintFlags(binding.goToJoinBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        binding.goToJoinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), JoinActivity.class));
@@ -290,12 +263,12 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         /*일반로그인 버튼*/
-        signinbtn.setOnClickListener(new View.OnClickListener() {
+        binding.signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imm.hideSoftInputFromWindow(pwEditText.getWindowToken(), 0);
-                String userId = idEditText.getText().toString().trim();
-                String userPw = pwEditText.getText().toString().trim();
+                imm.hideSoftInputFromWindow(binding.pwEt.getWindowToken(), 0);
+                String userId = binding.idEt.getText().toString().trim();
+                String userPw = binding.pwEt.getText().toString().trim();
                 //자동로그인 체크했을 시 공유프리퍼런스에 자동로그인 여부 저장
                 viewModel.autoLogin(isAutoLogin);
                 viewModel.login(userId, userPw);
@@ -303,15 +276,15 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         //자동로그인 체크박스 클릭이벤트
-        autoLoginBox.setOnClickListener(new View.OnClickListener() {
+        binding.chkAutoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (((CheckedTextView) v).isChecked()) {
-                    ((CheckedTextView) v).setChecked(false);
+            public void onClick(View view) {
+                if (((CheckedTextView) view).isChecked()) {
+                    ((CheckedTextView) view).setChecked(false);
                     isAutoLogin = false;
 
                 } else {
-                    ((CheckedTextView) v).setChecked(true);
+                    ((CheckedTextView) view).setChecked(true);
                     isAutoLogin = true;
                 }
 
@@ -321,22 +294,22 @@ public class HomeActivity extends AppCompatActivity {
         //일반 로그인 요청시 응답이 오면 실행될 코드
         viewModel.loginRsLD.observe(this, code -> {
             if (code.equals("200")) {
-                Snackbar.make(findViewById(R.id.home_layout), "로그인 성공", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.homeLayout, "로그인 성공", Snackbar.LENGTH_SHORT).show();
                 viewModel.putLoginMethod("일반");
                 startActivity(new Intent(getApplicationContext(), LoadingActivity.class));
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
             } else if (code.equals("204")) {
-                Snackbar.make(findViewById(R.id.home_layout), "존재하지 않는 계정입니다.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.homeLayout, "존재하지 않는 계정입니다.", Snackbar.LENGTH_SHORT).show();
             } else if (code.equals("205")) {
-                Snackbar.make(findViewById(R.id.home_layout), "비밀번호가 틀립니다.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.homeLayout, "비밀번호가 틀립니다.", Snackbar.LENGTH_SHORT).show();
             } else {
-                Snackbar.make(findViewById(R.id.home_layout), "로그인 실패", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.homeLayout, "로그인 실패", Snackbar.LENGTH_SHORT).show();
             }
         });
 
         //비밀번호 찾기 텍스트 클릭 시 화면 이동
-        findPassword.setOnClickListener(new View.OnClickListener() {
+        binding.findPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), FindPwActivity.class));
@@ -370,7 +343,6 @@ public class HomeActivity extends AppCompatActivity {
         String suffix = ".apps.googleusercontent.com";
         if (!serverClientId.trim().endsWith(suffix)) {
             String message = "Invalid server client ID in strings.xml, must end with " + suffix;
-
             Log.w(TAG, message);
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
@@ -430,7 +402,6 @@ public class HomeActivity extends AppCompatActivity {
     public void updateUI(GoogleSignInAccount account) {
 
         if (account != null) {
-            Toast.makeText(this, "U Signed In successfully", Toast.LENGTH_LONG).show();
             viewModel.putLoginMethod("Google");
             startActivity(new Intent(getApplicationContext(), LoadingActivity.class));
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
