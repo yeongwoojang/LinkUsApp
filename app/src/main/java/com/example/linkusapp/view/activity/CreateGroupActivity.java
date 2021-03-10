@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ActivityCreateGroupBinding;
 import com.example.linkusapp.viewModel.CreateGrpViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -27,12 +28,8 @@ import java.util.Calendar;
 
 public class CreateGroupActivity extends AppCompatActivity {
 
+    private ActivityCreateGroupBinding binding;
 
-    ImageButton backBt, freeJoinBt, approvalJoinBt;
-    EditText edtGroupName, edtGroupExplanation, edtGroupPurpose, edtMemberLimit;
-    Button nextBt, startDateBt, endDateBt, resetPeriodBt, createGroupBt, gNameChkBt;
-    TextView addressText;
-    Spinner partSpinner;
     private static int year, month, day;
     private Calendar calendar;
     private String buttonId;
@@ -46,24 +43,9 @@ public class CreateGroupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_group);
-
-        //뷰 초기화
-        backBt = (ImageButton) findViewById(R.id.btn_back);
-        edtGroupName = (EditText) findViewById(R.id.edt_group_name);
-        edtGroupExplanation = (EditText) findViewById(R.id.edt_group_explanation);
-        edtGroupPurpose = (EditText) findViewById(R.id.edt_group_purpose);
-        edtMemberLimit = (EditText) findViewById(R.id.edt_member_limit);
-        nextBt = (Button) findViewById(R.id.btn_create_group);
-        startDateBt = (Button) findViewById(R.id.btn_start_date);
-        endDateBt = (Button) findViewById(R.id.btn_end_date);
-        resetPeriodBt = (Button) findViewById(R.id.btn_reset_period);
-        createGroupBt = (Button) findViewById(R.id.btn_create_group);
-        gNameChkBt = (Button) findViewById(R.id.btn_g_name_chk);
-        freeJoinBt = (ImageButton) findViewById(R.id.btn_free_join);
-        approvalJoinBt = (ImageButton) findViewById(R.id.btn_approval_join);
-        addressText = (TextView) findViewById(R.id.study_address);
-        partSpinner = (Spinner) findViewById(R.id.spinner_part);
+        binding = ActivityCreateGroupBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         //viewModel 초기화
         viewModel = new ViewModelProvider(this).get(CreateGrpViewModel.class);
@@ -71,7 +53,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         viewModel.getUserInfo();
         viewModel.userLiveData.observe(this, userInfo -> {
             if (userInfo.getUser() != null) {
-                addressText.setText(userInfo.getUser().getAddress());
+                binding.studyAddress.setText(userInfo.getUser().getAddress());
             }
         });
         //오늘 날짜 초기화
@@ -82,13 +64,13 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         //가입체크버튼 초기색상 gray400으로 설정
         int color = ContextCompat.getColor(getApplicationContext(), R.color.gray400);
-        freeJoinBt.setColorFilter(color);
-        approvalJoinBt.setColorFilter(color);
+        binding.btnFreeJoin.setColorFilter(color);
+        binding.btnApprovalJoin.setColorFilter(color);
 
-        gNameChkBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnGNameChk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gName = edtGroupName.getText().toString().trim();
+                gName = binding.edtGroupName.getText().toString().trim();
                 if (!validChk(gName)) {
                     Snackbar.make(findViewById(R.id.create_group_page), "올바르지 않은 그룹명입니다.", Snackbar.LENGTH_SHORT).show();
                 } else {
@@ -107,7 +89,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                 gNameChkFlg = false;
             }
         });
-        partSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.spinnerPart.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                 if (position != 0) {
@@ -122,7 +104,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         });
 
         //스터디활동 시작일 클릭
-        startDateBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OnClickHandler(v);
@@ -130,7 +112,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
         });
         //스터디활동 종료일 클릭
-        endDateBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.getTag();
@@ -139,71 +121,71 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
         });
         //스터디 할동기간 초기화
-        resetPeriodBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnResetPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 calendar = Calendar.getInstance();
-                startDateBt.setEnabled(true);
-                startDateBt.setBackgroundResource(R.drawable.form_button_date_no);
-                startDateBt.setText("시작일");
-                startDateBt.setTextColor(getResources().getColor(R.color.gray400));
-                endDateBt.setEnabled(true);
-                endDateBt.setBackgroundResource(R.drawable.form_button_date_no);
-                endDateBt.setText("종료일");
-                endDateBt.setTextColor(getResources().getColor(R.color.gray400));
+                binding.btnStartDate.setEnabled(true);
+                binding.btnStartDate.setBackgroundResource(R.drawable.form_button_date_no);
+                binding.btnStartDate.setText("시작일");
+                binding.btnStartDate.setTextColor(getResources().getColor(R.color.gray400));
+                binding.btnEndDate.setEnabled(true);
+                binding.btnEndDate.setBackgroundResource(R.drawable.form_button_date_no);
+                binding.btnEndDate.setText("종료일");
+                binding.btnEndDate.setTextColor(getResources().getColor(R.color.gray400));
             }
         });
         //스터디 가입방법(자유)버튼클릭
-        freeJoinBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnFreeJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!freeJoinBt.getTag().toString().equals(joinTag)) {
+                if (!binding.btnFreeJoin.getTag().toString().equals(joinTag)) {
                     int color = ContextCompat.getColor(getApplicationContext(), R.color.red500);
-                    freeJoinBt.setColorFilter(color);
+                    binding.btnFreeJoin.setColorFilter(color);
                     color = ContextCompat.getColor(getApplicationContext(), R.color.gray400);
-                    approvalJoinBt.setColorFilter(color);
-                    joinTag = freeJoinBt.getTag().toString();
+                    binding.btnApprovalJoin.setColorFilter(color);
+                    joinTag = binding.btnFreeJoin.getTag().toString();
                 } else {
                     int color = ContextCompat.getColor(getApplicationContext(), R.color.gray400);
-                    freeJoinBt.setColorFilter(color);
+                    binding.btnFreeJoin.setColorFilter(color);
                     joinTag = null;
                 }
             }
         });
         //스터디 가입방법(승인)버튼클릭
-        approvalJoinBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnApprovalJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!approvalJoinBt.getTag().toString().equals(joinTag)) {
+                if (!binding.btnApprovalJoin.getTag().toString().equals(joinTag)) {
                     int color = ContextCompat.getColor(getApplicationContext(), R.color.red500);
-                    approvalJoinBt.setColorFilter(color);
+                    binding.btnApprovalJoin.setColorFilter(color);
                     color = ContextCompat.getColor(getApplicationContext(), R.color.gray400);
-                    freeJoinBt.setColorFilter(color);
-                    joinTag = approvalJoinBt.getTag().toString();
+                    binding.btnFreeJoin.setColorFilter(color);
+                    joinTag = binding.btnApprovalJoin.getTag().toString();
                 } else {
                     int color = ContextCompat.getColor(getApplicationContext(), R.color.gray400);
-                    approvalJoinBt.setColorFilter(color);
+                    binding.btnApprovalJoin.setColorFilter(color);
                     joinTag = null;
                 }
 
             }
         });
         //그룹생성 버튼 클릭
-        createGroupBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (gNameChkFlg) {
-                    String groupName = edtGroupName.getText().toString().trim();
+                    String groupName = binding.edtGroupName.getText().toString().trim();
                     if (!gName.equals(groupName)) {
                         gName = "";
                         Snackbar.make(findViewById(R.id.create_group_page), "그룹명 중복확인을 해주세요.", Snackbar.LENGTH_SHORT).show();
                         gNameChkFlg = false;
                     } else {
-                        String groupExplanation = edtGroupExplanation.getText().toString().trim();
-                        String groupPurpose = edtGroupPurpose.getText().toString().trim();
-                        String memberLimit = edtMemberLimit.getText().toString().trim();
-                        String startDate = startDateBt.getText().toString().trim();
-                        String endDate = endDateBt.getText().toString().trim();
+                        String groupExplanation = binding.edtGroupExplanation.getText().toString().trim();
+                        String groupPurpose = binding.edtGroupPurpose.getText().toString().trim();
+                        String memberLimit = binding.edtMemberLimit.getText().toString().trim();
+                        String startDate = binding.btnStartDate.getText().toString().trim();
+                        String endDate = binding.btnEndDate.getText().toString().trim();
                         String joinMethod = joinTag;
                         if (startDate.matches("^[가-힣]+$") || endDate.matches("^[가-힣]+$")) {
                             startDate = "미정";
@@ -253,17 +235,17 @@ public class CreateGroupActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int _year, int monthOfYear, int dayOfMonth) {
-            if (buttonId.equals(startDateBt.getTag().toString())) {
-                startDateBt.setText(_year + " / " + (monthOfYear + 1) + " / " + dayOfMonth);
-                startDateBt.setTextColor(getResources().getColor(R.color.white));
-                startDateBt.setBackgroundResource(R.drawable.form_button_date_ok);
-                startDateBt.setEnabled(false);
+            if (buttonId.equals(binding.btnStartDate.getTag().toString())) {
+                binding.btnStartDate.setText(_year + " / " + (monthOfYear + 1) + " / " + dayOfMonth);
+                binding.btnStartDate.setTextColor(getResources().getColor(R.color.white));
+                binding.btnStartDate.setBackgroundResource(R.drawable.form_button_date_ok);
+                binding.btnStartDate.setEnabled(false);
 
             } else {
-                endDateBt.setText(_year + " / " + (monthOfYear + 1) + " / " + dayOfMonth);
-                endDateBt.setTextColor(getResources().getColor(R.color.white));
-                endDateBt.setBackgroundResource(R.drawable.form_button_date_ok);
-                endDateBt.setEnabled(false);
+                binding.btnEndDate.setText(_year + " / " + (monthOfYear + 1) + " / " + dayOfMonth);
+                binding.btnEndDate.setTextColor(getResources().getColor(R.color.white));
+                binding.btnEndDate.setBackgroundResource(R.drawable.form_button_date_ok);
+                binding.btnEndDate.setEnabled(false);
 
             }
             calendar.set(Calendar.YEAR, _year);

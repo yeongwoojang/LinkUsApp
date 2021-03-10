@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ActivityUpdateUserBinding;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -26,13 +27,10 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 
 public class UpdateUserActivity extends AppCompatActivity {
-    private TextView id,method;
-    private EditText nickname, password,password2;
-    private Button save,nicknameChk;
-    private ImageButton exit;
-    private LoginViewModel viewModel;
+
+    private ActivityUpdateUserBinding binding;
     private String checkNickname,checkPW,loginMethod;
-    private ImageButton setProfile;
+    private LoginViewModel viewModel;
     private static final int REQUEST_CODE = 1;
     private Uri uri;
     private Uri profileUri;
@@ -42,43 +40,36 @@ public class UpdateUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_user);
+        binding = ActivityUpdateUserBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        id = (TextView) findViewById(R.id.id_tv);
-        method = (TextView) findViewById(R.id.update_method_tv);
-        nickname = (EditText) findViewById(R.id.nickname_et);
-        password = (EditText) findViewById(R.id.password_et);
-        password2 = (EditText) findViewById(R.id.password2_et);
-        save = (Button)findViewById(R.id.save_btn);
-        nicknameChk = (Button) findViewById(R.id.nickname_check);
-        exit = (ImageButton) findViewById(R.id.back_btn);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        setProfile = (ImageButton) findViewById(R.id.set_profile_picture);
 
         /*유저 정보*/
         checkNickname =viewModel.getUserInfoFromShared().getUserNickname();
         checkPW = viewModel.getUserInfoFromShared().getPassword();
         loginMethod = viewModel.getUserInfoFromShared().getLoginMethod();
-        id.setText(viewModel.getUserInfoFromShared().getUserId());
-        method.setText(viewModel.getUserInfoFromShared().getLoginMethod());
-        nickname.setText(viewModel.getUserInfoFromShared().getUserNickname());
-        if(method.equals("일반")){
-            password.setText(checkPW);
+        binding.idTv.setText(viewModel.getUserInfoFromShared().getUserId());
+        binding.updateMethodTv.setText(viewModel.getUserInfoFromShared().getLoginMethod());
+        binding.nicknameEt.setText(viewModel.getUserInfoFromShared().getUserNickname());
+        if(binding.updateMethodTv.equals("일반")){
+            binding.passwordEt.setText(checkPW);
         }else {
-            password.setText("소셜로그인은 변경할 수 없습니다.");
-            password2.setText("소셜로그인은 변경할 수 없습니다.");
-            password.setEnabled(false);
-            password2.setEnabled(false);
+            binding.passwordEt.setText("소셜로그인은 변경할 수 없습니다.");
+            binding.password2Et.setText("소셜로그인은 변경할 수 없습니다.");
+            binding.passwordEt.setEnabled(false);
+            binding.password2Et.setEnabled(false);
         }
         /*프로필 가져오기*/
         viewModel.getProfile(checkNickname);
         viewModel.getProfileLiveData.observe(this,profile -> {
             if(profile.getCode()==200){
                 profileUri = profile.getProfileUri();
-                setProfile.setImageURI(profileUri);
+                binding.setProfilePicture.setImageURI(profileUri);
             }
         });
-        setProfile.setOnClickListener(new View.OnClickListener() {
+        binding.setProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -87,7 +78,7 @@ public class UpdateUserActivity extends AppCompatActivity {
             }
         });
 
-        exit.setOnClickListener(new View.OnClickListener() {
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -95,10 +86,10 @@ public class UpdateUserActivity extends AppCompatActivity {
                 finish();
             }
         });
-        nicknameChk.setOnClickListener(new View.OnClickListener() {
+        binding.nicknameCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userNickname = nickname.getText().toString();
+                String userNickname = binding.nicknameEt.getText().toString();
                 if(userNickname.equals("")||!userNickname.matches("^[a-zA-Z0-9가-힣]+$")) {
                     Snackbar.make(findViewById(R.id.update_user_layout),"조건에 맞는 닉네임을 입력해주세요.",Snackbar.LENGTH_SHORT).show();
                     isCertify = false;
@@ -119,26 +110,26 @@ public class UpdateUserActivity extends AppCompatActivity {
             }
         });
 
-        save.setOnClickListener(new View.OnClickListener() {
+        binding.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String nick = nickname.getText().toString();
-                String passwd = password.getText().toString();
+                String nick = binding.nicknameEt.getText().toString();
+                String passwd = binding.passwordEt.getText().toString();
                 String loginmethod= viewModel.getLoginMethod();
                 /*닉네임 중복 검사*/
                 if(!isCertify){
                     Snackbar.make(findViewById(R.id.update_user_layout), "닉네임 중복 검사 실시 해주세요.", Snackbar.LENGTH_SHORT).show();
                 }/*비밀번호 조건 검사*/
-                else if(method.equals("일반")&&!passwd.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{8,15}.$")){
+                else if(binding.updateMethodTv.equals("일반")&&!passwd.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{8,15}.$")){
                     Snackbar.make(findViewById(R.id.update_user_layout), "비밀번호는 영문,특수문자,숫자 조합입니다.", Snackbar.LENGTH_SHORT).show();
                 }/*비밀번호 확인과 동일 검사*/
-                else if(passwd.equals(password2.getText())){
+                else if(passwd.equals(binding.password2Et.getText())){
                     Snackbar.make(findViewById(R.id.update_user_layout), "비밀번호가 일치하지 않습니다.", Snackbar.LENGTH_SHORT).show();
                 }
-                else if(isCertify&&method.equals("일반")){
+                else if(isCertify&&binding.updateMethodTv.equals("일반")){
                     viewModel.updateUserInfo(nick,passwd,loginmethod);
                     finish();
-                }else if(isCertify&&!method.equals("일반")){
+                }else if(isCertify&&!binding.updateMethodTv.equals("일반")){
                     viewModel.updateUserInfo(nick,checkPW,loginmethod);
                     finish();
                 }

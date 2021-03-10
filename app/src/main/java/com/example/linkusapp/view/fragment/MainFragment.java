@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.FragmentMainBinding;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.Timer;
 import com.example.linkusapp.view.activity.TimerDialog;
@@ -49,10 +50,7 @@ import java.util.List;
 
 public class MainFragment extends Fragment  implements OnDateSelectedListener {
 
-    private LinearLayout timerBt;
-    MaterialCalendarView materialCalendarView;
-    private CardView selectedContainer;
-    private ImageView watchImage;
+    private FragmentMainBinding binding;
     private BoardViewModel viewModel;
     private List<Timer> timeList = new ArrayList<>();
     private DayViewDecorator dayDecorator;
@@ -62,13 +60,15 @@ public class MainFragment extends Fragment  implements OnDateSelectedListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = FragmentMainBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
         Log.d("LIFE", "onCreateView: ");
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        materialCalendarView = view.findViewById(R.id.calendar);
-        timerBt = (LinearLayout) view.findViewById(R.id.btn_timer);
-        watchImage = (ImageView)view.findViewById(R.id.img_watch);
-        selectedContainer = (CardView) view.findViewById(R.id.selected_container);
         return view;
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     @Override
@@ -77,9 +77,8 @@ public class MainFragment extends Fragment  implements OnDateSelectedListener {
         Log.d("LIFE", "onViewCreated: ");
         viewModel = new ViewModelProvider(this).get(BoardViewModel.class);
         userNickName = viewModel.getUserInfoFromShared().getUserNickname();
-//        viewModel.getEntireRecord(userNickName);
 
-        watchImage.setColorFilter(ContextCompat.getColor(getActivity(),R.color.red400));
+        binding.imgWatch.setColorFilter(ContextCompat.getColor(getActivity(),R.color.red400));
         viewModel.entireRecordLD.observe(getViewLifecycleOwner(),timerInfo -> {
             if(timerInfo.getCode()==200){
                 timeList = timerInfo.getTimer();
@@ -103,7 +102,7 @@ public class MainFragment extends Fragment  implements OnDateSelectedListener {
                         }else if(hour==0 && min>=30){
                             dayDecorator =  new DefaultDecorator(Dateformat.parse(timeList.get(i).getStudyDate()),getActivity());
                         }
-                        materialCalendarView.addDecorator(dayDecorator);
+                        binding.calendar.addDecorator(dayDecorator);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -113,7 +112,7 @@ public class MainFragment extends Fragment  implements OnDateSelectedListener {
             }
         });
 
-        timerBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), TimerDialog.class);
@@ -123,9 +122,9 @@ public class MainFragment extends Fragment  implements OnDateSelectedListener {
         });
 
         //캘린더 관련 기능
-        materialCalendarView.setOnDateChangedListener(this);
-        materialCalendarView.setTopbarVisible(true);
-        materialCalendarView.addDecorators(new TodayDecorator(getActivity()), new SunDayDecorator(getActivity()), new SaturDayDecorator(getActivity()));
+        binding.calendar.setOnDateChangedListener(this);
+        binding.calendar.setTopbarVisible(true);
+        binding.calendar.addDecorators(new TodayDecorator(getActivity()), new SunDayDecorator(getActivity()), new SaturDayDecorator(getActivity()));
 
 
     }
@@ -148,8 +147,6 @@ public class MainFragment extends Fragment  implements OnDateSelectedListener {
         intent.putExtra("studyTime",intentData);
 
         startActivity(intent);
-//        intent.putExtra("selectedDate",selectedDate);
-//        intent.putExtra("userNick",userNickName);
     }
 
     @Override

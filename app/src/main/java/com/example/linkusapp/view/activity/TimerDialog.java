@@ -26,6 +26,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ActivityTimerDialogBinding;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.util.TimerService;
 import com.example.linkusapp.viewModel.LoginViewModel;
@@ -40,12 +41,8 @@ import java.util.Timer;
 
 public class TimerDialog extends AppCompatActivity {
 
-    private TextView timer;
-    private Button startBt, pauseBt, cancelBt, recordBt;
-    private ImageButton closeBt;
-    private LinearLayout containerPause;
+    private ActivityTimerDialogBinding binding;
     private TimerViewModel viewModel;
-
     private Intent intent;
     SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private String curTime;
@@ -53,55 +50,50 @@ public class TimerDialog extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityTimerDialogBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
         //타이틀 바 없애는 것
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_timer_dialog);
 
-        timer = (TextView) findViewById(R.id.timer);
-        startBt = (Button) findViewById(R.id.btn_timer_start);
-        pauseBt = (Button) findViewById(R.id.btn_timer_pause);
-        cancelBt = (Button) findViewById(R.id.btn_cancel_timer);
-        recordBt = (Button) findViewById(R.id.btn_record_timer);
-        closeBt = (ImageButton) findViewById(R.id.btn_dialog_close);
-        containerPause = (LinearLayout) findViewById(R.id.container_pause);
         String userNick = getIntent().getStringExtra("userNick");
         viewModel = new ViewModelProvider(this).get(TimerViewModel.class);
 
         intent = new Intent(getApplicationContext(), TimerService.class);
 
-        startBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnTimerStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startBt.setEnabled(false); //스레드 두번연속 실행을 막기위함
+                binding.btnTimerStart.setEnabled(false); //스레드 두번연속 실행을 막기위함
                 startService(intent);
             }
         });
 
-        pauseBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnTimerPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pauseBt.getText().toString().equals("pause")) {
-                    pauseBt.setText("start");
+                if (binding.btnTimerPause.getText().toString().equals("pause")) {
+                    binding.btnTimerPause.setText("start");
                 } else {
-                    pauseBt.setText("pause");
+                    binding.btnTimerPause.setText("pause");
                 }
                 TimerService.isRunning.setValue(!TimerService.isRunning.getValue());
             }
         });
 
-        cancelBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnCancelTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                timerThread.interrupt(); //스톱워치 종료
                 stopService(intent);
-                containerPause.setVisibility(View.INVISIBLE);
-                startBt.setEnabled(true);
-                startBt.setVisibility(View.VISIBLE);
+                binding.containerPause.setVisibility(View.INVISIBLE);
+                binding.btnTimerStart.setEnabled(true);
+                binding.btnTimerStart.setVisibility(View.VISIBLE);
             }
         });
 
 
-        recordBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnRecordTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
@@ -110,13 +102,13 @@ public class TimerDialog extends AppCompatActivity {
                 calendar.set(Calendar.SECOND,0);
                 String defaultTime = timeFormat.format(calendar.getTimeInMillis());
                 try {
-                    Date time = timeFormat.parse(timer.getText().toString());
+                    Date time = timeFormat.parse(binding.timer.getText().toString());
                     Date t = timeFormat.parse(defaultTime);
                     if(time.before(t)){
                         Snackbar.make(findViewById(R.id.timerview), "공부시간 30분 전 까지는 기록할 수 없습니다..", Snackbar.LENGTH_SHORT).show();
                     }else{
                         viewModel.getTodayRecord(userNick); //사용자가 오늘 날짜에 지금까지 공부한 시간 조회
-                        curTime = timer.getText().toString();
+                        curTime = binding.timer.getText().toString();
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -149,13 +141,13 @@ public class TimerDialog extends AppCompatActivity {
             }else{
                 Log.d("not200", "오늘은 사용자가 공부 시간을 기록하지 않음.");
 
-                viewModel.insertTimer(userNick, timer.getText().toString()); //오늘의 공부 시간을 최초로 기록
+                viewModel.insertTimer(userNick, binding.timer.getText().toString()); //오늘의 공부 시간을 최초로 기록
             }
             //공부 시간을 기록하면 타이머 초기화.
             stopService(intent);
-            containerPause.setVisibility(View.INVISIBLE);
-            startBt.setEnabled(true);
-            startBt.setVisibility(View.VISIBLE);
+            binding.containerPause.setVisibility(View.INVISIBLE);
+            binding.btnTimerStart.setEnabled(true);
+            binding.btnTimerStart.setVisibility(View.VISIBLE);
         });
 
         viewModel.updateTimerLD.observe(this,response ->{
@@ -164,7 +156,7 @@ public class TimerDialog extends AppCompatActivity {
             }
         } );
 
-        closeBt.setOnClickListener(new View.OnClickListener() {
+        binding.btnDialogClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -175,15 +167,15 @@ public class TimerDialog extends AppCompatActivity {
         TimerService.time2.observe(this, time -> {
             Log.d("respoo", time);
             if (!time.equals("00:00:00")) {
-                startBt.setVisibility(View.INVISIBLE);
-                containerPause.setVisibility(View.VISIBLE);
+                binding.btnTimerStart.setVisibility(View.INVISIBLE);
+                binding.containerPause.setVisibility(View.VISIBLE);
 
             } else {
-                startBt.setVisibility(View.VISIBLE);
-                containerPause.setVisibility(View.INVISIBLE);
+                binding.btnTimerStart.setVisibility(View.VISIBLE);
+                binding.containerPause.setVisibility(View.INVISIBLE);
 
             }
-            timer.setText(time);
+            binding.timer.setText(time);
         });
 
         viewModel.insertTimerLD.observe(this, response -> {
@@ -196,9 +188,9 @@ public class TimerDialog extends AppCompatActivity {
 
         TimerService.isRunning.observe(this, isRunning -> {
             if (isRunning) {
-                pauseBt.setText("pause");
+                binding.btnTimerPause.setText("pause");
             } else {
-                pauseBt.setText("start");
+                binding.btnTimerPause.setText("start");
             }
         });
 
