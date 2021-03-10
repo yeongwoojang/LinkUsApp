@@ -13,12 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ItemMemberBinding;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.view.activity.ChatActivity;
 
 import java.util.List;
 
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberViewHolder>implements View.OnClickListener {
+
     private Context mContext;
     private List<User> items;
     private String myNickname;

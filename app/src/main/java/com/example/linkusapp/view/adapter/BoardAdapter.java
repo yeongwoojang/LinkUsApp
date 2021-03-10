@@ -48,8 +48,6 @@ public class BoardAdapter extends RecyclerView.Adapter implements View.OnClickLi
             gPurpose = itemView.findViewById(R.id.g_purpose);
             gJoinMethod = itemView.findViewById(R.id.g_join_method);
         }
-
-
     }
 
     public class SelectViewHolder extends RecyclerView.ViewHolder{
