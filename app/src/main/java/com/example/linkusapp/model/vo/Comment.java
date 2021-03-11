@@ -3,75 +3,73 @@ package com.example.linkusapp.model.vo;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.util.Date;
 
 public class Comment implements Serializable {
     private static final long serialVersionUID =1L; /*객체 전체 넘길수 있따.*/
 
     @SerializedName("B_IDX")
-    private int bIdx;
+    private int idx;
 
     @SerializedName("B_NAME")
-    private String bName;
+    private String name;
 
     @SerializedName("B_WRITER")
-    private String bWriter;
+    private String writer;
 
     @SerializedName("B_COMMENT")
-    private String bComment;
+    private String comment;
 
     @SerializedName("B_WRITETIME")
-    private String bWriteTime;
+    private String writeTime;
 
     @SerializedName("B_SECRET")
-    private int bSecret;
+    private int secret;
 
-    public int getbIdx() {
-        return bIdx;
+    public int getIdx() {
+        return idx;
     }
 
-    public String getbName() {
-        return bName;
+    public String getName() {
+        return name;
     }
 
-    public String getbWriter() {
-        return bWriter;
+    public String getWriter() {
+        return writer;
     }
 
-    public String getbComment() {
-        return bComment;
+    public String getComment() {
+        return comment;
     }
 
-    public String getbWriteTime() {
-        return bWriteTime;
+    public String getWriteTime() {
+        return writeTime;
     }
 
-    public int getbSecret() {
-        return bSecret;
+    public int getSecret() {
+        return secret;
     }
 
-    public void setbIdx(int bIdx) {
-        this.bIdx = bIdx;
+    public void setIdx(int idx) {
+        this.idx = idx;
     }
 
-    public void setbName(String bName) {
-        this.bName = bName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setbWriter(String bWriter) {
-        this.bWriter = bWriter;
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 
-    public void setbComment(String bComment) {
-        this.bComment = bComment;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public void setbWriteTime(String bWriteTime) {
-        this.bWriteTime = bWriteTime;
+    public void setWriteTime(String writeTime) {
+        this.writeTime = writeTime;
     }
 
-    public void setbSecret(int bSecret) {
-        this.bSecret = bSecret;
+    public void setSecret(int secret) {
+        this.secret = secret;
     }
 }

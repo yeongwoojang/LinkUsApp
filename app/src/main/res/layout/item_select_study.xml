@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <data>
+        <variable
+            name="adapter"
+            type="com.example.linkusapp.view.adapter.BoardAdapter" />
+        <variable
+            name="position"
+            type="Integer" />
+        <variable
+            name="board"
+            type="com.example.linkusapp.model.vo.Board" />
+    </data>
+
+
+<androidx.cardview.widget.CardView
     android:id="@+id/board_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,7 +23,10 @@
     android:layout_marginRight="16dp"
     android:layout_marginBottom="3dp"
     android:layout_marginTop="3dp"
-    android:elevation="8dp">
+    android:elevation="8dp"
+    android:onClick="@{()->adapter.itemClickEvent(position)}"
+
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +39,7 @@
             android:id="@+id/g_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="그룹명"
+            android:text="@{board.title}"
             android:textSize="15dp"
             android:layout_marginBottom="5dp"
             android:textColor="@color/black"
@@ -43,10 +61,11 @@
                 android:id="@+id/g_purpose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="전교 1등"
+                android:text="@{board.purpose}"
                 android:textColor="@color/red300"
                 android:fontFamily="@font/nanum_square_ac_b"
                 android:layout_marginLeft="10dp"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
+</layout>

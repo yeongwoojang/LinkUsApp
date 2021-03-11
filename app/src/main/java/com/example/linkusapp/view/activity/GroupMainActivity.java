@@ -40,15 +40,15 @@ public class GroupMainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Board board = (Board) intent.getSerializableExtra("board");
 
-        binding.txtGroupName.setText(board.getgName());
-        binding.memberCount.setText("인원제한 " + board.getgMemberLimit() + "명");
-        binding.readerNameTxt.setText("리더 :" + board.getgReader());
-        binding.joinMethod.setText("가입방식 :" + board.getgJoinMethod());
-        binding.period.setText("기간 : " + board.getgStartDate() + " ~ " + board.getgEndDate());
-        binding.txtGroupExpl.setText(board.getgExplanation());
-        binding.txtGroupPurpose.setText(board.getgPurpose());
+        binding.txtGroupName.setText(board.getTitle());
+        binding.memberCount.setText("인원제한 " + board.getMemberLimit() + "명");
+        binding.readerNameTxt.setText("리더 :" + board.getLeader());
+        binding.joinMethod.setText("가입방식 :" + board.getGroupJoinMethod());
+        binding.period.setText("기간 : " + board.getStartDate() + " ~ " + board.getEndDate());
+        binding.txtGroupExpl.setText(board.getExplanation());
+        binding.txtGroupPurpose.setText(board.getPurpose());
 
-        if (board.getgJoinMethod().equals("자유")) {
+        if (board.getGroupJoinMethod().equals("자유")) {
             binding.reqJoinLayout.setVisibility(View.INVISIBLE);
         } else {
             binding.reqJoinLayout.setVisibility(View.VISIBLE);
@@ -56,7 +56,7 @@ public class GroupMainActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(CreateGrpViewModel.class);
         User user = viewModel.getUserInfoFromShared();
-        viewModel.getGroupMember(board.getgName());
+        viewModel.getGroupMember(board.getTitle());
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,12 +68,12 @@ public class GroupMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //그룹 가입 방식이 자유형일 경우
-                if (board.getgJoinMethod().equals("자유")) {
-                    if (memberCount < Integer.parseInt(board.getgMemberLimit())) {
+                if (board.getGroupJoinMethod().equals("자유")) {
+                    if (memberCount < Integer.parseInt(board.getMemberLimit())) {
                         User user = viewModel.getUserInfoFromShared();
                         String userId = user.getUserId();
                         String userNick = user.getUserNickname();
-                        viewModel.joinGroup(board.getgName(), userId, userNick);
+                        viewModel.joinGroup(board.getTitle(), userId, userNick);
                     } else {
                         Snackbar.make(binding.groupMainLayout, "인원이 꽉 찼습니다.", Snackbar.LENGTH_SHORT).show();
                     }
@@ -103,9 +103,9 @@ public class GroupMainActivity extends AppCompatActivity {
         binding.requestJoinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (memberCount < Integer.parseInt(board.getgMemberLimit())) {
+                if (memberCount < Integer.parseInt(board.getMemberLimit())) {
                     User user = viewModel.getUserInfoFromShared();
-                    viewModel.insertRequest(board.getgName(), user.getUserNickname());
+                    viewModel.insertRequest(board.getTitle(), user.getUserNickname());
                 } else {
                     Snackbar.make(binding.groupMainLayout, "인원이 꽉 찼습니다.", Snackbar.LENGTH_SHORT).show();
                 }
@@ -115,7 +115,7 @@ public class GroupMainActivity extends AppCompatActivity {
         viewModel.insertReqRes.observe(this, response -> {
             if (response.equals("200")) {
                 Snackbar.make(findViewById(R.id.group_main_layout), "가입 요청 성공.", Snackbar.LENGTH_SHORT).show();
-                viewModel.requestJoin(board.getgReader(), user.getUserNickname(), user.getAge(), user.getGender(), user.getAddress());
+                viewModel.requestJoin(board.getLeader(), user.getUserNickname(), user.getAge(), user.getGender(), user.getAddress());
             } else if (response.equals("204")) {
                 Snackbar.make(findViewById(R.id.group_main_layout), "이미 요청했습니다.", Snackbar.LENGTH_SHORT).show();
             } else {

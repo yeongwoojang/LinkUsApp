@@ -14,12 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ItemMemberBinding;
+import com.example.linkusapp.databinding.ItemSelectStudyBinding;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.view.activity.ChatActivity;
 
 import java.util.List;
 
-public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberViewHolder>implements View.OnClickListener {
+public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberViewHolder>{
+
+    private MemberAdapter thisObject = this;
 
     private Context mContext;
     private List<User> items;
@@ -37,28 +40,33 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
         notifyDataSetChanged();
     }
     public class MemberViewHolder extends RecyclerView.ViewHolder{
-        private TextView txtUserName;
-        private ImageButton btnSendMsg;
-        public MemberViewHolder(@NonNull View itemView) {
-            super(itemView);
-            txtUserName = itemView.findViewById(R.id.txt_username);
-            btnSendMsg = itemView.findViewById(R.id.btn_send_msg);
+        private ItemMemberBinding binding;
+
+        public MemberViewHolder(ItemMemberBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+            this.binding.setAdapter(thisObject);
+        }
+
+        void bind(User user, int position){
+            binding.setUser(user);
+            binding.setPosition(position);
         }
     }
 
     @NonNull
     @Override
     public MemberViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_member,parent,false);
-        return new MemberAdapter.MemberViewHolder(view);
+
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ItemMemberBinding binding = ItemMemberBinding.inflate(inflater, parent, false);
+        return new MemberAdapter.MemberViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MemberViewHolder holder, int position) {
         User user = items.get(position);
-        holder.txtUserName.setText(user.getUserNickname());
-        holder.btnSendMsg.setTag(position);
-        holder.btnSendMsg.setOnClickListener(this);
+        holder.bind(user,position);
     }
 
     @Override
@@ -66,12 +74,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
         return items.size();
     }
 
-    @Override
-    public void onClick(View v) {
+    public void sendBtnClickEvent(int position){
         Intent intent = new Intent(mContext, ChatActivity.class);
         intent.putExtra("gName",gName);
         intent.putExtra("myNickName",myNickname);
-        intent.putExtra("yourNickName",items.get((int)v.getTag()).getUserNickname());
+        intent.putExtra("yourNickName",items.get(position).getUserNickname());
         mContext.startActivity(intent);
         Activity activity = (Activity)mContext;
         activity.overridePendingTransition(R.anim.right_in, R.anim.left_out);

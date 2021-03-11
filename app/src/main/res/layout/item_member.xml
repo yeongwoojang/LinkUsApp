@@ -1,35 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:orientation="horizontal"
-    android:background="@color/red100"
-    android:padding="10dp"
-    >
-    <ImageView
+<layout>
+
+    <data>
+        <variable
+            name="adapter"
+            type="com.example.linkusapp.view.adapter.MemberAdapter" />
+        <variable
+            name="position"
+            type="Integer" />
+        <variable
+            name="user"
+            type="com.example.linkusapp.model.vo.User" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/baseline_person_24"
-        android:layout_weight="3"
-        />
-    <TextView
-        android:id="@+id/txt_username"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="유저이름"
-        android:textSize="15dp"
-        android:textColor="@color/white"
-        android:fontFamily="@font/nanum_square_ac_eb"
-        android:gravity="center_vertical"
-        android:layout_weight="1"
-        />
-    <ImageButton
-        android:id="@+id/btn_send_msg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/send_comment_foreground"
-        android:background="@color/transparent"
-        android:layout_weight="3"
-        />
-</LinearLayout>
+        android:layout_height="50dp"
+        android:background="@color/red100"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:src="@drawable/baseline_person_24" />
+
+        <TextView
+            android:id="@+id/txt_username"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanum_square_ac_eb"
+            android:gravity="center_vertical"
+            android:text="@{user.userNickname}"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+        <ImageButton
+            android:id="@+id/btn_send_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@color/transparent"
+            android:src="@drawable/send_comment_foreground"
+            android:onClick="@{()->adapter.sendBtnClickEvent(position)}"
+            />
+    </LinearLayout>
+</layout>
