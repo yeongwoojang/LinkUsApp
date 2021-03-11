@@ -104,7 +104,7 @@ public class SetAddressActivity extends AppCompatActivity {
             }
         });
         /*최근 주소*/
-        AddressAdapter addressAdapter = new AddressAdapter(addressList,this, viewModel,this,nickname);
+        AddressAdapter addressAdapter = new AddressAdapter(addressList,this, viewModel,nickname);
         binding.recentAddressRv.setAdapter(addressAdapter);
         binding.recentAddressRv.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         viewModel.userAddress(nickname);

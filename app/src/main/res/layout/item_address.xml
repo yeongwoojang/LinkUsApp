@@ -40,7 +40,6 @@
                     android:layout_height="wrap_content"
                     android:text="@{address.address}"
                     android:textSize="16dp"
-                    android:text="최근 주소 리스트"
                     android:textColor="@color/black"
                     android:fontFamily="@font/nanum_barun_gothic"
                     />
