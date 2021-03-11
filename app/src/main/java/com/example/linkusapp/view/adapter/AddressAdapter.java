@@ -1,11 +1,14 @@
 package com.example.linkusapp.view.adapter;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -15,13 +18,16 @@ import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ItemAddressBinding;
 import com.example.linkusapp.databinding.ItemMyChatRoomBinding;
 import com.example.linkusapp.model.vo.UserAddress;
+import com.example.linkusapp.view.activity.MainActivity;
 import com.example.linkusapp.viewModel.MyPageViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressViewHolder> implements View.OnClickListener{
     private List<UserAddress> mDataset;
     private Activity getActivity;
+    private Context mContext;
     private MyPageViewModel viewModel;
     private String nickname;
     /**/
@@ -36,10 +42,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         mDataset = items;
         notifyDataSetChanged();
     }
-    public AddressAdapter(List<UserAddress> addressList, Activity getActivity,MyPageViewModel viewModel,String nickname) {
+    public AddressAdapter(List<UserAddress> addressList, Activity getActivity,MyPageViewModel viewModel,Context mContext,String nickname) {
         mDataset = addressList;
         this.getActivity = getActivity;
         this.nickname = nickname;
+        this.mContext = mContext;
         this.viewModel = viewModel;
     }
     @NonNull
@@ -67,12 +74,15 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
                 switch (view.getId()) {
                     case R.id.cardview:
                         viewModel.updateAddress(nickname, mDataset.get((int) view.getTag()).getAddress());
+                        getActivity.finish();
+                        Toast.makeText(mContext,"주소가 "+ mDataset.get((int) view.getTag()).getAddress()+"로 변경되었습니다.",Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.remove_btn:
                         viewModel.removeAddress(mDataset.get((int) view.getTag()).getAddress());
                         mDataset.remove((int)view.getTag());
                         notifyItemRemoved((int)view.getTag());
                         notifyItemRangeChanged((int)view.getTag(), getItemCount());
+                        Toast.makeText(mContext,"해당 주소가 리스트에서 삭제되었습니다.",Toast.LENGTH_SHORT).show();
                         break;
         }
     }

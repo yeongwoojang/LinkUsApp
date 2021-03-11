@@ -45,6 +45,13 @@ public class MyPageFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+
+    @Override
+    public void onResume() {
+        binding.addressTv.setText(viewModel.getUserInfoFromShared().getAddress());
+        super.onResume();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -104,7 +104,7 @@ public class SetAddressActivity extends AppCompatActivity {
             }
         });
         /*최근 주소*/
-        AddressAdapter addressAdapter = new AddressAdapter(addressList,this, viewModel,nickname);
+        AddressAdapter addressAdapter = new AddressAdapter(addressList,this, viewModel,this,nickname);
         binding.recentAddressRv.setAdapter(addressAdapter);
         binding.recentAddressRv.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         viewModel.userAddress(nickname);
@@ -134,7 +134,7 @@ public class SetAddressActivity extends AppCompatActivity {
 //                   주소 db수정, 주소db에 추가
                     viewModel.addAddress(nickname,newAddress);
                     viewModel.updateAddress(nickname,newAddress);
-                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     overridePendingTransition(R.anim.left_in, R.anim.right_out);
                     finish();
                 }
