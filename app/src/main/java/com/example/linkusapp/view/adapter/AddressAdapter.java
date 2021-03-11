@@ -1,6 +1,8 @@
 package com.example.linkusapp.view.adapter;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,8 @@ import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ItemAddressBinding;
 import com.example.linkusapp.databinding.ItemMyChatRoomBinding;
 import com.example.linkusapp.model.vo.UserAddress;
+import com.example.linkusapp.view.activity.MainActivity;
+import com.example.linkusapp.view.activity.MyStudyGroupActivity;
 import com.example.linkusapp.viewModel.MyPageViewModel;
 
 import java.util.List;
@@ -24,6 +28,7 @@ import java.util.List;
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressViewHolder>{
     private List<UserAddress> mDataset;
     private Activity getActivity;
+    private Context mContext;
     private MyPageViewModel viewModel;
     private String nickname;
     private AddressAdapter thisObject = this;
@@ -49,11 +54,12 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         notifyDataSetChanged();
     }
 
-    public AddressAdapter(List<UserAddress> addressList, Activity getActivity, MyPageViewModel viewModel, String nickname) {
+    public AddressAdapter(List<UserAddress> addressList, Activity getActivity, MyPageViewModel viewModel,Context mContext,String nickname) {
         mDataset = addressList;
         this.getActivity = getActivity;
         this.nickname = nickname;
         this.viewModel = viewModel;
+        this.mContext = mContext;
     }
 
     @NonNull
@@ -77,6 +83,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
     public void itemClickEvent(int position) {
         viewModel.updateAddress(nickname, mDataset.get(position).getAddress());
+        getActivity.startActivity(new Intent(getActivity, MyStudyGroupActivity.class));
+        getActivity.finish();
     }
 
     public void removeClickEvent(int position) {

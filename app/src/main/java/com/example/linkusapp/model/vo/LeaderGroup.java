@@ -4,20 +4,20 @@ import com.google.gson.annotations.SerializedName;
 
 public class LeaderGroup {
     @SerializedName("G_NAME")
-    private String gName;
+    private String name;
 
     @SerializedName("G_READER")
-    private String gLeader;
+    private String leader;
 
     @SerializedName("REQ_COUNT")
     private int reqCount;
 
-    public String getgName() {
-        return gName;
+    public String getName() {
+        return name;
     }
 
-    public String getgLeader() {
-        return gLeader;
+    public String getLeader() {
+        return leader;
     }
 
     public int getReqCount() {
@@ -27,8 +27,8 @@ public class LeaderGroup {
     @Override
     public String toString() {
         return "LeaderGroup{" +
-                "gName='" + gName + '\'' +
-                ", gLeader='" + gLeader + '\'' +
+                "gName='" + name + '\'' +
+                ", gLeader='" + leader + '\'' +
                 ", reqCount=" + reqCount +
                 '}';
     }

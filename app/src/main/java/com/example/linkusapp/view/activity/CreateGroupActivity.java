@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityCreateGroupBinding;
+import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.viewModel.CreateGrpViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -37,6 +38,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     private String part = "어학";
     private boolean gNameChkFlg = false;
     private String gName = "";
+    private User curUser;
     //viewModel
     CreateGrpViewModel viewModel;
 
@@ -49,6 +51,8 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         //viewModel 초기화
         viewModel = new ViewModelProvider(this).get(CreateGrpViewModel.class);
+        //현재 유저의 닉네임 받아오기
+        curUser = viewModel.getUserInfoFromShared();
         //유저정보 호출
         viewModel.getUserInfo();
         viewModel.userLiveData.observe(this, userInfo -> {
@@ -215,11 +219,18 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         viewModel.createGroupRes.observe(this, code -> {
             if (code.equals("200")) {
-                Snackbar.make(findViewById(R.id.create_group_page), "그룹생성완료", Snackbar.LENGTH_SHORT).show();
+                viewModel.joinGroup(gName,curUser.getUserId(),curUser.getUserNickname());
             } else {
-                Snackbar.make(findViewById(R.id.create_group_page), "그룹생성 실패", Snackbar.LENGTH_SHORT).show();
             }
         });
+
+        viewModel.joinGroupRes.observe(this,response ->{
+            if(response.equals("200")){
+                Snackbar.make(findViewById(R.id.create_group_page), "그룹생성완료", Snackbar.LENGTH_SHORT).show();
+            }else{
+                Snackbar.make(findViewById(R.id.create_group_page), "그룹생성 실패", Snackbar.LENGTH_SHORT).show();
+            }
+        } );
     }
 
     //DatePickerDialog 생성코드
