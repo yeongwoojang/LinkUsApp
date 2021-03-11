@@ -21,6 +21,7 @@ public class BaseViewModel extends AndroidViewModel {
     protected ServiceApi service;
     protected SharedPreference prefs;
     public MutableLiveData<UsersInfo> groupMembersLD = new MutableLiveData<>();
+    public MutableLiveData<String> joinGroupRes = new MutableLiveData<>();
 
     public BaseViewModel(@NonNull Application application) {
         super(application);
@@ -42,6 +43,22 @@ public class BaseViewModel extends AndroidViewModel {
             }
         });
     }
+
+    public void joinGroup(String gName, String gMemberId, String gMemberNick){
+        service.joinGroup(gName,gMemberId,gMemberNick).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body();
+                joinGroupRes.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+
     public User getUserInfoFromShared(){
         return prefs.getUserInfo();
     }

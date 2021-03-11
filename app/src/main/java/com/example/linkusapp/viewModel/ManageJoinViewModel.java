@@ -25,7 +25,7 @@ public class ManageJoinViewModel extends BaseViewModel {
 
     public MutableLiveData<LeaderGroupInfo> leaderGroupRes = new MutableLiveData<>();
     public MutableLiveData<UsersInfo> reqUserListRes = new MutableLiveData<>();
-    public MutableLiveData<String> joinGroupRes = new MutableLiveData<>();
+//    public MutableLiveData<String> joinGroupRes = new MutableLiveData<>();
     public MutableLiveData<String> deleteRes = new MutableLiveData<>();
 
     public ManageJoinViewModel(@NonNull Application application) {
