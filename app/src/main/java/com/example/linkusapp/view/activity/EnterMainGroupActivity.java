@@ -55,15 +55,15 @@ public class EnterMainGroupActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Board board = (Board)intent.getSerializableExtra("board");
-        gName = board.getgName();
+        gName = board.getTitle();
 
         viewModel.getGroupMember(gName);
         writer = viewModel.getUserInfoFromShared().getUserNickname();
         binding.groupNameTv.setText(gName);
-        binding.leaderTv.setText("리더 : "+board.getgReader());
-        binding.partTv.setText("분야 : "+board.getgPart());
-        binding.periodTv.setText("기간 : "+board.getgStartDate()+" ~ "+board.getgEndDate());
-        binding.groupGoalTv.setText("그룹 목표 : "+board.getgPurpose());
+        binding.leaderTv.setText("리더 : "+board.getLeader());
+        binding.partTv.setText("분야 : "+board.getPart());
+        binding.periodTv.setText("기간 : "+board.getStartDate()+" ~ "+board.getEndDate());
+        binding.groupGoalTv.setText("그룹 목표 : "+board.getPurpose());
 
         CommentAdapter commentAdapter = new CommentAdapter(commentList);
         binding.commentRv.setAdapter(commentAdapter);

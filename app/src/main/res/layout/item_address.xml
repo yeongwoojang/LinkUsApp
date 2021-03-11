@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="adapter"
+            type="com.example.linkusapp.view.adapter.AddressAdapter" />
+        <variable
+            name="position"
+            type="Integer" />
+        <variable
+            name="address"
+            type="com.example.linkusapp.model.vo.UserAddress" />
+    </data>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="wrap_content">
@@ -8,7 +21,9 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{()->adapter.itemClickEvent(position)}"
+        >
         <RelativeLayout
             android:id="@+id/firstLin"
             android:layout_width="match_parent"
@@ -23,6 +38,7 @@
                     android:id="@+id/item_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{address.address}"
                     android:textSize="16dp"
                     android:fontFamily="@font/nanum_barun_gothic"
                     />
@@ -33,6 +49,7 @@
                     android:background="@color/transparent"
                     android:src="@drawable/cancel_foreground"
                     android:layout_alignParentRight="true"
+                    android:onClick="@{()->adapter.removeClickEvent(position)}"
                     />
             </RelativeLayout>
         </RelativeLayout>
@@ -44,3 +61,4 @@
         android:layout_below="@+id/toolbar"
         android:background="@color/gray300" />
 </LinearLayout>
+</layout>

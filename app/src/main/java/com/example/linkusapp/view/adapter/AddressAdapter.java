@@ -1,11 +1,13 @@
 package com.example.linkusapp.view.adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -19,29 +21,41 @@ import com.example.linkusapp.viewModel.MyPageViewModel;
 
 import java.util.List;
 
-public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressViewHolder> implements View.OnClickListener{
+public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressViewHolder>{
     private List<UserAddress> mDataset;
     private Activity getActivity;
     private MyPageViewModel viewModel;
     private String nickname;
+    private AddressAdapter thisObject = this;
+
     /**/
-    public class AddressViewHolder extends RecyclerView.ViewHolder{
+    public class AddressViewHolder extends RecyclerView.ViewHolder {
         private ItemAddressBinding binding;
+
         public AddressViewHolder(@NonNull ItemAddressBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            this.binding.setAdapter(thisObject);
+        }
+
+        void bind(UserAddress userAddress, int position) {
+            binding.setAddress(userAddress);
+            binding.setPosition(position);
         }
     }
-    public void updateItem(List<UserAddress> items){
+
+    public void updateItem(List<UserAddress> items) {
         mDataset = items;
         notifyDataSetChanged();
     }
-    public AddressAdapter(List<UserAddress> addressList, Activity getActivity,MyPageViewModel viewModel,String nickname) {
+
+    public AddressAdapter(List<UserAddress> addressList, Activity getActivity, MyPageViewModel viewModel, String nickname) {
         mDataset = addressList;
         this.getActivity = getActivity;
         this.nickname = nickname;
         this.viewModel = viewModel;
     }
+
     @NonNull
     @Override
     public AddressViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -49,31 +63,26 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         ItemAddressBinding binding = ItemAddressBinding.inflate(inflater, parent, false);
         return new AddressViewHolder(binding);
     }
+
     @Override
     public void onBindViewHolder(@NonNull AddressViewHolder holder, int position) {
         UserAddress address = mDataset.get(position);
-        holder.binding.itemAddress.setText(address.getAddress());
-        holder.binding.cardview.setTag(position);
-        holder.binding.cardview.setOnClickListener(this);
-        holder.binding.removeBtn.setTag(position);
-        holder.binding.removeBtn.setOnClickListener(this);
+        holder.bind(address, position);
     }
+
     @Override
     public int getItemCount() {
         return mDataset.size();
     }
-    @Override
-    public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.cardview:
-                        viewModel.updateAddress(nickname, mDataset.get((int) view.getTag()).getAddress());
-                        break;
-                    case R.id.remove_btn:
-                        viewModel.removeAddress(mDataset.get((int) view.getTag()).getAddress());
-                        mDataset.remove((int)view.getTag());
-                        notifyItemRemoved((int)view.getTag());
-                        notifyItemRangeChanged((int)view.getTag(), getItemCount());
-                        break;
-        }
+
+    public void itemClickEvent(int position) {
+        viewModel.updateAddress(nickname, mDataset.get(position).getAddress());
+    }
+
+    public void removeClickEvent(int position) {
+        viewModel.removeAddress(mDataset.get(position).getAddress());
+        mDataset.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount());
     }
 }

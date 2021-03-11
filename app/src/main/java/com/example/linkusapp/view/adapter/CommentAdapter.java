@@ -1,6 +1,5 @@
 package com.example.linkusapp.view.adapter;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,56 +10,63 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ItemBoardBinding;
+import com.example.linkusapp.databinding.ItemCommentBinding;
 import com.example.linkusapp.model.vo.Comment;
 
 import java.util.List;
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> implements View.OnClickListener{
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
+
+    private CommentAdapter thisObject = this;
 
     private List<Comment> mDataset;
+    public class CommentViewHolder extends RecyclerView.ViewHolder {
+        private ItemCommentBinding binding;
 
-    @Override
-    public void onClick(View view) {
-    }
 
-    public class CommentViewHolder extends RecyclerView.ViewHolder{
+        public CommentViewHolder(ItemCommentBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+            this.binding.setAdapter(thisObject);
+        }
 
-        private TextView writerTv,writingTimeTv,commentTv;
-        private Button recommentBtn;
-        public CommentViewHolder(@NonNull View itemView) {
-            super(itemView);
-            writerTv= itemView.findViewById(R.id.item_id_tv);
-            writingTimeTv= itemView.findViewById(R.id.item_time_tv);
-            commentTv = itemView.findViewById(R.id.item_comment_tv);
-            recommentBtn = itemView.findViewById(R.id.item_reply_btn);
+        void bind(Comment comment,int position) {
+            binding.setComment(comment);
+            binding.setPosition(position);
         }
     }
-    public void updateItem(List<Comment> items){
+
+    public void updateItem(List<Comment> items) {
         mDataset = items;
         notifyDataSetChanged();
     }
-    public CommentAdapter(List<Comment> commentList){
+
+    public CommentAdapter(List<Comment> commentList) {
         mDataset = commentList;
     }
+
     @NonNull
     @Override
     public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment,parent,false);
-        return new CommentViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ItemCommentBinding binding = ItemCommentBinding.inflate(inflater, parent, false);
+        return new CommentViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CommentAdapter.CommentViewHolder holder, int position) {
         Comment comment = mDataset.get(position);
-        holder.writerTv.setText(comment.getbWriter());
-        holder.commentTv.setText(comment.getbComment());
-        holder.writingTimeTv.setText((comment.getbWriteTime().substring(2,10)+"  "+comment.getbWriteTime().substring(11,16)));
-        holder.recommentBtn.setTag(position);
-        holder.recommentBtn.setOnClickListener(this);
+        comment.setWriteTime(comment.getWriteTime().substring(2, 10) + "  " + comment.getWriteTime().substring(11, 16));
+        holder.bind(comment,position);
     }
 
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    public void replyBtnClickEvent(int position){
+        //답글달기 버튼 이벤트 내용
     }
 }

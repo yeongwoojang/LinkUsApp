@@ -8,71 +8,112 @@ public class Board implements Serializable {
     private static final long serialVersionUID =1L;
 
     @SerializedName("G_PART")
-    private String gPart;
+    private String part;
 
     @SerializedName("ADDRESS")
-    private String gArea;
+    private String area;
 
     @SerializedName("G_READER")
-    private String gReader;
+    private String leader;
 
     @SerializedName("G_NAME")
-    private String gName;
+    private String title;
 
     @SerializedName("G_PURPOSE")
-    private String gPurpose;
+    private String purpose;
 
     @SerializedName("G_JOIN_METHOD")
-    private String gJoinMethod;
+    private String groupJoinMethod;
 
     @SerializedName("G_MEMBER_LIMIT")
-    private String gMemberLimit;
+    private String memberLimit;
 
     @SerializedName("G_START_DATE")
-    private String gStartDate;
+    private String startDate;
 
     @SerializedName("G_END_DATE")
-    private String gEndDate;
+    private String endDate;
 
     @SerializedName("G_EXPLANATION")
-    private String gExplanation;
+    private String explanation;
 
-    public String getgPart() {
-        return gPart;
+    public String getPart() {
+        return part;
     }
 
-    public String getgArea() {
-        return gArea;
+    public void setPart(String part) {
+        this.part = part;
     }
 
-    public String getgReader() {
-        return gReader;
+    public String getArea() {
+        return area;
     }
 
-    public String getgName() {
-        return gName;
+    public void setArea(String area) {
+        this.area = area;
     }
 
-    public String getgPurpose() {
-        return gPurpose;
+    public String getLeader() {
+        return leader;
     }
 
-    public String getgJoinMethod() { return gJoinMethod; }
-
-    public String getgMemberLimit() {
-        return gMemberLimit;
+    public void setLeader(String leader) {
+        this.leader = leader;
     }
 
-    public String getgStartDate() {
-        return gStartDate;
+    public String getTitle() {
+        return title;
     }
 
-    public String getgEndDate() {
-        return gEndDate;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getgExplanation() {
-        return gExplanation;
+    public String getPurpose() {
+        return purpose;
     }
 
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
+
+    public String getGroupJoinMethod() {
+        return groupJoinMethod;
+    }
+
+    public void setGroupJoinMethod(String groupJoinMethod) {
+        this.groupJoinMethod = groupJoinMethod;
+    }
+
+    public String getMemberLimit() {
+        return memberLimit;
+    }
+
+    public void setMemberLimit(String memberLimit) {
+        this.memberLimit = memberLimit;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
+    }
 }
