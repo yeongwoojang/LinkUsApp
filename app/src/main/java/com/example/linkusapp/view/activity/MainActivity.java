@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         /*slidingUpPanelLayout*/
 //        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.slidingView);
 //        slidingUpPanelLayout.setTouchEnabled(false);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(new Intent(this, TerminateServiceOreo.class));
         } else {

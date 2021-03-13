@@ -51,7 +51,7 @@ public class TerminateServiceOreo extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        super.onTaskRemoved(rootIntent);
+
     }
 
     @Override
