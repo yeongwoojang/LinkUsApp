@@ -280,7 +280,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
     private boolean validChk(String gName){
         boolean result = false;
-        if (!gName.matches("^[a-zA-Z0-9가-힣]+$")){
+            if (!gName.matches("^[a-zA-Z0-9가-힣]+$")){
             result = false;
         }else{
             result = true;

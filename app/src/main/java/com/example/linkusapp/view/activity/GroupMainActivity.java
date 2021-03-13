@@ -57,6 +57,7 @@ public class GroupMainActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(CreateGrpViewModel.class);
         User user = viewModel.getUserInfoFromShared();
         viewModel.getGroupMember(board.getTitle());
+
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

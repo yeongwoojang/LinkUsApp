@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.linkusapp">
-
-    <!--사진 가져오는 권한-->
+    <!-- 사진 가져오는 권한 -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--인터넷 권한-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 인터넷 권한 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -29,13 +27,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.ChatActivity" android:windowSoftInputMode="adjustResize"/>
-
+        <activity
+            android:name=".view.activity.ChatActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.dialog.PopupDialog"
             android:theme="@style/Theme.AppCompat.Dialog.MinWidth" />
         <activity android:name=".view.activity.TimerDialog" />
-        <activity android:name=".view.activity.EnterMainGroupActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".view.activity.EnterMainGroupActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".view.activity.ManageJoinReqActivity" />
         <activity android:name=".view.activity.MyStudyGroupActivity" />
         <activity android:name=".view.activity.UpdateUserActivity" />
@@ -111,6 +112,9 @@
             android:exported="true" />
 
         <receiver android:name=".util.TimerReceiver" />
+
+        <service android:name=".util.TerminateService" android:stopWithTask="false"/>
+        <service android:name=".util.TerminateServiceOreo" android:stopWithTask="true"/>
     </application>
 
 </manifest>

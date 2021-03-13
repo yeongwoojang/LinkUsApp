@@ -1,56 +1,60 @@
 package com.example.linkusapp.util;
 
-import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.PowerManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.example.linkusapp.R;
-import com.example.linkusapp.repository.RetrofitClient;
-import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.view.activity.HomeActivity;
-import com.example.linkusapp.view.activity.MainActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Calendar;
-import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class FirebaseInstanceIDService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseInstanceIDService";
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("firebase", "onDestroy");
+    }
 
     @Override
     public void onNewToken(@NonNull String token) {
         Log.e("firebase", "FirebaseInstanceIDService : " + token);
 //        sendRegistrationToServer(token);
-
     }
 
     //fcm메시지를 받았을 떄 실행되는 메소드
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE );
+        PowerManager.WakeLock wakeLock = pm.newWakeLock( PowerManager.SCREEN_DIM_WAKE_LOCK
+                | PowerManager.ACQUIRE_CAUSES_WAKEUP, "MyApp:TAG" );
+        wakeLock.acquire(3000);
+
+        Log.d("onMessageReceived", "onMessageReceived: 푸시도착");
         String title = "";
         String body = "";
         String userNick = "";
@@ -66,7 +70,6 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
             userGender = remoteMessage.getData().get("userGender");
             address = remoteMessage.getData().get("address");
 //            Log.d("message", "getNotification() "+title+", "+body);
-
         }
 
         //앱이 포어그라운드 상태에서 Notification을 받는 경우
@@ -93,7 +96,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         pendingIntent = PendingIntent.getActivity(this, id, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -132,8 +135,6 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
                 .setContentText(body);
-
         notificationManager.notify(id /* ID of notification */, notificationBuilder.build());
     }
-
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityMainBinding;
 import com.example.linkusapp.model.vo.User;
+import com.example.linkusapp.util.TerminateService;
+import com.example.linkusapp.util.TerminateServiceOreo;
 import com.example.linkusapp.view.fragment.BoardFragment;
 import com.example.linkusapp.view.fragment.MainFragment;
 import com.example.linkusapp.view.fragment.MyPageFragment;
@@ -57,7 +60,11 @@ public class MainActivity extends AppCompatActivity {
 //        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.slidingView);
 //        slidingUpPanelLayout.setTouchEnabled(false);
 
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(this, TerminateServiceOreo.class));
+        } else {
+            startService(new Intent(this, TerminateService.class));
+        }
 //        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
