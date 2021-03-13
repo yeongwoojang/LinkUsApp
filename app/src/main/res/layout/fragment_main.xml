@@ -16,7 +16,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:background="@color/red400">
 
             <FrameLayout
@@ -30,7 +30,7 @@
                     android:fontFamily="@font/nanum_square_ac_l"
                     android:text="공부 시간 관리"
                     android:textColor="@color/white"
-                    android:textSize="16dp" />
+                    android:textSize="20dp" />
             </FrameLayout>
         </androidx.appcompat.widget.Toolbar>
         <FrameLayout

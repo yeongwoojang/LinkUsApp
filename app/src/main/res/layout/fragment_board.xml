@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/red500">
+            android:background="@color/red400">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -26,8 +26,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:layout_gravity="left"
+                    android:fontFamily="@font/nanum_square_ac_l"
                     android:text="스터디 그룹"
                     android:textColor="@color/white"
                     android:textSize="20dp" />
