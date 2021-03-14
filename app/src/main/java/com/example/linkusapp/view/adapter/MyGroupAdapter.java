@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ItemMyGroupBinding;
+import com.example.linkusapp.databinding.ItemRequestBinding;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.LeaderGroup;
 import com.example.linkusapp.viewModel.ManageJoinViewModel;
@@ -18,27 +20,29 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.List;
 
-public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupViewHolder> implements View.OnClickListener {
+public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupViewHolder> {
 
+    private MyGroupAdapter thisObject = this;
     private List<LeaderGroup> items;
     private SlidingUpPanelLayout slidingView;
     private ManageJoinViewModel viewModel;
     private GroupNameListener mListener = null;
     public MyGroupAdapter(List<LeaderGroup> items, SlidingUpPanelLayout slidingView, ManageJoinViewModel viewModel) {
         this.items = items;
-        this.slidingView = slidingView;
         this.viewModel = viewModel;
     }
 
     public class MyGroupViewHolder extends RecyclerView.ViewHolder{
-        private LinearLayout groupLayout;
-        private TextView groupName,joinReqCount;
+        private ItemMyGroupBinding binding;
 
-        public MyGroupViewHolder(@NonNull View itemView) {
-            super(itemView);
-            groupLayout = itemView.findViewById(R.id.group_layout);
-            groupName = itemView.findViewById(R.id.my_group_name);
-            joinReqCount = itemView.findViewById(R.id.request_cnt);
+        public MyGroupViewHolder(@NonNull ItemMyGroupBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+            this.binding.setAdapter(thisObject);
+        }
+        void bind(LeaderGroup leaderGroup,int position){
+            binding.setLeaderGroup(leaderGroup);
+            binding.setPosition(position);
         }
     }
 
@@ -50,17 +54,15 @@ public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupV
     @NonNull
     @Override
     public MyGroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_group,parent,false);
-        return new MyGroupViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ItemMyGroupBinding binding = ItemMyGroupBinding.inflate(inflater,parent,false);
+        return new MyGroupAdapter.MyGroupViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyGroupViewHolder holder, int position) {
             LeaderGroup leaderGroup = items.get(position);
-            holder.groupName.setText(leaderGroup.getgName());
-            holder.joinReqCount.setText(String.valueOf(leaderGroup.getReqCount()));
-            holder.groupLayout.setTag(position);
-            holder.groupLayout.setOnClickListener(this);
+            holder.bind(leaderGroup,position);
     }
 
     @Override
@@ -68,19 +70,18 @@ public class MyGroupAdapter extends RecyclerView.Adapter<MyGroupAdapter.MyGroupV
         return this.items.size();
     }
 
-    @Override
-    public void onClick(View v) {
-        String gName = items.get((Integer) v.getTag()).getgName();
-        viewModel.getReqUser(gName);
-        if(mListener!=null){
-            mListener.returnGname(gName);
-        }
-    }
-
     public interface GroupNameListener{
         void returnGname(String gName);
     }
     public void setGnameListener(GroupNameListener listener){
         this.mListener = listener;
+    }
+
+    public void itemClickEvent(int position){
+        String gName = items.get(position).getName();
+        viewModel.getReqUser(gName);
+        if(mListener!=null){
+            mListener.returnGname(gName);
+        }
     }
 }

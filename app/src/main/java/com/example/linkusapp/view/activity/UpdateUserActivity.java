@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.example.linkusapp.databinding.ActivityUpdateUserBinding;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -31,9 +33,10 @@ public class UpdateUserActivity extends AppCompatActivity {
     private ActivityUpdateUserBinding binding;
     private String checkNickname,checkPW,loginMethod;
     private LoginViewModel viewModel;
-    private static final int REQUEST_CODE = 1;
+    private static final int PICK_FROM_CAMERA = 0;
+    private static final int PICK_FROM_ALBUM = 1;
+    private static final int CROP_FROM_IMAGE = 2;
     private Uri uri;
-    private Uri profileUri;
 
     boolean isCertify = false;
 
@@ -65,16 +68,11 @@ public class UpdateUserActivity extends AppCompatActivity {
         viewModel.getProfile(checkNickname);
         viewModel.getProfileLiveData.observe(this,profile -> {
             if(profile.getCode()==200){
-                profileUri = profile.getProfileUri();
-                binding.setProfilePicture.setImageURI(profileUri);
             }
         });
         binding.setProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                startActivityForResult(intent,REQUEST_CODE);
             }
         });
 
@@ -148,9 +146,16 @@ public class UpdateUserActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE){
-            uri = data.getData();
-            viewModel.insertProfile(checkNickname,uri+"");
-        }
+    }
+    private void takePhoto(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        String url = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
+        uri = Uri.fromFile(new File(Environment.getExternalStorageState(),url));
+        startActivityForResult(intent,PICK_FROM_CAMERA);
+    }
+    private void takeAlbum(){
+        Intent intent =new Intent(Intent.ACTION_PICK);
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, PICK_FROM_ALBUM);
     }
 }

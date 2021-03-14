@@ -74,7 +74,7 @@ public class SetAddressActivity extends AppCompatActivity {
             }
         });
         /*주소 검색*/
-        binding.addressEt.setOnClickListener(new View.OnClickListener() {
+        binding.addressTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), AddressActivity.class);
@@ -98,13 +98,13 @@ public class SetAddressActivity extends AppCompatActivity {
                 String address = getCurrentAddress(latitude,longitude);
                 String[] arrAddress = address.split(" ");
                 if(arrAddress[3].contains("구")){
-                    binding.addressEt.setText(arrAddress[1]+", "+arrAddress[2]+", "+arrAddress[3]);
+                    binding.addressTv.setText(arrAddress[1]+", "+arrAddress[2]+", "+arrAddress[3]);
                 }
-                binding.addressEt.setText(arrAddress[1]+", "+arrAddress[2]);
+                binding.addressTv.setText(arrAddress[1]+", "+arrAddress[2]);
             }
         });
         /*최근 주소*/
-        AddressAdapter addressAdapter = new AddressAdapter(addressList,this, viewModel,nickname);
+        AddressAdapter addressAdapter = new AddressAdapter(addressList,this, viewModel,this,nickname);
         binding.recentAddressRv.setAdapter(addressAdapter);
         binding.recentAddressRv.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         viewModel.userAddress(nickname);
@@ -127,14 +127,14 @@ public class SetAddressActivity extends AppCompatActivity {
         binding.correctBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String newAddress = binding.addressEt.getText().toString();
+                String newAddress = binding.addressTv.getText().toString();
                 if(newAddress.trim().equals("")){
                     Snackbar.make(findViewById(R.id.set_address_layout), "주소 변경 사항이 없습니다.", Snackbar.LENGTH_SHORT).show();
                 }else{
 //                   주소 db수정, 주소db에 추가
                     viewModel.addAddress(nickname,newAddress);
                     viewModel.updateAddress(nickname,newAddress);
-                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     overridePendingTransition(R.anim.left_in, R.anim.right_out);
                     finish();
                 }
@@ -281,7 +281,7 @@ public class SetAddressActivity extends AppCompatActivity {
                     String address = data.getExtras().getString("data");
                     if (data != null) {
                         Log.d("주소 데이터",address);
-                        binding.addressEt.setText(address);
+                        binding.addressTv.setText(address);
                     }
                 }
                 break;

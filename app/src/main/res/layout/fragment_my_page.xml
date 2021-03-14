@@ -22,15 +22,15 @@
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/white">
+                    android:layout_height="50dp"
+                    android:background="@color/red400">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/nanum_barun_gothic"
+                        android:fontFamily="@font/nanum_square_ac_l"
                         android:text="마이 페이지"
-                        android:textColor="@color/black"
-                        android:textSize="16dp" />
+                        android:textColor="@color/white"
+                        android:textSize="20dp" />
                 </androidx.appcompat.widget.Toolbar>
                 <View
                     android:id="@+id/toolbar_div"
