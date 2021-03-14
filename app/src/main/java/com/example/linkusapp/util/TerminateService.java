@@ -29,7 +29,6 @@ public class TerminateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("onStartCommand", "onStartCommand!! ");
-            Toast.makeText(this,"asdasd",Toast.LENGTH_SHORT).show();
         startService(new Intent(this,FirebaseInstanceIDService.class));
         return START_STICKY;
     }

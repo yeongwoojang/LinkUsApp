@@ -62,7 +62,11 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         binding.groupNameTv.setText(gName);
         binding.leaderTv.setText("리더 : "+board.getLeader());
         binding.partTv.setText("분야 : "+board.getPart());
-        binding.periodTv.setText("기간 : "+board.getStartDate()+" ~ "+board.getEndDate());
+        if(board.getStartDate().equals("미정") && board.getEndDate().equals("미정")){
+            binding.periodTv.setText("기간 : " + "미정");
+        }else{
+            binding.periodTv.setText("기간 : "+board.getStartDate()+" ~ "+board.getEndDate());
+        }
         binding.groupGoalTv.setText("그룹 목표 : "+board.getPurpose());
 
         CommentAdapter commentAdapter = new CommentAdapter(commentList);

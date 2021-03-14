@@ -44,18 +44,29 @@ public class GroupMainActivity extends AppCompatActivity {
         binding.memberCount.setText("인원제한 " + board.getMemberLimit() + "명");
         binding.readerNameTxt.setText("리더 :" + board.getLeader());
         binding.joinMethod.setText("가입방식 :" + board.getGroupJoinMethod());
-        binding.period.setText("기간 : " + board.getStartDate() + " ~ " + board.getEndDate());
+        if(board.getStartDate().equals("미정") && board.getEndDate().equals("미정")){
+            binding.period.setText("기간 : " + "미정");
+        }else{
+            binding.period.setText("기간 : " + board.getStartDate() + " ~ " + board.getEndDate());
+        }
         binding.txtGroupExpl.setText(board.getExplanation());
         binding.txtGroupPurpose.setText(board.getPurpose());
 
+        viewModel = new ViewModelProvider(this).get(CreateGrpViewModel.class);
+
+        User user = viewModel.getUserInfoFromShared();
         if (board.getGroupJoinMethod().equals("자유")) {
             binding.reqJoinLayout.setVisibility(View.INVISIBLE);
         } else {
             binding.reqJoinLayout.setVisibility(View.VISIBLE);
+            binding.joinGroupBt.setVisibility(View.GONE);
         }
 
-        viewModel = new ViewModelProvider(this).get(CreateGrpViewModel.class);
-        User user = viewModel.getUserInfoFromShared();
+        if( board.getLeader().equals(user.getUserNickname())){
+            binding.requestJoinBtn.setVisibility(View.INVISIBLE);
+            binding.joinGroupBt.setVisibility(View.INVISIBLE);
+        }
+
         viewModel.getGroupMember(board.getTitle());
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +116,9 @@ public class GroupMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (memberCount < Integer.parseInt(board.getMemberLimit())) {
-                    User user = viewModel.getUserInfoFromShared();
+
+
+
                     viewModel.insertRequest(board.getTitle(), user.getUserNickname());
                 } else {
                     Snackbar.make(binding.groupMainLayout, "인원이 꽉 찼습니다.", Snackbar.LENGTH_SHORT).show();

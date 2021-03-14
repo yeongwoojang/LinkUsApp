@@ -247,13 +247,13 @@ public class CreateGroupActivity extends AppCompatActivity {
         @Override
         public void onDateSet(DatePicker view, int _year, int monthOfYear, int dayOfMonth) {
             if (buttonId.equals(binding.btnStartDate.getTag().toString())) {
-                binding.btnStartDate.setText(_year + " / " + (monthOfYear + 1) + " / " + dayOfMonth);
+                binding.btnStartDate.setText(_year + "." + (monthOfYear + 1) + "." + dayOfMonth);
                 binding.btnStartDate.setTextColor(getResources().getColor(R.color.white));
                 binding.btnStartDate.setBackgroundResource(R.drawable.form_button_date_ok);
                 binding.btnStartDate.setEnabled(false);
 
             } else {
-                binding.btnEndDate.setText(_year + " / " + (monthOfYear + 1) + " / " + dayOfMonth);
+                binding.btnEndDate.setText(_year + "." + (monthOfYear + 1) + "." + dayOfMonth);
                 binding.btnEndDate.setTextColor(getResources().getColor(R.color.white));
                 binding.btnEndDate.setBackgroundResource(R.drawable.form_button_date_ok);
                 binding.btnEndDate.setEnabled(false);
