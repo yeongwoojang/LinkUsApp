@@ -1,10 +1,18 @@
 package com.example.linkusapp.view.activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -22,21 +30,25 @@ import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityUpdateUserBinding;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.material.snackbar.Snackbar;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.util.ArrayList;
 
 public class UpdateUserActivity extends AppCompatActivity {
 
     private ActivityUpdateUserBinding binding;
     private String checkNickname,checkPW,loginMethod;
     private LoginViewModel viewModel;
-    private static final int PICK_FROM_CAMERA = 0;
-    private static final int PICK_FROM_ALBUM = 1;
-    private static final int CROP_FROM_IMAGE = 2;
     private Uri uri;
+    private static final int GET_FROM_ALBUM = 1;
 
     boolean isCertify = false;
 
@@ -46,7 +58,6 @@ public class UpdateUserActivity extends AppCompatActivity {
         binding = ActivityUpdateUserBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         /*유저 정보*/
@@ -65,14 +76,15 @@ public class UpdateUserActivity extends AppCompatActivity {
             binding.password2Et.setEnabled(false);
         }
         /*프로필 가져오기*/
-        viewModel.getProfile(checkNickname);
+        /*viewModel.getProfile(checkNickname);
         viewModel.getProfileLiveData.observe(this,profile -> {
             if(profile.getCode()==200){
             }
-        });
+        });*/
         binding.setProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tedPermission();
             }
         });
 
@@ -145,17 +157,36 @@ public class UpdateUserActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == GET_FROM_ALBUM){
+            uri = data.getData();
+            Cursor cursor = null;
+            try{
+                String[] proj = {MediaStore.Images.Media._ID};
+            }
+        }
+    }
+    /*권한 요청*/
+    private void tedPermission(){
+        ermissionListener permissionListener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                // 권한 요청 성공
+            }
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                // 권한 요청 실패
+            }
+        };
+        TedPermission.with(this)
+                .setPermissionListener(permissionListener)
+                .setRationaleMessage(getResources().getString(R.string.permission_2))
+                .setDeniedMessage(getResources().getString(R.string.permission_1))
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .check();
     }
     private void takePhoto(){
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        String url = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
-        uri = Uri.fromFile(new File(Environment.getExternalStorageState(),url));
-        startActivityForResult(intent,PICK_FROM_CAMERA);
-    }
-    private void takeAlbum(){
-        Intent intent =new Intent(Intent.ACTION_PICK);
+        Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, PICK_FROM_ALBUM);
+        startActivityForResult(intent,GET_FROM_ALBUM);
     }
 }
