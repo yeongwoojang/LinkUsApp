@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -12,7 +13,7 @@ import com.example.linkusapp.R;
 
 public class AddressActivity extends Activity {
     private WebView webView;
-
+    private String address;
     class MyJavaScriptInterface {
         @JavascriptInterface
         @SuppressWarnings("unused")
@@ -30,6 +31,8 @@ public class AddressActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_address);
+        address = getIntent().getStringExtra("address")==null ? "" : getIntent().getStringExtra("address");
+        Log.d("AddressTest", "onCreate: "+address);
         webView = (WebView) findViewById(R.id.address_webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new MyJavaScriptInterface(), "Android");
@@ -37,7 +40,8 @@ public class AddressActivity extends Activity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                webView.loadUrl("javascript:sample2_execDaumPostcode();");
+                webView.loadUrl("javascript:sample2_execDaumPostcode('"+address+"');");
+//                webView.loadUrl("javascript:test();");
             }
         });
         webView.loadUrl("http://ec2-15-164-129-208.ap-northeast-2.compute.amazonaws.com:3000/");
