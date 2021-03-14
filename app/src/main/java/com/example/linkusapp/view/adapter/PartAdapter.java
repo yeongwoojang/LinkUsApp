@@ -130,6 +130,7 @@ public class PartAdapter extends RecyclerView.Adapter<PartAdapter.PartViewHolder
                 }
             });
         }
+
         void bind(String part, int position){
             binding.setPart(part);
             binding.setPosition(position);

@@ -35,7 +35,7 @@ public class MyStudyGroupActivity extends AppCompatActivity {
         setContentView(view);
 
         Intent intent = getIntent();
-        nickname = intent.getExtras().get("nickname").toString();
+        nickname = intent.getStringExtra("nickname");
         viewModel = new ViewModelProvider(this).get(BoardViewModel.class);
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +45,7 @@ public class MyStudyGroupActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         BoardAdapter userboardAdapter = new BoardAdapter(boardList,this,viewModel,1);
         binding.myStudyGroupRv.setAdapter(userboardAdapter);
         binding.myStudyGroupRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));

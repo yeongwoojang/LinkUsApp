@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivitySetAddressBinding;
+import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.model.vo.UserAddress;
 import com.example.linkusapp.util.GpsTracker;
 import com.example.linkusapp.view.adapter.AddressAdapter;
@@ -44,7 +45,8 @@ public class SetAddressActivity extends AppCompatActivity {
     private GpsTracker gpsTracker;
     private MyPageViewModel viewModel;
     private String nickname;
-    private List<UserAddress> addressList = new ArrayList<>();
+    private List<String> addressList = new ArrayList<>();
+    private String newAddress;
     private ActivitySetAddressBinding binding;
     /*주소 검색*/
     private static final  int SEARCH_ADDRESS_ACTIVITY = 10000;
@@ -61,6 +63,9 @@ public class SetAddressActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         viewModel = new ViewModelProvider(this).get(MyPageViewModel.class);
+
+        User user = viewModel.getUserInfoFromShared();
+
         Intent intent = getIntent();
         nickname = intent.getExtras().get("nickname").toString();
 
@@ -68,9 +73,10 @@ public class SetAddressActivity extends AppCompatActivity {
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                finish();
+//                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+//                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+//                finish();
+                onBackPressed();
             }
         });
         /*주소 검색*/
@@ -95,11 +101,17 @@ public class SetAddressActivity extends AppCompatActivity {
                 double latitude = gpsTracker.getLatitude();
                 double longitude = gpsTracker.getLongitude();
                 String address = getCurrentAddress(latitude,longitude);
-                String[] arrAddress = address.split(" ");
-                if(arrAddress[3].contains("구")){
-                    binding.addressTv.setText(arrAddress[1]+", "+arrAddress[2]+", "+arrAddress[3]);
-                }
-                binding.addressTv.setText(arrAddress[1]+", "+arrAddress[2]);
+
+                Intent intent = new Intent(getApplicationContext(), AddressActivity.class);
+                intent.putExtra("address",address);
+                startActivityForResult(intent,SEARCH_ADDRESS_ACTIVITY);
+
+                Log.d("address", "onClick: "+address);
+//                String[] arrAddress = address.split(" ");
+//                if(arrAddress[3].contains("구")){
+//                    binding.addressTv.setText(arrAddress[1]+", "+arrAddress[2]+", "+arrAddress[3]);
+//                }
+//                binding.addressTv.setText(arrAddress[1]+", "+arrAddress[2]);
             }
         });
         /*최근 주소*/
@@ -108,14 +120,12 @@ public class SetAddressActivity extends AppCompatActivity {
         binding.recentAddressRv.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         viewModel.userAddress(nickname);
 
-        viewModel.userAddressRsLD.observe(this,addressInfo -> {
-            if (addressInfo.getCode().equals("200")){
+        viewModel.userAddressRsLD.observe(this,items -> {
+            if (items.size()>0){
                 binding.recentAddressRv.setVisibility(View.VISIBLE);
                 binding.emptyAddress.setVisibility(View.GONE);
-                addressAdapter.updateItem(addressInfo.getJsonArray());
-            }else if(addressInfo.getCode().equals("204")){
-                binding.recentAddressRv.setVisibility(View.GONE);
-                binding.emptyAddress.setVisibility(View.VISIBLE);
+                addressList = items;
+                addressAdapter.updateItem(addressList);
             }else{
                 binding.recentAddressRv.setVisibility(View.GONE);
                 binding.emptyAddress.setVisibility(View.VISIBLE);
@@ -126,29 +136,34 @@ public class SetAddressActivity extends AppCompatActivity {
         binding.correctBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String newAddress = binding.addressTv.getText().toString();
+                newAddress = binding.addressTv.getText().toString();
                 if(newAddress.trim().equals("")){
                     Snackbar.make(findViewById(R.id.set_address_layout), "주소 변경 사항이 없습니다.", Snackbar.LENGTH_SHORT).show();
                 }else{
 //                   주소 db수정, 주소db에 추가
-                    viewModel.addAddress(nickname,newAddress);
-                    viewModel.updateAddress(nickname,newAddress);
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                    finish();
+                    if(!addressList.contains(newAddress)){
+                        viewModel.addAddress(nickname,newAddress);
+                        viewModel.updateAddress(nickname,newAddress);
+                        addressList.add(newAddress);
+                        addressAdapter.updateItem(addressList);
+                    }else{
+                        viewModel.updateAddress(nickname,newAddress);
+                    }
                 }
             }
         });
         viewModel.updateAddressRsLD.observe(this, code -> {
             if(code.equals("200")){
-                Snackbar.make(binding.setAddressLayout, "주소 수정 성공.", Snackbar.LENGTH_SHORT).show();
+                user.setAddress(newAddress);
+                viewModel.putUserInfo(user);
+                Snackbar.make(binding.setAddressLayout, "주소를 수정했습니다.", Snackbar.LENGTH_SHORT).show();
             }else{
                 Snackbar.make(binding.setAddressLayout, "에러가 발생했습니다.", Snackbar.LENGTH_SHORT).show();
             }
         });
         viewModel.addAddressRsLD.observe(this, code -> {
             if(code.equals("200")){
-                Snackbar.make(binding.setAddressLayout, "주소 추가 성공.", Snackbar.LENGTH_SHORT).show();
+//                Snackbar.make(binding.setAddressLayout, "주소 추가 성공.", Snackbar.LENGTH_SHORT).show();
             }else{
                 Snackbar.make(binding.setAddressLayout, "에러가 발생했습니다.", Snackbar.LENGTH_SHORT).show();
             }
@@ -293,4 +308,5 @@ public class SetAddressActivity extends AppCompatActivity {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
+
 }

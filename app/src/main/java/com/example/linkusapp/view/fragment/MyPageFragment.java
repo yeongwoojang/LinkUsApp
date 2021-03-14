@@ -48,6 +48,7 @@ public class MyPageFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Log.d("MyPageFragment", "onResume: ");
         binding.addressTv.setText(viewModel.getUserInfoFromShared().getAddress());
         super.onResume();
     }
@@ -204,4 +205,5 @@ public class MyPageFragment extends Fragment {
             }
         });
     }
+
 }

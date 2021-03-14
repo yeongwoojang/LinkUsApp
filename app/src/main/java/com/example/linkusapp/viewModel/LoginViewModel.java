@@ -259,10 +259,7 @@ public class LoginViewModel extends BaseViewModel {
             }
         });
     }
-    public void putUserInfo(User user){
-        prefs.putUserInfo(user);
 
-    }
     public void insertProfile(String userNickname,String profileUri){
         service.insertProfile(userNickname,profileUri).enqueue(new Callback<String>() {
             @Override
