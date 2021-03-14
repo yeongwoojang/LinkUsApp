@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityUpdateUserBinding;
@@ -37,18 +39,25 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UpdateUserActivity extends AppCompatActivity {
 
     private ActivityUpdateUserBinding binding;
     private String checkNickname,checkPW,loginMethod;
     private LoginViewModel viewModel;
-    private Uri uri;
-    private static final int GET_FROM_ALBUM = 1;
+
+    /*엘범에서 사진 가져오기*/
+    private static final int PICK_FROM_ALBUM = 1;
+    private static final int PICK_FROM_CAMERA = 2;
+    private File tempFile;
+    private Boolean isPermission = true;
 
     boolean isCertify = false;
 
@@ -59,7 +68,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-
+        tedPermission();
         /*유저 정보*/
         checkNickname =viewModel.getUserInfoFromShared().getUserNickname();
         checkPW = viewModel.getUserInfoFromShared().getPassword();
@@ -75,16 +84,35 @@ public class UpdateUserActivity extends AppCompatActivity {
             binding.passwordEt.setEnabled(false);
             binding.password2Et.setEnabled(false);
         }
-        /*프로필 가져오기*/
-        /*viewModel.getProfile(checkNickname);
-        viewModel.getProfileLiveData.observe(this,profile -> {
-            if(profile.getCode()==200){
-            }
-        });*/
         binding.setProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tedPermission();
+                DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(isPermission)  takePhoto();
+                        else Snackbar.make(findViewById(R.id.update_user_layout),getResources().getString(R.string.permission_2),Snackbar.LENGTH_SHORT).show();
+                    }
+                };
+                DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(isPermission) getPhoto();
+                        else Snackbar.make(findViewById(R.id.update_user_layout),getResources().getString(R.string.permission_2),Snackbar.LENGTH_SHORT).show();
+                    }
+                };
+                DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                };
+                new AlertDialog.Builder(UpdateUserActivity.this)
+                        .setTitle("업로드할 이미지 선택")
+                        .setPositiveButton("사진촬영", cameraListener)
+                        .setNeutralButton("앨범선택", albumListener)
+                        .setNegativeButton("취소", cancelListener)
+                        .show();
             }
         });
 
@@ -157,17 +185,50 @@ public class UpdateUserActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == GET_FROM_ALBUM){
-            uri = data.getData();
-            Cursor cursor = null;
-            try{
-                String[] proj = {MediaStore.Images.Media._ID};
+        super.onActivityResult(requestCode, resultCode, data);
+        /*예외처리 : 사진 선택하는 앨범화면에서 선택없이 뒤로 갔을 경우*/
+        if (resultCode != Activity.RESULT_OK) {
+            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
+            if(tempFile != null) {
+                if (tempFile.exists()) {
+                    if (tempFile.delete()) {
+                        Log.e("tempFIle", tempFile.getAbsolutePath() + " 삭제 성공");
+                        tempFile = null;
+                    }
+                }
             }
+            return;
+        }
+        if (requestCode == PICK_FROM_ALBUM) {
+            Uri photoUri = data.getData();
+            Log.d("photoUri", "PICK_FROM_ALBUM photoUri : " + photoUri);
+            Cursor cursor = null;
+            try {
+                /*
+                 *  Uri 스키마를
+                 *  content:/// 에서 file:/// 로  변경한다.
+                 */
+                String[] proj = { MediaStore.Images.Media.DATA };
+                assert photoUri != null;
+                cursor = getContentResolver().query(photoUri, proj, null, null, null);
+                assert cursor != null;
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                tempFile = new File(cursor.getString(column_index));
+                Log.d("uri", "tempFile Uri : " + Uri.fromFile(tempFile));
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+            setImage();
+        } else if (requestCode == PICK_FROM_CAMERA) {
+            setImage();
         }
     }
     /*권한 요청*/
     private void tedPermission(){
-        ermissionListener permissionListener = new PermissionListener() {
+        PermissionListener permissionListener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
                 // 권한 요청 성공
@@ -184,9 +245,43 @@ public class UpdateUserActivity extends AppCompatActivity {
                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .check();
     }
-    private void takePhoto(){
+    private void takePhoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            tempFile = createImageFile();
+        } catch (IOException e) {
+            Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            finish();
+            e.printStackTrace();
+        }
+        if (tempFile != null) {
+            Uri photoUri = Uri.fromFile(tempFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            startActivityForResult(intent, PICK_FROM_CAMERA);
+        }
+    }
+    private void getPhoto(){
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent,GET_FROM_ALBUM);
+        startActivityForResult(intent,PICK_FROM_ALBUM);
+    }
+    private void setImage(){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(),options);
+        binding.setProfilePicture.setImageBitmap(originalBm);
+        tempFile = null;
+    }
+    /*사진 촬영 후 폴더 만들기*/
+    private File createImageFile() throws IOException {
+        // 이미지 파일 이름 ( blackJin_{시간}_ )
+        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
+        String imageFileName = "blackJin_" + timeStamp + "_";
+        // 이미지가 저장될 폴더 이름 ( blackJin )
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "/blackJin/");
+        if (!storageDir.exists()) storageDir.mkdirs();
+        // 파일 생성
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        Log.d("파일 생성", "createImageFile : " + image.getAbsolutePath());
+        return image;
     }
 }

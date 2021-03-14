@@ -19,6 +19,7 @@ import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ItemAddressBinding;
 import com.example.linkusapp.databinding.ItemMyChatRoomBinding;
 import com.example.linkusapp.model.vo.UserAddress;
+import com.example.linkusapp.view.activity.HomeActivity;
 import com.example.linkusapp.view.activity.MainActivity;
 import com.example.linkusapp.view.activity.MyStudyGroupActivity;
 import com.example.linkusapp.viewModel.MyPageViewModel;
@@ -83,7 +84,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
     public void itemClickEvent(int position) {
         viewModel.updateAddress(nickname, mDataset.get(position).getAddress());
-        getActivity.startActivity(new Intent(getActivity, MyStudyGroupActivity.class));
+        getActivity.startActivity(new Intent(getActivity, HomeActivity.class));
         getActivity.finish();
     }
 
