@@ -94,7 +94,6 @@ public class SetAddressActivity extends AppCompatActivity {
 
                 double latitude = gpsTracker.getLatitude();
                 double longitude = gpsTracker.getLongitude();
-
                 String address = getCurrentAddress(latitude,longitude);
                 String[] arrAddress = address.split(" ");
                 if(arrAddress[3].contains("구")){

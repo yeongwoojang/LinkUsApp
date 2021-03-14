@@ -106,6 +106,7 @@ public class PartAdapter extends RecyclerView.Adapter<PartAdapter.PartViewHolder
 
     private ArrayList<String> partList = null;
     private PartAdapter thisobject = this;
+    private OnItemClickListener mListener = null ;
 
     // 아이템 뷰를 저장하는 뷰홀더 클래스.
     public class PartViewHolder extends RecyclerView.ViewHolder{
@@ -138,8 +139,6 @@ public class PartAdapter extends RecyclerView.Adapter<PartAdapter.PartViewHolder
     public interface OnItemClickListener{
         void onItemClick(View v, int position);
     }
-
-    private OnItemClickListener mListener = null ;
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mListener = listener ;
     }
@@ -160,8 +159,8 @@ public class PartAdapter extends RecyclerView.Adapter<PartAdapter.PartViewHolder
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
     public void onBindViewHolder(@NonNull PartViewHolder holder, int position) {
-        String text = partList.get(position);
-        holder.bind(text,position);
+        String part = partList.get(position);
+        holder.bind(part,position);
     }
 
     // getItemCount() - 전체 데이터 갯수 리턴.
