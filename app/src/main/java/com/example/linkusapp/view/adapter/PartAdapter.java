@@ -93,6 +93,8 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ItemPartBinding;
+import com.example.linkusapp.databinding.ItemRequestBinding;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.view.activity.GroupMainActivity;
 import com.example.linkusapp.viewModel.BoardViewModel;
@@ -103,15 +105,16 @@ import java.util.List;
 public class PartAdapter extends RecyclerView.Adapter<PartAdapter.PartViewHolder>{
 
     private ArrayList<String> partList = null;
-    private Activity getActivity;
+    private PartAdapter thisobject = this;
 
     // 아이템 뷰를 저장하는 뷰홀더 클래스.
     public class PartViewHolder extends RecyclerView.ViewHolder{
-        TextView textView1;
+        private ItemPartBinding binding;
 
-        public PartViewHolder(@NonNull View itemView) {
-            super(itemView);
-            textView1 = itemView.findViewById(R.id.part_name);
+        public PartViewHolder(ItemPartBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+            this.binding.setAdapter(thisobject);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -125,6 +128,10 @@ public class PartAdapter extends RecyclerView.Adapter<PartAdapter.PartViewHolder
                     }
                 }
             });
+        }
+        void bind(String part, int position){
+            binding.setPart(part);
+            binding.setPosition(position);
         }
     }
 
@@ -145,16 +152,16 @@ public class PartAdapter extends RecyclerView.Adapter<PartAdapter.PartViewHolder
     @NonNull
     @Override
     public PartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_part, parent, false);
-        return new PartAdapter.PartViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ItemPartBinding binding = ItemPartBinding.inflate(inflater, parent, false);
+        return new PartAdapter.PartViewHolder(binding);
     }
 
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
     public void onBindViewHolder(@NonNull PartViewHolder holder, int position) {
         String text = partList.get(position);
-        holder.textView1.setText(text);
-        holder.textView1.setTag(position);
+        holder.bind(text,position);
     }
 
     // getItemCount() - 전체 데이터 갯수 리턴.
