@@ -54,8 +54,9 @@ public class UpdateUserActivity extends AppCompatActivity {
     private LoginViewModel viewModel;
 
     /*엘범에서 사진 가져오기*/
-    private static final int PICK_FROM_ALBUM = 1;
-    private static final int PICK_FROM_CAMERA = 2;
+    private Uri uri;
+    private static final int REQUEST_IMAGE_CODE = 1001;
+    private static final int REQUEST_EXTERNAL_STORAGE_PERMISSION = 1002;
     private File tempFile;
     private Boolean isPermission = true;
 
@@ -68,7 +69,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        tedPermission();
+        chkPermission();
         /*유저 정보*/
         checkNickname =viewModel.getUserInfoFromShared().getUserNickname();
         checkPW = viewModel.getUserInfoFromShared().getPassword();
@@ -84,35 +85,11 @@ public class UpdateUserActivity extends AppCompatActivity {
             binding.passwordEt.setEnabled(false);
             binding.password2Et.setEnabled(false);
         }
-        binding.setProfilePicture.setOnClickListener(new View.OnClickListener() {
+        binding.ivUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(isPermission)  takePhoto();
-                        else Snackbar.make(findViewById(R.id.update_user_layout),getResources().getString(R.string.permission_2),Snackbar.LENGTH_SHORT).show();
-                    }
-                };
-                DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(isPermission) getPhoto();
-                        else Snackbar.make(findViewById(R.id.update_user_layout),getResources().getString(R.string.permission_2),Snackbar.LENGTH_SHORT).show();
-                    }
-                };
-                DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                };
-                new AlertDialog.Builder(UpdateUserActivity.this)
-                        .setTitle("업로드할 이미지 선택")
-                        .setPositiveButton("사진촬영", cameraListener)
-                        .setNeutralButton("앨범선택", albumListener)
-                        .setNegativeButton("취소", cancelListener)
-                        .show();
+             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+             startActivityForResult(intent,REQUEST_IMAGE_CODE);
             }
         });
 
@@ -186,102 +163,42 @@ public class UpdateUserActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        /*예외처리 : 사진 선택하는 앨범화면에서 선택없이 뒤로 갔을 경우*/
-        if (resultCode != Activity.RESULT_OK) {
-            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
-            if(tempFile != null) {
-                if (tempFile.exists()) {
-                    if (tempFile.delete()) {
-                        Log.e("tempFIle", tempFile.getAbsolutePath() + " 삭제 성공");
-                        tempFile = null;
-                    }
-                }
-            }
-            return;
-        }
-        if (requestCode == PICK_FROM_ALBUM) {
-            Uri photoUri = data.getData();
-            Log.d("photoUri", "PICK_FROM_ALBUM photoUri : " + photoUri);
-            Cursor cursor = null;
+        if(requestCode == REQUEST_IMAGE_CODE){
+            Uri uri = data.getData();
             try {
-                /*
-                 *  Uri 스키마를
-                 *  content:/// 에서 file:/// 로  변경한다.
-                 */
-                String[] proj = { MediaStore.Images.Media.DATA };
-                assert photoUri != null;
-                cursor = getContentResolver().query(photoUri, proj, null, null, null);
-                assert cursor != null;
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
-                tempFile = new File(cursor.getString(column_index));
-                Log.d("uri", "tempFile Uri : " + Uri.fromFile(tempFile));
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(UpdateUserActivity.this.getContentResolver(),uri);
+                binding.ivUser.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            setImage();
-        } else if (requestCode == PICK_FROM_CAMERA) {
-            setImage();
         }
     }
-    /*권한 요청*/
-    private void tedPermission(){
-        PermissionListener permissionListener = new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                // 권한 요청 성공
+    private void chkPermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_EXTERNAL_STORAGE_PERMISSION);
+                // MY_PERMISSIONS_REQUEST_READ_EXT_STORAGE is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
             }
-            @Override
-            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                // 권한 요청 실패
-            }
-        };
-        TedPermission.with(this)
-                .setPermissionListener(permissionListener)
-                .setRationaleMessage(getResources().getString(R.string.permission_2))
-                .setDeniedMessage(getResources().getString(R.string.permission_1))
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-                .check();
-    }
-    private void takePhoto() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        try {
-            tempFile = createImageFile();
-        } catch (IOException e) {
-            Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-            finish();
-            e.printStackTrace();
-        }
-        if (tempFile != null) {
-            Uri photoUri = Uri.fromFile(tempFile);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            startActivityForResult(intent, PICK_FROM_CAMERA);
         }
     }
-    private void getPhoto(){
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent,PICK_FROM_ALBUM);
-    }
-    private void setImage(){
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(),options);
-        binding.setProfilePicture.setImageBitmap(originalBm);
-        tempFile = null;
-    }
-    /*사진 촬영 후 폴더 만들기*/
-    private File createImageFile() throws IOException {
-        // 이미지 파일 이름 ( blackJin_{시간}_ )
-        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
-        String imageFileName = "blackJin_" + timeStamp + "_";
-        // 이미지가 저장될 폴더 이름 ( blackJin )
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/blackJin/");
-        if (!storageDir.exists()) storageDir.mkdirs();
-        // 파일 생성
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        Log.d("파일 생성", "createImageFile : " + image.getAbsolutePath());
-        return image;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
