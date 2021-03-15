@@ -43,7 +43,7 @@
     <ImageView
         android:id="@+id/iv_user"
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_margin="16dp"
         android:src="@drawable/baseline_profile_picture" />

@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -159,6 +160,13 @@ public class UpdateUserActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.update_user_layout), "회원 정보 수정 오류", Snackbar.LENGTH_SHORT).show();
             }
         } );
+        viewModel.insertProfileLiveData.observe(this,code -> {
+            if(code.equals("200")){
+                Snackbar.make(findViewById(R.id.update_user_layout), "프로필 사진 저장 완료", Snackbar.LENGTH_SHORT).show();
+            }else{
+                Snackbar.make(findViewById(R.id.update_user_layout), "오류", Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -167,12 +175,15 @@ public class UpdateUserActivity extends AppCompatActivity {
             Uri uri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(UpdateUserActivity.this.getContentResolver(),uri);
+                bitmap = resize(bitmap);
                 binding.ivUser.setImageBitmap(bitmap);
+                viewModel.insertProfile(checkNickname,bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+    /*접근 허용 체크*/
     private void chkPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED) {
@@ -196,7 +207,20 @@ public class UpdateUserActivity extends AppCompatActivity {
             }
         }
     }
-
+    private Bitmap resize(Bitmap src){
+        Configuration config = getResources().getConfiguration();
+        if(config.smallestScreenWidthDp>=800)
+            src = Bitmap.createScaledBitmap(src, 400, 240, true);
+        else if(config.smallestScreenWidthDp>=600)
+            src = Bitmap.createScaledBitmap(src, 300, 180, true);
+        else if(config.smallestScreenWidthDp>=400)
+            src = Bitmap.createScaledBitmap(src, 200, 120, true);
+        else if(config.smallestScreenWidthDp>=360)
+            src = Bitmap.createScaledBitmap(src, 180, 108, true);
+        else
+            src = Bitmap.createScaledBitmap(src, 160, 96, true);
+        return src;
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
