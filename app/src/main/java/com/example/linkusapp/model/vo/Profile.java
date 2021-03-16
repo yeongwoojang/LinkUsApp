@@ -9,14 +9,14 @@ public class Profile {
     @SerializedName("code")
     private String code;
 
-    @SerializedName("profileUri")
-    private Bitmap profileUri;
+    @SerializedName("USER_PROFILE")
+    private String profileUri;
 
     public String getCode() {
         return code;
     }
 
-    public Bitmap getProfileUri() {
+    public String getProfileUri() {
         return profileUri;
     }
 }

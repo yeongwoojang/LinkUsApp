@@ -1,6 +1,9 @@
 package com.example.linkusapp.view.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,12 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.FragmentMyPageBinding;
@@ -33,6 +35,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.kakao.sdk.user.UserApiClient;
 
+import java.io.IOException;
+
 public class MyPageFragment extends Fragment {
 
     private FragmentMyPageBinding binding;
@@ -40,6 +44,7 @@ public class MyPageFragment extends Fragment {
     private String loginMethod,userNickname;
     private GoogleSignInClient mSignInClient;
     private String userId;
+    private Bitmap profile;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +93,7 @@ public class MyPageFragment extends Fragment {
         userId = viewModel.getUserInfoFromShared().getUserId();
         loginMethod = viewModel.getUserInfoFromShared().getLoginMethod();
         userNickname = viewModel.getUserInfoFromShared().getUserNickname();
+        viewModel.getProfile(userNickname);
         binding.nicknameTv.setText(userNickname);
         binding.addressTv.setText(viewModel.getUserInfoFromShared().getAddress());
         binding.methodTv.setText(loginMethod);
@@ -133,6 +139,29 @@ public class MyPageFragment extends Fragment {
                 msg.putExtra(Intent.EXTRA_TITLE, "앱 공유하기");
                 msg.setType("text/plain");
                 startActivity(Intent.createChooser(msg, "앱을 선택해 주세요"));
+            }
+        });
+        viewModel.getProfileLiveData.observe(getActivity(),profile1 -> {
+            if(profile1.getCode().equals("200")){
+                Snackbar.make(view.findViewById(R.id.my), "프로필 사진 불러왔습니다.", Snackbar.LENGTH_SHORT).show();
+//                if(profile1.getProfileUri().equals(null)){
+//                    Drawable drawable = getResources().getDrawable(R.drawable.baseline_profile_picture);
+//                    binding.profilePicture.setImageDrawable(drawable);
+//                }else{
+//                    Uri uri = profile1.getProfileUri();
+//                    Log.d("profile", "onViewCreated: "+uri);
+//                    try {
+//                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
+//                        bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+//                        binding.profilePicture.setImageBitmap(bitmap);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+            }else if(profile1.getCode().equals("204")){
+                Snackbar.make(view.findViewById(R.id.my), "프로필 사진이 없습니다.", Snackbar.LENGTH_SHORT).show();
+            }else{
+                Snackbar.make(view.findViewById(R.id.my), "오류", Snackbar.LENGTH_SHORT).show();
             }
         });
         /*탈퇴하기 버튼*/

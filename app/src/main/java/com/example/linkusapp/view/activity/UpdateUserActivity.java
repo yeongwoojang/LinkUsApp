@@ -17,6 +17,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityUpdateUserBinding;
 import com.example.linkusapp.viewModel.LoginViewModel;
@@ -75,6 +77,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         checkNickname =viewModel.getUserInfoFromShared().getUserNickname();
         checkPW = viewModel.getUserInfoFromShared().getPassword();
         loginMethod = viewModel.getUserInfoFromShared().getLoginMethod();
+        viewModel.getProfile(checkNickname);
         binding.idTv.setText(viewModel.getUserInfoFromShared().getUserId());
         binding.updateMethodTv.setText(viewModel.getUserInfoFromShared().getLoginMethod());
         binding.nicknameEt.setText(viewModel.getUserInfoFromShared().getUserNickname());
@@ -167,6 +170,17 @@ public class UpdateUserActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.update_user_layout), "오류", Snackbar.LENGTH_SHORT).show();
             }
         });
+        viewModel.getProfileLiveData.observe(this,profile -> {
+            if(profile.getCode().equals("200")){
+                Snackbar.make(findViewById(R.id.update_user_layout), "프로필을 불러왔습니다.", Snackbar.LENGTH_SHORT).show();
+                Uri uri = Uri.parse(profile.getProfileUri());
+                Log.d("gd", "onCreate: "+uri);
+            }else if(profile.getCode().equals("204")){
+                Snackbar.make(findViewById(R.id.update_user_layout), "불러올 프로필이 없습니다.", Snackbar.LENGTH_SHORT).show();
+            }else {
+                Snackbar.make(findViewById(R.id.update_user_layout), "오류", Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -174,10 +188,11 @@ public class UpdateUserActivity extends AppCompatActivity {
         if(requestCode == REQUEST_IMAGE_CODE){
             Uri uri = data.getData();
             try {
+                Glide.with(this).load(uri).into(binding.ivUser);
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(UpdateUserActivity.this.getContentResolver(),uri);
                 bitmap = resize(bitmap);
                 binding.ivUser.setImageBitmap(bitmap);
-                viewModel.insertProfile(checkNickname,bitmap);
+                viewModel.insertProfile(checkNickname,uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -210,15 +225,15 @@ public class UpdateUserActivity extends AppCompatActivity {
     private Bitmap resize(Bitmap src){
         Configuration config = getResources().getConfiguration();
         if(config.smallestScreenWidthDp>=800)
-            src = Bitmap.createScaledBitmap(src, 400, 240, true);
+            src = Bitmap.createScaledBitmap(src, 400, 400, true);
         else if(config.smallestScreenWidthDp>=600)
-            src = Bitmap.createScaledBitmap(src, 300, 180, true);
+            src = Bitmap.createScaledBitmap(src, 300, 300, true);
         else if(config.smallestScreenWidthDp>=400)
-            src = Bitmap.createScaledBitmap(src, 200, 120, true);
+            src = Bitmap.createScaledBitmap(src, 200, 200, true);
         else if(config.smallestScreenWidthDp>=360)
-            src = Bitmap.createScaledBitmap(src, 180, 108, true);
+            src = Bitmap.createScaledBitmap(src, 180, 180, true);
         else
-            src = Bitmap.createScaledBitmap(src, 160, 96, true);
+            src = Bitmap.createScaledBitmap(src, 160, 160, true);
         return src;
     }
     @Override
