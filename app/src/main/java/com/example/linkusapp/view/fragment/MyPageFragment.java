@@ -65,7 +65,7 @@ public class MyPageFragment extends Fragment {
         binding = FragmentMyPageBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-
+        viewModel.getProfile(userNickname);
 
 //        viewModel.getUserInfo();
 //        viewModel.getUserInfoRsLD.observe(getViewLifecycleOwner(),userInfo -> {
@@ -94,7 +94,6 @@ public class MyPageFragment extends Fragment {
         userId = viewModel.getUserInfoFromShared().getUserId();
         loginMethod = viewModel.getUserInfoFromShared().getLoginMethod();
         userNickname = viewModel.getUserInfoFromShared().getUserNickname();
-        viewModel.getProfile(userNickname);
         binding.nicknameTv.setText(userNickname);
         binding.addressTv.setText(viewModel.getUserInfoFromShared().getAddress());
         binding.methodTv.setText(loginMethod);
@@ -145,6 +144,7 @@ public class MyPageFragment extends Fragment {
         viewModel.getProfileLiveData.observe(getActivity(),profile1 -> {
             if(profile1.getCode().equals("200")){
                 Snackbar.make(view.findViewById(R.id.my), "프로필 사진 불러왔습니다.", Snackbar.LENGTH_SHORT).show();
+                Log.d("TAG", "onViewCreated: "+profile1.getProfileUri());
                 if(profile1.getProfileUri().equals(null)){
                     Drawable drawable = getResources().getDrawable(R.drawable.baseline_profile_picture);
                     binding.profilePicture.setImageDrawable(drawable);
