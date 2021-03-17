@@ -9,7 +9,7 @@ public class Profile {
     @SerializedName("code")
     private String code;
 
-    @SerializedName("USER_PROFILE")
+    @SerializedName("profileUri")
     private String profileUri;
 
     public String getCode() {

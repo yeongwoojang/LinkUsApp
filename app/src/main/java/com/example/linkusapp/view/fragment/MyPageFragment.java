@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.FragmentMyPageBinding;
 import com.example.linkusapp.util.TimerService;
@@ -144,20 +145,22 @@ public class MyPageFragment extends Fragment {
         viewModel.getProfileLiveData.observe(getActivity(),profile1 -> {
             if(profile1.getCode().equals("200")){
                 Snackbar.make(view.findViewById(R.id.my), "프로필 사진 불러왔습니다.", Snackbar.LENGTH_SHORT).show();
-//                if(profile1.getProfileUri().equals(null)){
-//                    Drawable drawable = getResources().getDrawable(R.drawable.baseline_profile_picture);
-//                    binding.profilePicture.setImageDrawable(drawable);
-//                }else{
-//                    Uri uri = profile1.getProfileUri();
-//                    Log.d("profile", "onViewCreated: "+uri);
-//                    try {
-//                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
-//                        bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
-//                        binding.profilePicture.setImageBitmap(bitmap);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
+                if(profile1.getProfileUri().equals(null)){
+                    Drawable drawable = getResources().getDrawable(R.drawable.baseline_profile_picture);
+                    binding.profilePicture.setImageDrawable(drawable);
+                }else{
+                    String uri = profile1.getProfileUri();
+                    Uri image = Uri.parse(uri);
+                    Log.d("profile", "onViewCreated: "+image);
+                    Glide.with(this).load(image).into(binding.profilePicture);
+                    /*try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),image);
+                        bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+                        binding.profilePicture.setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+                }
             }else if(profile1.getCode().equals("204")){
                 Snackbar.make(view.findViewById(R.id.my), "프로필 사진이 없습니다.", Snackbar.LENGTH_SHORT).show();
             }else{
