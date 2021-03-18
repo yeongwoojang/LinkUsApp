@@ -19,7 +19,6 @@ import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ItemAddressBinding;
 import com.example.linkusapp.databinding.ItemMyChatRoomBinding;
 import com.example.linkusapp.model.vo.UserAddress;
-import com.example.linkusapp.view.activity.HomeActivity;
 import com.example.linkusapp.view.activity.MainActivity;
 import com.example.linkusapp.view.activity.MyStudyGroupActivity;
 import com.example.linkusapp.viewModel.MyPageViewModel;
@@ -28,6 +27,7 @@ import java.util.List;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressViewHolder>{
     private List<UserAddress> mDataset;
+    private List<String> items;
     private Activity getActivity;
     private Context mContext;
     private MyPageViewModel viewModel;
@@ -44,19 +44,20 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
             this.binding.setAdapter(thisObject);
         }
 
-        void bind(UserAddress userAddress, int position) {
-            binding.setAddress(userAddress);
+        void bind(String address, int position) {
+            binding.setAddress(address);
             binding.setPosition(position);
         }
     }
 
-    public void updateItem(List<UserAddress> items) {
-        mDataset = items;
+    public void updateItem(List<String> items) {
+//        mDataset = items;
+        this.items = items;
         notifyDataSetChanged();
     }
 
-    public AddressAdapter(List<UserAddress> addressList, Activity getActivity, MyPageViewModel viewModel,Context mContext,String nickname) {
-        mDataset = addressList;
+    public AddressAdapter(List<String> addressList, Activity getActivity, MyPageViewModel viewModel,Context mContext,String nickname) {
+        this.items = addressList;
         this.getActivity = getActivity;
         this.nickname = nickname;
         this.viewModel = viewModel;
@@ -73,25 +74,28 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
     @Override
     public void onBindViewHolder(@NonNull AddressViewHolder holder, int position) {
-        UserAddress address = mDataset.get(position);
+        String address = items.get(position);
         holder.bind(address, position);
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return items.size();
     }
 
     public void itemClickEvent(int position) {
-        viewModel.updateAddress(nickname, mDataset.get(position).getAddress());
-        getActivity.startActivity(new Intent(getActivity, HomeActivity.class));
-        getActivity.finish();
+        viewModel.updateAddress(nickname, items.get(position));
+//        getActivity.startActivity(new Intent(getActivity, MyStudyGroupActivity.class));
+//        getActivity.finish();
     }
 
     public void removeClickEvent(int position) {
-        viewModel.removeAddress(mDataset.get(position).getAddress());
-        mDataset.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, getItemCount());
+        if(getItemCount()!=0){
+            viewModel.removeAddress(items.get(position));
+            items.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, getItemCount());
+        }
+
     }
 }

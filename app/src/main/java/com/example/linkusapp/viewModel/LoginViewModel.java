@@ -2,8 +2,6 @@ package com.example.linkusapp.viewModel;
 
 import android.app.Application;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -261,11 +259,9 @@ public class LoginViewModel extends BaseViewModel {
             }
         });
     }
-    public void putUserInfo(User user){
-        prefs.putUserInfo(user);
 
     }
-    public void insertProfile(String userNickname, Uri profileUri){
+    public void insertProfile(String userNickname,String profileUri){
         service.insertProfile(userNickname,profileUri).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {

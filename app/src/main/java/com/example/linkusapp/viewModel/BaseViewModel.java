@@ -62,4 +62,7 @@ public class BaseViewModel extends AndroidViewModel {
     public User getUserInfoFromShared(){
         return prefs.getUserInfo();
     }
+    public void putUserInfo(User user){
+        prefs.putUserInfo(user);
+    }
 }

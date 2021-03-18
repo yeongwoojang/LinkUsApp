@@ -145,37 +145,9 @@ public class BoardFragment extends Fragment{
         partAdapter.setOnItemClickListener(new PartAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                if(position == 0){
-                    viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
-                        if(boardInfo.getCode()==200){
-                            binding.emptyGroup.setVisibility(View.GONE);
-                            binding.spinnerAddress.setSelection(0);
-                            gPart = part[position];
-                            boardList = boardInfo.getJsonArray();
-                            boardAdapter.updateItem(boardList);
-                        }else if(boardInfo.getCode()==204){
-                            Snackbar.make(view.findViewById(R.id.board_fragment), "스터디 그룹이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
-                            binding.emptyGroup.setVisibility(View.VISIBLE);
-                        }else{
-                            Snackbar.make(view.findViewById(R.id.board_fragment), "오류", Snackbar.LENGTH_SHORT).show();
-                        }
-                    });
-                }else{
-                    viewModel.getPartBoard(part[position]);
-                    viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
-                        if(boardPartInfo.getCode() == 200){
-                            binding.spinnerAddress.setSelection(0);
-                            gPart = part[position];
-                            boardList = boardPartInfo.getJsonArray();
-                            boardAdapter.updateItem(boardList);
-                            binding.boardRecyclerview.setVisibility(View.VISIBLE);
-                            binding.emptyGroup.setVisibility(View.GONE);
-                        }
-                        else if(boardPartInfo.getCode()==204){
-                            binding.boardRecyclerview.setVisibility(View.GONE);
-                            binding.emptyGroup.setVisibility(View.VISIBLE);
-                        }
-                    });
+                gPart = part[position];
+                if(position != 0){
+                    viewModel.getPartBoard(gPart);
                 }
             }
         });
@@ -183,6 +155,7 @@ public class BoardFragment extends Fragment{
         binding.spinnerAddress.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("onItemSelected", "onItemSelected: ");
                 if(parent.getItemAtPosition(position).equals("전체")){
                     viewModel.getAllBoard();
                 }else{
@@ -195,6 +168,7 @@ public class BoardFragment extends Fragment{
 
             }
         });
+
         viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
             if(boardInfo.getCode()==200){
                 binding.emptyGroup.setVisibility(View.GONE);
@@ -222,6 +196,33 @@ public class BoardFragment extends Fragment{
                 binding.emptyGroup.setVisibility(View.VISIBLE);
             }else{
                 Snackbar.make(view.findViewById(R.id.board_fragment), "오류", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+        viewModel.boardRsLD.observe(getViewLifecycleOwner(), boardInfo ->{
+            if(boardInfo.getCode()==200){
+                binding.emptyGroup.setVisibility(View.GONE);
+                binding.spinnerAddress.setSelection(0);
+                boardList = boardInfo.getJsonArray();
+                boardAdapter.updateItem(boardList);
+            }else if(boardInfo.getCode()==204){
+                binding.emptyGroup.setVisibility(View.VISIBLE);
+            }else{
+                Snackbar.make(view.findViewById(R.id.board_fragment), "오류", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+        viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
+            if(boardPartInfo.getCode() == 200){
+//                binding.spinnerAddress.setSelection(0);
+                boardList = boardPartInfo.getJsonArray();
+                boardAdapter.updateItem(boardList);
+                binding.boardRecyclerview.setVisibility(View.VISIBLE);
+                binding.emptyGroup.setVisibility(View.GONE);
+            }
+            else if(boardPartInfo.getCode()==204){
+                binding.boardRecyclerview.setVisibility(View.GONE);
+                binding.emptyGroup.setVisibility(View.VISIBLE);
             }
         });
     }

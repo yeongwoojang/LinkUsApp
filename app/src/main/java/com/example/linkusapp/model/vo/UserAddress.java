@@ -18,4 +18,11 @@ public class UserAddress {
         return address;
     }
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }
