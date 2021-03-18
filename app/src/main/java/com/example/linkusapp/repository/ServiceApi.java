@@ -15,14 +15,19 @@ import com.example.linkusapp.model.vo.TimerInfo;
 import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.model.vo.UsersInfo;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ServiceApi {
@@ -61,12 +66,15 @@ public interface ServiceApi {
     Call<String> chkScdUserInfo(@Query("userId") String userId, @Query("loginMethod") String loginMethod);
 
     /*유저 프로필*/
-    @FormUrlEncoded
+    /*@FormUrlEncoded
     @POST("/android/insertProfile")
     Call<String> insertProfile(@Field("userNickname") String userNickname,@Field("profileUri") Uri profileUri);
 
     @GET("/android/getProfile")
-    Call<Profile> getProfile(@Query("userNickname") String userNickname);
+    Call<Profile> getProfile(@Query("userNickname") String userNickname);*/
+    @Multipart
+    @POST("/upload")
+    Call<ResponseBody> postImage(@Part MultipartBody.Part image, @Part("upload") RequestBody name);
     /*여기까지*/
 
     @FormUrlEncoded

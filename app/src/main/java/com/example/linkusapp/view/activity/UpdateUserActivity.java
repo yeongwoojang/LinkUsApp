@@ -8,60 +8,36 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityUpdateUserBinding;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.material.snackbar.Snackbar;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.net.URI;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class UpdateUserActivity extends AppCompatActivity {
 
     private ActivityUpdateUserBinding binding;
-    private String checkNickname,checkPW,loginMethod;
+    private String checkNickname,checkPW;
     private LoginViewModel viewModel;
 
     /*엘범에서 사진 가져오기*/
-    private Uri uri;
     private static final int REQUEST_IMAGE_CODE = 1001;
     private static final int REQUEST_EXTERNAL_STORAGE_PERMISSION = 1002;
-    private File tempFile;
-    private Boolean isPermission = true;
+    private ArrayList<Bitmap> mBitmap = new ArrayList<>();
+    private Uri uri;
 
     boolean isCertify = false;
 
@@ -76,8 +52,6 @@ public class UpdateUserActivity extends AppCompatActivity {
         /*유저 정보*/
         checkNickname =viewModel.getUserInfoFromShared().getUserNickname();
         checkPW = viewModel.getUserInfoFromShared().getPassword();
-        loginMethod = viewModel.getUserInfoFromShared().getLoginMethod();
-        viewModel.getProfile(checkNickname);
         binding.idTv.setText(viewModel.getUserInfoFromShared().getUserId());
         binding.updateMethodTv.setText(viewModel.getUserInfoFromShared().getLoginMethod());
         binding.nicknameEt.setText(viewModel.getUserInfoFromShared().getUserNickname());
@@ -187,15 +161,8 @@ public class UpdateUserActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_IMAGE_CODE){
             Uri uri = data.getData();
-            try {
-                Glide.with(this).load(uri).into(binding.ivUser);
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(UpdateUserActivity.this.getContentResolver(),uri);
-                bitmap = resize(bitmap);
-                binding.ivUser.setImageBitmap(bitmap);
-                viewModel.insertProfile(checkNickname,uri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Glide.with(this).load(uri).into(binding.ivUser);
+            viewModel.insertProfile(checkNickname,uri);
         }
     }
     /*접근 허용 체크*/

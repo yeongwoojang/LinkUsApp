@@ -142,6 +142,7 @@ public class MyPageFragment extends Fragment {
                 startActivity(Intent.createChooser(msg, "앱을 선택해 주세요"));
             }
         });
+        viewModel.getProfile(userNickname);
         viewModel.getProfileLiveData.observe(getActivity(),profile1 -> {
             if(profile1.getCode().equals("200")){
                 Snackbar.make(view.findViewById(R.id.my), "프로필 사진 불러왔습니다.", Snackbar.LENGTH_SHORT).show();

@@ -2,6 +2,7 @@ package com.example.linkusapp.viewModel;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.example.linkusapp.util.GMailSender;
 import com.example.linkusapp.util.SharedPreference;
 import com.kakao.util.helper.log.Tag;
 
+import java.net.URI;
 import java.util.Iterator;
 
 import javax.mail.MessagingException;
@@ -260,8 +262,7 @@ public class LoginViewModel extends BaseViewModel {
         });
     }
 
-    }
-    public void insertProfile(String userNickname,String profileUri){
+    public void insertProfile(String userNickname, Uri profileUri){
         service.insertProfile(userNickname,profileUri).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
