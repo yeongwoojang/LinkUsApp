@@ -41,6 +41,7 @@ dependencies {
     /*bottomNavigationView*/
     implementation 'com.android.support:design:30.0.0'
     implementation fileTree(dir: 'src\\main\\jniLibs', include: ['*.aar', '*.jar'], exclude: [])
+    implementation files('libs\\commons-codec-1.9.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
