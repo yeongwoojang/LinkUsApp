@@ -1,6 +1,5 @@
 package com.example.linkusapp.repository;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.example.linkusapp.model.vo.AddressInfo;
@@ -9,7 +8,6 @@ import com.example.linkusapp.model.vo.ChatInfo;
 import com.example.linkusapp.model.vo.CommentInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.LeaderGroupInfo;
-import com.example.linkusapp.model.vo.GroupMember;
 import com.example.linkusapp.model.vo.Profile;
 import com.example.linkusapp.model.vo.TimerInfo;
 import com.example.linkusapp.model.vo.UserInfo;
@@ -20,7 +18,6 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
@@ -37,7 +34,7 @@ public interface ServiceApi {
     Call<String> join(
             @Field("userName") String userName,
             @Field("userId") String userId,
-            @Field("password") String password,
+            @Field("password") byte[] password,
             @Field("userEmail") String userEmail
          );
 
@@ -66,12 +63,12 @@ public interface ServiceApi {
     Call<String> chkScdUserInfo(@Query("userId") String userId, @Query("loginMethod") String loginMethod);
 
     /*유저 프로필*/
-    /*@FormUrlEncoded
+    @FormUrlEncoded
     @POST("/android/insertProfile")
     Call<String> insertProfile(@Field("userNickname") String userNickname,@Field("profileUri") Uri profileUri);
 
     @GET("/android/getProfile")
-    Call<Profile> getProfile(@Query("userNickname") String userNickname);*/
+    Call<Profile> getProfile(@Query("userNickname") String userNickname);
     @Multipart
     @POST("/upload")
     Call<ResponseBody> postImage(@Part MultipartBody.Part image, @Part("upload") RequestBody name);

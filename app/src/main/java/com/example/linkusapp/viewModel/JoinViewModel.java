@@ -40,7 +40,7 @@ public class JoinViewModel extends BaseViewModel {
 
     }
 
-    public void join(String userName, String userId, String password, String userEmail) {
+    public void join(String userName, String userId, byte[] password, String userEmail) {
         service.join(userName, userId, password,userEmail)
                 .enqueue(new Callback<String>() {
                     @Override
