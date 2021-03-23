@@ -34,7 +34,7 @@ public interface ServiceApi {
     Call<String> join(
             @Field("userName") String userName,
             @Field("userId") String userId,
-            @Field("password") byte[] password,
+            @Field("password") String password,
             @Field("userEmail") String userEmail
          );
 
@@ -241,4 +241,8 @@ public interface ServiceApi {
 
     @GET("/android/getMessageList")
     Call<ChatInfo>getMessageList(@Query("gName") String gName, @Query("myNickName") String myNickName, @Query("yourNickName") String yourNickName);
+
+    /*복호화 하기 위해 암호화된 비번 불러오는 메서드*/
+    @GET("/android/decrypt")
+    Call<FindPassword> decryptPw(@Query("userId") String userId);
 }

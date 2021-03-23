@@ -171,7 +171,8 @@ public class JoinActivity extends AppCompatActivity {
                 }else {
                     try {
                         encrypted = rsaEncrypt.encrypt(userPw);
-                        viewModel.join(userName, userId, encrypted, userEmail);
+                        String pw = encrypted.toString();
+                        viewModel.join(userName, userId, pw, userEmail);
                         Snackbar.make(binding.joinLayout, "회원 가입 성공.", Snackbar.LENGTH_SHORT).show();
                     } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();

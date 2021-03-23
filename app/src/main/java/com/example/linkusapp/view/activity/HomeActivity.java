@@ -2,12 +2,14 @@ package com.example.linkusapp.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityHomeBinding;
 import com.example.linkusapp.model.vo.User;
+import com.example.linkusapp.util.Rsa;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -57,8 +60,9 @@ public class HomeActivity extends AppCompatActivity {
     //------------------카카오 로그인용----------------------------
 //    private SessionCallback sessionCallback;
 
-    //------------------카카오 로그인용----------------------------
-
+    //------------------RSA 복호화----------------------------
+    private Rsa rsaDecrypt;
+    private String decPassword;
     //----------------페이스북 로그인용----------------------------
     private CallbackManager mCallbackManager;
     //----------------페이스북 로그인용---------------------------
@@ -83,6 +87,7 @@ public class HomeActivity extends AppCompatActivity {
         refreshIdToken();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +96,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(view);
 
 
+        rsaDecrypt = new Rsa();
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         mContext = this;
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -254,12 +260,24 @@ public class HomeActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(binding.pwEt.getWindowToken(), 0);
                 String userId = binding.idEt.getText().toString().trim();
                 String userPw = binding.pwEt.getText().toString().trim();
+                viewModel.decryptPw(userId);
                 //자동로그인 체크했을 시 공유프리퍼런스에 자동로그인 여부 저장
                 viewModel.autoLogin(isAutoLogin);
                 viewModel.login(userId, userPw);
             }
         });
 
+        /*decryptPw*/
+        viewModel.decryptPwLiveData.observe(this,findPassword -> {
+            if(findPassword.getCode().equals("200")){
+                decPassword = findPassword.getPassword();
+                Log.d(TAG, "decPassword" + decPassword);
+            }else if(findPassword.getCode().equals("204")){
+                Log.d(TAG, "decPassword: 없는 계정");
+            }else {
+                Log.d(TAG, "decPassword: 에러");
+            }
+        });
         //자동로그인 체크박스 클릭이벤트
         binding.chkAutoLogin.setOnClickListener(new View.OnClickListener() {
             @Override

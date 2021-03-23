@@ -49,6 +49,7 @@ public class LoginViewModel extends BaseViewModel {
     public MutableLiveData<UserInfo> userLiveData = new MutableLiveData<UserInfo>();
     public MutableLiveData<String> insertProfileLiveData = new MutableLiveData<String>();
     public MutableLiveData<Profile> getProfileLiveData = new MutableLiveData<Profile>();
+    public MutableLiveData<FindPassword> decryptPwLiveData = new MutableLiveData<FindPassword>();
 
 
 
@@ -287,6 +288,20 @@ public class LoginViewModel extends BaseViewModel {
 
             @Override
             public void onFailure(Call<Profile> call, Throwable t) {
+
+            }
+        });
+    }
+    public void decryptPw(String userId){
+        service.decryptPw(userId).enqueue(new Callback<FindPassword>() {
+            @Override
+            public void onResponse(Call<FindPassword> call, Response<FindPassword> response) {
+                FindPassword result = response.body();
+
+            }
+
+            @Override
+            public void onFailure(Call<FindPassword> call, Throwable t) {
 
             }
         });
