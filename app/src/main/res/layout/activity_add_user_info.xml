@@ -28,7 +28,6 @@
             android:text="2차 회원 정보"
             android:textColor="@color/black"
             android:textSize="16dp" />
-
     </androidx.appcompat.widget.Toolbar>
     <View
         android:layout_below="@+id/toolbar"
@@ -36,13 +35,19 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/black"/>
-
     <LinearLayout
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
+        <ImageView
+            android:id="@+id/iv_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:src="@drawable/baseline_profile_picture" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,7 +86,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="40dp"
             android:fontFamily="@font/nanum_barun_gothic"
             android:text="나이"
             android:textColor="@color/black"
@@ -115,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/nanum_barun_gothic"
             android:text="성별 설정"
             android:textColor="@color/black"
@@ -151,7 +155,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/nanum_barun_gothic"
             android:text="내 지역 설정"
             android:textColor="@color/black"
