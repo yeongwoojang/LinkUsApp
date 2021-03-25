@@ -2,29 +2,21 @@ package com.example.linkusapp.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.CheckedTextView;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityHomeBinding;
-import com.example.linkusapp.model.vo.User;
-import com.example.linkusapp.util.Rsa;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -61,10 +53,6 @@ public class HomeActivity extends AppCompatActivity {
     //------------------카카오 로그인용----------------------------
 //    private SessionCallback sessionCallback;
 
-    //------------------RSA 복호화----------------------------
-    private Rsa rsaDecrypt;
-    private byte[] decPassword;
-    private String password;
     //----------------페이스북 로그인용----------------------------
     private CallbackManager mCallbackManager;
     //----------------페이스북 로그인용---------------------------
@@ -89,7 +77,6 @@ public class HomeActivity extends AppCompatActivity {
         refreshIdToken();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,10 +84,7 @@ public class HomeActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-
-        rsaDecrypt = new Rsa();
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        password = binding.pwEt.getText().toString().trim();
         mContext = this;
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
@@ -372,14 +356,12 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        Session.getCurrentSession().removeCallback(sessionCallback);
     }
 
 
     private void facebookLogin() {
         Log.d("execute", "facebookLogin");
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile","email"));
-
     }
 
 
@@ -423,23 +405,6 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
             }
         }
-    }
-    public static byte[] binaryStringToByteArray(String s) {
-        int count = s.length() / 8;
-        byte[] b = new byte[count];
-        for (int i = 1; i < count; ++i) {
-            String t = s.substring((i - 1) * 8, i * 8);
-            b[i - 1] = binaryStringToByte(t);
-        }
-        return b;
-    }
-    public static byte binaryStringToByte(String s) {
-        byte ret = 0, total = 0;
-        for (int i = 0; i < 8; ++i) {
-            ret = (s.charAt(7 - i) == '1') ? (byte) (1 << i) : 0;
-            total = (byte) (ret | total);
-        }
-        return total;
     }
 
 }
