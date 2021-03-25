@@ -62,7 +62,8 @@ public class HomeActivity extends AppCompatActivity {
 
     //------------------RSA 복호화----------------------------
     private Rsa rsaDecrypt;
-    private String decPassword;
+    private byte[] decPassword;
+    private String password;
     //----------------페이스북 로그인용----------------------------
     private CallbackManager mCallbackManager;
     //----------------페이스북 로그인용---------------------------
@@ -98,6 +99,7 @@ public class HomeActivity extends AppCompatActivity {
 
         rsaDecrypt = new Rsa();
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        password = binding.pwEt.getText().toString().trim();
         mContext = this;
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
@@ -260,24 +262,12 @@ public class HomeActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(binding.pwEt.getWindowToken(), 0);
                 String userId = binding.idEt.getText().toString().trim();
                 String userPw = binding.pwEt.getText().toString().trim();
-                viewModel.decryptPw(userId);
                 //자동로그인 체크했을 시 공유프리퍼런스에 자동로그인 여부 저장
                 viewModel.autoLogin(isAutoLogin);
-                viewModel.login(userId, userPw);
+                viewModel.login(userId);
             }
         });
 
-        /*decryptPw*/
-        viewModel.decryptPwLiveData.observe(this,findPassword -> {
-            if(findPassword.getCode().equals("200")){
-                decPassword = findPassword.getPassword();
-                Log.d(TAG, "decPassword" + decPassword);
-            }else if(findPassword.getCode().equals("204")){
-                Log.d(TAG, "decPassword: 없는 계정");
-            }else {
-                Log.d(TAG, "decPassword: 에러");
-            }
-        });
         //자동로그인 체크박스 클릭이벤트
         binding.chkAutoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -295,17 +285,22 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         //일반 로그인 요청시 응답이 오면 실행될 코드
-        viewModel.loginRsLD.observe(this, code -> {
-            if (code.equals("200")) {
-                Snackbar.make(binding.homeLayout, "로그인 성공", Snackbar.LENGTH_SHORT).show();
-                viewModel.putLoginMethod("일반");
-                startActivity(new Intent(getApplicationContext(), LoadingActivity.class));
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                finish();
-            } else if (code.equals("204")) {
+        viewModel.loginRsLD.observe(this, user -> {
+            if (user.getCode().equals("200")) {
+//                decPassword = user.getPassword();
+//                Log.d(TAG, "onCreate: decPassword"+decPassword);
+                /*rsaDecrypt.decrypt(user.getPassword());*/
+                if (password.equals(rsaDecrypt.decrypt(user.getPassword().getBytes()))){//로그인 성공
+                    Snackbar.make(binding.homeLayout, "로그인 성공", Snackbar.LENGTH_SHORT).show();
+                    viewModel.putLoginMethod("일반");
+                    startActivity(new Intent(getApplicationContext(), LoadingActivity.class));
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    finish();
+                }else {
+                    Snackbar.make(binding.homeLayout, "비밀번호가 일치하지 않습니다.", Snackbar.LENGTH_SHORT).show();
+                }
+            } else if (user.getCode().equals("204")) {
                 Snackbar.make(binding.homeLayout, "존재하지 않는 계정입니다.", Snackbar.LENGTH_SHORT).show();
-            } else if (code.equals("205")) {
-                Snackbar.make(binding.homeLayout, "비밀번호가 틀립니다.", Snackbar.LENGTH_SHORT).show();
             } else {
                 Snackbar.make(binding.homeLayout, "로그인 실패", Snackbar.LENGTH_SHORT).show();
             }
@@ -431,6 +426,23 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+    public static byte[] binaryStringToByteArray(String s) {
+        int count = s.length() / 8;
+        byte[] b = new byte[count];
+        for (int i = 1; i < count; ++i) {
+            String t = s.substring((i - 1) * 8, i * 8);
+            b[i - 1] = binaryStringToByte(t);
+        }
+        return b;
+    }
+    public static byte binaryStringToByte(String s) {
+        byte ret = 0, total = 0;
+        for (int i = 0; i < 8; ++i) {
+            ret = (s.charAt(7 - i) == '1') ? (byte) (1 << i) : 0;
+            total = (byte) (ret | total);
+        }
+        return total;
     }
 
 }

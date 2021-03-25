@@ -34,7 +34,7 @@ public class LoginViewModel extends BaseViewModel {
 
 //    private ServiceApi serviceApi;
 //    private SharedPreference prefs;
-    public MutableLiveData<String> loginRsLD = new MutableLiveData<String>();
+    public MutableLiveData<FindPassword> loginRsLD = new MutableLiveData<FindPassword>();
     public MutableLiveData<FindPassword> findPwRsLD = new MutableLiveData<FindPassword>();
 
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();
@@ -49,10 +49,6 @@ public class LoginViewModel extends BaseViewModel {
     public MutableLiveData<UserInfo> userLiveData = new MutableLiveData<UserInfo>();
     public MutableLiveData<String> insertProfileLiveData = new MutableLiveData<String>();
     public MutableLiveData<Profile> getProfileLiveData = new MutableLiveData<Profile>();
-    public MutableLiveData<FindPassword> decryptPwLiveData = new MutableLiveData<FindPassword>();
-
-
-
 
     public LoginViewModel(@NonNull Application application){
         super(application);
@@ -60,16 +56,16 @@ public class LoginViewModel extends BaseViewModel {
 //        prefs = new SharedPreference(application);
     }
 
-    public void login(String userId,String password) {
-        service.login(userId, password).enqueue(new Callback<String>() {
+    public void login(String userId) {
+        service.login(userId).enqueue(new Callback<FindPassword>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String result = response.body();
+            public void onResponse(Call<FindPassword> call, Response<FindPassword> response) {
+                FindPassword result = response.body();
                 loginRsLD.postValue(result);
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<FindPassword> call, Throwable t) {
             }
         });
     }
@@ -288,20 +284,6 @@ public class LoginViewModel extends BaseViewModel {
 
             @Override
             public void onFailure(Call<Profile> call, Throwable t) {
-
-            }
-        });
-    }
-    public void decryptPw(String userId){
-        service.decryptPw(userId).enqueue(new Callback<FindPassword>() {
-            @Override
-            public void onResponse(Call<FindPassword> call, Response<FindPassword> response) {
-                FindPassword result = response.body();
-
-            }
-
-            @Override
-            public void onFailure(Call<FindPassword> call, Throwable t) {
 
             }
         });

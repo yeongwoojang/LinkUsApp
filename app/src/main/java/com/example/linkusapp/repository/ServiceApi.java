@@ -41,9 +41,8 @@ public interface ServiceApi {
     @GET("/android/idChk")
     Call<String> chkId(@Query("userId") String userId);
 
-    @FormUrlEncoded
-    @POST("/android/login")
-    Call<String> login(@Field("userId") String userId,@Field("password") String password);
+    @GET("/android/login")
+    Call<FindPassword> login(@Query("userId") String userId);
 
     @GET("/android/findPw")
     Call<FindPassword> findPw(@Query("userId") String userId, @Query("email") String email);
@@ -241,8 +240,4 @@ public interface ServiceApi {
 
     @GET("/android/getMessageList")
     Call<ChatInfo>getMessageList(@Query("gName") String gName, @Query("myNickName") String myNickName, @Query("yourNickName") String yourNickName);
-
-    /*복호화 하기 위해 암호화된 비번 불러오는 메서드*/
-    @GET("/android/decrypt")
-    Call<FindPassword> decryptPw(@Query("userId") String userId);
 }

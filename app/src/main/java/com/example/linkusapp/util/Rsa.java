@@ -65,14 +65,11 @@ public class Rsa {
 
 
         Log.d(TAG, "publicKey1" + publicKey);
-        String pubkey3 = publicKey.getEncoded().toString();
-        Log.d(TAG, "publicKey3" + pubkey3);
         Log.d(TAG, "publicKey2" + android.util.Base64.encodeToString(publicKey.getEncoded(), android.util.Base64.DEFAULT));
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
         byte[] publicKeyBytes = Base64.encode(publicKey.getEncoded(), 0);
         String pubKey = new String(publicKeyBytes);
-        Log.d(TAG, "publicKey4444" + pubkey3);
 
         byte[] encryptedBytes = cipher.doFinal(text.getBytes("utf-8"));
         Log.d(TAG, "encry" + encryptedBytes.toString());

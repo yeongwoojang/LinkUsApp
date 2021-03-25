@@ -51,6 +51,7 @@ public class JoinActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        /*rsa 암호화*/
         rsaEncrypt = new Rsa();
         rsaEncrypt.createKey();
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -170,6 +171,7 @@ public class JoinActivity extends AppCompatActivity {
                     Snackbar.make(binding.joinLayout, "이메일 인증을 해주세요.", Snackbar.LENGTH_SHORT).show();
                 }else {
                     try {
+                        /*암호화 한 후 비밀번호 저장*/
                         encrypted = rsaEncrypt.encrypt(userPw);
                         String pw = encrypted.toString();
                         viewModel.join(userName, userId, pw, userEmail);
