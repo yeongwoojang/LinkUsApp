@@ -19,6 +19,8 @@ import com.example.linkusapp.util.Rsa;
 import com.example.linkusapp.viewModel.JoinViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
@@ -36,7 +38,7 @@ public class JoinActivity extends AppCompatActivity {
     private JoinViewModel viewModel;
     /*RSA암호화*/
     private Rsa rsaEncrypt;
-    private byte[] encrypted;
+    private String encrypted;
     //이메일 인증번호
     String emailCode = "";
     //이메일 인증번호확인 여부변수
@@ -170,29 +172,10 @@ public class JoinActivity extends AppCompatActivity {
                 }else if(!isCertify){
                     Snackbar.make(binding.joinLayout, "이메일 인증을 해주세요.", Snackbar.LENGTH_SHORT).show();
                 }else {
-                    try {
                         /*암호화 한 후 비밀번호 저장*/
-                        encrypted = rsaEncrypt.encrypt(userPw);
-                        String pw = encrypted.toString();
-                        viewModel.join(userName, userId, pw, userEmail);
+                        encrypted = BCrypt.hashpw(userPw, BCrypt.gensalt());
+                        viewModel.join(userName, userId, encrypted, userEmail);
                         Snackbar.make(binding.joinLayout, "회원 가입 성공.", Snackbar.LENGTH_SHORT).show();
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchPaddingException e) {
-                        e.printStackTrace();
-                    } catch (InvalidKeyException e) {
-                        e.printStackTrace();
-                    } catch (IllegalBlockSizeException e) {
-                        e.printStackTrace();
-                    } catch (BadPaddingException e) {
-                        e.printStackTrace();
-                    } catch (KeyStoreException e) {
-                        e.printStackTrace();
-                    } catch (CertificateException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         });

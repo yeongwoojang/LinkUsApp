@@ -46,6 +46,7 @@ import com.kakao.sdk.auth.LoginClient;
 import com.kakao.sdk.user.UserApiClient;
 
 import org.json.JSONObject;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -261,7 +262,6 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 imm.hideSoftInputFromWindow(binding.pwEt.getWindowToken(), 0);
                 String userId = binding.idEt.getText().toString().trim();
-                String userPw = binding.pwEt.getText().toString().trim();
                 //자동로그인 체크했을 시 공유프리퍼런스에 자동로그인 여부 저장
                 viewModel.autoLogin(isAutoLogin);
                 viewModel.login(userId);
@@ -287,10 +287,7 @@ public class HomeActivity extends AppCompatActivity {
         //일반 로그인 요청시 응답이 오면 실행될 코드
         viewModel.loginRsLD.observe(this, user -> {
             if (user.getCode().equals("200")) {
-//                decPassword = user.getPassword();
-//                Log.d(TAG, "onCreate: decPassword"+decPassword);
-                /*rsaDecrypt.decrypt(user.getPassword());*/
-                if (password.equals(rsaDecrypt.decrypt(user.getPassword().getBytes()))){//로그인 성공
+                if (BCrypt.checkpw(binding.pwEt.getText().toString().trim(),user.getPassword())){//로그인 성공
                     Snackbar.make(binding.homeLayout, "로그인 성공", Snackbar.LENGTH_SHORT).show();
                     viewModel.putLoginMethod("일반");
                     startActivity(new Intent(getApplicationContext(), LoadingActivity.class));
