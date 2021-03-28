@@ -35,7 +35,7 @@ public class LoginViewModel extends BaseViewModel {
 //    private ServiceApi serviceApi;
 //    private SharedPreference prefs;
     public MutableLiveData<FindPassword> loginRsLD = new MutableLiveData<FindPassword>();
-    public MutableLiveData<FindPassword> findPwRsLD = new MutableLiveData<FindPassword>();
+    public MutableLiveData<String> findPwRsLD = new MutableLiveData<String>();
 
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();
     public MutableLiveData<String> nickChkResLD = new MutableLiveData<String>();
@@ -69,16 +69,16 @@ public class LoginViewModel extends BaseViewModel {
             }
         });
     }
-    public void findPw(String userId,String email){
-        service.findPw(userId,email).enqueue(new Callback<FindPassword>() {
+    public void findPw(String userId,String tempPwd){
+        service.findPw(userId,tempPwd).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<FindPassword> call, Response<FindPassword> response) {
-                FindPassword result =response.body();
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result =response.body();
                 findPwRsLD.postValue(result);
             }
 
             @Override
-            public void onFailure(Call<FindPassword> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 t.getMessage();
             }
         });

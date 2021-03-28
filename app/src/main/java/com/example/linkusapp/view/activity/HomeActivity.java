@@ -2,21 +2,28 @@ package com.example.linkusapp.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckedTextView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ActivityForgotPasswordBinding;
 import com.example.linkusapp.databinding.ActivityHomeBinding;
+import com.example.linkusapp.util.GMailSender;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -50,9 +57,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private ActivityHomeBinding binding;
-    //------------------카카오 로그인용----------------------------
-//    private SessionCallback sessionCallback;
-
+    private ActivityForgotPasswordBinding dialogBinding;
+    /*비밀번호 찾기 용*/
+    private GMailSender gMailSender = new GMailSender("sbtmxhs@gmail.com", "jang7856");
     //----------------페이스북 로그인용----------------------------
     private CallbackManager mCallbackManager;
     //----------------페이스북 로그인용---------------------------
@@ -291,12 +298,57 @@ public class HomeActivity extends AppCompatActivity {
         binding.findPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), FindPwActivity.class));
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                dialogBinding = ActivityForgotPasswordBinding.inflate(getLayoutInflater());
+                View dialogView = binding.getRoot();
+
+                new AlertDialog.Builder(HomeActivity.this)
+                        .setTitle("비밀번호 찾기")
+                        .setView(dialogView)
+                        .setPositiveButton("찾기", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                                String tempPwd = getRamdomPassword(8);
+                                tempPwd = BCrypt.hashpw(tempPwd,BCrypt.gensalt());
+                                viewModel.findPw(dialogBinding.idEt.getText().toString().trim(),tempPwd);
+                                viewModel.sendMail(gMailSender,dialogBinding.emailEt.getText().toString().trim(),
+                                        "임의 비밀번호는 "+tempPwd+"입니다. 해당 비밀번호로 로그인 후 새로운 비밀번호를 변경해주세요!");
+                            }
+                        })
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        });
+                /*startActivity(new Intent(getApplicationContext(), FindPwActivity.class));
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);*/
+            }
+        });
+        viewModel.findPwRsLD.observe(this,code -> {
+            if(code.equals("404")){
+                Snackbar.make(binding.homeLayout, "에러가 발생했습니다.", Snackbar.LENGTH_SHORT).show();
+            }else if(code.equals("204")){
+                Snackbar.make(binding.homeLayout, "계정이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
+            }else{
+                Snackbar.make(binding.homeLayout, "이메일주소로 임시 비밀번호를 전송했습니다. 로그인 후 비밀번호 변경해주세요.", Snackbar.LENGTH_LONG).show();
             }
         });
     }
-
+    /*임의 비밀번호 생성 함수*/
+    public String getRamdomPassword(int len){
+        char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+                'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+                'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+        int idx = 0; StringBuffer sb = new StringBuffer();
+        System.out.println("charSet.length :::: "+charSet.length);
+        for (int i = 0; i < len; i++) {
+            idx = (int) (charSet.length * Math.random());
+            System.out.println("idx :::: "+idx); sb.append(charSet[idx]);
+        }
+        return sb.toString();
+    }
     //구글로그인용 ID토큰 리프레쉬하는 메소드
     private void refreshIdToken() {
        /*
