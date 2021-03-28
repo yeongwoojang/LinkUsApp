@@ -298,31 +298,7 @@ public class HomeActivity extends AppCompatActivity {
         binding.findPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogBinding = ActivityForgotPasswordBinding.inflate(getLayoutInflater());
-                View dialogView = binding.getRoot();
-
-                new AlertDialog.Builder(HomeActivity.this)
-                        .setTitle("비밀번호 찾기")
-                        .setView(dialogView)
-                        .setPositiveButton("찾기", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                                String tempPwd = getRamdomPassword(8);
-                                tempPwd = BCrypt.hashpw(tempPwd,BCrypt.gensalt());
-                                viewModel.findPw(dialogBinding.idEt.getText().toString().trim(),tempPwd);
-                                viewModel.sendMail(gMailSender,dialogBinding.emailEt.getText().toString().trim(),
-                                        "임의 비밀번호는 "+tempPwd+"입니다. 해당 비밀번호로 로그인 후 새로운 비밀번호를 변경해주세요!");
-                            }
-                        })
-                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                finish();
-                            }
-                        });
-                /*startActivity(new Intent(getApplicationContext(), FindPwActivity.class));
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);*/
+                showDialog();
             }
         });
         viewModel.findPwRsLD.observe(this,code -> {
@@ -334,6 +310,30 @@ public class HomeActivity extends AppCompatActivity {
                 Snackbar.make(binding.homeLayout, "이메일주소로 임시 비밀번호를 전송했습니다. 로그인 후 비밀번호 변경해주세요.", Snackbar.LENGTH_LONG).show();
             }
         });
+    }
+    public void showDialog(){
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.activity_find_password_dialog,null);
+
+        new AlertDialog.Builder(HomeActivity.this)
+                .setTitle("비밀번호 찾기")
+                .setView(layout)
+                .setPositiveButton("찾기", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                        String tempPwd = getRamdomPassword(8);
+                        tempPwd = BCrypt.hashpw(tempPwd,BCrypt.gensalt());
+                        viewModel.findPw(dialogBinding.idEt.getText().toString().trim(),tempPwd);
+                        viewModel.sendMail(gMailSender,dialogBinding.emailEt.getText().toString().trim(),
+                                "임의 비밀번호는 "+tempPwd+"입니다. 해당 비밀번호로 로그인 후 새로운 비밀번호를 변경해주세요!");
+                    }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                }).show();
     }
     /*임의 비밀번호 생성 함수*/
     public String getRamdomPassword(int len){
