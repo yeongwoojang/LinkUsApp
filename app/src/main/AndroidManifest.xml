@@ -47,7 +47,6 @@
         <activity android:name=".view.activity.MainActivity" />
         <activity android:name=".view.activity.AddressActivity" />
         <activity android:name=".view.activity.AddUserInfoActivity" />
-        <activity android:name=".view.activity.FindPwActivity" />
         <activity android:name=".view.activity.LoadingActivity" />
 
         <meta-data

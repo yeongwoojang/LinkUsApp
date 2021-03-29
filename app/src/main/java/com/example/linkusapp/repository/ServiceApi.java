@@ -44,8 +44,9 @@ public interface ServiceApi {
     @GET("/android/login")
     Call<FindPassword> login(@Query("userId") String userId);
 
-    @GET("/android/findPw")
-    Call<String> findPw(@Query("userId") String userId, @Query("password") String password);
+    @FormUrlEncoded
+    @POST("/android/findPw")
+    Call<String> findPw(@Field("userId") String userId, @Field("password") String password);
 
     @GET("/android/nickNameChk")
     Call<String> nickNameChk(@Query("userNickname") String userNickname);

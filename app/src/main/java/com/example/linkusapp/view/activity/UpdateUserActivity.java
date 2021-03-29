@@ -55,8 +55,9 @@ public class UpdateUserActivity extends AppCompatActivity {
         binding.idTv.setText(viewModel.getUserInfoFromShared().getUserId());
         binding.updateMethodTv.setText(viewModel.getUserInfoFromShared().getLoginMethod());
         binding.nicknameEt.setText(viewModel.getUserInfoFromShared().getUserNickname());
-        if(binding.updateMethodTv.equals("일반")){
-            binding.passwordEt.setText(checkPW);
+
+        if(binding.updateMethodTv.getText().equals("일반")){
+            binding.passwordEt.setHint(checkPW);
         }else {
             binding.passwordEt.setText("소셜로그인은 변경할 수 없습니다.");
             binding.password2Et.setText("소셜로그인은 변경할 수 없습니다.");

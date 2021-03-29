@@ -21,7 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
-import com.example.linkusapp.databinding.ActivityForgotPasswordBinding;
+import com.example.linkusapp.databinding.ActivityFindPasswordDialogBinding;
 import com.example.linkusapp.databinding.ActivityHomeBinding;
 import com.example.linkusapp.util.GMailSender;
 import com.example.linkusapp.viewModel.LoginViewModel;
@@ -57,9 +57,10 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private ActivityHomeBinding binding;
-    private ActivityForgotPasswordBinding dialogBinding;
+    private ActivityFindPasswordDialogBinding dialogBinding;
     /*비밀번호 찾기 용*/
     private GMailSender gMailSender = new GMailSender("sbtmxhs@gmail.com", "jang7856");
+    private String tempPwd;
     //----------------페이스북 로그인용----------------------------
     private CallbackManager mCallbackManager;
     //----------------페이스북 로그인용---------------------------
@@ -307,26 +308,27 @@ public class HomeActivity extends AppCompatActivity {
             }else if(code.equals("204")){
                 Snackbar.make(binding.homeLayout, "계정이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
             }else{
+                viewModel.sendMail(gMailSender,dialogBinding.emailEt.getText().toString().trim(),
+                        "임의 비밀번호는 "+tempPwd+"입니다. 해당 비밀번호로 로그인 후 새로운 비밀번호를 변경해주세요!");
                 Snackbar.make(binding.homeLayout, "이메일주소로 임시 비밀번호를 전송했습니다. 로그인 후 비밀번호 변경해주세요.", Snackbar.LENGTH_LONG).show();
             }
         });
     }
     public void showDialog(){
+        dialogBinding = ActivityFindPasswordDialogBinding.inflate(getLayoutInflater());
+        View viewF = dialogBinding.getRoot();
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.activity_find_password_dialog,null);
-
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         new AlertDialog.Builder(HomeActivity.this)
                 .setTitle("비밀번호 찾기")
-                .setView(layout)
+                .setView(viewF)
                 .setPositiveButton("찾기", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                        String tempPwd = getRamdomPassword(8);
-                        tempPwd = BCrypt.hashpw(tempPwd,BCrypt.gensalt());
-                        viewModel.findPw(dialogBinding.idEt.getText().toString().trim(),tempPwd);
-                        viewModel.sendMail(gMailSender,dialogBinding.emailEt.getText().toString().trim(),
-                                "임의 비밀번호는 "+tempPwd+"입니다. 해당 비밀번호로 로그인 후 새로운 비밀번호를 변경해주세요!");
+                        tempPwd = getRamdomPassword(8);
+                        String cryptPwd = BCrypt.hashpw(tempPwd,BCrypt.gensalt());
+                        viewModel.findPw(dialogBinding.idEt.getText().toString().trim(),cryptPwd);
                     }
                 })
                 .setNegativeButton("취소", new DialogInterface.OnClickListener() {
