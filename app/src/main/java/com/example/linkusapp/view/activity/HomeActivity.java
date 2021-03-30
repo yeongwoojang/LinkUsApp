@@ -328,7 +328,7 @@ public class HomeActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         tempPwd = getRamdomPassword(8);
                         String cryptPwd = BCrypt.hashpw(tempPwd,BCrypt.gensalt());
-                        viewModel.findPw(dialogBinding.idEt.getText().toString().trim(),cryptPwd);
+                        viewModel.findPw(dialogBinding.idEt.getText().toString().trim(),dialogBinding.emailEt.getText().toString(),cryptPwd);
                     }
                 })
                 .setNegativeButton("취소", new DialogInterface.OnClickListener() {

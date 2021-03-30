@@ -25,6 +25,8 @@ import com.example.linkusapp.databinding.ActivityUpdateUserBinding;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.util.ArrayList;
 
 public class UpdateUserActivity extends AppCompatActivity {
@@ -32,6 +34,7 @@ public class UpdateUserActivity extends AppCompatActivity {
     private ActivityUpdateUserBinding binding;
     private String checkNickname,checkPW;
     private LoginViewModel viewModel;
+    private String pwd;
 
     /*엘범에서 사진 가져오기*/
     private static final int REQUEST_IMAGE_CODE = 1001;
@@ -56,20 +59,20 @@ public class UpdateUserActivity extends AppCompatActivity {
         binding.updateMethodTv.setText(viewModel.getUserInfoFromShared().getLoginMethod());
         binding.nicknameEt.setText(viewModel.getUserInfoFromShared().getUserNickname());
 
-        if(binding.updateMethodTv.getText().equals("일반")){
-            binding.passwordEt.setHint(checkPW);
-        }else {
-            binding.passwordEt.setText("소셜로그인은 변경할 수 없습니다.");
-            binding.password2Et.setText("소셜로그인은 변경할 수 없습니다.");
+        if(!binding.updateMethodTv.getText().equals("일반")){
+            binding.originPasswordEt.setHint("소셜로그인은 변경할 수 없습니다.");
+            binding.passwordEt.setHint("소셜로그인은 변경할 수 없습니다.");
+            binding.passwordConfirmEt.setHint("소셜로그인은 변경할 수 없습니다.");
             binding.passwordEt.setEnabled(false);
-            binding.password2Et.setEnabled(false);
+            binding.passwordConfirmEt.setEnabled(false);
+            binding.originPasswordEt.setEnabled(false);
         }
         binding.ivUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
              Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-             startActivityForResult(intent,REQUEST_IMAGE_CODE);
-            }
+            startActivityForResult(intent,REQUEST_IMAGE_CODE);
+        }
         });
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
@@ -108,24 +111,33 @@ public class UpdateUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String nick = binding.nicknameEt.getText().toString();
-                String passwd = binding.passwordEt.getText().toString();
+                String password = binding.originPasswordEt.getText().toString();
+                String newPwd = binding.passwordEt.getText().toString();
                 String loginmethod= viewModel.getLoginMethod();
                 /*닉네임 중복 검사*/
+                if(nick.equals(checkNickname)){
+                    isCertify = true;
+                }
                 if(!isCertify){
                     Snackbar.make(findViewById(R.id.update_user_layout), "닉네임 중복 검사 실시 해주세요.", Snackbar.LENGTH_SHORT).show();
                 }/*비밀번호 조건 검사*/
-                else if(binding.updateMethodTv.equals("일반")&&!passwd.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{8,15}.$")){
+                else if(binding.updateMethodTv.equals("일반")&&!newPwd.matches("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{8,15}.$")){
                     Snackbar.make(findViewById(R.id.update_user_layout), "비밀번호는 영문,특수문자,숫자 조합입니다.", Snackbar.LENGTH_SHORT).show();
+                }else if(newPwd.equals(password)){/*현재비밀번호와 변경할 비밀번호가 다른지 검사*/
+                    Snackbar.make(findViewById(R.id.update_user_layout), "변경하려는 비밀번호가 기존가 동일합니다.", Snackbar.LENGTH_SHORT).show();
                 }/*비밀번호 확인과 동일 검사*/
-                else if(passwd.equals(binding.password2Et.getText())){
+                else if(newPwd.equals(binding.passwordConfirmEt.getText())){
                     Snackbar.make(findViewById(R.id.update_user_layout), "비밀번호가 일치하지 않습니다.", Snackbar.LENGTH_SHORT).show();
                 }
-                else if(isCertify&&binding.updateMethodTv.equals("일반")){
-                    viewModel.updateUserInfo(nick,passwd,loginmethod);
-                    finish();
-                }else if(isCertify&&!binding.updateMethodTv.equals("일반")){
-                    viewModel.updateUserInfo(nick,checkPW,loginmethod);
-                    finish();
+                else if(BCrypt.checkpw(password,checkPW)){
+                    if(isCertify&&binding.updateMethodTv.getText().equals("일반")){
+                        pwd = BCrypt.hashpw(newPwd,BCrypt.gensalt());
+                        viewModel.updateUserInfo(nick,pwd,loginmethod);
+                        Snackbar.make(findViewById(R.id.update_user_layout), "회원정보가 수정되었습니다.", Snackbar.LENGTH_SHORT).show();
+                    }else if(isCertify&&!binding.updateMethodTv.getText().equals("일반")){
+                        viewModel.updateUserInfo(nick,checkPW,loginmethod);
+                        Snackbar.make(findViewById(R.id.update_user_layout), "회원정보가 수정되었습니다.", Snackbar.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

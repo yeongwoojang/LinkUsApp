@@ -69,8 +69,8 @@ public class LoginViewModel extends BaseViewModel {
             }
         });
     }
-    public void findPw(String userId,String tempPwd){
-        service.findPw(userId,tempPwd).enqueue(new Callback<String>() {
+    public void findPw(String userId,String email,String tempPwd){
+        service.findPw(userId,email,tempPwd).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String result =response.body();

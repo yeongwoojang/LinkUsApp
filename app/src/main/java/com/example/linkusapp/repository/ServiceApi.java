@@ -46,7 +46,7 @@ public interface ServiceApi {
 
     @FormUrlEncoded
     @POST("/android/findPw")
-    Call<String> findPw(@Field("userId") String userId, @Field("password") String password);
+    Call<String> findPw(@Field("userId") String userId,@Field("email") String email ,@Field("password") String password);
 
     @GET("/android/nickNameChk")
     Call<String> nickNameChk(@Query("userNickname") String userNickname);
