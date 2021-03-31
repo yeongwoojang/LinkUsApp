@@ -44,7 +44,9 @@
         <activity android:name=".view.activity.SetAddressActivity" />
         <activity android:name=".view.activity.GroupMainActivity" />
         <activity android:name=".view.activity.CreateGroupActivity" />
-        <activity android:name=".view.activity.MainActivity" />
+        <activity android:name=".view.activity.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:showOnLockScreen="true"/>
         <activity android:name=".view.activity.AddressActivity" />
         <activity android:name=".view.activity.AddUserInfoActivity" />
         <activity android:name=".view.activity.LoadingActivity" />
