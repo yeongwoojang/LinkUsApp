@@ -146,7 +146,9 @@ public class BoardFragment extends Fragment{
             @Override
             public void onItemClick(View v, int position) {
                 gPart = part[position];
-                if(position != 0){
+                if(position == 0) {
+                    gPart = "전체";
+                }else{
                     viewModel.getPartBoard(gPart);
                 }
             }
@@ -185,6 +187,7 @@ public class BoardFragment extends Fragment{
                 Snackbar.make(view.findViewById(R.id.board_fragment), "오류", Snackbar.LENGTH_SHORT).show();
             }
         });
+
         viewModel.optionBoardRsLD.observe(getViewLifecycleOwner(),boardInfo -> {
             if(boardInfo.getCode() == 200){
                 boardList = boardInfo.getJsonArray();
@@ -214,7 +217,6 @@ public class BoardFragment extends Fragment{
 
         viewModel.boardPartRsLD.observe(getViewLifecycleOwner(), boardPartInfo -> {
             if(boardPartInfo.getCode() == 200){
-//                binding.spinnerAddress.setSelection(0);
                 boardList = boardPartInfo.getJsonArray();
                 boardAdapter.updateItem(boardList);
                 binding.boardRecyclerview.setVisibility(View.VISIBLE);
@@ -225,12 +227,5 @@ public class BoardFragment extends Fragment{
                 binding.emptyGroup.setVisibility(View.VISIBLE);
             }
         });
-    }
-    private void listRefresh(){
-//        boardRecyclerView.removeAllViewsInLayout();
-//        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity());
-//        boardRecyclerView.setAdapter(boardAdapter);
-        BoardAdapter boardAdapter = new BoardAdapter(boardList,getActivity(),viewModel, 1);
-        boardAdapter.notifyDataSetChanged();
     }
 }
