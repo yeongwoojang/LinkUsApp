@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -56,7 +57,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Board board = (Board)intent.getSerializableExtra("board");
         gName = board.getTitle();
-
+        Log.d("IntentBoard", "onCreate: "+board.toString());
         viewModel.getGroupMember(gName);
         writer = viewModel.getUserInfoFromShared().getUserNickname();
         binding.groupNameTv.setText(gName);

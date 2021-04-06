@@ -116,4 +116,20 @@ public class Board implements Serializable {
     public void setExplanation(String explanation) {
         this.explanation = explanation;
     }
+
+    @Override
+    public String toString() {
+        return "Board{" +
+                "part='" + part + '\'' +
+                ", area='" + area + '\'' +
+                ", leader='" + leader + '\'' +
+                ", title='" + title + '\'' +
+                ", purpose='" + purpose + '\'' +
+                ", groupJoinMethod='" + groupJoinMethod + '\'' +
+                ", memberLimit='" + memberLimit + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", explanation='" + explanation + '\'' +
+                '}';
+    }
 }

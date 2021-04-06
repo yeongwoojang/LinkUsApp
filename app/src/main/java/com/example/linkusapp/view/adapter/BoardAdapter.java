@@ -126,6 +126,7 @@ public class BoardAdapter extends RecyclerView.Adapter {
         }else if(getActivity.toString().contains("MyStudyGroupActivity")){
             Intent intent = new Intent(getActivity, EnterMainGroupActivity.class);
             intent.putExtra("board",boardList.get(position));
+            Log.d("AdapterBorad", "itemClickEvent: "+boardList.get(position));
             getActivity.startActivity(intent);
             getActivity.overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
