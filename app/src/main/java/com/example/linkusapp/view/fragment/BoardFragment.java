@@ -146,9 +146,10 @@ public class BoardFragment extends Fragment{
             @Override
             public void onItemClick(View v, int position) {
                 gPart = part[position];
-                if(position != 0){
-                    viewModel.getPartBoard(gPart);
+                if(position == 0){
+                    gPart = "전체";
                 }
+                viewModel.getPartBoard(gPart);
             }
         });
         /*여기*/
