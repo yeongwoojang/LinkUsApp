@@ -63,6 +63,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         binding.groupNameTv.setText(gName);
         binding.leaderTv.setText("리더 : "+board.getLeader());
         binding.partTv.setText("분야 : "+board.getPart());
+        /*오류 해결*/
         if(board.getStartDate().equals("미정") && board.getEndDate().equals("미정")){
             binding.periodTv.setText("기간 : " + "미정");
         }else{
