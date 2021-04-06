@@ -5,15 +5,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -33,6 +39,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.auth.ISessionCallback;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 public class AddUserInfoActivity extends AppCompatActivity {
@@ -57,6 +66,11 @@ public class AddUserInfoActivity extends AppCompatActivity {
     boolean isCertify = false;
     private static final String TAG = AddUserInfoActivity.class.getSimpleName();
 
+    /*프로필 */
+    final int REQ_CODE_SELECT_IMAGE = 100;
+    String getServerURL = "";
+    String getImgURL = "";
+    String getImgName = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +91,16 @@ public class AddUserInfoActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mSignInClient =  GoogleSignIn.getClient(this, gso);
+
+        binding.profileIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+            }
+        });
 
         /*나이*/
         binding.spinnerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -225,9 +249,38 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     }
                 }
                 break;
+            case REQ_CODE_SELECT_IMAGE:
+                if(resultCode == Activity.RESULT_OK){
+                    try{
+                        String nameStr = getImageNameToUri(intent.getData());
+
+                        Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),intent.getData());
+                        binding.profileIv.setImageBitmap(image_bitmap);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
         }
     }
+    // 선택된 이미지 파일명 가져오기
+    public String getImageNameToUri(Uri data)
+    {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(data, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
+        cursor.moveToFirst();
+
+        String imgPath = cursor.getString(column_index);
+        String imgName = imgPath.substring(imgPath.lastIndexOf("/")+1);
+
+        getImgURL = imgPath;
+        getImgName = imgName;
+
+        return "success";
+    }
     //로그아웃하기
     private void googleSignOut() {
         mSignInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {

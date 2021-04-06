@@ -62,6 +62,8 @@ public interface ServiceApi {
     @GET("/android/chkScdUserInfo")
     Call<String> chkScdUserInfo(@Query("userId") String userId, @Query("loginMethod") String loginMethod);
 
+
+//프로필 작업---------------------------------------------------------------------------
     /*유저 프로필*/
     @FormUrlEncoded
     @POST("/android/insertProfile")
@@ -72,6 +74,7 @@ public interface ServiceApi {
     @Multipart
     @POST("/upload")
     Call<ResponseBody> postImage(@Part MultipartBody.Part image, @Part("upload") RequestBody name);
+
     /*여기까지*/
 
     @FormUrlEncoded
