@@ -213,7 +213,7 @@ public class MyPageFragment extends Fragment {
             }
         }
         viewModel.removeUserIdPref();
-//                viewModel.removeLoginMethod();
+        viewModel.removeUserInfo();
         startActivity(new Intent(getActivity(), HomeActivity.class));
         getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }

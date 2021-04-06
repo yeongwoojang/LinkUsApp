@@ -126,4 +126,15 @@ public class MainActivity extends AppCompatActivity {
                     });
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy:밀어서 종료 ");
+        if(!viewModel.isAutoLogin()){
+            viewModel.removeUserIdPref();
+            viewModel.removeUserInfo(); //앱 강제 종료 시 Shared에 있는 유저정보 삭제
+        }
+
+    }
 }

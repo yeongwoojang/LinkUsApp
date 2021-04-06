@@ -162,6 +162,10 @@ public class LoginViewModel extends BaseViewModel {
     public void cancelAutoLogin(){
         prefs.cancelAutoLogin();
     }
+    public void removeUserInfo(){
+        prefs.removeUserInfo();
+        prefs.removeLoginMethod();
+    }
 
     public String getLoginMethod(){
         return prefs.getLoginMethod();
