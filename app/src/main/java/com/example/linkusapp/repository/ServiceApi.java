@@ -41,6 +41,9 @@ public interface ServiceApi {
     @GET("/android/idChk")
     Call<String> chkId(@Query("userId") String userId);
 
+    @GET("/android/chkReader")
+    Call<UserInfo> chkReader(@Query("userNickName") String userNickName);
+
     @GET("/android/login")
     Call<FindPassword> login(@Query("userId") String userId);
 

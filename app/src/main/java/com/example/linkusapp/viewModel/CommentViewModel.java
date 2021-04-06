@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.linkusapp.model.vo.CommentInfo;
 import com.example.linkusapp.model.vo.User;
+import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.util.SharedPreference;
@@ -23,6 +24,7 @@ public class CommentViewModel extends BaseViewModel {
 
     public MutableLiveData<String> insertCommentRsLD = new MutableLiveData<String>();
     public MutableLiveData<CommentInfo> getCommentRsLD = new MutableLiveData<CommentInfo>();
+    public MutableLiveData<UserInfo> userNickNameRsLD = new MutableLiveData<UserInfo>();
 
     public CommentViewModel(@NonNull Application application) {
         super(application);
@@ -64,4 +66,18 @@ public class CommentViewModel extends BaseViewModel {
         });
     }
 
+    public void chkReader(String userNickName){
+        service.chkReader(userNickName).enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                UserInfo result = response.body();
+                userNickNameRsLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+
+            }
+        });
+    }
 }

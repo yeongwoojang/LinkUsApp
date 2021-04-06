@@ -24,6 +24,7 @@ import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.view.adapter.CommentAdapter;
 import com.example.linkusapp.view.adapter.MemberAdapter;
 import com.example.linkusapp.viewModel.CommentViewModel;
+import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
     private ActivityEnterMainGroupBinding binding;
 
     private CommentViewModel viewModel;
+    private LoginViewModel loginViewModel;
 
     private boolean isDrOpen = false; //드로어 오픈 여부
     /*비밀 댓글 여부 변수*/
@@ -53,6 +55,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         setContentView(view);
 
         viewModel = new ViewModelProvider(this).get(CommentViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         Intent intent = getIntent();
         Board board = (Board)intent.getSerializableExtra("board");
@@ -153,6 +156,26 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 memberAdapter.updateItem(memberList);
             }
             memberAdapter.updateItem(usersInfo.getUsers());
+        });
+
+        viewModel.userNickNameRsLD.observe(this, userInfo -> {
+            if(userInfo.getCode() == 200){
+                Log.d("chkNickName true","닉네임 일치.");
+//                리더랑 접속한 닉네임 일치가 됐어
+//                        삭제할 스터디를 권한이 생긴거지
+//                             이 조건문안에서 삭제를 실행하면 되는거지
+
+            }else{
+                Log.d("chkNickName false","닉네임 불일치.");
+            }
+        });
+
+        binding.deleteBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                viewModel.chkReader(loginViewModel.getUserInfoFromShared().getUserNickname());
+
+            }
         });
     }
 }

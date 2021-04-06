@@ -14,38 +14,58 @@
     <!--        android:layout_height="match_parent"-->
     <!--        android:orientation="vertical">-->
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/white">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/white">
 
-        <ImageButton
-            android:id="@+id/back_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:src="@drawable/icon_close" />
+            <ImageButton
+                android:id="@+id/back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:src="@drawable/icon_close" />
 
-        <TextView
-            android:id="@+id/group_name_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="@font/nanum_barun_gothic"
-            android:text="그룹명"
-            android:textColor="@color/black"
-            android:textSize="23dp" />
+            <TextView
+                android:id="@+id/group_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/nanum_barun_gothic"
+                android:text="그룹명"
+                android:textColor="@color/black"
+                android:textSize="23dp" />
 
-        <ImageButton
-            android:id="@+id/member_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="16dp"
-            android:background="@color/transparent"
-            android:src="@drawable/icon_member" />
-    </androidx.appcompat.widget.Toolbar>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/delete_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/icon_delete" />
+
+                <ImageButton
+                    android:id="@+id/member_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:src="@drawable/icon_member" />
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </LinearLayout>
 
     <View
         android:id="@+id/toolbar_div"
