@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
     //viewModel
     private LoginViewModel viewModel;
     private GoogleSignInClient mSignInClient;
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
     /*fragment*/
     private FragmentManager fragmentManager = getSupportFragmentManager();

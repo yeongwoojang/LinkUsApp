@@ -1,6 +1,9 @@
 package com.example.linkusapp.view.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,13 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.FragmentMyPageBinding;
 import com.example.linkusapp.util.TimerService;
@@ -33,6 +36,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.kakao.sdk.user.UserApiClient;
 
+import java.io.IOException;
+
 public class MyPageFragment extends Fragment {
 
     private FragmentMyPageBinding binding;
@@ -40,6 +45,7 @@ public class MyPageFragment extends Fragment {
     private String loginMethod,userNickname;
     private GoogleSignInClient mSignInClient;
     private String userId;
+    private Bitmap profile;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,20 +66,8 @@ public class MyPageFragment extends Fragment {
         binding = FragmentMyPageBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        viewModel.getProfile(userNickname);
 
-
-//        viewModel.getUserInfo();
-//        viewModel.getUserInfoRsLD.observe(getViewLifecycleOwner(),userInfo -> {
-//            if(userInfo.getUser()!=null){
-//                userNickname = userInfo.getUser().getUserNickname();
-//                userId = userInfo.getUser().getUserId();
-//                userAddress = userInfo.getUser().getAddress();
-//                loginMethod = userInfo.getUser().getLoginMethod();
-//                nickNameTV.setText(userInfo.getUser().getUserNickname());
-//                addressTV.setText(userInfo.getUser().getAddress());
-//                methodTV.setText(userInfo.getUser().getLoginMethod());
-//            }
-//        });
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
@@ -134,6 +128,33 @@ public class MyPageFragment extends Fragment {
                 msg.putExtra(Intent.EXTRA_TITLE, "앱 공유하기");
                 msg.setType("text/plain");
                 startActivity(Intent.createChooser(msg, "앱을 선택해 주세요"));
+            }
+        });
+        viewModel.getProfile(userNickname);
+        viewModel.getProfileLiveData.observe(getActivity(),profile1 -> {
+            if(profile1.getCode().equals("200")){
+                Snackbar.make(view.findViewById(R.id.my), "프로필 사진 불러왔습니다.", Snackbar.LENGTH_SHORT).show();
+                Log.d("TAG", "onViewCreated: "+profile1.getProfileUri());
+                if(profile1.getProfileUri().equals(null)){
+                    Drawable drawable = getResources().getDrawable(R.drawable.baseline_profile_picture);
+                    binding.profilePicture.setImageDrawable(drawable);
+                }else{
+                    String uri = profile1.getProfileUri();
+                    Uri image = Uri.parse(uri);
+                    Log.d("profile", "onViewCreated: "+image);
+                    Glide.with(this).load(image).into(binding.profilePicture);
+                    /*try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),image);
+                        bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+                        binding.profilePicture.setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+            }else if(profile1.getCode().equals("204")){
+                Snackbar.make(view.findViewById(R.id.my), "프로필 사진이 없습니다.", Snackbar.LENGTH_SHORT).show();
+            }else{
+                Snackbar.make(view.findViewById(R.id.my), "오류", Snackbar.LENGTH_SHORT).show();
             }
         });
         /*탈퇴하기 버튼*/

@@ -2,6 +2,7 @@ package com.example.linkusapp.viewModel;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.example.linkusapp.util.GMailSender;
 import com.example.linkusapp.util.SharedPreference;
 import com.kakao.util.helper.log.Tag;
 
+import java.net.URI;
 import java.util.Iterator;
 
 import javax.mail.MessagingException;
@@ -32,8 +34,8 @@ public class LoginViewModel extends BaseViewModel {
 
 //    private ServiceApi serviceApi;
 //    private SharedPreference prefs;
-    public MutableLiveData<String> loginRsLD = new MutableLiveData<String>();
-    public MutableLiveData<FindPassword> findPwRsLD = new MutableLiveData<FindPassword>();
+    public MutableLiveData<FindPassword> loginRsLD = new MutableLiveData<FindPassword>();
+    public MutableLiveData<String> findPwRsLD = new MutableLiveData<String>();
 
     public MutableLiveData<Integer> sendMailRes = new MutableLiveData<Integer>();
     public MutableLiveData<String> nickChkResLD = new MutableLiveData<String>();
@@ -48,38 +50,35 @@ public class LoginViewModel extends BaseViewModel {
     public MutableLiveData<String> insertProfileLiveData = new MutableLiveData<String>();
     public MutableLiveData<Profile> getProfileLiveData = new MutableLiveData<Profile>();
 
-
-
-
     public LoginViewModel(@NonNull Application application){
         super(application);
 //        serviceApi = RetrofitClient.getClient(application).create(ServiceApi.class);
 //        prefs = new SharedPreference(application);
     }
 
-    public void login(String userId,String password) {
-        service.login(userId, password).enqueue(new Callback<String>() {
+    public void login(String userId) {
+        service.login(userId).enqueue(new Callback<FindPassword>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String result = response.body();
+            public void onResponse(Call<FindPassword> call, Response<FindPassword> response) {
+                FindPassword result = response.body();
                 loginRsLD.postValue(result);
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<FindPassword> call, Throwable t) {
             }
         });
     }
-    public void findPw(String userId,String email){
-        service.findPw(userId,email).enqueue(new Callback<FindPassword>() {
+    public void findPw(String userId,String email,String tempPwd){
+        service.findPw(userId,email,tempPwd).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<FindPassword> call, Response<FindPassword> response) {
-                FindPassword result =response.body();
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result =response.body();
                 findPwRsLD.postValue(result);
             }
 
             @Override
-            public void onFailure(Call<FindPassword> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 t.getMessage();
             }
         });
@@ -260,7 +259,7 @@ public class LoginViewModel extends BaseViewModel {
         });
     }
 
-    public void insertProfile(String userNickname,String profileUri){
+    public void insertProfile(String userNickname, Uri profileUri){
         service.insertProfile(userNickname,profileUri).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {

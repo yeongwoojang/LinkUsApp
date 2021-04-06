@@ -2,26 +2,28 @@ package com.example.linkusapp.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.databinding.ActivityFindPasswordDialogBinding;
 import com.example.linkusapp.databinding.ActivityHomeBinding;
-import com.example.linkusapp.model.vo.User;
+import com.example.linkusapp.util.GMailSender;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -43,6 +45,7 @@ import com.kakao.sdk.auth.LoginClient;
 import com.kakao.sdk.user.UserApiClient;
 
 import org.json.JSONObject;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,11 +57,10 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private ActivityHomeBinding binding;
-    //------------------카카오 로그인용----------------------------
-//    private SessionCallback sessionCallback;
-
-    //------------------카카오 로그인용----------------------------
-
+    private ActivityFindPasswordDialogBinding dialogBinding;
+    /*비밀번호 찾기 용*/
+    private GMailSender gMailSender = new GMailSender("sbtmxhs@gmail.com", "jang7856");
+    private String tempPwd;
     //----------------페이스북 로그인용----------------------------
     private CallbackManager mCallbackManager;
     //----------------페이스북 로그인용---------------------------
@@ -89,7 +91,6 @@ public class HomeActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
 
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         mContext = this;
@@ -253,10 +254,9 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 imm.hideSoftInputFromWindow(binding.pwEt.getWindowToken(), 0);
                 String userId = binding.idEt.getText().toString().trim();
-                String userPw = binding.pwEt.getText().toString().trim();
                 //자동로그인 체크했을 시 공유프리퍼런스에 자동로그인 여부 저장
                 viewModel.autoLogin(isAutoLogin);
-                viewModel.login(userId, userPw);
+                viewModel.login(userId);
             }
         });
 
@@ -277,17 +277,19 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         //일반 로그인 요청시 응답이 오면 실행될 코드
-        viewModel.loginRsLD.observe(this, code -> {
-            if (code.equals("200")) {
-                Snackbar.make(binding.homeLayout, "로그인 성공", Snackbar.LENGTH_SHORT).show();
-                viewModel.putLoginMethod("일반");
-                startActivity(new Intent(getApplicationContext(), LoadingActivity.class));
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                finish();
-            } else if (code.equals("204")) {
+        viewModel.loginRsLD.observe(this, user -> {
+            if (user.getCode().equals("200")) {
+                if (BCrypt.checkpw(binding.pwEt.getText().toString().trim(),user.getPassword())){//로그인 성공
+                    Snackbar.make(binding.homeLayout, "로그인 성공", Snackbar.LENGTH_SHORT).show();
+                    viewModel.putLoginMethod("일반");
+                    startActivity(new Intent(getApplicationContext(), LoadingActivity.class));
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    finish();
+                }else {
+                    Snackbar.make(binding.homeLayout, "비밀번호가 일치하지 않습니다.", Snackbar.LENGTH_SHORT).show();
+                }
+            } else if (user.getCode().equals("204")) {
                 Snackbar.make(binding.homeLayout, "존재하지 않는 계정입니다.", Snackbar.LENGTH_SHORT).show();
-            } else if (code.equals("205")) {
-                Snackbar.make(binding.homeLayout, "비밀번호가 틀립니다.", Snackbar.LENGTH_SHORT).show();
             } else {
                 Snackbar.make(binding.homeLayout, "로그인 실패", Snackbar.LENGTH_SHORT).show();
             }
@@ -297,12 +299,58 @@ public class HomeActivity extends AppCompatActivity {
         binding.findPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), FindPwActivity.class));
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                showDialog();
+            }
+        });
+        viewModel.findPwRsLD.observe(this,code -> {
+            if(code.equals("404")){
+                Snackbar.make(binding.homeLayout, "에러가 발생했습니다.", Snackbar.LENGTH_SHORT).show();
+            }else if(code.equals("204")){
+                Snackbar.make(binding.homeLayout, "계정이 존재하지 않습니다.", Snackbar.LENGTH_SHORT).show();
+            }else{
+                viewModel.sendMail(gMailSender,dialogBinding.emailEt.getText().toString().trim(),
+                        "임의 비밀번호는 "+tempPwd+"입니다. 해당 비밀번호로 로그인 후 새로운 비밀번호를 변경해주세요!");
+                Snackbar.make(binding.homeLayout, "이메일주소로 임시 비밀번호를 전송했습니다. 로그인 후 비밀번호 변경해주세요.", Snackbar.LENGTH_LONG).show();
             }
         });
     }
-
+    public void showDialog(){
+        dialogBinding = ActivityFindPasswordDialogBinding.inflate(getLayoutInflater());
+        View viewF = dialogBinding.getRoot();
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.activity_find_password_dialog,null);
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        new AlertDialog.Builder(HomeActivity.this)
+                .setTitle("비밀번호 찾기")
+                .setView(viewF)
+                .setPositiveButton("찾기", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        tempPwd = getRamdomPassword(8);
+                        String cryptPwd = BCrypt.hashpw(tempPwd,BCrypt.gensalt());
+                        viewModel.findPw(dialogBinding.idEt.getText().toString().trim(),dialogBinding.emailEt.getText().toString(),cryptPwd);
+                    }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                }).show();
+    }
+    /*임의 비밀번호 생성 함수*/
+    public String getRamdomPassword(int len){
+        char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+                'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+                'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+        int idx = 0; StringBuffer sb = new StringBuffer();
+        System.out.println("charSet.length :::: "+charSet.length);
+        for (int i = 0; i < len; i++) {
+            idx = (int) (charSet.length * Math.random());
+            System.out.println("idx :::: "+idx); sb.append(charSet[idx]);
+        }
+        return sb.toString();
+    }
     //구글로그인용 ID토큰 리프레쉬하는 메소드
     private void refreshIdToken() {
        /*
@@ -362,14 +410,12 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        Session.getCurrentSession().removeCallback(sessionCallback);
     }
 
 
     private void facebookLogin() {
         Log.d("execute", "facebookLogin");
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile","email"));
-
     }
 
 

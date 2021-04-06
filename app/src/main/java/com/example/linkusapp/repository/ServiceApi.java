@@ -1,25 +1,30 @@
 package com.example.linkusapp.repository;
 
+import android.net.Uri;
+
 import com.example.linkusapp.model.vo.AddressInfo;
 import com.example.linkusapp.model.vo.BoardInfo;
 import com.example.linkusapp.model.vo.ChatInfo;
 import com.example.linkusapp.model.vo.CommentInfo;
 import com.example.linkusapp.model.vo.FindPassword;
 import com.example.linkusapp.model.vo.LeaderGroupInfo;
-import com.example.linkusapp.model.vo.GroupMember;
 import com.example.linkusapp.model.vo.Profile;
 import com.example.linkusapp.model.vo.TimerInfo;
 import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.model.vo.UsersInfo;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ServiceApi {
@@ -36,12 +41,12 @@ public interface ServiceApi {
     @GET("/android/idChk")
     Call<String> chkId(@Query("userId") String userId);
 
-    @FormUrlEncoded
-    @POST("/android/login")
-    Call<String> login(@Field("userId") String userId,@Field("password") String password);
+    @GET("/android/login")
+    Call<FindPassword> login(@Query("userId") String userId);
 
-    @GET("/android/findPw")
-    Call<FindPassword> findPw(@Query("userId") String userId, @Query("email") String email);
+    @FormUrlEncoded
+    @POST("/android/findPw")
+    Call<String> findPw(@Field("userId") String userId,@Field("email") String email ,@Field("password") String password);
 
     @GET("/android/nickNameChk")
     Call<String> nickNameChk(@Query("userNickname") String userNickname);
@@ -60,10 +65,13 @@ public interface ServiceApi {
     /*유저 프로필*/
     @FormUrlEncoded
     @POST("/android/insertProfile")
-    Call<String> insertProfile(@Field("userNickname") String userNickname,@Field("profileUri") String profileUri);
+    Call<String> insertProfile(@Field("userNickname") String userNickname,@Field("profileUri") Uri profileUri);
 
     @GET("/android/getProfile")
     Call<Profile> getProfile(@Query("userNickname") String userNickname);
+    @Multipart
+    @POST("/upload")
+    Call<ResponseBody> postImage(@Part MultipartBody.Part image, @Part("upload") RequestBody name);
     /*여기까지*/
 
     @FormUrlEncoded

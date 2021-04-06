@@ -46,7 +46,6 @@ public class LoadingActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
-
             } else {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);

@@ -1,34 +1,51 @@
 package com.example.linkusapp.view.activity;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityJoinBinding;
 import com.example.linkusapp.util.GMailSender;
+import com.example.linkusapp.util.Rsa;
 import com.example.linkusapp.viewModel.JoinViewModel;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.mindrot.jbcrypt.BCrypt;
+
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class JoinActivity extends AppCompatActivity {
 
     private ActivityJoinBinding binding;
     private InputMethodManager imm;
     private JoinViewModel viewModel;
+    /*RSA암호화*/
+    private Rsa rsaEncrypt;
+    private String encrypted;
     //이메일 인증번호
     String emailCode = "";
     //이메일 인증번호확인 여부변수
     boolean isCertify = false;
     boolean isSendMail = false;
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +53,9 @@ public class JoinActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        /*rsa 암호화*/
+        rsaEncrypt = new Rsa();
+        rsaEncrypt.createKey();
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .permitDiskReads()
                 .permitDiskWrites()
@@ -152,7 +172,10 @@ public class JoinActivity extends AppCompatActivity {
                 }else if(!isCertify){
                     Snackbar.make(binding.joinLayout, "이메일 인증을 해주세요.", Snackbar.LENGTH_SHORT).show();
                 }else {
-                    viewModel.join(userName, userId, userPw,userEmail);
+                        /*암호화 한 후 비밀번호 저장*/
+                        encrypted = BCrypt.hashpw(userPw, BCrypt.gensalt());
+                        viewModel.join(userName, userId, encrypted, userEmail);
+                        Snackbar.make(binding.joinLayout, "회원 가입 성공.", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
