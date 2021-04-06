@@ -29,20 +29,15 @@ public class BoardViewModel extends BaseViewModel {
     public MutableLiveData<BoardInfo> boardSearchRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardInfo> boardRefreshRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardInfo> boardAddressRsLD = new MutableLiveData<BoardInfo>();
-    public MutableLiveData<BoardInfo> boardConditionRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardInfo> userGroupRsLD = new MutableLiveData<BoardInfo>();
-    public MutableLiveData<BoardInfo> allAddressRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardInfo> optionBoardRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<String> updateSelectedLD = new MutableLiveData<>();
-    public MutableLiveData<BoardInfo> selectedGroupLD = new MutableLiveData<>();
     public MutableLiveData<UsersInfo> groupMembersLD = new MutableLiveData<>();
     public MutableLiveData<TimerInfo> entireRecordLD = new MutableLiveData<>();
 
 
     public BoardViewModel(@NonNull Application application) {
         super(application);
-//        service = RetrofitClient.getClient(application).create(ServiceApi.class);
-//        prefs = new SharedPreference(application);
     }
 
     public void getAllBoard(){
@@ -109,10 +104,8 @@ public class BoardViewModel extends BaseViewModel {
                 BoardInfo result = response.body();
                 optionBoardRsLD.postValue(result);
             }
-
             @Override
             public void onFailure(Call<BoardInfo> call, Throwable t) {
-
             }
         });
     }
@@ -145,22 +138,6 @@ public class BoardViewModel extends BaseViewModel {
             }
         });
     }
-
-    public void  getSelectedGroup(String userNick){
-        service.getSelectedGroup(userNick).enqueue(new Callback<BoardInfo>() {
-            @Override
-            public void onResponse(Call<BoardInfo> call, Response<BoardInfo> response) {
-               BoardInfo result = response.body();
-                selectedGroupLD.postValue(result);
-            }
-
-            @Override
-            public void onFailure(Call<BoardInfo> call, Throwable t) {
-
-            }
-        });
-    }
-
     public void getGroupMember(String gName){
         service.getGroupMember(gName).enqueue(new Callback<UsersInfo>() {
             @Override

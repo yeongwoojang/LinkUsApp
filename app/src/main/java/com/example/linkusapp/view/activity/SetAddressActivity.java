@@ -100,7 +100,6 @@ public class SetAddressActivity extends AppCompatActivity {
 
                 double latitude = gpsTracker.getLatitude();
                 double longitude = gpsTracker.getLongitude();
-
                 String address = getCurrentAddress(latitude,longitude);
 
                 Intent intent = new Intent(getApplicationContext(), AddressActivity.class);
