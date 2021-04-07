@@ -70,7 +70,6 @@ public class EnterMainGroupActivity extends AppCompatActivity {
             binding.periodTv.setText("기간 : "+board.getStartDate()+" ~ "+board.getEndDate());
         }
         binding.groupGoalTv.setText("그룹 목표 : "+board.getPurpose());
-
         CommentAdapter commentAdapter = new CommentAdapter(commentList);
         binding.commentRv.setAdapter(commentAdapter);
         binding.commentRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));

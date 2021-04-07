@@ -17,6 +17,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -180,6 +181,10 @@ public interface ServiceApi {
     /*comment 불러오기*/
     @GET("android/getComment")
     Call<CommentInfo> getComment(@Query("bName") String bName);
+
+    @FormUrlEncoded
+    @POST("android/updateNotice")
+    Call<String> updateNotice(@Field("gName") String gName,@Field("notice") String notice);
 
 //-------------------------FCM 관련 메소드------------------------
     //fcm 전송메소드

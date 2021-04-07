@@ -37,6 +37,13 @@ public class Board implements Serializable {
     @SerializedName("G_EXPLANATION")
     private String explanation;
 
+    @SerializedName("NOTICE")
+    private String notice;
+
+    public String getNotice() { return notice; }
+
+    public void setNotice(String notice) { this.notice = notice; }
+
     public String getPart() {
         return part;
     }
@@ -130,6 +137,7 @@ public class Board implements Serializable {
                 ", startDate='" + startDate + '\'' +
                 ", endDate='" + endDate + '\'' +
                 ", explanation='" + explanation + '\'' +
+                ", notice='" + notice + '\'' +
                 '}';
     }
 }

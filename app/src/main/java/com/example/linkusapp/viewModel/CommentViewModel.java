@@ -18,16 +18,12 @@ import retrofit2.Response;
 import retrofit2.http.Field;
 
 public class CommentViewModel extends BaseViewModel {
-//    private ServiceApi service;
-//    private SharedPreference prefs;
-
     public MutableLiveData<String> insertCommentRsLD = new MutableLiveData<String>();
     public MutableLiveData<CommentInfo> getCommentRsLD = new MutableLiveData<CommentInfo>();
+    public MutableLiveData<String> updateNoticeRsLD = new MutableLiveData<String>();
 
     public CommentViewModel(@NonNull Application application) {
         super(application);
-//        this.service = RetrofitClient.getClient(application).create(ServiceApi.class);
-//        this.prefs = new SharedPreference(application);
     }
     /*닉네임 불러오는 메소드*/
     public User getUserInfoFromShared(){
@@ -59,6 +55,21 @@ public class CommentViewModel extends BaseViewModel {
 
             @Override
             public void onFailure(Call<CommentInfo> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void updateNotice(String gName, String notice){
+        service.updateNotice(gName,notice).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body();
+                updateNoticeRsLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
 
             }
         });

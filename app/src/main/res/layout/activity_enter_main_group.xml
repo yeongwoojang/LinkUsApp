@@ -9,10 +9,6 @@
     android:orientation="vertical"
     tools:context=".view.activity.EnterMainGroupActivity">
 
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:orientation="vertical">-->
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -183,14 +179,15 @@
                     android:background="@drawable/form_round_layout"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/notice_tv"
+                    <EditText
+                        android:id="@+id/notice_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="20dp"
                         android:fontFamily="@font/nanum_barun_gothic"
-                        android:text="그룹 공지사항"
-                        android:textSize="12dp" />
+                        android:hint="그룹 공지사항"
+                        android:textSize="12dp"
+                        />
                 </LinearLayout>
             </FrameLayout>
 
@@ -199,7 +196,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
-            <!--    </ScrollView>-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -245,7 +241,6 @@
                         android:src="@drawable/send_comment_foreground"
                         android:translationX="-5dp"
                         android:translationZ="1dp" />
-
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>
