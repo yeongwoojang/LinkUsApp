@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -15,29 +14,17 @@ import android.view.inputmethod.InputMethodManager;
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityJoinBinding;
 import com.example.linkusapp.util.GMailSender;
-import com.example.linkusapp.util.Rsa;
 import com.example.linkusapp.viewModel.JoinViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.mindrot.jbcrypt.BCrypt;
-
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 public class JoinActivity extends AppCompatActivity {
 
     private ActivityJoinBinding binding;
     private InputMethodManager imm;
     private JoinViewModel viewModel;
-    /*RSA암호화*/
-    private Rsa rsaEncrypt;
+    /*암호화*/
     private String encrypted;
     //이메일 인증번호
     String emailCode = "";
@@ -53,15 +40,6 @@ public class JoinActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        /*rsa 암호화*/
-        rsaEncrypt = new Rsa();
-        rsaEncrypt.createKey();
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                .permitDiskReads()
-                .permitDiskWrites()
-                .permitNetwork()
-                .build()
-        );
         viewModel = new ViewModelProvider(this).get(JoinViewModel.class);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 

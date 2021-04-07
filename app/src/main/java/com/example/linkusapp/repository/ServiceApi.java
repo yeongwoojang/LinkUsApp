@@ -68,13 +68,14 @@ public interface ServiceApi {
     /*유저 프로필*/
     @FormUrlEncoded
     @POST("/android/insertProfile")
-    Call<String> insertProfile(@Field("userNickname") String userNickname,@Field("profileUri") Uri profileUri);
+    Call<String> insertProfile(@Field("userNickname") String userNickname,@Field("bitmap") String bitmap);
 
     @GET("/android/getProfile")
     Call<Profile> getProfile(@Query("userNickname") String userNickname);
+
     @Multipart
     @POST("/upload")
-    Call<ResponseBody> postImage(@Part MultipartBody.Part image, @Part("upload") RequestBody name);
+    Call<ResponseBody> upload(@Part MultipartBody.Part image, @Part("upload") RequestBody name);
 
     /*여기까지*/
 

@@ -39,8 +39,6 @@ public class UpdateUserActivity extends AppCompatActivity {
     /*엘범에서 사진 가져오기*/
     private static final int REQUEST_IMAGE_CODE = 1001;
     private static final int REQUEST_EXTERNAL_STORAGE_PERMISSION = 1002;
-    private ArrayList<Bitmap> mBitmap = new ArrayList<>();
-    private Uri uri;
 
     boolean isCertify = false;
 
@@ -182,27 +180,15 @@ public class UpdateUserActivity extends AppCompatActivity {
     private void chkPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
             } else {
-
-                // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         REQUEST_EXTERNAL_STORAGE_PERMISSION);
-                // MY_PERMISSIONS_REQUEST_READ_EXT_STORAGE is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
     }
-    private Bitmap resize(Bitmap src){
+    /*private Bitmap resize(Bitmap src){
         Configuration config = getResources().getConfiguration();
         if(config.smallestScreenWidthDp>=800)
             src = Bitmap.createScaledBitmap(src, 400, 400, true);
@@ -215,7 +201,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         else
             src = Bitmap.createScaledBitmap(src, 160, 160, true);
         return src;
-    }
+    }*/
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

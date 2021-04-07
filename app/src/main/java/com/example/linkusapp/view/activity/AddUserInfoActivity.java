@@ -3,33 +3,31 @@ package com.example.linkusapp.view.activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.Activity;
+import android.Manifest;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityAddUserInfoBinding;
-import com.example.linkusapp.util.SharedPreference;
 import com.example.linkusapp.viewModel.LoginViewModel;
-import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -38,10 +36,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.kakao.sdk.user.UserApiClient;
-import com.kakao.auth.ISessionCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 public class AddUserInfoActivity extends AppCompatActivity {
@@ -57,26 +58,21 @@ public class AddUserInfoActivity extends AppCompatActivity {
     private LoginViewModel viewModel;
     private static final  int SEARCH_ADDRESS_ACTIVITY = 10000;
 
-    private GoogleSignInClient googleSignInClient;
-    private CallbackManager callbackManager;
-    private ISessionCallback sessionCallback;
-    private SharedPreference prefs;
-
     /*닉네임중복확인 유무*/
     boolean isCertify = false;
     private static final String TAG = AddUserInfoActivity.class.getSimpleName();
 
     /*프로필 */
-    final int REQ_CODE_SELECT_IMAGE = 100;
-    String getServerURL = "";
-    String getImgURL = "";
-    String getImgName = "";
+    private static final int REQUEST_IMAGE_CODE = 1001;
+    private static final int REQUEST_EXTERNAL_STORAGE_PERMISSION = 1002;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAddUserInfoBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        /*퍼미션 체크*/
+        chkPermission();
 
 
         binding.saveBtn.setPaintFlags(binding.saveBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -95,13 +91,15 @@ public class AddUserInfoActivity extends AppCompatActivity {
         binding.profileIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+                /*Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent,REQUEST_IMAGE_CODE);*/
+
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent,REQUEST_IMAGE_CODE);
             }
         });
-
         /*나이*/
         binding.spinnerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -249,13 +247,17 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     }
                 }
                 break;
-            case REQ_CODE_SELECT_IMAGE:
-                if(resultCode == Activity.RESULT_OK){
-                    try{
-                        String nameStr = getImageNameToUri(intent.getData());
-
-                        Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),intent.getData());
-                        binding.profileIv.setImageBitmap(image_bitmap);
+            case REQUEST_IMAGE_CODE:
+                if(resultCode==RESULT_OK){
+                    try {
+                        InputStream in = getContentResolver().openInputStream(intent.getData());
+                        Bitmap img = BitmapFactory.decodeStream(in);
+                        img=rotateBitmap(img,2);
+                        in.close();
+                        img = Bitmap.createScaledBitmap(img, 300, 300, true);
+                        binding.profileIv.setImageBitmap(img);
+                        String postImage = bitMapToString(img);
+                        viewModel.insertProfile(userNickname,postImage);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -264,22 +266,55 @@ public class AddUserInfoActivity extends AppCompatActivity {
                 }
         }
     }
-    // 선택된 이미지 파일명 가져오기
-    public String getImageNameToUri(Uri data)
-    {
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(data, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+    /*접근 허용 체크*/
+    private void chkPermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_EXTERNAL_STORAGE_PERMISSION);
+            }
+        }
+    }
+    /*image를 Blob타입으로 변환하는 메소드*/
+    public String bitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
+        byte []arr = baos.toByteArray();
+        String image = Base64.encodeToString(arr,Base64.DEFAULT);
+        String temp = "";
+        try {
+            temp = "&imagedevice="+ URLEncoder.encode(image,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return temp;
+    }
+    /*비트맵 회전*/
+    public Bitmap rotateBitmap(Bitmap bitmap, int rotate){
+        Matrix rotateMatrix = new Matrix();
+        if(rotate == 0 )
+            rotateMatrix.postRotate(0);
+        else if(rotate == 1)
+            rotateMatrix.postRotate(45);
+        else if(rotate == 2)
+            rotateMatrix.postRotate(90);
+        else if(rotate == 3)
+            rotateMatrix.postRotate(135);
+        else if(rotate == 4)
+            rotateMatrix.postRotate(180);
+        else if(rotate == 5)
+            rotateMatrix.postRotate(225);
+        else if(rotate == 6)
+            rotateMatrix.postRotate(270);
+        else
+            rotateMatrix.postRotate(315);
+        Bitmap sideInversionImg = Bitmap.createBitmap(bitmap, 0, 0,
+                bitmap.getWidth(), bitmap.getHeight(), rotateMatrix, false);
 
-        cursor.moveToFirst();
-
-        String imgPath = cursor.getString(column_index);
-        String imgName = imgPath.substring(imgPath.lastIndexOf("/")+1);
-
-        getImgURL = imgPath;
-        getImgName = imgName;
-
-        return "success";
+        return sideInversionImg;
     }
     //로그아웃하기
     private void googleSignOut() {
@@ -289,4 +324,5 @@ public class AddUserInfoActivity extends AppCompatActivity {
             }
         });
     }
+
 }

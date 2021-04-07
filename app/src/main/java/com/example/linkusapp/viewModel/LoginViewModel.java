@@ -259,8 +259,8 @@ public class LoginViewModel extends BaseViewModel {
         });
     }
 
-    public void insertProfile(String userNickname, Uri profileUri){
-        service.insertProfile(userNickname,profileUri).enqueue(new Callback<String>() {
+    public void insertProfile(String userNickname, String bitmap){
+        service.insertProfile(userNickname,bitmap).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = response.body();

@@ -52,7 +52,7 @@
                 android:text="@{comment.writeTime}"
                 android:textSize="10dp" />
 
-            <Button
+            <!--<Button
                 android:id="@+id/item_reply_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="10dp"
@@ -66,7 +66,7 @@
                 android:textColor="@color/black"
                 android:textSize="10dp"
                 android:onClick="@{()->adapter.replyBtnClickEvent(position)}"
-                />
+                />-->
         </RelativeLayout>
 
         <View
