@@ -130,6 +130,7 @@ public class MyPageFragment extends Fragment {
                 startActivity(Intent.createChooser(msg, "앱을 선택해 주세요"));
             }
         });
+        Log.d("test", "onViewCreated: "+userNickname);
         viewModel.getProfile(userNickname);
         viewModel.getProfileLiveData.observe(getActivity(),profile1 -> {
             if(profile1.getCode().equals("200")){
@@ -139,10 +140,8 @@ public class MyPageFragment extends Fragment {
                     Drawable drawable = getResources().getDrawable(R.drawable.baseline_profile_picture);
                     binding.profilePicture.setImageDrawable(drawable);
                 }else{
-                    String uri = profile1.getProfileUri();
-                    Uri image = Uri.parse(uri);
-                    Log.d("profile", "onViewCreated: "+image);
-                    Glide.with(this).load(image).into(binding.profilePicture);
+                    Bitmap bitmap = profile1.getProfileUri();
+                    binding.profilePicture.setImageBitmap(bitmap);
                     /*try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),image);
                         bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);

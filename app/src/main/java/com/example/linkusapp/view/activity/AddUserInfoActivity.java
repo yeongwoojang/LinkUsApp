@@ -53,6 +53,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
     private String gender = "M";
     private String userNickname;
     private String currentId;
+    private String loginMethod;
 
     private GoogleSignInClient mSignInClient;
     private LoginViewModel viewModel;
@@ -80,7 +81,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
         currentId = viewModel.getLoginSession();
 
         //어떤 방시으로 로그인 된 계정인지 체크
-        String loginMethod = viewModel.getLoginMethod();
+        loginMethod = viewModel.getLoginMethod();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -257,7 +258,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
                         img = Bitmap.createScaledBitmap(img, 300, 300, true);
                         binding.profileIv.setImageBitmap(img);
                         String postImage = bitMapToString(img);
-                        viewModel.insertProfile(userNickname,postImage);
+                        viewModel.insertProfile(currentId,loginMethod,img);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -265,6 +266,13 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     }
                 }
         }
+        viewModel.insertProfileLiveData.observe(this,code -> {
+            if(code.equals("200")){
+                Snackbar.make(findViewById(R.id.add_user_info), "아이콘 변경", Snackbar.LENGTH_SHORT).show();
+            }else {
+                Snackbar.make(findViewById(R.id.add_user_info), "오류", Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
     /*접근 허용 체크*/
     private void chkPermission(){

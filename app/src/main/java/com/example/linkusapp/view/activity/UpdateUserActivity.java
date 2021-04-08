@@ -158,8 +158,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         viewModel.getProfileLiveData.observe(this,profile -> {
             if(profile.getCode().equals("200")){
                 Snackbar.make(findViewById(R.id.update_user_layout), "프로필을 불러왔습니다.", Snackbar.LENGTH_SHORT).show();
-                Uri uri = Uri.parse(profile.getProfileUri());
-                Log.d("gd", "onCreate: "+uri);
+                binding.ivUser.setImageBitmap(profile.getProfileUri());
             }else if(profile.getCode().equals("204")){
                 Snackbar.make(findViewById(R.id.update_user_layout), "불러올 프로필이 없습니다.", Snackbar.LENGTH_SHORT).show();
             }else {
@@ -171,9 +170,6 @@ public class UpdateUserActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_IMAGE_CODE){
-            Uri uri = data.getData();
-            Glide.with(this).load(uri).into(binding.ivUser);
-            viewModel.insertProfile(checkNickname,uri);
         }
     }
     /*접근 허용 체크*/

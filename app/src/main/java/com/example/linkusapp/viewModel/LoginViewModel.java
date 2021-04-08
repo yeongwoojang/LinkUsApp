@@ -2,6 +2,7 @@ package com.example.linkusapp.viewModel;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 
@@ -259,8 +260,8 @@ public class LoginViewModel extends BaseViewModel {
         });
     }
 
-    public void insertProfile(String userNickname, String bitmap){
-        service.insertProfile(userNickname,bitmap).enqueue(new Callback<String>() {
+    public void insertProfile(String userNickname,String loginMethod, Bitmap bitmap){
+        service.insertProfile(userNickname,loginMethod,bitmap).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = response.body();

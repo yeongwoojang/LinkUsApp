@@ -1,5 +1,6 @@
 package com.example.linkusapp.repository;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.example.linkusapp.model.vo.AddressInfo;
@@ -68,7 +69,7 @@ public interface ServiceApi {
     /*유저 프로필*/
     @FormUrlEncoded
     @POST("/android/insertProfile")
-    Call<String> insertProfile(@Field("userNickname") String userNickname,@Field("bitmap") String bitmap);
+    Call<String> insertProfile(@Field("userNickname") String userNickname, @Field("loginMethod") String loginMethod, @Field("bitmap") Bitmap bitmap);
 
     @GET("/android/getProfile")
     Call<Profile> getProfile(@Query("userNickname") String userNickname);

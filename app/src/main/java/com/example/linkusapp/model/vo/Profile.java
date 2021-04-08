@@ -10,13 +10,13 @@ public class Profile {
     private String code;
 
     @SerializedName("profileUri")
-    private String profileUri;
+    private Bitmap profileUri;
 
     public String getCode() {
         return code;
     }
 
-    public String getProfileUri() {
+    public Bitmap getProfileUri() {
         return profileUri;
     }
 }
