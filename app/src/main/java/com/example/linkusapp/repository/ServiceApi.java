@@ -41,9 +41,6 @@ public interface ServiceApi {
     @GET("/android/idChk")
     Call<String> chkId(@Query("userId") String userId);
 
-    @GET("/android/chkReader")
-    Call<UserInfo> chkReader(@Query("userNickName") String userNickName);
-
     @GET("/android/login")
     Call<FindPassword> login(@Query("userId") String userId);
 
@@ -109,6 +106,9 @@ public interface ServiceApi {
             @Field("g_join_method") String gJoinMetho,
             @Field("loginMethod") String loginMethod
     );
+
+    @GET("/android/deleteGroup")
+    Call<String> deleteGroup(@Query("g_name") String gName);
 
     // 스터디 그룹(게시글) 전체를 서버에 요청
     @GET("/android/boardAll")

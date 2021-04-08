@@ -15,6 +15,7 @@ import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityEnterMainGroupBinding;
@@ -23,6 +24,7 @@ import com.example.linkusapp.model.vo.Comment;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.view.adapter.CommentAdapter;
 import com.example.linkusapp.view.adapter.MemberAdapter;
+import com.example.linkusapp.viewModel.BoardViewModel;
 import com.example.linkusapp.viewModel.CommentViewModel;
 import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.material.snackbar.Snackbar;
@@ -36,6 +38,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
 
     private CommentViewModel viewModel;
     private LoginViewModel loginViewModel;
+    private BoardViewModel boardViewModel;
 
     private boolean isDrOpen = false; //드로어 오픈 여부
     /*비밀 댓글 여부 변수*/
@@ -56,6 +59,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(CommentViewModel.class);
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        boardViewModel = new ViewModelProvider(this).get(BoardViewModel.class);
 
         Intent intent = getIntent();
         Board board = (Board)intent.getSerializableExtra("board");
@@ -158,23 +162,21 @@ public class EnterMainGroupActivity extends AppCompatActivity {
             memberAdapter.updateItem(usersInfo.getUsers());
         });
 
-        viewModel.userNickNameRsLD.observe(this, userInfo -> {
-            if(userInfo.getCode() == 200){
-                Log.d("chkNickName true","닉네임 일치.");
-//                리더랑 접속한 닉네임 일치가 됐어
-//                        삭제할 스터디를 권한이 생긴거지
-//                             이 조건문안에서 삭제를 실행하면 되는거지
-
-            }else{
-                Log.d("chkNickName false","닉네임 불일치.");
-            }
-        });
-
         binding.deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                viewModel.chkReader(loginViewModel.getUserInfoFromShared().getUserNickname());
+                Log.d("check NickName","접속 아이디 : "+ loginViewModel.getUserInfoFromShared().getUserNickname());
+                Log.d("check NickName","이 그룹 리더 아이디 : "+ board.getLeader());
 
+                // 현재 그룹 리더와 접속한 닉네임 비교해서
+                // 닉네임이 같으면 해당 그룹 삭제 권한을 갖는다.
+                if(board.getLeader().equals(loginViewModel.getUserInfoFromShared().getUserNickname())){
+                    boardViewModel.deleteGroup(board.getTitle());
+                    Toast.makeText(getApplicationContext(),"그룹 삭제",Toast.LENGTH_SHORT).show();
+                    finish();
+                }else{
+                    Toast.makeText(getApplicationContext(),"삭제 권한 없음",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

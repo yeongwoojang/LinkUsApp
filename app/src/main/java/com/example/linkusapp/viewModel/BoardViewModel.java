@@ -26,6 +26,7 @@ public class BoardViewModel extends BaseViewModel {
 
     public MutableLiveData<BoardInfo> boardRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardInfo> boardPartRsLD = new MutableLiveData<BoardInfo>();
+    public MutableLiveData<String> boardDeleteRsLD = new MutableLiveData<String>();
     public MutableLiveData<BoardInfo> boardSearchRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardInfo> boardRefreshRsLD = new MutableLiveData<BoardInfo>();
     public MutableLiveData<BoardInfo> boardAddressRsLD = new MutableLiveData<BoardInfo>();
@@ -162,6 +163,20 @@ public class BoardViewModel extends BaseViewModel {
 
             @Override
             public void onFailure(Call<TimerInfo> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void deleteGroup(String gName){
+        service.deleteGroup(gName).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body();
+                boardDeleteRsLD.postValue(result);
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
 
             }
         });

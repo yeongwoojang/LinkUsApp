@@ -65,19 +65,4 @@ public class CommentViewModel extends BaseViewModel {
             }
         });
     }
-
-    public void chkReader(String userNickName){
-        service.chkReader(userNickName).enqueue(new Callback<UserInfo>() {
-            @Override
-            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
-                UserInfo result = response.body();
-                userNickNameRsLD.postValue(result);
-            }
-
-            @Override
-            public void onFailure(Call<UserInfo> call, Throwable t) {
-
-            }
-        });
-    }
 }
