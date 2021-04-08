@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -171,9 +173,19 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 // 현재 그룹 리더와 접속한 닉네임 비교해서
                 // 닉네임이 같으면 해당 그룹 삭제 권한을 갖는다.
                 if(board.getLeader().equals(loginViewModel.getUserInfoFromShared().getUserNickname())){
-                    boardViewModel.deleteGroup(board.getTitle());
-                    Toast.makeText(getApplicationContext(),"그룹 삭제",Toast.LENGTH_SHORT).show();
-                    finish();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EnterMainGroupActivity.this)
+                            .setTitle("그룹 삭제")
+                            .setMessage("그룹을 삭제 하시겠습니까?")
+                            .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    boardViewModel.deleteGroup(board.getTitle());
+                                    Toast.makeText(getApplicationContext(),"그룹 삭제",Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                            });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
                 }else{
                     Toast.makeText(getApplicationContext(),"삭제 권한 없음",Toast.LENGTH_SHORT).show();
                 }
