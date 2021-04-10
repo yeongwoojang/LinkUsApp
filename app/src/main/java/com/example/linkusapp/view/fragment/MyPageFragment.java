@@ -131,31 +131,31 @@ public class MyPageFragment extends Fragment {
             }
         });
         Log.d("test", "onViewCreated: "+userNickname);
-        viewModel.getProfile(userNickname);
-        viewModel.getProfileLiveData.observe(getActivity(),profile1 -> {
-            if(profile1.getCode().equals("200")){
-                Snackbar.make(view.findViewById(R.id.my), "프로필 사진 불러왔습니다.", Snackbar.LENGTH_SHORT).show();
-                Log.d("TAG", "onViewCreated: "+profile1.getProfileUri());
-                if(profile1.getProfileUri().equals(null)){
-                    Drawable drawable = getResources().getDrawable(R.drawable.baseline_profile_picture);
-                    binding.profilePicture.setImageDrawable(drawable);
-                }else{
-                    Bitmap bitmap = profile1.getProfileUri();
-                    binding.profilePicture.setImageBitmap(bitmap);
-                    /*try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),image);
-                        bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
-                        binding.profilePicture.setImageBitmap(bitmap);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
-                }
-            }else if(profile1.getCode().equals("204")){
-                Snackbar.make(view.findViewById(R.id.my), "프로필 사진이 없습니다.", Snackbar.LENGTH_SHORT).show();
-            }else{
-                Snackbar.make(view.findViewById(R.id.my), "오류", Snackbar.LENGTH_SHORT).show();
-            }
-        });
+//        viewModel.getProfile(userNickname);
+//        viewModel.getProfileLiveData.observe(getActivity(),profile1 -> {
+//            if(profile1.getCode().equals("200")){
+//                Snackbar.make(view.findViewById(R.id.my), "프로필 사진 불러왔습니다.", Snackbar.LENGTH_SHORT).show();
+//                Log.d("TAG", "onViewCreated: "+profile1.getProfileUri());
+//                if(profile1.getProfileUri().equals(null)){
+//                    Drawable drawable = getResources().getDrawable(R.drawable.baseline_profile_picture);
+//                    binding.profilePicture.setImageDrawable(drawable);
+//                }else{
+//                    Bitmap bitmap = profile1.getProfileUri();
+//                    binding.profilePicture.setImageBitmap(bitmap);
+//                    /*try {
+//                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),image);
+//                        bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+//                        binding.profilePicture.setImageBitmap(bitmap);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }*/
+//                }
+//            }else if(profile1.getCode().equals("204")){
+//                Snackbar.make(view.findViewById(R.id.my), "프로필 사진이 없습니다.", Snackbar.LENGTH_SHORT).show();
+//            }else{
+//                Snackbar.make(view.findViewById(R.id.my), "오류", Snackbar.LENGTH_SHORT).show();
+//            }
+//        });
         /*탈퇴하기 버튼*/
         binding.withdrawApp.setOnClickListener(new View.OnClickListener() {
             @Override

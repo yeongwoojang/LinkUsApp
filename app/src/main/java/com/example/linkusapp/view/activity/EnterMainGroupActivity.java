@@ -79,6 +79,14 @@ public class EnterMainGroupActivity extends AppCompatActivity {
             binding.periodTv.setText("기간 : "+board.getStartDate()+" ~ "+board.getEndDate());
         }
         binding.groupGoalTv.setText("그룹 목표 : "+board.getPurpose());
+        /*스터디 그룹 리더만 공지사항 수정 가능*/
+        if(board.getLeader().equals(writer)){
+            /*현 접속자가 스터디 그룹장일 경우*/
+            binding.noticeEt.setEnabled(true);
+        }else {
+            binding.noticeEt.setEnabled(false);
+        }
+
         CommentAdapter commentAdapter = new CommentAdapter(commentList);
         binding.commentRv.setAdapter(commentAdapter);
         binding.commentRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
@@ -182,6 +190,12 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                                     boardViewModel.deleteGroup(board.getTitle());
                                     Toast.makeText(getApplicationContext(),"그룹 삭제",Toast.LENGTH_SHORT).show();
                                     finish();
+                                }
+                            })
+                            .setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
                                 }
                             });
                     AlertDialog alertDialog = builder.create();
