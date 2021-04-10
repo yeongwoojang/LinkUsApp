@@ -181,7 +181,7 @@ public interface ServiceApi {
     /*comment 추가*/
     @FormUrlEncoded
     @POST("android/insertComment")
-    Call<String> insertComment(@Field("bName") String bName,@Field("bWriter") String bWriter,@Field("bComment") String bComment,@Field("bSecret") boolean bSecret);
+    Call<String> insertComment(@Field("bName") String bName,@Field("bWriter") String bWriter,@Field("bComment") String bComment);
 
     /*comment 불러오기*/
     @GET("android/getComment")

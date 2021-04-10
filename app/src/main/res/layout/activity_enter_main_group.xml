@@ -191,6 +191,18 @@
                     android:textColor="@color/white"
                     android:translationY="5dp"
                     android:translationZ="5dp" />
+                <ImageButton
+                    android:id="@+id/edit_notice_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/form_button_round"
+                    android:src="@drawable/icon_pencil"
+                    android:layout_gravity="right"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:translationY="5dp"
+                    android:translationZ="5dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -223,20 +235,6 @@
                 android:layout_marginBottom="1dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-
-                <CheckedTextView
-                    android:id="@+id/chk_secret_write"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-                    android:checked="false"
-                    android:fontFamily="@font/nanum_barun_gothic"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:text="비밀"
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
 
                 <FrameLayout
                     android:layout_width="match_parent"

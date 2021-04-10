@@ -32,8 +32,8 @@ public class CommentViewModel extends BaseViewModel {
         return prefs.getUserInfo();
     }
 
-    public void insertComment(String bName, String bWriter, String bComment, boolean bSecret){
-        service.insertComment(bName,bWriter,bComment,bSecret).enqueue(new Callback<String>() {
+    public void insertComment(String bName, String bWriter, String bComment){
+        service.insertComment(bName,bWriter,bComment).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String code = response.body();

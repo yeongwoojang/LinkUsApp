@@ -43,8 +43,6 @@ public class EnterMainGroupActivity extends AppCompatActivity {
     private BoardViewModel boardViewModel;
 
     private boolean isDrOpen = false; //드로어 오픈 여부
-    /*비밀 댓글 여부 변수*/
-    private boolean isSecret = false;
     /*댓글이 쓰이는 게시판 명*/
     private String gName;
     /*댓글 작성자*/
@@ -72,6 +70,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         binding.groupNameTv.setText(gName);
         binding.leaderTv.setText("리더 : "+board.getLeader());
         binding.partTv.setText("분야 : "+board.getPart());
+        binding.noticeEt.setText(board.getNotice());
         /*오류 해결*/
         if(board.getStartDate().equals("미정") && board.getEndDate().equals("미정")){
             binding.periodTv.setText("기간 : " + "미정");
@@ -79,14 +78,34 @@ public class EnterMainGroupActivity extends AppCompatActivity {
             binding.periodTv.setText("기간 : "+board.getStartDate()+" ~ "+board.getEndDate());
         }
         binding.groupGoalTv.setText("그룹 목표 : "+board.getPurpose());
-        /*스터디 그룹 리더만 공지사항 수정 가능*/
+
+        /*스터디 그룹 리더만 공지사항 수정 기능*/
         if(board.getLeader().equals(writer)){
             /*현 접속자가 스터디 그룹장일 경우*/
             binding.noticeEt.setEnabled(true);
         }else {
             binding.noticeEt.setEnabled(false);
         }
-
+        binding.editNoticeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(board.getLeader().equals(writer)){
+                    String notice = binding.noticeEt.getText().toString();
+                    if(notice.equals("그룹 공지사항")||notice.equals(board.getNotice())){
+                        Snackbar.make(binding.enterMainGroupActivity,"공지사항이 수정한 후 눌러주세요.",Snackbar.LENGTH_SHORT).show();
+                    }else{
+                        viewModel.updateNotice(gName,notice);
+                    }
+                }
+            }
+        });
+        viewModel.updateNoticeRsLD.observe(this, code -> {
+            if(code.equals("200")){
+                Snackbar.make(binding.enterMainGroupActivity,"공지사항이 수정 완료",Snackbar.LENGTH_SHORT).show();
+            }else{
+                Snackbar.make(binding.enterMainGroupActivity,"오류",Snackbar.LENGTH_SHORT).show();
+            }
+        });
         CommentAdapter commentAdapter = new CommentAdapter(commentList);
         binding.commentRv.setAdapter(commentAdapter);
         binding.commentRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
@@ -114,19 +133,6 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 finish();
             }
         });
-        /*비밀댓글 여부*/
-        binding.chkSecretWrite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(((CheckedTextView) view).isChecked()){
-                    ((CheckedTextView) view).setChecked(false);
-                    isSecret = false;
-                }else {
-                    ((CheckedTextView) view).setChecked(true);
-                    isSecret =true;
-                }
-            }
-        });
         binding.commentSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,7 +141,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 {
                     Snackbar.make(binding.enterMainGroupActivity,"댓글을 입력해 주세요.",Snackbar.LENGTH_SHORT).show();
                 }
-                viewModel.insertComment(gName,writer,comment,isSecret);
+                viewModel.insertComment(gName,writer,comment);
             }
         });
 

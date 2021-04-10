@@ -22,9 +22,6 @@ public class Comment implements Serializable {
     @SerializedName("B_WRITETIME")
     private String writeTime;
 
-    @SerializedName("B_SECRET")
-    private int secret;
-
     public int getIdx() {
         return idx;
     }
@@ -45,10 +42,6 @@ public class Comment implements Serializable {
         return writeTime;
     }
 
-    public int getSecret() {
-        return secret;
-    }
-
     public void setIdx(int idx) {
         this.idx = idx;
     }
@@ -67,9 +60,5 @@ public class Comment implements Serializable {
 
     public void setWriteTime(String writeTime) {
         this.writeTime = writeTime;
-    }
-
-    public void setSecret(int secret) {
-        this.secret = secret;
     }
 }

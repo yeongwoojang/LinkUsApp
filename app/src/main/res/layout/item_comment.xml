@@ -51,22 +51,6 @@
                 android:fontFamily="@font/nanum_barun_gothic"
                 android:text="@{comment.writeTime}"
                 android:textSize="10dp" />
-
-            <!--<Button
-                android:id="@+id/item_reply_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="10dp"
-                android:layout_below="@+id/item_comment_tv"
-                android:layout_alignParentRight="true"
-                android:background="@color/transparent"
-                android:fontFamily="@font/nanum_barun_gothic"
-                android:gravity="end"
-                android:stateListAnimator="@null"
-                android:text="답글 달기"
-                android:textColor="@color/black"
-                android:textSize="10dp"
-                android:onClick="@{()->adapter.replyBtnClickEvent(position)}"
-                />-->
         </RelativeLayout>
 
         <View
