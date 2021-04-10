@@ -21,6 +21,7 @@ public class CommentViewModel extends BaseViewModel {
     public MutableLiveData<String> insertCommentRsLD = new MutableLiveData<String>();
     public MutableLiveData<CommentInfo> getCommentRsLD = new MutableLiveData<CommentInfo>();
     public MutableLiveData<String> updateNoticeRsLD = new MutableLiveData<String>();
+    public MutableLiveData<UserInfo> userNickNameRsLD = new MutableLiveData<UserInfo>();
 
     public CommentViewModel(@NonNull Application application) {
         super(application);

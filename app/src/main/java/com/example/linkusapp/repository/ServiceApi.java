@@ -113,6 +113,9 @@ public interface ServiceApi {
             @Field("loginMethod") String loginMethod
     );
 
+    @GET("/android/deleteGroup")
+    Call<String> deleteGroup(@Query("g_name") String gName);
+
     // 스터디 그룹(게시글) 전체를 서버에 요청
     @GET("/android/boardAll")
     Call<BoardInfo> getAllBoard();

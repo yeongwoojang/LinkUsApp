@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityEnterMainGroupBinding;
@@ -23,7 +26,9 @@ import com.example.linkusapp.model.vo.Comment;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.view.adapter.CommentAdapter;
 import com.example.linkusapp.view.adapter.MemberAdapter;
+import com.example.linkusapp.viewModel.BoardViewModel;
 import com.example.linkusapp.viewModel.CommentViewModel;
+import com.example.linkusapp.viewModel.LoginViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -34,6 +39,8 @@ public class EnterMainGroupActivity extends AppCompatActivity {
     private ActivityEnterMainGroupBinding binding;
 
     private CommentViewModel viewModel;
+    private LoginViewModel loginViewModel;
+    private BoardViewModel boardViewModel;
 
     private boolean isDrOpen = false; //드로어 오픈 여부
     /*비밀 댓글 여부 변수*/
@@ -53,6 +60,8 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         setContentView(view);
 
         viewModel = new ViewModelProvider(this).get(CommentViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        boardViewModel = new ViewModelProvider(this).get(BoardViewModel.class);
 
         Intent intent = getIntent();
         Board board = (Board)intent.getSerializableExtra("board");
@@ -153,6 +162,34 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 memberAdapter.updateItem(memberList);
             }
             memberAdapter.updateItem(usersInfo.getUsers());
+        });
+
+        binding.deleteBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("check NickName","접속 아이디 : "+ loginViewModel.getUserInfoFromShared().getUserNickname());
+                Log.d("check NickName","이 그룹 리더 아이디 : "+ board.getLeader());
+
+                // 현재 그룹 리더와 접속한 닉네임 비교해서
+                // 닉네임이 같으면 해당 그룹 삭제 권한을 갖는다.
+                if(board.getLeader().equals(loginViewModel.getUserInfoFromShared().getUserNickname())){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EnterMainGroupActivity.this)
+                            .setTitle("그룹 삭제")
+                            .setMessage("그룹을 삭제 하시겠습니까?")
+                            .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    boardViewModel.deleteGroup(board.getTitle());
+                                    Toast.makeText(getApplicationContext(),"그룹 삭제",Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                            });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"삭제 권한 없음",Toast.LENGTH_SHORT).show();
+                }
+            }
         });
     }
 }
