@@ -189,6 +189,12 @@ public interface ServiceApi {
             @Field("userGender") String userGender,
             @Field("address") String address);
 
+    @FormUrlEncoded
+    @POST("/android/acceptJoin")
+    Call<Void> acceptJoin(
+      @Field("targetUser") String nickName
+    );
+
     //DB에 현재 유저의 앱토큰을 저장하는 메소드
     @FormUrlEncoded
     @POST("/android/registrationAppToken")

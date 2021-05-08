@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class Board implements Serializable {
-    private static final long serialVersionUID =1L;
+    private static final long serialVersionUID = 1L;
 
     @SerializedName("G_PART")
     private String part;
@@ -36,6 +36,9 @@ public class Board implements Serializable {
 
     @SerializedName("G_EXPLANATION")
     private String explanation;
+
+    @SerializedName("NOTICE")
+    private String notice;
 
     public String getPart() {
         return part;
@@ -115,6 +118,14 @@ public class Board implements Serializable {
 
     public void setExplanation(String explanation) {
         this.explanation = explanation;
+    }
+
+    public String getNotice() {
+        return notice;
+    }
+
+    public void setNotice(String notice) {
+        this.notice = notice;
     }
 
     @Override
