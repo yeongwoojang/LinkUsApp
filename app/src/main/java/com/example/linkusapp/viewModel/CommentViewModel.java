@@ -11,6 +11,8 @@ import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.util.SharedPreference;
+import com.example.linkusapp.view.adapter.CommentAdapter;
+import com.facebook.internal.Mutable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,7 +25,8 @@ public class CommentViewModel extends BaseViewModel {
 
     public MutableLiveData<String> insertCommentRsLD = new MutableLiveData<String>();
     public MutableLiveData<CommentInfo> getCommentRsLD = new MutableLiveData<CommentInfo>();
-
+    public MutableLiveData<String> insertRpyRsLD = new MutableLiveData<String>();
+    public MutableLiveData<CommentInfo> getReplyRsLD = new MutableLiveData<CommentInfo>();
     public CommentViewModel(@NonNull Application application) {
         super(application);
 //        this.service = RetrofitClient.getClient(application).create(ServiceApi.class);
@@ -34,8 +37,8 @@ public class CommentViewModel extends BaseViewModel {
         return prefs.getUserInfo();
     }
 
-    public void insertComment(String bName, String bWriter, String bComment, boolean bSecret){
-        service.insertComment(bName,bWriter,bComment,bSecret).enqueue(new Callback<String>() {
+    public void insertComment(String bName, String bWriter, String bComment){
+        service.insertComment(bName,bWriter,bComment).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String code = response.body();
@@ -55,6 +58,35 @@ public class CommentViewModel extends BaseViewModel {
             public void onResponse(Call<CommentInfo> call, Response<CommentInfo> response) {
                 CommentInfo result = response.body();
                 getCommentRsLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<CommentInfo> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void insertReply(String bName, String bWriter, String bComment,String bRpyWriter,String bRpy){
+        service.insertReply(bName,bWriter,bComment,bRpyWriter,bRpy).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                insertRpyRsLD.postValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getReply(String bName, String bWriter, String bComment){
+        service.getReply(bName,bWriter,bComment).enqueue(new Callback<CommentInfo>() {
+            @Override
+            public void onResponse(Call<CommentInfo> call, Response<CommentInfo> response) {
+                CommentInfo result = response.body();
+                getReplyRsLD.postValue(result);
             }
 
             @Override

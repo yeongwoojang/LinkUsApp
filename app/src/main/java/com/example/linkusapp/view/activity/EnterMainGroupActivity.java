@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -20,6 +22,7 @@ import com.example.linkusapp.R;
 import com.example.linkusapp.databinding.ActivityEnterMainGroupBinding;
 import com.example.linkusapp.model.vo.Board;
 import com.example.linkusapp.model.vo.Comment;
+import com.example.linkusapp.model.vo.CommentInfo;
 import com.example.linkusapp.model.vo.User;
 import com.example.linkusapp.view.adapter.CommentAdapter;
 import com.example.linkusapp.view.adapter.MemberAdapter;
@@ -36,15 +39,14 @@ public class EnterMainGroupActivity extends AppCompatActivity {
     private CommentViewModel viewModel;
 
     private boolean isDrOpen = false; //드로어 오픈 여부
-    /*비밀 댓글 여부 변수*/
-    private boolean isSecret = false;
-    /*댓글이 쓰이는 게시판 명*/
-    private String gName;
-    /*댓글 작성자*/
-    private String writer;
-    /*commentlist*/
-    private List<Comment> commentList = new ArrayList<>();
+    private String gName; // 댓글이 작성되는 게시판 이름
+    private String writer; //댓글 작성자
+    private String toWriter; //답글이 달릴 댓글 작성자
+    private String toComment; //답글이 달릴 댓글
+    private List<Comment> commentList = new ArrayList<>(); // 댓글 리스트
     private List<User> memberList = new ArrayList<>(); // 그룹에 속한 멤버 리스트
+    private boolean isReply = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,13 +58,15 @@ public class EnterMainGroupActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Board board = (Board)intent.getSerializableExtra("board");
-        gName = board.getTitle();
-        Log.d("IntentBoard", "onCreate: "+board.toString());
-        viewModel.getGroupMember(gName);
-        writer = viewModel.getUserInfoFromShared().getUserNickname();
+        gName = board.getTitle(); //그룹명 초기화
+
+        viewModel.getGroupMember(gName); //그룹의 멤버 리스트를 가져온다.
+        writer = viewModel.getUserInfoFromShared().getUserNickname(); //댓글 작성자 초기화
+
         binding.groupNameTv.setText(gName);
         binding.leaderTv.setText("리더 : "+board.getLeader());
         binding.partTv.setText("분야 : "+board.getPart());
+
         if(board.getStartDate().equals("미정") && board.getEndDate().equals("미정")){
             binding.periodTv.setText("기간 : " + "미정");
         }else{
@@ -70,24 +74,30 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         }
         binding.groupGoalTv.setText("그룹 목표 : "+board.getPurpose());
 
+        //댓글 RecyclerView + adapter
         CommentAdapter commentAdapter = new CommentAdapter(commentList);
         binding.commentRv.setAdapter(commentAdapter);
         binding.commentRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
 
         String myNickname = viewModel.getUserInfoFromShared().getUserNickname();
+        //채팅을 하기위한 member RecyclerView + adapter
         MemberAdapter memberAdapter = new MemberAdapter(this,gName,memberList,myNickname);
         binding.memberRv.setAdapter(memberAdapter);
         binding.memberRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
 
-        viewModel.getComment(gName);
+        viewModel.getComment(gName); //작성되어있는 댓글 목록을 불러온다.
         viewModel.getCommentRsLD.observe(this,commentInfo -> {
             if(commentInfo.getCode()==200){
                 commentList = commentInfo.getJsonArray();
+                for(Comment comment : commentList){
+                    comment.setWriteTime(comment.getWriteTime().substring(2, 10) + "  " + comment.getWriteTime().substring(11, 16));
+                }
                 commentAdapter.updateItem(commentList);
+                binding.commentRv.scrollToPosition(commentAdapter.getItemCount()-1);
             }else if(commentInfo.getCode()==204){
 
             }else {
-                Snackbar.make(binding.enterMainGroupActivity,"오류",Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.enterMainGroupActivity,"댓글 목록 불러오기 실패",Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -97,19 +107,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 finish();
             }
         });
-        /*비밀댓글 여부*/
-        binding.chkSecretWrite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(((CheckedTextView) view).isChecked()){
-                    ((CheckedTextView) view).setChecked(false);
-                    isSecret = false;
-                }else {
-                    ((CheckedTextView) view).setChecked(true);
-                    isSecret =true;
-                }
-            }
-        });
+
         binding.commentSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,8 +115,18 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 if(comment.trim().equals(""))
                 {
                     Snackbar.make(binding.enterMainGroupActivity,"댓글을 입력해 주세요.",Snackbar.LENGTH_SHORT).show();
+                }else{
+                    bComment = comment;
+                    binding.commentEdittext.setText(" ");
+                    if(isReply){
+                        viewModel.insertReply(gName,toWriter,toComment,writer,comment);
+                    }else{
+
+                        viewModel.insertComment(gName,writer,comment);
+                    }
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE); //키보드 조작을 위한 객체
+                    imm.hideSoftInputFromWindow(binding.commentEdittext.getWindowToken(),0);
                 }
-                viewModel.insertComment(gName,writer,comment,isSecret);
             }
         });
 
@@ -135,12 +143,22 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         });
         viewModel.insertCommentRsLD.observe(this,code ->{
             if(code.equals("200")){
-                Snackbar.make(binding.enterMainGroupActivity,"댓글 등록 완료",Snackbar.LENGTH_SHORT).show();
+                viewModel.getComment(gName);
             }else{
                 Snackbar.make(binding.enterMainGroupActivity,"댓글 등록 실패",Snackbar.LENGTH_SHORT).show();
             }
         } );
 
+        viewModel.insertRpyRsLD.observe(this,code->{
+            if(code.equals("200")){
+                viewModel.getReply(gName,writer,toComment);
+            }
+        });
+
+        viewModel.getReplyRsLD.observe(this,result->{
+            List<Comment> replyList = result.getJsonArray();
+            Log.d("REPLY", replyList.toString());
+        });
         viewModel.groupMembersLD.observe(this, usersInfo -> {
             memberList = usersInfo.getUsers();
             if(usersInfo.getCode()==200){
@@ -154,5 +172,19 @@ public class EnterMainGroupActivity extends AppCompatActivity {
             }
             memberAdapter.updateItem(usersInfo.getUsers());
         });
+
+        commentAdapter.setReplyBtnClickListener(new CommentAdapter.OnreplyBtnClickListener() {
+            @Override
+            public void onClick(String writer,String comment) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE); //키보드 조작을 위한 객체
+                binding.commentEdittext.requestFocus();
+                imm.showSoftInput(binding.commentEdittext,InputMethodManager.SHOW_IMPLICIT);
+                toWriter = writer;
+                toComment = comment;
+                isReply = true;
+
+            }
+        });
+
     }
 }

@@ -210,55 +210,41 @@
                 android:id="@+id/comment_rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1" />
             <!--    </ScrollView>-->
             <LinearLayout
+                android:id="@+id/message_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:weightSum="10"
+                android:background="@color/red300"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-                <CheckedTextView
-                    android:id="@+id/chk_secret_write"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-                    android:checked="false"
-                    android:fontFamily="@font/nanum_barun_gothic"
+                <EditText
+                    android:id="@+id/comment_edittext"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="9"
+                    android:background="@drawable/form_edt_line"
+                    android:paddingLeft="5dp" />
+
+                <Button
+                    android:id="@+id/comment_send_button"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@color/yellow400"
                     android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:text="비밀"
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <EditText
-                        android:id="@+id/comment_edittext"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/nanum_barun_gothic"
-                        android:gravity="center_vertical"
-                        android:hint="댓글을 입력해주세요."
-                        android:textColor="@color/black"
-                        android:textSize="15dp" />
-
-                    <ImageButton
-                        android:id="@+id/comment_send_button"
-                        android:layout_width="30dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:background="@color/transparent"
-                        android:src="@drawable/send_comment_foreground"
-                        android:translationX="-5dp"
-                        android:translationZ="1dp" />
-
-                </FrameLayout>
+                    android:text="확인"
+                    android:textColor="@color/gray500" />
             </LinearLayout>
         </LinearLayout>
 

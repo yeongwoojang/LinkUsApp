@@ -1,13 +1,15 @@
 package com.example.linkusapp.model.vo;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 public class Comment implements Serializable {
-    private static final long serialVersionUID =1L; /*객체 전체 넘길수 있따.*/
+    private static final long serialVersionUID = 1L; /*객체 전체 넘길수 있따.*/
 
     @SerializedName("B_IDX")
+    @Expose
     private int idx;
 
     @SerializedName("B_NAME")
@@ -22,8 +24,9 @@ public class Comment implements Serializable {
     @SerializedName("B_WRITETIME")
     private String writeTime;
 
-    @SerializedName("B_SECRET")
-    private int secret;
+    @SerializedName("B_RPY_WRITER")
+    @Expose
+    private String bRpyWriter;
 
     public int getIdx() {
         return idx;
@@ -43,10 +46,6 @@ public class Comment implements Serializable {
 
     public String getWriteTime() {
         return writeTime;
-    }
-
-    public int getSecret() {
-        return secret;
     }
 
     public void setIdx(int idx) {
@@ -69,7 +68,22 @@ public class Comment implements Serializable {
         this.writeTime = writeTime;
     }
 
-    public void setSecret(int secret) {
-        this.secret = secret;
+    public String getbRpyWriter() {
+        return bRpyWriter;
+    }
+
+    public void setbRpyWriter(String bRpyWriter) {
+        this.bRpyWriter = bRpyWriter;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "idx=" + idx +
+                ", name='" + name + '\'' +
+                ", writer='" + writer + '\'' +
+                ", comment='" + comment + '\'' +
+                ", writeTime='" + writeTime + '\'' +
+                '}';
     }
 }

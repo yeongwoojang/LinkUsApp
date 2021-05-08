@@ -172,12 +172,18 @@ public interface ServiceApi {
     /*comment 추가*/
     @FormUrlEncoded
     @POST("android/insertComment")
-    Call<String> insertComment(@Field("bName") String bName,@Field("bWriter") String bWriter,@Field("bComment") String bComment,@Field("bSecret") boolean bSecret);
+    Call<String> insertComment(@Field("bName") String bName,@Field("bWriter") String bWriter,@Field("bComment") String bComment);
+
+    @FormUrlEncoded
+    @POST("/android/insertReply")
+    Call<String> insertReply(@Field("bName") String bName, @Field("bWriter") String bWriter,@Field("bComment") String bComment,@Field("bRpyWriter") String rpyWriter,@Field("bRpy") String bRpy);
 
     /*comment 불러오기*/
     @GET("android/getComment")
     Call<CommentInfo> getComment(@Query("bName") String bName);
 
+    @GET("/android/getReply")
+    Call<CommentInfo> getReply(@Query("bName") String bName, @Query("bWriter") String bWriter, @Query("bComment") String bComment);
 //-------------------------FCM 관련 메소드------------------------
     //fcm 전송메소드
     @FormUrlEncoded

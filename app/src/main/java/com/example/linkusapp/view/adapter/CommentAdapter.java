@@ -1,12 +1,15 @@
 package com.example.linkusapp.view.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.R;
@@ -19,7 +22,7 @@ import java.util.List;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     private CommentAdapter thisObject = this;
-
+    private OnreplyBtnClickListener mListener = null;
     private List<Comment> mDataset;
     public class CommentViewHolder extends RecyclerView.ViewHolder {
         private ItemCommentBinding binding;
@@ -57,7 +60,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public void onBindViewHolder(@NonNull CommentAdapter.CommentViewHolder holder, int position) {
         Comment comment = mDataset.get(position);
-        comment.setWriteTime(comment.getWriteTime().substring(2, 10) + "  " + comment.getWriteTime().substring(11, 16));
         holder.bind(comment,position);
     }
 
@@ -66,7 +68,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         return mDataset.size();
     }
 
-    public void replyBtnClickEvent(int position){
+    public void replyBtnClickEvent(int positon){
         //답글달기 버튼 이벤트 내용
+        if(mListener!=null){
+            mListener.onClick(mDataset.get(positon).getWriter(),mDataset.get(positon).getComment());
+        }
+
+
     }
+    public interface OnreplyBtnClickListener{
+        void onClick(String writer,String comment);
+    }
+    public void setReplyBtnClickListener(OnreplyBtnClickListener listener){this.mListener = listener;}
 }
