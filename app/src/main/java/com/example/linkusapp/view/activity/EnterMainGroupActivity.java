@@ -116,7 +116,6 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 {
                     Snackbar.make(binding.enterMainGroupActivity,"댓글을 입력해 주세요.",Snackbar.LENGTH_SHORT).show();
                 }else{
-                    bComment = comment;
                     binding.commentEdittext.setText(" ");
                     if(isReply){
                         viewModel.insertReply(gName,toWriter,toComment,writer,comment);
@@ -152,7 +151,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         viewModel.insertRpyRsLD.observe(this,code->{
             if(code.equals("200")){
                 viewModel.getReply(gName,writer,toComment);
-            }
+        }
         });
 
         viewModel.getReplyRsLD.observe(this,result->{
