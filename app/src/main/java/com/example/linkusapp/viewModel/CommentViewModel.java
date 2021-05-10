@@ -27,6 +27,7 @@ public class CommentViewModel extends BaseViewModel {
     public MutableLiveData<CommentInfo> getCommentRsLD = new MutableLiveData<CommentInfo>();
     public MutableLiveData<String> insertRpyRsLD = new MutableLiveData<String>();
     public MutableLiveData<CommentInfo> getReplyRsLD = new MutableLiveData<CommentInfo>();
+    public MutableLiveData<CommentInfo> getEntireReplyRsLD = new MutableLiveData<>();
     public CommentViewModel(@NonNull Application application) {
         super(application);
 //        this.service = RetrofitClient.getClient(application).create(ServiceApi.class);
@@ -87,6 +88,21 @@ public class CommentViewModel extends BaseViewModel {
             public void onResponse(Call<CommentInfo> call, Response<CommentInfo> response) {
                 CommentInfo result = response.body();
                 getReplyRsLD.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Call<CommentInfo> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getEntireReply(String bName){
+        service.getEntireReply(bName).enqueue(new Callback<CommentInfo>() {
+            @Override
+            public void onResponse(Call<CommentInfo> call, Response<CommentInfo> response) {
+                CommentInfo result = response.body();
+                getEntireReplyRsLD.postValue(result);
             }
 
             @Override

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="java.util.List"/>
+        <import type="com.example.linkusapp.model.vo.Comment"/>
         <variable
             name="adapter"
             type="com.example.linkusapp.view.adapter.CommentAdapter" />
@@ -12,6 +16,9 @@
         <variable
             name="comment"
             type="com.example.linkusapp.model.vo.Comment" />
+        <variable
+            name="replyList"
+            type="List&lt;List&lt;Comment&gt;&gt;" />
     </data>
 
     <LinearLayout
@@ -77,6 +84,7 @@
             android:padding="10dp"
             >
             <TextView
+                android:id="@+id/open_reply_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="10sp"
@@ -87,9 +95,11 @@
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/sub_comment_rv"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            bind:item="@{replyList.get(position)}"
             />
         <View
             android:id="@+id/toolbar_div"

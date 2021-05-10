@@ -28,6 +28,10 @@ public class Comment implements Serializable {
     @Expose
     private String bRpyWriter;
 
+    @SerializedName("B_RPY")
+    @Expose
+    private String reply;
+
     public int getIdx() {
         return idx;
     }
@@ -76,6 +80,14 @@ public class Comment implements Serializable {
         this.bRpyWriter = bRpyWriter;
     }
 
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +
@@ -84,6 +96,8 @@ public class Comment implements Serializable {
                 ", writer='" + writer + '\'' +
                 ", comment='" + comment + '\'' +
                 ", writeTime='" + writeTime + '\'' +
+                ", bRpyWriter='" + bRpyWriter + '\'' +
+                ", reply='" + reply + '\'' +
                 '}';
     }
 }

@@ -184,6 +184,10 @@ public interface ServiceApi {
 
     @GET("/android/getReply")
     Call<CommentInfo> getReply(@Query("bName") String bName, @Query("bWriter") String bWriter, @Query("bComment") String bComment);
+
+    @GET("/android/gerEntireReply")
+    Call<CommentInfo> getEntireReply(@Query("bName") String bName);
+
 //-------------------------FCM 관련 메소드------------------------
     //fcm 전송메소드
     @FormUrlEncoded

@@ -1,6 +1,7 @@
 package com.example.linkusapp.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.ObservableArrayList;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,6 +46,9 @@ public class EnterMainGroupActivity extends AppCompatActivity {
     private String toComment; //답글이 달릴 댓글
     private List<Comment> commentList = new ArrayList<>(); // 댓글 리스트
     private List<User> memberList = new ArrayList<>(); // 그룹에 속한 멤버 리스트
+    List<Comment> replyList = new ArrayList<>(); //댓글의 답글 리스트
+    List<List<Comment>> cmtRpyList = new ArrayList<>(); //댓글과 답글을 담고 있는 이차원 리스트
+    private List<Comment> tmp;
     private boolean isReply = false;
 
     @Override
@@ -75,7 +79,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         binding.groupGoalTv.setText("그룹 목표 : "+board.getPurpose());
 
         //댓글 RecyclerView + adapter
-        CommentAdapter commentAdapter = new CommentAdapter(commentList);
+        CommentAdapter commentAdapter = new CommentAdapter(commentList,viewModel,this,cmtRpyList);
         binding.commentRv.setAdapter(commentAdapter);
         binding.commentRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
 
@@ -86,12 +90,16 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         binding.memberRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
 
         viewModel.getComment(gName); //작성되어있는 댓글 목록을 불러온다.
+
+
         viewModel.getCommentRsLD.observe(this,commentInfo -> {
             if(commentInfo.getCode()==200){
+
                 commentList = commentInfo.getJsonArray();
                 for(Comment comment : commentList){
                     comment.setWriteTime(comment.getWriteTime().substring(2, 10) + "  " + comment.getWriteTime().substring(11, 16));
                 }
+                viewModel.getEntireReply(gName); //작성되어있는 댓글의 모든 답글 목록을 불러온다.
                 commentAdapter.updateItem(commentList);
                 binding.commentRv.scrollToPosition(commentAdapter.getItemCount()-1);
             }else if(commentInfo.getCode()==204){
@@ -100,6 +108,26 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 Snackbar.make(binding.enterMainGroupActivity,"댓글 목록 불러오기 실패",Snackbar.LENGTH_SHORT).show();
             }
         });
+
+        viewModel.getEntireReplyRsLD.observe(this,result ->{
+            if(result.getCode()==200){
+                replyList = result.getJsonArray();
+                for(Comment cmt : commentList){
+                    tmp = new ArrayList<>();
+                    tmp.add(cmt);
+                    for(Comment rpy : replyList){
+                        if(cmt.getComment().equals(rpy.getComment()) && cmt.getWriter().equals(rpy.getWriter())){
+                            tmp.add(rpy);
+                            Log.d("rpy", tmp+"");
+                        }
+                    }
+                        cmtRpyList.add(tmp);
+                }
+
+                commentAdapter.updateList(cmtRpyList);
+
+            }
+        } );
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +165,7 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                 }else{
                     binding.drawerLayout.openDrawer(Gravity.RIGHT);
                 }
-                isDrOpen = !isDrOpen;
+                isDrOpen  = !isDrOpen;
             }
         });
         viewModel.insertCommentRsLD.observe(this,code ->{
@@ -155,7 +183,9 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         });
 
         viewModel.getReplyRsLD.observe(this,result->{
-            List<Comment> replyList = result.getJsonArray();
+
+            replyList.addAll(result.getJsonArray());
+//            commentAdapter.setReplyList(replyList);
             Log.d("REPLY", replyList.toString());
         });
         viewModel.groupMembersLD.observe(this, usersInfo -> {
