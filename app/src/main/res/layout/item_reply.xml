@@ -38,7 +38,7 @@
         android:fontFamily="@font/nanum_barun_gothic"
         android:textColor="@color/black"
         android:text="@{comment.reply}"
-        android:textSize="13dp" />
+        android:textSize="13sp" />
 
     <TextView
         android:id="@+id/txt_rpy_time"
@@ -47,6 +47,6 @@
         android:layout_below="@+id/item_comment_tv"
         android:fontFamily="@font/nanum_barun_gothic"
         android:text="@{comment.writeTime}"
-        android:textSize="10dp" />
+        android:textSize="10sp" />
 </LinearLayout>
 </layout>

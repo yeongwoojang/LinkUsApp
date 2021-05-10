@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.linkusapp.model.vo.Comment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterBinding {
@@ -16,10 +17,8 @@ public class AdapterBinding {
     public static void bindItem(RecyclerView recyclerView, List<Comment> replyList) {
         ReplyAdapter replyAdapter = (ReplyAdapter) recyclerView.getAdapter();
         if (replyAdapter != null) {
-            if(replyList.size()!=1){
-                replyList.remove(0);
+            Log.d("리리리", "bindItem: "+replyList);
                 replyAdapter.updateItem(replyList);
             }
-        }
     }
 }

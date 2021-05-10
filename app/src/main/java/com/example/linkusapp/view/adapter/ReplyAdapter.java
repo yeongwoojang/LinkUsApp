@@ -21,9 +21,6 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyViewHol
 
     private ReplyAdapter thisObj = this;
 
-    public ReplyAdapter(List<Comment> items) {
-        this.items = items;
-    }
 
     public class ReplyViewHolder extends RecyclerView.ViewHolder{
         private ItemReplyBinding binding;
@@ -41,8 +38,11 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyViewHol
 
     }
     public void updateItem(List<Comment> items){
-        this.items = items;
-        notifyDataSetChanged();
+        if(items.size()!=1){
+            this.items = items;
+            notifyDataSetChanged();
+        }
+
     }
 
 
@@ -65,6 +65,5 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyViewHol
     public int getItemCount() {
         return items.size();
     }
-
 
 }

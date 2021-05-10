@@ -42,16 +42,25 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             super(binding.getRoot());
             this.binding = binding;
             this.binding.setAdapter(thisObject);
-            adapter = new ReplyAdapter(replyList);
+
         }
 
         void bind(Comment comment, int position) {
             binding.setComment(comment);
             binding.setPosition(position);
+            adapter = new ReplyAdapter();
+            Log.d("BOND", "bind: ");
             binding.subCommentRv.setAdapter(adapter);
             binding.setReplyList(items);
+            Log.d("하하하", "bind: "+items);
+
             binding.openReplyRv.setOnClickListener(v -> {
-                binding.subCommentRv.setVisibility(View.VISIBLE);
+                Log.d("PLUSCLICK", "!!!");
+                if(binding.subCommentRv.getVisibility()==View.VISIBLE){
+                    binding.subCommentRv.setVisibility(View.GONE);
+                }else{
+                    binding.subCommentRv.setVisibility(View.VISIBLE);
+                }
             });
 
         }
@@ -85,7 +94,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentAdapter.CommentViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
         Comment cmt = items.get(position).get(0);
         Log.d("코멘트포지션", "comment position : "+ position);
         holder.bind(cmt,position);
@@ -112,8 +121,4 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         this.mListener = listener;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
 }

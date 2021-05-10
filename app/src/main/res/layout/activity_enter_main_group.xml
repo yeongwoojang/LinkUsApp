@@ -72,8 +72,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:src="@drawable/icon_reader" />
 
@@ -84,7 +84,8 @@
                     android:layout_marginLeft="5dp"
                     android:fontFamily="@font/nanum_barun_gothic"
                     android:text="리더 : 리더이름"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -95,8 +96,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:src="@drawable/icon_add_member" />
 
@@ -107,7 +108,8 @@
                     android:layout_marginLeft="5dp"
                     android:fontFamily="@font/nanum_barun_gothic"
                     android:text="분야 : 전체"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -118,8 +120,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:src="@drawable/icon_calendar" />
 
@@ -131,7 +133,8 @@
                     android:layout_marginLeft="5dp"
                     android:fontFamily="@font/nanum_barun_gothic"
                     android:text="기간 : 2021-01-01~2022-01-01"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -141,8 +144,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:src="@drawable/group_goal_image_foreground" />
 
@@ -154,13 +157,13 @@
                     android:layout_marginLeft="5dp"
                     android:fontFamily="@font/nanum_barun_gothic"
                     android:text="그룹 목표 : 앱개발자 취업하기"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -173,6 +176,7 @@
                     android:paddingRight="15dp"
                     android:text="그룹 공지사항"
                     android:textColor="@color/white"
+                    android:textSize="10sp"
                     android:translationY="5dp"
                     android:translationZ="5dp" />
 
@@ -190,26 +194,28 @@
                         android:layout_margin="20dp"
                         android:fontFamily="@font/nanum_barun_gothic"
                         android:text="그룹 공지사항"
-                        android:textSize="12dp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </FrameLayout>
+
+
             <Button
                 android:id="@+id/write_notice_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:text="공지사항 작성"
                 android:background="@drawable/form_button_round"
                 android:fontFamily="@font/nanum_barun_gothic"
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
+                android:text="공지사항 작성"
                 android:textColor="@color/white"
-                android:visibility="invisible"
-                />
+                android:visibility="invisible" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/comment_rv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1" />
@@ -218,10 +224,10 @@
                 android:id="@+id/message_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/red300"
                 android:orientation="horizontal"
                 android:padding="5dp"
                 android:weightSum="10"
-                android:background="@color/red300"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
@@ -258,8 +264,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/member_rv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </androidx.drawerlayout.widget.DrawerLayout>
 

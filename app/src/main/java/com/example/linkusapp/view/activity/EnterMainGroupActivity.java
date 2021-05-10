@@ -93,25 +93,20 @@ public class EnterMainGroupActivity extends AppCompatActivity {
 
 
         viewModel.getCommentRsLD.observe(this,commentInfo -> {
-            if(commentInfo.getCode()==200){
-
                 commentList = commentInfo.getJsonArray();
-                for(Comment comment : commentList){
-                    comment.setWriteTime(comment.getWriteTime().substring(2, 10) + "  " + comment.getWriteTime().substring(11, 16));
-                }
+            Log.d("commentList", "onCreate: "+commentList);
+//                for(Comment comment : commentList){
+//                    comment.setWriteTime(comment.getWriteTime().substring(2, 10) + "  " + comment.getWriteTime().substring(11, 16));
+//                }
                 viewModel.getEntireReply(gName); //작성되어있는 댓글의 모든 답글 목록을 불러온다.
-                commentAdapter.updateItem(commentList);
+//                commentAdapter.updateItem(commentList);
                 binding.commentRv.scrollToPosition(commentAdapter.getItemCount()-1);
-            }else if(commentInfo.getCode()==204){
 
-            }else {
-                Snackbar.make(binding.enterMainGroupActivity,"댓글 목록 불러오기 실패",Snackbar.LENGTH_SHORT).show();
-            }
         });
 
         viewModel.getEntireReplyRsLD.observe(this,result ->{
-            if(result.getCode()==200){
                 replyList = result.getJsonArray();
+
                 for(Comment cmt : commentList){
                     tmp = new ArrayList<>();
                     tmp.add(cmt);
@@ -123,10 +118,8 @@ public class EnterMainGroupActivity extends AppCompatActivity {
                     }
                         cmtRpyList.add(tmp);
                 }
-
                 commentAdapter.updateList(cmtRpyList);
 
-            }
         } );
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
