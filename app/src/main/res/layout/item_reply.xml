@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="adapter"
+            type="com.example.linkusapp.view.adapter.ReplyAdapter" />
+        <variable
+            name="comment"
+            type="com.example.linkusapp.model.vo.Comment" />
+
+        <variable
+            name="position"
+            type="Integer" />
+    </data>
+
+
+<LinearLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:id="@+id/txt_reply_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{comment.writer}"
+        android:fontFamily="@font/nanum_barun_gothic"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        />
+    <TextView
+        android:id="@+id/txt_rpy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_id_tv"
+        android:fontFamily="@font/nanum_barun_gothic"
+        android:textColor="@color/black"
+        android:text="@{comment.reply}"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/txt_rpy_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_comment_tv"
+        android:fontFamily="@font/nanum_barun_gothic"
+        android:text="@{comment.writeTime}"
+        android:textSize="10sp" />
+</LinearLayout>
+</layout>
