@@ -56,7 +56,6 @@ public class MyStudyGroupActivity extends AppCompatActivity {
                 //boardInfo를 읽어오면 BoardRecyclerview의 내용을 업데이트.
                 binding.myStudyGroupRv.setVisibility(View.VISIBLE);
                 binding.emptyStudyGroup.setVisibility(View.GONE);
-                Log.d("LiveDataaa", "onCreate: "+boardInfo.getJsonArray());
                 userboardAdapter.updateItem(boardInfo.getJsonArray());
             }else if(boardInfo.getCode()==204){
                 binding.myStudyGroupRv.setVisibility(View.GONE);

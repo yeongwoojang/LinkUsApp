@@ -183,9 +183,19 @@ public interface ServiceApi {
     @POST("android/insertComment")
     Call<String> insertComment(@Field("bName") String bName,@Field("bWriter") String bWriter,@Field("bComment") String bComment);
 
+    @FormUrlEncoded
+    @POST("/android/insertReply")
+    Call<String> insertReply(@Field("bName") String bName, @Field("bWriter") String bWriter,@Field("bComment") String bComment,@Field("bRpyWriter") String rpyWriter,@Field("bRpy") String bRpy);
+
     /*comment 불러오기*/
     @GET("android/getComment")
     Call<CommentInfo> getComment(@Query("bName") String bName);
+
+    @GET("/android/getReply")
+    Call<CommentInfo> getReply(@Query("bName") String bName, @Query("bWriter") String bWriter, @Query("bComment") String bComment);
+
+    @GET("/android/gerEntireReply")
+    Call<CommentInfo> getEntireReply(@Query("bName") String bName);
 
     @FormUrlEncoded
     @POST("android/updateNotice")
@@ -201,6 +211,12 @@ public interface ServiceApi {
             @Field("userAge") String userAge,
             @Field("userGender") String userGender,
             @Field("address") String address);
+
+    @FormUrlEncoded
+    @POST("/android/acceptJoin")
+    Call<Void> acceptJoin(
+      @Field("targetUser") String nickName
+    );
 
     //DB에 현재 유저의 앱토큰을 저장하는 메소드
     @FormUrlEncoded

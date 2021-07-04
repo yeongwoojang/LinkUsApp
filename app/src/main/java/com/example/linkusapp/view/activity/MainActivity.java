@@ -126,4 +126,17 @@ public class MainActivity extends AppCompatActivity {
                     });
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy:밀어서 종료 ");
+        //앱을 밀어서 종료하거나 앱을 뒤로가기 해서 종료하게 되면 항상 MainActivity가 Destroy되기 때문에
+        // 이 곳에서 유저가 자동로그인 없이 일반로그인으로 했다면 그 유저의 정보를 Shared에서 삭제해준다.
+        if(!viewModel.isAutoLogin() && viewModel.getLoginMethod().equals("일반")){
+            viewModel.removeUserIdPref();
+            viewModel.removeUserInfo(); //앱 강제 종료 시 Shared에 있는 유저정보 삭제
+        }
+
+    }
 }

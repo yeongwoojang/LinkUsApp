@@ -1,8 +1,11 @@
 package com.example.linkusapp.util;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,20 +19,24 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.example.linkusapp.R;
+import com.example.linkusapp.model.vo.User;
+import com.example.linkusapp.view.activity.ChatActivity;
 import com.example.linkusapp.view.activity.HomeActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Calendar;
+import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class FirebaseInstanceIDService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseInstanceIDService";
-
+    private SharedPreference prefs;
     @Override
     public void onCreate() {
         super.onCreate();
+        prefs = new SharedPreference(getApplicationContext());
 
     }
 
@@ -49,37 +56,48 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE );
-        PowerManager.WakeLock wakeLock = pm.newWakeLock( PowerManager.SCREEN_DIM_WAKE_LOCK
-                | PowerManager.ACQUIRE_CAUSES_WAKEUP, "MyApp:TAG" );
-        wakeLock.acquire(3000);
+        User user = prefs.getUserInfo();
+        if(user!=null){
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE );
+            PowerManager.WakeLock wakeLock = pm.newWakeLock( PowerManager.SCREEN_DIM_WAKE_LOCK
+                    | PowerManager.ACQUIRE_CAUSES_WAKEUP, "MyApp:TAG" );
+            wakeLock.acquire(3000);
 
-        Log.d("onMessageReceived", "onMessageReceived: 푸시도착");
-        String title = "";
-        String body = "";
-        String userNick = "";
-        String userAge = "";
-        String userGender = "";
-        String address = "";
-        if (remoteMessage.getData().size() > 0) {
-            Log.d("message", "getNotification() ");
-            title = remoteMessage.getData().get("title");
-            body = remoteMessage.getData().get("body");
-            userNick = remoteMessage.getData().get("userNick");
-            userAge = remoteMessage.getData().get("userAge");
-            userGender = remoteMessage.getData().get("userGender");
-            address = remoteMessage.getData().get("address");
-//            Log.d("message", "getNotification() "+title+", "+body);
+            ActivityManager manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.AppTask> tasks = manager.getAppTasks();
+
+            for(ActivityManager.AppTask task : tasks){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    ComponentName componentName = task.getTaskInfo().topActivity;
+                    String activityName = componentName.getShortClassName().substring(1);
+                    Log.d("StackId", " : "+ activityName);
+                    if(!activityName.equals("view.activity.ChatActivity")){
+                        Log.d("onMessageReceived", "onMessageReceived: 푸시도착");
+                        String title = "";
+                        String body = "";
+                        String userNick = "";
+                        String userAge = "";
+                        String userGender = "";
+                        String address = "";
+                        if (remoteMessage.getData().size() > 0) {
+                            Log.d("message", "getNotification() ");
+                            title = remoteMessage.getData().get("title");
+                            body = remoteMessage.getData().get("body");
+                            userNick = remoteMessage.getData().get("userNick");
+                            userAge = remoteMessage.getData().get("userAge");
+                            userGender = remoteMessage.getData().get("userGender");
+                            address = remoteMessage.getData().get("address");
+                        }
+
+                        sendNotification(title, body, userNick, userAge, userGender, address);
+
+                    }
+                }
+            }
+
+
         }
 
-        //앱이 포어그라운드 상태에서 Notification을 받는 경우
-//        if (remoteMessage.getNotification() != null) {
-//            Log.d("message", "getData() ");
-//            title = remoteMessage.getNotification().getTitle();
-//            body = remoteMessage.getNotification().getBody();
-////            Log.d("message", "getData() "+title+", "+body);
-//        }
-        sendNotification(title, body, userNick, userAge, userGender, address);
     }
 
     //fcm 메시지를 받았을 때 실행할 메소드

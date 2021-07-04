@@ -1,17 +1,20 @@
 package com.example.linkusapp.viewModel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.linkusapp.model.vo.Comment;
 import com.example.linkusapp.model.vo.CommentInfo;
 import com.example.linkusapp.model.vo.User;
-import com.example.linkusapp.model.vo.UserInfo;
 import com.example.linkusapp.repository.RetrofitClient;
 import com.example.linkusapp.repository.ServiceApi;
 import com.example.linkusapp.util.SharedPreference;
+import com.example.linkusapp.view.adapter.CommentAdapter;
+import com.facebook.internal.Mutable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,21 +22,28 @@ import retrofit2.Response;
 import retrofit2.http.Field;
 
 public class CommentViewModel extends BaseViewModel {
+//    private ServiceApi service;
+//    private SharedPreference prefs;
+
     public MutableLiveData<String> insertCommentRsLD = new MutableLiveData<String>();
     public MutableLiveData<CommentInfo> getCommentRsLD = new MutableLiveData<CommentInfo>();
-    public MutableLiveData<String> updateNoticeRsLD = new MutableLiveData<String>();
-    public MutableLiveData<UserInfo> userNickNameRsLD = new MutableLiveData<UserInfo>();
+    public MutableLiveData<String> insertRpyRsLD = new MutableLiveData<String>();
+    public MutableLiveData<CommentInfo> getReplyRsLD = new MutableLiveData<CommentInfo>();
+    public MutableLiveData<CommentInfo> getEntireReplyRsLD = new MutableLiveData<>();
 
     public CommentViewModel(@NonNull Application application) {
         super(application);
+//        this.service = RetrofitClient.getClient(application).create(ServiceApi.class);
+//        this.prefs = new SharedPreference(application);
     }
+
     /*닉네임 불러오는 메소드*/
-    public User getUserInfoFromShared(){
+    public User getUserInfoFromShared() {
         return prefs.getUserInfo();
     }
 
-    public void insertComment(String bName, String bWriter, String bComment){
-        service.insertComment(bName,bWriter,bComment).enqueue(new Callback<String>() {
+    public void insertComment(String bName, String bWriter, String bComment) {
+        service.insertComment(bName, bWriter, bComment).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String code = response.body();
@@ -47,12 +57,18 @@ public class CommentViewModel extends BaseViewModel {
         });
     }
 
-    public void getComment(String bName){
+    public void getComment(String bName) {
         service.getComment(bName).enqueue(new Callback<CommentInfo>() {
             @Override
             public void onResponse(Call<CommentInfo> call, Response<CommentInfo> response) {
                 CommentInfo result = response.body();
-                getCommentRsLD.postValue(result);
+                if (result.getCode() == 200) {
+                    for (int i = 0; i < result.getJsonArray().size(); i++) {
+                        result.getJsonArray().get(i).setWriteTime(result.getJsonArray().get(i).getWriteTime().substring(2, 10) + "  " + result.getJsonArray().get(i).getWriteTime().substring(11, 16));
+                    }
+                    getCommentRsLD.postValue(result);
+                }
+
             }
 
             @Override
@@ -62,16 +78,57 @@ public class CommentViewModel extends BaseViewModel {
         });
     }
 
-    public void updateNotice(String gName, String notice){
-        service.updateNotice(gName,notice).enqueue(new Callback<String>() {
+    public void insertReply(String bName, String bWriter, String bComment, String bRpyWriter, String bRpy) {
+        service.insertReply(bName, bWriter, bComment, bRpyWriter, bRpy).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                String result = response.body();
-                updateNoticeRsLD.postValue(result);
+                insertRpyRsLD.postValue(response.body());
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getReply(String bName, String bWriter, String bComment) {
+        service.getReply(bName, bWriter, bComment).enqueue(new Callback<CommentInfo>() {
+            @Override
+            public void onResponse(Call<CommentInfo> call, Response<CommentInfo> response) {
+                CommentInfo result = response.body();
+                if(result.getCode()==200){
+                    for (int i = 0; i < result.getJsonArray().size(); i++) {
+                        result.getJsonArray().get(i).setWriteTime(result.getJsonArray().get(i).getWriteTime().substring(2, 10) + "  " + result.getJsonArray().get(i).getWriteTime().substring(11, 16));
+                    }
+                    getReplyRsLD.postValue(result);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommentInfo> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getEntireReply(String bName) {
+        service.getEntireReply(bName).enqueue(new Callback<CommentInfo>() {
+            @Override
+            public void onResponse(Call<CommentInfo> call, Response<CommentInfo> response) {
+                CommentInfo result = response.body();
+                if(result.getCode()==200){
+                    for (int i = 0; i < result.getJsonArray().size(); i++) {
+                        result.getJsonArray().get(i).setWriteTime(result.getJsonArray().get(i).getWriteTime().substring(2, 10) + "  " + result.getJsonArray().get(i).getWriteTime().substring(11, 16));
+                    }
+                    getEntireReplyRsLD.postValue(result);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommentInfo> call, Throwable t) {
 
             }
         });

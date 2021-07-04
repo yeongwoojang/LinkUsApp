@@ -200,7 +200,7 @@ public class ChatActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    JSONObject chatobj = (JSONObject) args[0];
+                    JSONObject chatObj = (JSONObject) args[0];
                     Log.d("onNewMessage", "run: ");
                     String gName;
                     String msg;
@@ -209,10 +209,10 @@ public class ChatActivity extends AppCompatActivity {
                     String msgTime;
                     try {
 //                        gName = chatobj.getString("gName");
-                        msg = chatobj.getString("msg");
-                        myNickName = chatobj.getString("myNickName");
-                        yourNickName = chatobj.getString("yourNickName");
-                        msgTime = chatobj.getString("msgTime");
+                        msg = chatObj.getString("msg");
+                        myNickName = chatObj.getString("myNickName");
+                        yourNickName = chatObj.getString("yourNickName");
+                        msgTime = chatObj.getString("msgTime");
 
                         Chat chat = new Chat(msg, msgTime, yourNickName, myNickName);
                         items.add(chat);
