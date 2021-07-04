@@ -44,12 +44,12 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 >
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/profile_picture"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:src="@drawable/baseline_profile_picture"
-                    />
+                    />-->
                 <TextView
                     android:id="@+id/nickname_tv"
                     android:layout_width="wrap_content"

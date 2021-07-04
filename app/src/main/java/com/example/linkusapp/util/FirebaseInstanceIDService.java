@@ -20,7 +20,6 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.linkusapp.R;
 import com.example.linkusapp.model.vo.User;
-import com.example.linkusapp.view.activity.ChatActivity;
 import com.example.linkusapp.view.activity.HomeActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;

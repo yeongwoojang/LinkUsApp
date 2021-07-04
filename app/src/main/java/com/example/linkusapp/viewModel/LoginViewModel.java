@@ -264,33 +264,33 @@ public class LoginViewModel extends BaseViewModel {
         });
     }
 
-    public void insertProfile(String userNickname,String loginMethod, Bitmap bitmap){
-        service.insertProfile(userNickname,loginMethod,bitmap).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String result = response.body();
-                insertProfileLiveData.postValue(result);
-            }
+//    public void insertProfile(String userNickname,String loginMethod, Bitmap bitmap){
+//        service.insertProfile(userNickname,loginMethod,bitmap).enqueue(new Callback<String>() {
+//            @Override
+//            public void onResponse(Call<String> call, Response<String> response) {
+//                String result = response.body();
+//                insertProfileLiveData.postValue(result);
+//            }
+//
+//            @Override
+//            public void onFailure(Call<String> call, Throwable t) {
+//
+//            }
+//        });
+//    }
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void getProfile(String userNickname){
-        service.getProfile(userNickname).enqueue(new Callback<Profile>() {
-            @Override
-            public void onResponse(Call<Profile> call, Response<Profile> response) {
-                Profile result = response.body();
-                getProfileLiveData.postValue(result);
-            }
-
-            @Override
-            public void onFailure(Call<Profile> call, Throwable t) {
-
-            }
-        });
-    }
+//    public void getProfile(String userNickname){
+//        service.getProfile(userNickname).enqueue(new Callback<Profile>() {
+//            @Override
+//            public void onResponse(Call<Profile> call, Response<Profile> response) {
+//                Profile result = response.body();
+//                getProfileLiveData.postValue(result);
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Profile> call, Throwable t) {
+//
+//            }
+//        });
+//    }
 }

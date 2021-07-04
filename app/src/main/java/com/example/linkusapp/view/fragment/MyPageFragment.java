@@ -66,7 +66,7 @@ public class MyPageFragment extends Fragment {
         binding = FragmentMyPageBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        viewModel.getProfile(userNickname);
+//        viewModel.getProfile(userNickname);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))

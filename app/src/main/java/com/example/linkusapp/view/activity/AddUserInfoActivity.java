@@ -89,18 +89,18 @@ public class AddUserInfoActivity extends AppCompatActivity {
                 .build();
         mSignInClient =  GoogleSignIn.getClient(this, gso);
 
-        binding.profileIv.setOnClickListener(new View.OnClickListener() {
+       /* binding.profileIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent,REQUEST_IMAGE_CODE);*/
+                *//*Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent,REQUEST_IMAGE_CODE);*//*
 
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent,REQUEST_IMAGE_CODE);
             }
-        });
+        });*/
         /*나이*/
         binding.spinnerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -248,7 +248,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     }
                 }
                 break;
-            case REQUEST_IMAGE_CODE:
+            /*case REQUEST_IMAGE_CODE:
                 if(resultCode==RESULT_OK){
                     try {
                         InputStream in = getContentResolver().openInputStream(intent.getData());
@@ -264,7 +264,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
+                }*/
         }
         viewModel.insertProfileLiveData.observe(this,code -> {
             if(code.equals("200")){

@@ -89,14 +89,14 @@ public class EnterMainGroupActivity extends AppCompatActivity {
         binding.memberRv.setAdapter(memberAdapter);
         binding.memberRv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false));
 
-        viewModel.getComment(gName); //작성되어있는 댓글 목록을 불러온다.
+//        viewModel.getComment(gName); //작성되어있는 댓글 목록을 불러온다.
 
 
         viewModel.getCommentRsLD.observe(this,commentInfo -> {
                 commentList = commentInfo.getJsonArray();
             Log.d("commentList", "onCreate: "+commentList);
 //                for(Comment comment : commentList){
-//                    comment.setWriteTime(comment.getWriteTime().substring(2, 10) + "  " + comment.getWriteTime().substring(11, 16));
+//                    comment.setWriteTime(comment.getWriteTime().substring(2, 10) + "  " + comment.getWriteTime().substring(11, 15));
 //                }
                 viewModel.getEntireReply(gName); //작성되어있는 댓글의 모든 답글 목록을 불러온다.
 //                commentAdapter.updateItem(commentList);
